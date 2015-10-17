@@ -25,6 +25,7 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityPotion;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -48,20 +49,34 @@ import org.lwjgl.input.Keyboard;
 
 import com.google.common.base.Predicates;
 import com.sonicjumper.enhancedvisuals.Base;
+import com.sonicjumper.enhancedvisuals.ConfigCore;
+import com.sonicjumper.enhancedvisuals.environment.BaseEnvironmentEffect;
+import com.sonicjumper.enhancedvisuals.environment.EyeSensitivityHandler;
+import com.sonicjumper.enhancedvisuals.environment.PotionSplashHandler;
+import com.sonicjumper.enhancedvisuals.environment.TemperatureHandler;
+import com.sonicjumper.enhancedvisuals.environment.WetnessHandler;
 import com.sonicjumper.enhancedvisuals.util.SplatUtil;
+import com.sonicjumper.enhancedvisuals.visuals.Blur;
+import com.sonicjumper.enhancedvisuals.visuals.BoxBlur;
 import com.sonicjumper.enhancedvisuals.visuals.Shader;
 import com.sonicjumper.enhancedvisuals.visuals.ShaderBlurFade;
 import com.sonicjumper.enhancedvisuals.visuals.Splat;
 import com.sonicjumper.enhancedvisuals.visuals.Visual;
+import com.sonicjumper.enhancedvisuals.visuals.VisualManager;
 import com.sonicjumper.enhancedvisuals.visuals.VisualType;
 
 public class VisualEventHandler {
+	
+	private ArrayList<BaseEnvironmentEffect> environmentalEffects;
+	public WetnessHandler wetnessHandler = new WetnessHandler(this);
+	public EyeSensitivityHandler eyeSensitivityHandler = new EyeSensitivityHandler(this);
+	public TemperatureHandler temperatureHandler = new TemperatureHandler(this);
+	public PotionSplashHandler potionSplashHandler = new PotionSplashHandler(this);
 	
 	public Minecraft mc = Minecraft.getMinecraft();
 	// Swords and Axes are slashing
 	// Shovels and Pickaxes are impact
 	// Hoes and Arrows are piercing
-
 	private ArrayList<Item> sharpList;
 	private ArrayList<Item> bluntList;
 	private ArrayList<Item> pierceList;
@@ -113,6 +128,12 @@ public class VisualEventHandler {
 		//entityHealthMap = new HashMap<EntityLivingBase, Float>();
 
 		rand = new Random();
+		
+		environmentalEffects = new ArrayList<BaseEnvironmentEffect>();
+		environmentalEffects.add(wetnessHandler);
+		environmentalEffects.add(eyeSensitivityHandler);
+		environmentalEffects.add(temperatureHandler);
+		environmentalEffects.add(potionSplashHandler);
 	}
 
 	/*@SubscribeEvent
@@ -246,48 +267,78 @@ public class VisualEventHandler {
 			Splat s = new Splat(VisualType.splatter, 200, Color.WHITE, (float) point.getX(), (float) point.getY());
 			Base.instance.manager.addVisualDirect(s);
 		}*/
+		if(source == DamageSource.outOfWorld)
+			return ;
 		// Check distance to player and use that as splat distance pattern
 		double distanceSq = Minecraft.getMinecraft().thePlayer.getDistanceSqToEntity(entity);
 		if(distanceSq > 64.0D) {
 			return;
 		}
-		Entity attacker = source.getSourceOfDamage();
-		if(attacker instanceof EntityLivingBase) {
-			EntityLivingBase lastAttacker = (EntityLivingBase) attacker;
-			// Check weapons
-			if(lastAttacker.getHeldItem() != null) {
-				if(isSharp(lastAttacker.getHeldItem().getItem())) {
-					Base.instance.manager.createVisualFromDamageAndDistance(VisualType.slash, damage, entity, distanceSq);
-				} else if(isBlunt(lastAttacker.getHeldItem().getItem())) {
-					Base.instance.manager.createVisualFromDamageAndDistance(VisualType.impact, damage, entity, distanceSq);
-				} else if(isPierce(lastAttacker.getHeldItem().getItem())) {
-					Base.instance.manager.createVisualFromDamageAndDistance(VisualType.pierce, damage, entity, distanceSq);
-				} else {
-					// Default to splatter type
-					Base.instance.manager.createVisualFromDamageAndDistance(VisualType.splatter, damage, entity, distanceSq);
-				}
-			} else {
-				// Then check entity type if not holding a weapon(aka bare hands)
-				if(lastAttacker instanceof EntityZombie || lastAttacker instanceof EntitySkeleton || lastAttacker instanceof EntityOcelot) {
-					Base.instance.manager.createVisualFromDamageAndDistance(VisualType.slash, damage, entity, distanceSq);
-				} else if(lastAttacker instanceof EntityGolem || lastAttacker instanceof EntityPlayer) {
-					Base.instance.manager.createVisualFromDamageAndDistance(VisualType.impact, damage, entity, distanceSq);
-				} else if(lastAttacker instanceof EntityWolf || lastAttacker instanceof EntitySpider) {
-					Base.instance.manager.createVisualFromDamageAndDistance(VisualType.pierce, damage, entity, distanceSq);
-				} else if(source.isExplosion()) {
-					Base.instance.manager.createVisualFromDamageAndDistance(VisualType.impact, damage, entity, distanceSq);
-					// Assume explosion damage, only apply dust effect when it's player who is damaged
-					if(entity.equals(Minecraft.getMinecraft().thePlayer)) {
-						Base.instance.manager.createVisualFromDamageAndDistance(VisualType.dust, damage, entity, distanceSq);
+		if(entity instanceof EntityPlayer)
+		{
+			Entity attacker = source.getSourceOfDamage();
+			if(attacker instanceof EntityLivingBase) {
+				EntityLivingBase lastAttacker = (EntityLivingBase) attacker;
+				// Check weapons
+				if(lastAttacker.getHeldItem() != null) {
+					if(isSharp(lastAttacker.getHeldItem().getItem())) {
+						Base.instance.manager.createVisualFromDamageAndDistance(VisualType.slash, damage, entity, distanceSq);
+					} else if(isBlunt(lastAttacker.getHeldItem().getItem())) {
+						Base.instance.manager.createVisualFromDamageAndDistance(VisualType.impact, damage, entity, distanceSq);
+					} else if(isPierce(lastAttacker.getHeldItem().getItem())) {
+						Base.instance.manager.createVisualFromDamageAndDistance(VisualType.pierce, damage, entity, distanceSq);
+					} else {
+						// Default to splatter type
+						Base.instance.manager.createVisualFromDamageAndDistance(VisualType.splatter, damage, entity, distanceSq);
 					}
 				} else {
-					// Default to splatter type
-					Base.instance.manager.createVisualFromDamageAndDistance(VisualType.splatter, damage, entity, distanceSq);
+					if(source.getEntity() != null && source.getEntity() instanceof EntityArrow) {
+						Base.instance.manager.createVisualFromDamage(VisualType.pierce, damage, entity);
+					}
+					// If player received fall damage
+					
+					
+					if(lastAttacker instanceof EntityZombie || lastAttacker instanceof EntitySkeleton || lastAttacker instanceof EntityOcelot) {
+						Base.instance.manager.createVisualFromDamageAndDistance(VisualType.slash, damage, entity, distanceSq);
+					} else if(lastAttacker instanceof EntityGolem || lastAttacker instanceof EntityPlayer) {
+						Base.instance.manager.createVisualFromDamageAndDistance(VisualType.impact, damage, entity, distanceSq);
+					} else if(lastAttacker instanceof EntityWolf || lastAttacker instanceof EntitySpider) {
+						Base.instance.manager.createVisualFromDamageAndDistance(VisualType.pierce, damage, entity, distanceSq);
+					}
+
+					
 				}
+			}
+			
+			if(source == DamageSource.cactus) {
+				Base.instance.manager.createVisualFromDamage(VisualType.pierce, damage, entity);
+			}
+			
+			if(source == DamageSource.fall || source == DamageSource.fallingBlock) {
+				Base.instance.manager.createVisualFromDamage(VisualType.impact, damage, entity);
+			}
+			
+			if(source.isExplosion()) {
+				if(source.getSourceOfDamage() != null && source.getSourceOfDamage().getDistanceToEntity(mc.thePlayer) < 16.0D) {
+					Base.instance.manager.createVisualFromDamageAndDistance(VisualType.dust, damage, entity, source.getSourceOfDamage().getDistanceSqToEntity(mc.thePlayer));
+					Blur b = new BoxBlur(VisualType.blur, (int) (damage * 10), new Color(1.0F, 1.0F, 1.0F, 0.8F), true, ConfigCore.blurQuality, 10, 1);
+					Base.instance.manager.addVisualDirect(b);
+				} else {
+					Base.instance.manager.createVisualFromDamage(VisualType.dust, damage, entity);
+					Blur b = new BoxBlur(VisualType.blur, (int) (damage * 10), new Color(1.0F, 1.0F, 1.0F, 0.8F), true, ConfigCore.blurQuality, 10, 1);
+					Base.instance.manager.addVisualDirect(b);
+				}
+			}
+			
+			if(source.equals(DamageSource.drown)) {
+				Base.instance.manager.addRandomNumVisualsWithColor(VisualType.waterS, 4, 8, (int) (damage * 10), (int) (damage * 15), new Color(1.0F, 1.0F, 1.0F, 1.0F));
 			}
 		} else {
 			// For now, just assume damage was another source(falling, drowning, cactus, etc.) and use splatter
-			Base.instance.manager.createVisualFromDamageAndDistance(VisualType.splatter, damage, entity, distanceSq);
+			if(source == DamageSource.anvil || source == DamageSource.fall || source == DamageSource.fallingBlock
+					|| source.getDamageType().equals("mob") || source.getDamageType().equals("player")) 
+				if(source.getEntity().getDistanceToEntity(mc.thePlayer) < 8.0D)
+					Base.instance.manager.createVisualFromDamageAndDistance(VisualType.splatter, damage, entity, distanceSq);
 		}
 	}
 
@@ -329,6 +380,13 @@ public class VisualEventHandler {
 		} catch(ConcurrentModificationException e) {
 			System.out.println("Caught a possible concurrent modification exception, maybe the client lagged?");
 		}*/
+		for(BaseEnvironmentEffect ee : environmentalEffects) {
+			// Keep track of Player's "wetness"
+			// Adjust the player's vision depending on sudden increases in light
+			// Keep track of Player's "temperature"
+			ee.onTick();
+		}
+		
 		// Check if player has splashed in water
 		if(hasSplashed(player)) {
 			Shader s = new ShaderBlurFade(VisualType.blur, 200 + rand.nextInt(100), 10.0F + rand.nextFloat() * 5.0F);
@@ -337,7 +395,7 @@ public class VisualEventHandler {
 		// Check if player is in water, then wash certain splats away
 		if(player.isInWater()) {
 			for(Visual v : Base.instance.manager.getActiveVisuals()) {
-				if(v.getType().equals(VisualType.splatter) || v.getType().equals(VisualType.impact) || v.getType().equals(VisualType.pierce) || v.getType().equals(VisualType.slash) || v.getType().equals(VisualType.dust)) {
+				if(v.getType().substractByTime) {
 					v.subtractTickPercent(2.5F);
 				}
 			}

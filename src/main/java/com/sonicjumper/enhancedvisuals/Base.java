@@ -52,7 +52,6 @@ public class Base {
 		ConfigCore cc = new ConfigCore(event.getSuggestedConfigurationFile());
 		cc.loadConfig();
 		
-		this.manager = new VisualManager();
 		if(FMLCommonHandler.instance().getEffectiveSide().isClient())
 			this.renderer = new VisualRenderer();
 		
@@ -61,6 +60,8 @@ public class Base {
 		this.shaderHelper = new ShaderHelper(Minecraft.getMinecraft(), Minecraft.getMinecraft().getResourceManager());
 		
 		proxy.registerThings(event);
+		this.manager = new VisualManager();
+		
 		try
 		{
 			Visual initializer = new Visual(VisualType.splatter, 0);

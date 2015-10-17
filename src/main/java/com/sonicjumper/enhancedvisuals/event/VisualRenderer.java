@@ -74,6 +74,7 @@ public class VisualRenderer {
 		        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		        GlStateManager.disableAlpha();
 				
+		        try{
 				for(int i = 0; i < visualList.size(); i++) {
 					Visual v = visualList.get(i);
 					/*if(v instanceof Shader) {
@@ -83,6 +84,9 @@ public class VisualRenderer {
 					//}
 					
 				}
+		        }catch(Exception e){
+		        	e.printStackTrace();
+		        }
 				
 				/*for(Shader s : Base.instance.manager.getActiveShaders()) {
 					s.getRenderer().renderVisual(s, partialTicks);

@@ -76,6 +76,14 @@ public class Visual {
 		return textureShiftedPosition;
 		//return rand.nextInt(2) == 0 ? 0.5F + (0.5F * multiplier) : 0.5F - (0.5F * multiplier);
 	}
+	
+	public void renderUpdate(float partialTicks)
+	{
+		if(!isDead)
+		{
+			getRenderer().renderVisual(this, partialTicks);
+		}
+	}
 
 	public void tickUpdate() {
 		this.realTickTime++;

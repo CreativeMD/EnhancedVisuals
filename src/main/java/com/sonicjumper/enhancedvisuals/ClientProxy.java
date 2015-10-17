@@ -24,5 +24,6 @@ public class ClientProxy extends ServerProxy {
 	public static String getVisualsDirectory(String themePack)
 	{
 		return baseJarPath + "/assets/" + Base.MODID + "/" + themePack + "/visuals/";
+		//return "/assets/" + Base.MODID + "/" + themePack + "/visuals/";
 	}
 }

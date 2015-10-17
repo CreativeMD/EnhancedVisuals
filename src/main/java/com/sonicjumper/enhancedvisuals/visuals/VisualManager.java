@@ -15,14 +15,28 @@ import com.sonicjumper.enhancedvisuals.visuals.Visual.VisualCatagory;
 
 public class VisualManager {
 	private ArrayList<Visual> playerVisuals = new ArrayList<Visual>();
+	private ArrayList<Visual> permVisuals = new ArrayList<Visual>();
+	
+	private Overlay heatOverlay;
+	private Overlay iceOverlay;
+	private Overlay wetOverlay;
 
 	private Random rand = new Random();
 
 	public VisualManager() {
+		heatOverlay = new Overlay(VisualType.heat, -1, new Color(1.0F, 1.0F, 1.0F, 0.0F));
+		iceOverlay = new Overlay(VisualType.ice, -1, new Color(1.0F, 1.0F, 1.0F, 0.0F));
+		wetOverlay = new Overlay(VisualType.waterO, -1, new Color(1.0F, 1.0F, 1.0F, 0.0F));
+		permVisuals.add(heatOverlay);
+		permVisuals.add(iceOverlay);
+		permVisuals.add(wetOverlay);
 	}
 
 	public ArrayList<Visual> getActiveVisuals() {
-		return playerVisuals;
+		ArrayList<Visual> alv = new ArrayList<Visual>();
+		alv.addAll(playerVisuals);
+		alv.addAll(permVisuals);
+		return alv;
 	}
 	
 	public ArrayList<Shader> getActiveShaders() {
@@ -50,6 +64,14 @@ public class VisualManager {
 
 	public void addVisualDirect(Visual v) {
 		playerVisuals.add(v);
+	}
+	
+	public void addRandomNumVisualsWithColor(VisualType vt, int minNum, int maxNum, int minTime, int maxTime, Color color) {
+		if(maxNum <= minNum) {
+			addVisualsWithShading(vt, minNum, minTime, maxTime, color);
+		} else {
+			addVisualsWithShading(vt, minNum + rand.nextInt(maxNum - minNum), minTime, maxTime, color);
+		}
 	}
 
 	public void addVisualsWithShading(VisualType vt, int num, int minTime, int maxTime, Color color) {
@@ -113,11 +135,23 @@ public class VisualManager {
 			}
 		}
 		else if (type.equals(VisualType.dust)) {
-			addVisualsWithShading(type, splats * 20, 10, 100, new Color(0.2F, 0.2F, 0.2F, 1.0F));
+			addVisualsWithShading(type, splats * 20, 100, 1000, new Color(0.2F, 0.2F, 0.2F, 1.0F));
 		}
 	}
 
 	private float randMultiplier(double min, double max) {
 		return (float) (min + rand.nextDouble() * (max - min));
+	}
+	
+	public void adjustHeatOverlay(float intensity) {
+		heatOverlay.setTranslucency(intensity);
+	}
+	
+	public void adjustColdOverlay(float intensity) {
+		iceOverlay.setTranslucency(intensity);
+	}
+	
+	public void adjustWetOverlay(float intensity) {
+		wetOverlay.setTranslucency(intensity);
 	}
 }
