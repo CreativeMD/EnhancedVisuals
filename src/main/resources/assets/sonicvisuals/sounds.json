@@ -1,0 +1,4 @@
+{
+  "heartbeatIn": {"category": "master","sounds": [{"name": "heartbeatIn","stream": false}]},
+  "heartbeatOut": {"category": "master","sounds": [{"name": "heartbeatOut","stream": false}]}
+}
