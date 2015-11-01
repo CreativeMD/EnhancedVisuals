@@ -28,9 +28,9 @@ public abstract class RenderShader extends RenderVisual {
 			shaderHelper.loadShader(v.getType().getName(), v.getResource());
 		}
 		updateUniforms(v);
-		if(v.shouldRemove()) {
-			shaderHelper.removeShader(v.getType().getName());
-		}
+		//if(v.shouldRemove()) {
+		//	shaderHelper.removeShader(v.getType().getName());
+		//}
 	}
 
 	/**

@@ -27,7 +27,7 @@ public class TemperatureHandler extends BaseEnvironmentEffect {
 			public boolean runFactor() {
 				float currentWorldTemp = parent.mc.theWorld.getBiomeGenForCoords(new BlockPos((int)Math.floor(parent.mc.thePlayer.posX), 0, (int)Math.floor(parent.mc.thePlayer.posZ))).temperature;
 				factor = currentWorldTemp + (parent.mc.thePlayer.isBurning() ? 4.0F : 0.0F) - parent.wetnessHandler.getWetness() * (parent.mc.thePlayer.isSprinting() ? 4.0F : 1.0F);
-				System.out.println("World temp factor: " + factor);
+				//System.out.println("World temp factor: " + factor);
 				return true;
 			}
 
@@ -62,7 +62,7 @@ public class TemperatureHandler extends BaseEnvironmentEffect {
 				if(temperature < 0.15F * leatherCount) {
 					factor = 0.15F * leatherCount;
 				}
-				System.out.println("Armor factor: " + factor);
+				//System.out.println("Armor factor: " + factor);
 				return factor != 0.0F;
 			}
 
@@ -91,7 +91,7 @@ public class TemperatureHandler extends BaseEnvironmentEffect {
 					heat = Math.max((float) (1 / dist) * 5.0F, heat);
 				}
 				factor += heat;
-				System.out.println("Fire/Lava factor:" + factor);
+				//System.out.println("Fire/Lava factor:" + factor);
 				return factor != 1.0F;
 			}
 
@@ -111,7 +111,14 @@ public class TemperatureHandler extends BaseEnvironmentEffect {
 		}
 		temperature = temperature > 2.0F ? 2.0F : temperature;
 		temperature = temperature < 0.0F ? 0.0F : temperature;
-		System.out.println("Overall temp: " + temperature);
+		//System.out.println("Overall temp: " + temperature);
+		
+		if(parent.mc.thePlayer.isInWater())
+			if(temperature < 1.0F)
+				temperature = Math.min(1.0F, temperature+0.1F);
+			else if(temperature > 1.0F)
+				temperature = Math.max(1.0F, temperature-0.1F);
+		
 		if(temperature < 0.25F) {
 			//System.out.println("Adjusting freeze overlay");
 			float cold = (1.0F - (temperature * 4.0F)) * 0.75F;

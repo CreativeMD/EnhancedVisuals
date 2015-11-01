@@ -16,17 +16,19 @@ public class WetnessHandler extends BaseEnvironmentEffect {
 	public void onTick() {
 		// Alter variables
 		if(parent.mc.thePlayer.isInWater()) {
-			wetness = (float)((double)this.wetness + (double)(1.0F - this.wetness) * 0.05D);
+			wetness = (float)((double)this.wetness + (double)(1.0F - this.wetness) * 0.005D);
 		} else if(parent.mc.thePlayer.isWet()) {
 			wetness = (float)((double)this.wetness + (double)(1.0F - this.wetness) * (parent.mc.thePlayer.isSprinting() ? 0.01D : 0.005D));
 		} else {
 			wetness = (float)((double)this.wetness + (double)(0.0F - this.wetness) * (parent.mc.thePlayer.isSprinting() ? 0.004D : 0.002D));
 		}
 		// Adjust rendering of overlays
-		if(wetness > 0.5F) {
-			float wet = ((wetness - 0.5F) * 2.0F) * 0.75F;
-			Base.instance.manager.adjustWetOverlay(wet < 1.0F ? wet : 1.0F);
-		}
+		//wetness /= 20;
+		
+		float wet = ((wetness - 0.5F) * 2.0F) * 0.4F;
+		if(wetness < 0.5F )
+			wet = 0;
+		Base.instance.manager.adjustWetOverlay(wet < 1.0F ? wet : 1.0F);
 		//System.out.println("Wetness : " + playerWetness);
 	}
 
@@ -36,6 +38,6 @@ public class WetnessHandler extends BaseEnvironmentEffect {
 	}
 	
 	public float getWetness() {
-		return wetness;
+		return wetness*0.1F;
 	}
 }

@@ -20,6 +20,8 @@ public class VisualManager {
 	private Overlay heatOverlay;
 	private Overlay iceOverlay;
 	private Overlay wetOverlay;
+	public Animation slenderOverlay;
+	//public Shader blur;
 
 	private Random rand = new Random();
 
@@ -27,9 +29,14 @@ public class VisualManager {
 		heatOverlay = new Overlay(VisualType.heat, -1, new Color(1.0F, 1.0F, 1.0F, 0.0F));
 		iceOverlay = new Overlay(VisualType.ice, -1, new Color(1.0F, 1.0F, 1.0F, 0.0F));
 		wetOverlay = new Overlay(VisualType.waterO, -1, new Color(1.0F, 1.0F, 1.0F, 0.0F));
+		slenderOverlay = new Animation(VisualType.slender, -1, new Color(1.0F, 1.0F, 1.0F), 100);
+		//blur = new ShaderBlurFade(VisualType.blur, -1, 0);
+		
 		permVisuals.add(heatOverlay);
 		permVisuals.add(iceOverlay);
 		permVisuals.add(wetOverlay);
+		permVisuals.add(slenderOverlay);
+		//permVisuals.add(blur);
 	}
 
 	public ArrayList<Visual> getActiveVisuals() {

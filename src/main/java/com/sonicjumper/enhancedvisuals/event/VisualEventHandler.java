@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
@@ -18,6 +19,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntityGolem;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySpider;
@@ -330,10 +332,26 @@ public class VisualEventHandler {
 				}
 			}
 			
+			
+			
 			if(source.equals(DamageSource.drown)) {
 				Base.instance.manager.addRandomNumVisualsWithColor(VisualType.waterS, 4, 8, (int) (damage * 10), (int) (damage * 15), new Color(1.0F, 1.0F, 1.0F, 1.0F));
 			}
-		} else {
+			
+			
+			
+			if(source.isFireDamage() || source == DamageSource.onFire)
+			{
+				Base.instance.manager.addVisualsWithShading(VisualType.fire, (int) damage, 100, 1000, new Color(1, 1, 1));
+		      //if (event.source.n() == "lava") {
+		        //burnOverlay = new Overlay(Overlay.OverlayType.Burn, 0.5F, 25 + rand.nextInt(25));
+		      //}
+			}
+			
+		}else{
+			if(mc.thePlayer.isBurning())
+				Base.instance.manager.addVisualsWithShading(VisualType.fire, (int) damage, 100, 1000, new Color(1, 1, 1));
+			
 			// For now, just assume damage was another source(falling, drowning, cactus, etc.) and use splatter
 			if(source == DamageSource.anvil || source == DamageSource.fall || source == DamageSource.fallingBlock
 					|| source.getDamageType().equals("mob") || source.getDamageType().equals("player")) 
@@ -389,7 +407,7 @@ public class VisualEventHandler {
 		
 		// Check if player has splashed in water
 		if(hasSplashed(player)) {
-			Shader s = new ShaderBlurFade(VisualType.blur, 200 + rand.nextInt(100), 10.0F + rand.nextFloat() * 5.0F);
+			Shader s = new ShaderBlurFade(VisualType.blur, 100 + rand.nextInt(100), 10.0F + rand.nextFloat() * 5.0F);
 			Base.instance.manager.addVisualDirect(s);
 		}
 		// Check if player is in water, then wash certain splats away
@@ -409,10 +427,16 @@ public class VisualEventHandler {
 				this.lowHealthBuffer = (int) (player.getHealth() * 10 + 15);
 				Base.instance.manager.addVisualsWithShading(VisualType.lowhealth, 1, this.lowHealthBuffer - 5, this.lowHealthBuffer - 5, new Color(1.0F, 1.0F, 1.0F, Math.min(0.7F, f1)));
 				
+				Shader s = new ShaderBlurFade(VisualType.blur, 10, Math.min(0.7F, f1)*50F);
+				Base.instance.manager.addVisualDirect(s);
+				
 				mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("sonicvisuals:heartbeatOut"), (float)player.posX, (float)player.posY, (float)player.posZ));
 				//Minecraft.getMinecraft().theWorld.playSoundEffect(player.posX, player.posY, player.posZ, "sonicvisuals:heartbeatOut", 1, 1);
 			} else if(this.lowHealthBuffer == 5) {
 				mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("sonicvisuals:heartbeatIn"), (float)player.posX, (float)player.posY, (float)player.posZ));
+
+				Shader s = new ShaderBlurFade(VisualType.blur, 10, 50F);
+				Base.instance.manager.addVisualDirect(s);
 				//Minecraft.getMinecraft().theWorld.playSoundEffect(player.posX, player.posY, player.posZ, "sonicvisuals:heartbeatIn", 1, 1);
 				this.lowHealthBuffer -= 1;
 			} else {
@@ -423,8 +447,96 @@ public class VisualEventHandler {
 		checkRecentPotions();
 		// Check surrounding light values and "adjust" eyes(TODO)
 		// Check surrounding temperatures and show cold or heat overlays(TODO)
+		
+		//Slender
+		checkSlender();
+		
+		//Sand
+		addSandSplatFromTick();
 	}
-
+	
+	public void addSandSplatFromTick()
+	{
+		float modifier = 0.5F;
+		boolean sand = false;
+		boolean onSand = isOnSand(mc.thePlayer);
+		if (mc.thePlayer.isSprinting())
+		{
+			modifier *= 1.5F;
+			sand = true;
+	    }
+	    if (mc.thePlayer.onGround)
+	    {
+	    	modifier *= 1.5F;
+	    	sand = true;
+	    }
+	    //if (mc.thePlayer.)
+	    //{
+	    //	modifier *= 2.0F;
+	    //	sand = true;
+	    //}
+	    if ((sand) && (onSand))
+	    {
+	    	int small = (int)(rand.nextInt(3) * modifier);
+	    	int medium = 0;int large = 0;
+	    	if (rand.nextInt(16) == 1) {
+	    		medium = (int)(1.0F * modifier);
+	    	}
+	    	if (rand.nextInt(32) == 1) {
+	    		large = (int)(1.0F * modifier);
+	    	}
+	    	Base.instance.manager.addVisuals(VisualType.sand, (int) modifier, 100, 100);
+	    	//addSplat(small, medium, large, Splat.SplatType.Sand)
+	    }
+	}
+	
+	private boolean isOnSand(EntityPlayer entityPlayer)
+	{
+		int posX = (int)entityPlayer.posX;
+		int posY = (int)(entityPlayer.posY - 2.0D);
+		int posZ = (int)entityPlayer.posZ;
+	    if (mc.theWorld.getBlockState(new BlockPos(posX, posY, posZ)).getBlock() == Blocks.sand && mc.theWorld.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock() == Blocks.sand) {
+	    	return true;
+	    }
+	    return false;
+	}
+	
+	private void checkSlender()
+	{
+		boolean angryNearby = false;
+	    double modifier = 0.0D;
+	    double d0 = mc.thePlayer.posX;
+	    double d1 = mc.thePlayer.posY;
+	    double d2 = mc.thePlayer.posZ;
+	    
+	    AxisAlignedBB box = mc.thePlayer.getEntityBoundingBox();
+	    box = box.expand(16, 16, 16);
+	    
+	    EntityEnderman mob = (EntityEnderman) mc.theWorld.findNearestEntityWithinAABB(EntityEnderman.class, box, mc.thePlayer);
+	    if(mob != null)
+	    {
+	    	angryNearby = true;
+	    	double distModifier = 1.0D / Math.pow(Math.sqrt(Math.pow(d0 - mob.posX, 2) + Math.pow(d1 - mob.posY, 2) + Math.pow(d2 - mob.posZ, 2)) / 3.0D, 2);
+	    	if (distModifier > modifier)
+	    	{
+	    		modifier = distModifier;
+	    		if (modifier > 3.5D) {
+	    			modifier = 3.5D;
+	    		}
+	    	}
+	    }
+	    
+	    if (angryNearby) {
+	    	//Base.instance.manager.slenderOverlay.setActive(true);
+			if (0.25D * modifier < 0.6000000238418579D) {
+				Base.instance.manager.slenderOverlay.intensity = (float)(0.25D * modifier);
+			} else {
+				Base.instance.manager.slenderOverlay.intensity = 0.6F;
+			}
+	    }else
+	    	Base.instance.manager.slenderOverlay.intensity = 0;
+	}
+	
 	private void checkRecentPotions() {
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 		AxisAlignedBB axisBox = AxisAlignedBB.fromBounds(Math.floor(player.posX) - 4.5D, Math.floor(player.posY) - 5.0D, Math.floor(player.posZ) - 4.5D, Math.floor(player.posX) + 4.5D, Math.floor(player.posY) + 2.0D, Math.floor(player.posZ) + 4.5D);

@@ -7,11 +7,22 @@ import com.sonicjumper.enhancedvisuals.render.RenderAnimation;
 import com.sonicjumper.enhancedvisuals.render.RenderVisual;
 
 public class Animation extends Visual {
+	
+	public int animationSpeed;
+	public float intensity;
+	
 	public Animation(VisualType type, int time, Color rgba)
 	{
-		super(type, time, rgba);
+		this(type, time, rgba, 50);
 	}
-
+	
+	public Animation(VisualType type, int time, Color rgba, int animationSpeed)
+	{
+		super(type, time, rgba);
+		this.animationSpeed = animationSpeed;
+	}
+	
+	@Override
 	public RenderVisual getRenderer()
 	{
 		return Base.instance.renderer.getRendererForClass(RenderAnimation.class);
