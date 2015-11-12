@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.shader.ShaderGroup;
@@ -13,6 +12,7 @@ import net.minecraft.util.ResourceLocation;
 
 import com.google.gson.JsonSyntaxException;
 import com.sonicjumper.enhancedvisuals.Base;
+import com.sonicjumper.enhancedvisuals.lib.GlStateManager;
 
 public class ShaderHelper {
 	private Minecraft mc;

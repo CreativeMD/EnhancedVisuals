@@ -1,9 +1,7 @@
 package com.sonicjumper.enhancedvisuals;
 
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class ServerProxy {
 	public static String baseJarPath;

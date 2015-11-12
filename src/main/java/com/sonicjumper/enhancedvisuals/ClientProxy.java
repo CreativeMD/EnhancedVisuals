@@ -1,11 +1,10 @@
 package com.sonicjumper.enhancedvisuals;
 
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import com.sonicjumper.enhancedvisuals.event.VisualEventHandler;
+
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 public class ClientProxy extends ServerProxy {
 	public void registerThings(FMLPreInitializationEvent event)

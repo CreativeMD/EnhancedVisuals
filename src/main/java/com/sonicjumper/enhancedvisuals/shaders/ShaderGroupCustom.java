@@ -8,6 +8,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Iterator;
@@ -26,8 +29,6 @@ import net.minecraft.client.shader.ShaderUniform;
 import net.minecraft.client.util.JsonException;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.opengl.GL11;
@@ -141,7 +142,7 @@ public class ShaderGroupCustom
         }
         else
         {
-            JsonObject jsonobject = JsonUtils.getElementAsJsonObject(p_148027_1_, "target");
+            JsonObject jsonobject = JsonUtils.getJsonElementAsJsonObject(p_148027_1_, "target");
             String s = JsonUtils.getJsonObjectStringFieldValue(jsonobject, "name");
             int i = JsonUtils.getJsonObjectIntegerFieldValueOrDefault(jsonobject, "width", this.mainFramebufferWidth);
             int j = JsonUtils.getJsonObjectIntegerFieldValueOrDefault(jsonobject, "height", this.mainFramebufferHeight);
@@ -157,7 +158,7 @@ public class ShaderGroupCustom
 
     private void parsePass(TextureManager p_152764_1_, JsonElement p_152764_2_) throws JsonException
     {
-        JsonObject jsonobject = JsonUtils.getElementAsJsonObject(p_152764_2_, "pass");
+        JsonObject jsonobject = JsonUtils.getJsonElementAsJsonObject(p_152764_2_, "pass");
         String s = JsonUtils.getJsonObjectStringFieldValue(jsonobject, "name");
         String s1 = JsonUtils.getJsonObjectStringFieldValue(jsonobject, "intarget");
         String s2 = JsonUtils.getJsonObjectStringFieldValue(jsonobject, "outtarget");
@@ -187,7 +188,7 @@ public class ShaderGroupCustom
 
                     try
                     {
-                        JsonObject jsonobject1 = JsonUtils.getElementAsJsonObject(jsonelement1, "auxtarget");
+                        JsonObject jsonobject1 = JsonUtils.getJsonElementAsJsonObject(jsonelement1, "auxtarget");
                         String s4 = JsonUtils.getJsonObjectStringFieldValue(jsonobject1, "name");
                         String s3 = JsonUtils.getJsonObjectStringFieldValue(jsonobject1, "id");
                         Framebuffer framebuffer2 = this.getFramebuffer(s3);
@@ -265,9 +266,9 @@ public class ShaderGroupCustom
 
     private void initUniform(JsonElement p_148028_1_) throws JsonException
     {
-        JsonObject jsonobject = JsonUtils.getElementAsJsonObject(p_148028_1_, "uniform");
+        JsonObject jsonobject = JsonUtils.getJsonElementAsJsonObject(p_148028_1_, "uniform");
         String s = JsonUtils.getJsonObjectStringFieldValue(jsonobject, "name");
-        ShaderUniform shaderuniform = ((Shader)this.listShaders.get(this.listShaders.size() - 1)).getShaderManager().getShaderUniform(s);
+        ShaderUniform shaderuniform = ((Shader)this.listShaders.get(this.listShaders.size() - 1)).getShaderManager().func_147991_a(s);
 
         if (shaderuniform == null)
         {
@@ -301,16 +302,16 @@ public class ShaderGroupCustom
                 default:
                     break;
                 case 1:
-                    shaderuniform.set(afloat[0]);
+                    shaderuniform.func_148090_a(afloat[0]);
                     break;
                 case 2:
-                    shaderuniform.set(afloat[0], afloat[1]);
+                    shaderuniform.func_148087_a(afloat[0], afloat[1]);
                     break;
                 case 3:
-                    shaderuniform.set(afloat[0], afloat[1], afloat[2]);
+                    shaderuniform.func_148095_a(afloat[0], afloat[1], afloat[2]);
                     break;
                 case 4:
-                    shaderuniform.set(afloat[0], afloat[1], afloat[2], afloat[3]);
+                    shaderuniform.func_148092_b(afloat[0], afloat[1], afloat[2], afloat[3]);
             }
         }
     }

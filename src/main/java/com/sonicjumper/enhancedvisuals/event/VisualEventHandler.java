@@ -34,18 +34,13 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.potion.PotionHelper;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
-import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.input.Keyboard;
 
@@ -66,6 +61,12 @@ import com.sonicjumper.enhancedvisuals.visuals.Splat;
 import com.sonicjumper.enhancedvisuals.visuals.Visual;
 import com.sonicjumper.enhancedvisuals.visuals.VisualManager;
 import com.sonicjumper.enhancedvisuals.visuals.VisualType;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
+import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class VisualEventHandler {
 	
@@ -430,10 +431,10 @@ public class VisualEventHandler {
 				Shader s = new ShaderBlurFade(VisualType.blur, 10, Math.min(0.7F, f1)*50F);
 				Base.instance.manager.addVisualDirect(s);
 				
-				mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("sonicvisuals:heartbeatOut"), (float)player.posX, (float)player.posY, (float)player.posZ));
+				mc.getSoundHandler().playSound(PositionedSoundRecord.func_147675_a(new ResourceLocation("sonicvisuals:heartbeatOut"), (float)player.posX, (float)player.posY, (float)player.posZ));
 				//Minecraft.getMinecraft().theWorld.playSoundEffect(player.posX, player.posY, player.posZ, "sonicvisuals:heartbeatOut", 1, 1);
 			} else if(this.lowHealthBuffer == 5) {
-				mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("sonicvisuals:heartbeatIn"), (float)player.posX, (float)player.posY, (float)player.posZ));
+				mc.getSoundHandler().playSound(PositionedSoundRecord.func_147675_a(new ResourceLocation("sonicvisuals:heartbeatIn"), (float)player.posX, (float)player.posY, (float)player.posZ));
 
 				Shader s = new ShaderBlurFade(VisualType.blur, 10, 50F);
 				Base.instance.manager.addVisualDirect(s);
@@ -492,10 +493,10 @@ public class VisualEventHandler {
 	
 	private boolean isOnSand(EntityPlayer entityPlayer)
 	{
-		int posX = (int)entityPlayer.posX;
-		int posY = (int)(entityPlayer.posY - 2.0D);
-		int posZ = (int)entityPlayer.posZ;
-	    if (mc.theWorld.getBlockState(new BlockPos(posX, posY, posZ)).getBlock() == Blocks.sand && mc.theWorld.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock() == Blocks.sand) {
+		int posX = (int)MathHelper.floor_double(entityPlayer.posX);
+		int posY = (int)MathHelper.floor_double(entityPlayer.posY-2);
+		int posZ = (int)MathHelper.floor_double(entityPlayer.posZ);
+	    if (mc.theWorld.getBlock(posX, posY, posZ) == Blocks.sand || mc.theWorld.getBlock(posX, posY+1, posZ) == Blocks.sand) {
 	    	return true;
 	    }
 	    return false;
@@ -509,7 +510,7 @@ public class VisualEventHandler {
 	    double d1 = mc.thePlayer.posY;
 	    double d2 = mc.thePlayer.posZ;
 	    
-	    AxisAlignedBB box = mc.thePlayer.getEntityBoundingBox();
+	    AxisAlignedBB box = mc.thePlayer.boundingBox;
 	    box = box.expand(16, 16, 16);
 	    
 	    EntityEnderman mob = (EntityEnderman) mc.theWorld.findNearestEntityWithinAABB(EntityEnderman.class, box, mc.thePlayer);
@@ -539,12 +540,12 @@ public class VisualEventHandler {
 	
 	private void checkRecentPotions() {
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-		AxisAlignedBB axisBox = AxisAlignedBB.fromBounds(Math.floor(player.posX) - 4.5D, Math.floor(player.posY) - 5.0D, Math.floor(player.posZ) - 4.5D, Math.floor(player.posX) + 4.5D, Math.floor(player.posY) + 2.0D, Math.floor(player.posZ) + 4.5D);
+		AxisAlignedBB axisBox = AxisAlignedBB.getBoundingBox(Math.floor(player.posX) - 4.5D, Math.floor(player.posY) - 5.0D, Math.floor(player.posZ) - 4.5D, Math.floor(player.posX) + 4.5D, Math.floor(player.posY) + 2.0D, Math.floor(player.posZ) + 4.5D);
 		for (EntityPotion entityPotion : (ArrayList<EntityPotion>)Minecraft.getMinecraft().theWorld.getEntitiesWithinAABB(EntityPotion.class, axisBox)) {
 			if (entityPotion.isDead) {
 				double distance = Math.sqrt(Math.pow(Math.floor(player.posX) - entityPotion.posX, 2) + Math.pow(Math.floor(player.posY + player.eyeHeight) - entityPotion.posY, 2) + Math.pow(Math.floor(player.posZ) - entityPotion.posZ, 2));
 				double modifier = 1.0D / distance;
-				int bitColor = PotionHelper.getLiquidColor(entityPotion.getPotionDamage(), false);
+				int bitColor = PotionHelper.func_77915_a(entityPotion.getPotionDamage(), false);
 				float r = (bitColor >> 16 & 0xFF) / 255.0F;
 				float g = (bitColor >> 8 & 0xFF) / 255.0F;
 				float b = (bitColor & 0xFF) / 255.0F;
@@ -588,8 +589,8 @@ public class VisualEventHandler {
 		int prevY = (int)(entityPlayer.prevPosY + entityPlayer.getDefaultEyeHeight());
 		int prevZ = (int)Math.floor(entityPlayer.prevPosZ);
 		if (Minecraft.getMinecraft().theWorld != null) {
-			Block currentBlockEyesIn = Minecraft.getMinecraft().theWorld.getBlockState(new BlockPos(x, y, z)).getBlock();
-			Block pastBlockEyesIn = Minecraft.getMinecraft().theWorld.getBlockState(new BlockPos(prevX, prevY, prevZ)).getBlock();
+			Block currentBlockEyesIn = Minecraft.getMinecraft().theWorld.getBlock(x, y, z);
+			Block pastBlockEyesIn = Minecraft.getMinecraft().theWorld.getBlock(prevX, prevY, prevZ);
 			return (currentBlockEyesIn.equals(Blocks.flowing_water) ^ pastBlockEyesIn.equals(Blocks.flowing_water)) || (currentBlockEyesIn.equals(Blocks.water) ^ pastBlockEyesIn.equals(Blocks.water));
 		}
 		return false;
