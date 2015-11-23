@@ -364,6 +364,10 @@ public class VisualEventHandler {
 
 	public void onTickInGame() {
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+		
+		if(player == null)
+			return ;
+		
 		// Tick all visuals
 		
 		boolean hasBlurShader = false;
