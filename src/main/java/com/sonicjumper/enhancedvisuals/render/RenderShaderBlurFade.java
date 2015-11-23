@@ -10,7 +10,9 @@ import com.sonicjumper.enhancedvisuals.visuals.ShaderBlurFade;
 import com.sonicjumper.enhancedvisuals.visuals.Visual;
 
 public class RenderShaderBlurFade extends RenderShader {
-	private String RADIUS_UNIFORM = "Radius";
+	private static String RADIUS_UNIFORM = "Radius";
+	
+	public static float lastBlurRadius = 0F;
 	
 	@Override
 	protected void updateUniforms(Visual v) {
@@ -28,10 +30,31 @@ public class RenderShaderBlurFade extends RenderShader {
 					if (shaderuniform != null) {
 						Float currentBlurRadius = (float) Math.floor((v.getTranslucencyByTime() * (sbf.getMaxBlurRadius() - 1.0F)) + 1.0F);
 			        	shaderuniform.set(currentBlurRadius);
+			        	lastBlurRadius = currentBlurRadius;
 			        } else {
 			        	Base.log.warn("The Shader Uniform " + RADIUS_UNIFORM + " does not exist");
 			        }
 				}
+			}
+		}
+	}
+	
+	public static void resetBlur()
+	{
+		float currentBlurRadius = 1F;
+		ShaderGroupCustom group = Base.instance.shaderHelper.getShaderGroup();
+		// Remember that there are two shaders in this group, the vertical blur and horizontal blur, and the code must change both of their radii
+		if(group != null)
+		{
+			for(Shader mcShader : group.getShaders()) {
+				ShaderUniform shaderuniform = mcShader.getShaderManager().getShaderUniform(RADIUS_UNIFORM);
+				
+				if (shaderuniform != null) {
+		        	shaderuniform.set(currentBlurRadius);
+		        	lastBlurRadius = currentBlurRadius;
+		        } else {
+		        	Base.log.warn("The Shader Uniform " + RADIUS_UNIFORM + " does not exist");
+		        }
 			}
 		}
 	}

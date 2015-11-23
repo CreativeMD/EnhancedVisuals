@@ -57,6 +57,7 @@ import com.sonicjumper.enhancedvisuals.environment.EyeSensitivityHandler;
 import com.sonicjumper.enhancedvisuals.environment.PotionSplashHandler;
 import com.sonicjumper.enhancedvisuals.environment.TemperatureHandler;
 import com.sonicjumper.enhancedvisuals.environment.WetnessHandler;
+import com.sonicjumper.enhancedvisuals.render.RenderShaderBlurFade;
 import com.sonicjumper.enhancedvisuals.util.SplatUtil;
 import com.sonicjumper.enhancedvisuals.visuals.Blur;
 import com.sonicjumper.enhancedvisuals.visuals.BoxBlur;
@@ -363,11 +364,17 @@ public class VisualEventHandler {
 	public void onTickInGame() {
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 		// Tick all visuals
+		boolean hasBlurShader = false;
 		ArrayList<Visual> vList = Base.instance.manager.getActiveVisuals();
 		for (int i = 0; i < vList.size(); i++) {
-			Visual v = (Visual) vList.get(i);
+			Visual v = vList.get(i);
+			if(v instanceof ShaderBlurFade)
+				hasBlurShader = true;
 			v.tickUpdate();
 		}
+		if(!hasBlurShader && RenderShaderBlurFade.lastBlurRadius != 1)
+			RenderShaderBlurFade.resetBlur();
+		
 		/*// Sample health values of all entities, if an entity has lost health, then throw a damage event
 		try {
 			ArrayList<EntityLivingBase> entitiesInWorld = (ArrayList<EntityLivingBase>) Minecraft.getMinecraft().theWorld.getEntities(EntityLivingBase.class, Predicates.alwaysTrue());
