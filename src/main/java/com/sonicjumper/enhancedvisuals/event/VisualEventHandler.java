@@ -52,6 +52,7 @@ import com.sonicjumper.enhancedvisuals.environment.EyeSensitivityHandler;
 import com.sonicjumper.enhancedvisuals.environment.PotionSplashHandler;
 import com.sonicjumper.enhancedvisuals.environment.TemperatureHandler;
 import com.sonicjumper.enhancedvisuals.environment.WetnessHandler;
+import com.sonicjumper.enhancedvisuals.render.RenderShaderBlurFade;
 import com.sonicjumper.enhancedvisuals.util.SplatUtil;
 import com.sonicjumper.enhancedvisuals.visuals.Blur;
 import com.sonicjumper.enhancedvisuals.visuals.BoxBlur;
@@ -364,11 +365,18 @@ public class VisualEventHandler {
 	public void onTickInGame() {
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 		// Tick all visuals
+		
+		boolean hasBlurShader = false;
 		ArrayList<Visual> vList = Base.instance.manager.getActiveVisuals();
 		for (int i = 0; i < vList.size(); i++) {
-			Visual v = (Visual) vList.get(i);
+			Visual v = vList.get(i);
+			if(v instanceof ShaderBlurFade)
+				hasBlurShader = true;
 			v.tickUpdate();
 		}
+		
+		if(!hasBlurShader && RenderShaderBlurFade.lastBlurRadius != 1)
+			RenderShaderBlurFade.resetBlur();
 		/*// Sample health values of all entities, if an entity has lost health, then throw a damage event
 		try {
 			ArrayList<EntityLivingBase> entitiesInWorld = (ArrayList<EntityLivingBase>) Minecraft.getMinecraft().theWorld.getEntities(EntityLivingBase.class, Predicates.alwaysTrue());
@@ -430,7 +438,6 @@ public class VisualEventHandler {
 				
 				Shader s = new ShaderBlurFade(VisualType.blur, 10, Math.min(0.7F, f1)*50F);
 				Base.instance.manager.addVisualDirect(s);
-				
 				mc.getSoundHandler().playSound(PositionedSoundRecord.func_147675_a(new ResourceLocation("sonicvisuals:heartbeatOut"), (float)player.posX, (float)player.posY, (float)player.posZ));
 				//Minecraft.getMinecraft().theWorld.playSoundEffect(player.posX, player.posY, player.posZ, "sonicvisuals:heartbeatOut", 1, 1);
 			} else if(this.lowHealthBuffer == 5) {
@@ -454,6 +461,8 @@ public class VisualEventHandler {
 		
 		//Sand
 		addSandSplatFromTick();
+		
+		
 	}
 	
 	public void addSandSplatFromTick()

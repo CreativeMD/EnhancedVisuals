@@ -46,7 +46,28 @@ public class VisualRenderer {
 		if(event.phase == Phase.END) {
 			//GlStateManager.pushMatrix();
 			renderStuff(event.renderTickTime);
+			//GlStateManager.enableRescaleNormal();
 			
+			Minecraft mc = Minecraft.getMinecraft();
+			GL11.glViewport(0, 0, mc.displayWidth, mc.displayHeight);
+	        GL11.glMatrixMode(GL11.GL_PROJECTION);
+	        GL11.glLoadIdentity();
+	        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+	        GL11.glLoadIdentity();
+	        GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
+	        GL11.glMatrixMode(GL11.GL_PROJECTION);
+	        GL11.glLoadIdentity();
+	        int width = mc.displayWidth;
+	        int height = mc.displayHeight;
+	        ScaledResolution scaledresolution = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+	        width = scaledresolution.getScaledWidth();
+	        height = scaledresolution.getScaledHeight();
+	        GL11.glOrtho(0.0D, (double)width, (double)height, 0.0D, 1000.0D, 3000.0D);
+	        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+	        GL11.glLoadIdentity();
+	        GL11.glTranslatef(0.0F, 0.0F, -2000.0F);
+	        GlStateManager.enableRescaleNormal();
+			//GlStateManager.loadIdentity();
 			//GlStateManager.popAttrib();
 			//GlStateManager.popMatrix();
 		}
