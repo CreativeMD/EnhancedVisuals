@@ -27,7 +27,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class Base {
 	public static final String MODID = "sonicvisuals";
 	public static final String MODNAME = "Enhanced Visuals";
-	public static final String MODVER = "0.4";
+	public static final String MODVER = "0.3";
 	
 	@Instance(value = Base.MODID)
 	public static Base instance;
