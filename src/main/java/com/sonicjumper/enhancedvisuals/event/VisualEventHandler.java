@@ -199,9 +199,10 @@ public class VisualEventHandler {
 		}
 	}*/
 	
+	
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
-	public void onPlayerDamage(LivingAttackEvent event)
+	public void onPlayerDamage(LivingHurtEvent event)
 	{
 		if(event.entity instanceof EntityPlayer)
 		{
@@ -209,6 +210,110 @@ public class VisualEventHandler {
 		}
 	}
 	
+	
+	
+	@SubscribeEvent
+	private void entityDamaged(EntityLivingBase entity, DamageSource source, float damage) {
+		//Base.log.info("Damage amount:" + damage + " called for entity " + entity.toString());
+		/*for(Point2D point : SplatUtil.generateRandomSplatStreak(25)) {
+			Splat s = new Splat(VisualType.splatter, 200, Color.WHITE, (float) point.getX(), (float) point.getY());
+			Base.instance.manager.addVisualDirect(s);
+		}*/
+		if(source == DamageSource.outOfWorld)
+			return ;
+		// Check distance to player and use that as splat distance pattern
+		double distanceSq = Minecraft.getMinecraft().thePlayer.getDistanceSqToEntity(entity);
+		if(distanceSq > 64.0D) {
+			return;
+		}
+		if(entity instanceof EntityPlayer)
+		{
+			Entity attacker = source.getSourceOfDamage();
+			if(attacker instanceof EntityLivingBase) {
+				EntityLivingBase lastAttacker = (EntityLivingBase) attacker;
+				// Check weapons
+				if(lastAttacker.getHeldItem() != null) {
+					if(isSharp(lastAttacker.getHeldItem().getItem())) {
+						Base.instance.manager.createVisualFromDamageAndDistance(VisualType.slash, damage, entity, distanceSq);
+					} else if(isBlunt(lastAttacker.getHeldItem().getItem())) {
+						Base.instance.manager.createVisualFromDamageAndDistance(VisualType.impact, damage, entity, distanceSq);
+					} else if(isPierce(lastAttacker.getHeldItem().getItem())) {
+						Base.instance.manager.createVisualFromDamageAndDistance(VisualType.pierce, damage, entity, distanceSq);
+					} else {
+						// Default to splatter type
+						Base.instance.manager.createVisualFromDamageAndDistance(VisualType.splatter, damage, entity, distanceSq);
+					}
+				} else {
+					if(source.getEntity() != null && source.getEntity() instanceof EntityArrow) {
+						Base.instance.manager.createVisualFromDamage(VisualType.pierce, damage, entity);
+					}
+					// If player received fall damage
+					
+					
+					if(lastAttacker instanceof EntityZombie || lastAttacker instanceof EntitySkeleton || lastAttacker instanceof EntityOcelot) {
+						Base.instance.manager.createVisualFromDamageAndDistance(VisualType.slash, damage, entity, distanceSq);
+					} else if(lastAttacker instanceof EntityGolem || lastAttacker instanceof EntityPlayer) {
+						Base.instance.manager.createVisualFromDamageAndDistance(VisualType.impact, damage, entity, distanceSq);
+					} else if(lastAttacker instanceof EntityWolf || lastAttacker instanceof EntitySpider) {
+						Base.instance.manager.createVisualFromDamageAndDistance(VisualType.pierce, damage, entity, distanceSq);
+					}
+
+					
+				}
+			}
+			
+			if(source == DamageSource.cactus) {
+				Base.instance.manager.createVisualFromDamage(VisualType.pierce, damage, entity);
+			}
+			
+			
+			if(source.isExplosion()) {
+				if(source.getSourceOfDamage() != null && source.getSourceOfDamage().getDistanceToEntity(mc.thePlayer) < 16.0D) {
+					Base.instance.manager.createVisualFromDamageAndDistance(VisualType.dust, damage, entity, source.getSourceOfDamage().getDistanceSqToEntity(mc.thePlayer));
+					Blur b = new BoxBlur(VisualType.blur, (int) (damage * 10), new Color(1.0F, 1.0F, 1.0F, 0.8F), true, ConfigCore.blurQuality, 10, 1);
+					Base.instance.manager.addVisualDirect(b);
+				} else {
+					Base.instance.manager.createVisualFromDamage(VisualType.dust, damage, entity);
+					Blur b = new BoxBlur(VisualType.blur, (int) (damage * 10), new Color(1.0F, 1.0F, 1.0F, 0.8F), true, ConfigCore.blurQuality, 10, 1);
+					Base.instance.manager.addVisualDirect(b);
+				}
+			}
+			
+			
+			
+			if(source.equals(DamageSource.drown)) {
+				Base.instance.manager.addRandomNumVisualsWithColor(VisualType.waterS, 4, 8, (int) (damage * 10), (int) (damage * 15), new Color(1.0F, 1.0F, 1.0F, 1.0F));
+			}
+			
+			
+			
+			if(source.isFireDamage() || source == DamageSource.onFire)
+			{
+				Base.instance.manager.addVisualsWithShading(VisualType.fire, (int) damage, 100, 1000, new Color(1, 1, 1));
+		      //if (event.source.n() == "lava") {
+		        //burnOverlay = new Overlay(Overlay.OverlayType.Burn, 0.5F, 25 + rand.nextInt(25));
+		      //}
+			}
+			
+			if (source == DamageSource.lava){
+				Base.instance.manager.addVisualsWithShading(VisualType.lavaO, 1, (int) (100), (int) (200), new Color(1.0F, 1.0F, 1.0F, 1.0F));
+			}	
+			
+			if (source != DamageSource.lava && source != null){
+				Base.instance.manager.addVisualsWithShading(VisualType.damaged, 1, (int) (damage * 5), (int) (damage * 10), new Color(1.0F, 1.0F, 1.0F, 1.0F));
+			}
+			
+		}else{
+			if(mc.thePlayer.isBurning())
+				Base.instance.manager.addVisualsWithShading(VisualType.fire, (int) damage, 100, 1000, new Color(1, 1, 1));
+			
+			// For now, just assume damage was another source(falling, drowning, cactus, etc.) and use splatter
+			if(source.getDamageType().equals("mob") || source.getDamageType().equals("player")) 
+				if(source.getEntity().getDistanceToEntity(mc.thePlayer) < 8.0D)
+					Base.instance.manager.createVisualFromDamageAndDistance(VisualType.splatter, damage, entity, distanceSq);
+		}
+	}
+
 	/*@SubscribeEvent
 	public void onEntityReceiveDamage(LivingHurtEvent e) {
 		EntityLivingBase entity = e.entityLiving;
@@ -265,102 +370,6 @@ public class VisualEventHandler {
 		//TODO See if this event fires on multiplayer explosions. If it does, then use this for explosion dust control
 	}*/
 
-	private void entityDamaged(EntityLivingBase entity, DamageSource source, float damage) {
-		//Base.log.info("Damage amount:" + damage + " called for entity " + entity.toString());
-		/*for(Point2D point : SplatUtil.generateRandomSplatStreak(25)) {
-			Splat s = new Splat(VisualType.splatter, 200, Color.WHITE, (float) point.getX(), (float) point.getY());
-			Base.instance.manager.addVisualDirect(s);
-		}*/
-		if(source == DamageSource.outOfWorld)
-			return ;
-		// Check distance to player and use that as splat distance pattern
-		double distanceSq = Minecraft.getMinecraft().thePlayer.getDistanceSqToEntity(entity);
-		if(distanceSq > 64.0D) {
-			return;
-		}
-		if(entity instanceof EntityPlayer)
-		{
-			Entity attacker = source.getSourceOfDamage();
-			if(attacker instanceof EntityLivingBase) {
-				EntityLivingBase lastAttacker = (EntityLivingBase) attacker;
-				// Check weapons
-				if(lastAttacker.getHeldItem() != null) {
-					if(isSharp(lastAttacker.getHeldItem().getItem())) {
-						Base.instance.manager.createVisualFromDamageAndDistance(VisualType.slash, damage, entity, distanceSq);
-					} else if(isBlunt(lastAttacker.getHeldItem().getItem())) {
-						Base.instance.manager.createVisualFromDamageAndDistance(VisualType.impact, damage, entity, distanceSq);
-					} else if(isPierce(lastAttacker.getHeldItem().getItem())) {
-						Base.instance.manager.createVisualFromDamageAndDistance(VisualType.pierce, damage, entity, distanceSq);
-					} else {
-						// Default to splatter type
-						Base.instance.manager.createVisualFromDamageAndDistance(VisualType.splatter, damage, entity, distanceSq);
-					}
-				} else {
-					if(source.getEntity() != null && source.getEntity() instanceof EntityArrow) {
-						Base.instance.manager.createVisualFromDamage(VisualType.pierce, damage, entity);
-					}
-					// If player received fall damage
-					
-					
-					if(lastAttacker instanceof EntityZombie || lastAttacker instanceof EntitySkeleton || lastAttacker instanceof EntityOcelot) {
-						Base.instance.manager.createVisualFromDamageAndDistance(VisualType.slash, damage, entity, distanceSq);
-					} else if(lastAttacker instanceof EntityGolem || lastAttacker instanceof EntityPlayer) {
-						Base.instance.manager.createVisualFromDamageAndDistance(VisualType.impact, damage, entity, distanceSq);
-					} else if(lastAttacker instanceof EntityWolf || lastAttacker instanceof EntitySpider) {
-						Base.instance.manager.createVisualFromDamageAndDistance(VisualType.pierce, damage, entity, distanceSq);
-					}
-
-					
-				}
-			}
-			
-			if(source == DamageSource.cactus) {
-				Base.instance.manager.createVisualFromDamage(VisualType.pierce, damage, entity);
-			}
-			
-			if(source == DamageSource.fall || source == DamageSource.fallingBlock) {
-				Base.instance.manager.createVisualFromDamage(VisualType.impact, damage, entity);
-			}
-			
-			if(source.isExplosion()) {
-				if(source.getSourceOfDamage() != null && source.getSourceOfDamage().getDistanceToEntity(mc.thePlayer) < 16.0D) {
-					Base.instance.manager.createVisualFromDamageAndDistance(VisualType.dust, damage, entity, source.getSourceOfDamage().getDistanceSqToEntity(mc.thePlayer));
-					Blur b = new BoxBlur(VisualType.blur, (int) (damage * 10), new Color(1.0F, 1.0F, 1.0F, 0.8F), true, ConfigCore.blurQuality, 10, 1);
-					Base.instance.manager.addVisualDirect(b);
-				} else {
-					Base.instance.manager.createVisualFromDamage(VisualType.dust, damage, entity);
-					Blur b = new BoxBlur(VisualType.blur, (int) (damage * 10), new Color(1.0F, 1.0F, 1.0F, 0.8F), true, ConfigCore.blurQuality, 10, 1);
-					Base.instance.manager.addVisualDirect(b);
-				}
-			}
-			
-			
-			
-			if(source.equals(DamageSource.drown)) {
-				Base.instance.manager.addRandomNumVisualsWithColor(VisualType.waterS, 4, 8, (int) (damage * 10), (int) (damage * 15), new Color(1.0F, 1.0F, 1.0F, 1.0F));
-			}
-			
-			
-			
-			if(source.isFireDamage() || source == DamageSource.onFire)
-			{
-				Base.instance.manager.addVisualsWithShading(VisualType.fire, (int) damage, 100, 1000, new Color(1, 1, 1));
-		      //if (event.source.n() == "lava") {
-		        //burnOverlay = new Overlay(Overlay.OverlayType.Burn, 0.5F, 25 + rand.nextInt(25));
-		      //}
-			}
-			
-		}else{
-			if(mc.thePlayer.isBurning())
-				Base.instance.manager.addVisualsWithShading(VisualType.fire, (int) damage, 100, 1000, new Color(1, 1, 1));
-			
-			// For now, just assume damage was another source(falling, drowning, cactus, etc.) and use splatter
-			if(source == DamageSource.anvil || source == DamageSource.fall || source == DamageSource.fallingBlock
-					|| source.getDamageType().equals("mob") || source.getDamageType().equals("player")) 
-				if(source.getEntity().getDistanceToEntity(mc.thePlayer) < 8.0D)
-					Base.instance.manager.createVisualFromDamageAndDistance(VisualType.splatter, damage, entity, distanceSq);
-		}
-	}
 
 	public void onTickInGame() {
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
@@ -432,10 +441,10 @@ public class VisualEventHandler {
 			}
 		}
 		
-		// Check if player has less than three hearts, then play heartbeat sound and flash lowhealth screen
-		if (player.getHealth() <= 6.0F) {
+		// Check if player's health is equal to or less than heartbeatStartHealth, then play heartbeat sound and flash lowhealth screen
+		if (player.getHealth() <= ConfigCore.heartbeatStartHealth) {
 			if(this.lowHealthBuffer <= 0) {
-				float f1 = (7.0F - player.getHealth()) * 0.2F;
+				float f1 = ( (ConfigCore.heartbeatStartHealth + 1) - player.getHealth()) * 0.2F;
 				//Base.instance.manager.addVisualsWithShading(VisualType.lowhealth, 1, (int)(6.0F * (6.0F - player.getHealth())), (int)(10.0F * (6.0F - player.getHealth())), new Color(1.0F, 1.0F, 1.0F, f1 <= 1.0F ? f1 : 1.0F));
 				this.lowHealthBuffer = (int) (player.getHealth() * 10 + 15);
 				Base.instance.manager.addVisualsWithShading(VisualType.lowhealth, 1, this.lowHealthBuffer - 5, this.lowHealthBuffer - 5, new Color(1.0F, 1.0F, 1.0F, Math.min(0.7F, f1)));
@@ -568,15 +577,20 @@ public class VisualEventHandler {
 		}
 	}
 
-	/*private VisualType getOverlayFromSource(DamageSource ds) {
+	private VisualType getOverlayFromSource(DamageSource ds) {
 		if (ds.equals(DamageSource.lava)) {
 			return VisualType.lavaO;
 		}
-		if ((ds.equals(DamageSource.cactus)) || (ds.equals(DamageSource.drown)) || (ds.equals(DamageSource.fall)) || (ds.equals(DamageSource.generic)) || (ds.getDamageType().equals("mob")) || (ds.getDamageType().equals("player"))) {
+		if ((ds.equals(DamageSource.cactus)) || (ds.equals(DamageSource.generic)) || (ds.getDamageType().equals("mob")) || (ds.getDamageType().equals("player"))) {
 			return VisualType.damaged;
 		}
+		
+		    if(ds.equals(DamageSource.drown))
+        {
+            return VisualType.waterO;
+        }
 		return null;
-	}*/
+	}
 
 	private boolean isSharp(Item item)
 	{

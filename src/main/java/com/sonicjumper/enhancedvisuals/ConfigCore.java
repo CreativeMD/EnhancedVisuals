@@ -12,6 +12,7 @@ public class ConfigCore {
 	public static boolean shouldRenderBlur;
 	public static boolean useTrueGlow;
 	public static float blurQuality;
+	public static float heartbeatStartHealth;
 
 	public ConfigCore(File configFile)
 	{
@@ -29,6 +30,7 @@ public class ConfigCore {
 		useTrueGlow = this.config.get("general", "True Glow Flag", false, "Enable this to have better glows").getBoolean(false);
 
 		blurQuality = (float)this.config.get("general", "Blur Quality", 0.25D, "Increase only if you think your computer can handle it. Decrease if you want to keep blurs, but are having lag.").getDouble(0.25D);
+		heartbeatStartHealth=(float)this.config.get("options", "Heartbeat Start Health", 6.0D, "The amount of health at which the low health warning is enabled. Each point is half a heart.").getDouble(6.0D);
 
 		this.config.save();
 	}
