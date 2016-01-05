@@ -300,7 +300,7 @@ public class VisualEventHandler {
 			}	
 			
 			if (source != DamageSource.lava && source != null){
-				Base.instance.manager.addVisualsWithShading(VisualType.damaged, 1, (int) (damage * 5), (int) (damage * 10), new Color(1.0F, 1.0F, 1.0F, 1.0F));
+				Base.instance.manager.addVisualsWithShading(VisualType.damaged, 1, (int) (damage * 5), (int) (damage * 10), new Color(1.0F, 1.0F, 1.0F, 0.5F));
 			}
 			
 		}else{
