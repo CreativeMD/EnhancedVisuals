@@ -1,14 +1,12 @@
 package com.sonicjumper.enhancedvisuals.render;
 
-import org.lwjgl.opengl.GL11;
-
 import com.sonicjumper.enhancedvisuals.visuals.Animation;
 import com.sonicjumper.enhancedvisuals.visuals.Visual;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 
 public class RenderAnimation extends RenderVisual {
@@ -27,7 +25,7 @@ public class RenderAnimation extends RenderVisual {
 				if(index >= 0 && index < v.getType().resourceArray.length)
 					Minecraft.getMinecraft().getTextureManager().bindTexture(v.getType().resourceArray[index]);
 				Tessellator tessellator = Tessellator.getInstance();
-				WorldRenderer renderer = tessellator.getWorldRenderer();
+				VertexBuffer renderer = tessellator.getBuffer();
 				//Base.log.info("Width/Height: " + Minecraft.getMinecraft().displayWidth + "/" + Minecraft.getMinecraft().displayHeight + "; Scaled Width/Height: " + scaledRes.getScaledWidth() + "/" + scaledRes.getScaledHeight());
 				float red = v.getColor().getRed() / 255.0F;
 				float green = v.getColor().getGreen() / 255.0F;

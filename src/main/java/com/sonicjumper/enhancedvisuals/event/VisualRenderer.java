@@ -3,19 +3,13 @@ package com.sonicjumper.enhancedvisuals.event;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.lwjgl.opengl.GL11;
-
 import com.sonicjumper.enhancedvisuals.Base;
 import com.sonicjumper.enhancedvisuals.render.RenderVisual;
-import com.sonicjumper.enhancedvisuals.visuals.Shader;
 import com.sonicjumper.enhancedvisuals.visuals.Visual;
-import com.sonicjumper.enhancedvisuals.visuals.VisualManager;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -34,7 +28,7 @@ public class VisualRenderer {
 	
 	@SubscribeEvent
 	public void onRenderTick(RenderGameOverlayEvent event) {
-		if(event.type == ElementType.HOTBAR && event.isCancelable()) {
+		if(event.getType() == ElementType.HOTBAR && event.isCancelable()) {
 			//renderStuff(event.partialTicks);
 		}
 	}

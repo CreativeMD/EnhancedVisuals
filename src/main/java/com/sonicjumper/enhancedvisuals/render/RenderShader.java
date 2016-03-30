@@ -1,18 +1,7 @@
 package com.sonicjumper.enhancedvisuals.render;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL21;
-import org.lwjgl.opengl.GL30;
-import org.lwjgl.opengl.GL31;
-
 import com.sonicjumper.enhancedvisuals.Base;
 import com.sonicjumper.enhancedvisuals.shaders.ShaderHelper;
-import com.sonicjumper.enhancedvisuals.visuals.Shader;
 import com.sonicjumper.enhancedvisuals.visuals.Visual;
 
 public abstract class RenderShader extends RenderVisual {

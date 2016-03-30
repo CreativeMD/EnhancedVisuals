@@ -1,19 +1,17 @@
 package com.sonicjumper.enhancedvisuals.environment;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.sonicjumper.enhancedvisuals.Base;
 import com.sonicjumper.enhancedvisuals.event.VisualEventHandler;
 import com.sonicjumper.enhancedvisuals.util.EntityUtil;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 
 public class TemperatureHandler extends BaseEnvironmentEffect {
 	private float temperature;
@@ -25,7 +23,7 @@ public class TemperatureHandler extends BaseEnvironmentEffect {
 		factors.add(new TemperatureFactor() {
 			@Override
 			public boolean runFactor() {
-				float currentWorldTemp = parent.mc.theWorld.getBiomeGenForCoords(new BlockPos((int)Math.floor(parent.mc.thePlayer.posX), 0, (int)Math.floor(parent.mc.thePlayer.posZ))).temperature;
+				float currentWorldTemp = parent.mc.theWorld.getBiomeGenForCoords(new BlockPos((int)Math.floor(parent.mc.thePlayer.posX), 0, (int)Math.floor(parent.mc.thePlayer.posZ))).getTemperature();
 				factor = currentWorldTemp + (parent.mc.thePlayer.isBurning() ? 4.0F : 0.0F) - parent.wetnessHandler.getWetness() * (parent.mc.thePlayer.isSprinting() ? 4.0F : 1.0F);
 				//System.out.println("World temp factor: " + factor);
 				return true;
@@ -41,8 +39,9 @@ public class TemperatureHandler extends BaseEnvironmentEffect {
 			public boolean runFactor() {
 				factor = 0.0F;
 				int leatherCount = 0;
-				for (int j = 0; j < 4; ++j) {
-	                ItemStack wornItem = parent.mc.thePlayer.getCurrentArmor(j);
+				Iterable<ItemStack> stacks = parent.mc.thePlayer.getArmorInventoryList();
+				for (Iterator iterator = stacks.iterator(); iterator.hasNext();) {
+					ItemStack wornItem = (ItemStack) iterator.next();
 	                if(wornItem != null && wornItem.getItem() instanceof ItemArmor) {
 	                	ItemArmor armor = (ItemArmor) wornItem.getItem();
 	                	if(armor.getArmorMaterial().equals(ArmorMaterial.LEATHER)) {

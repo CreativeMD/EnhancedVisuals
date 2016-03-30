@@ -1,24 +1,29 @@
 package com.sonicjumper.enhancedvisuals.event;
 
 import java.awt.Color;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Random;
+
+import com.sonicjumper.enhancedvisuals.Base;
+import com.sonicjumper.enhancedvisuals.ConfigCore;
+import com.sonicjumper.enhancedvisuals.environment.BaseEnvironmentEffect;
+import com.sonicjumper.enhancedvisuals.environment.EyeSensitivityHandler;
+import com.sonicjumper.enhancedvisuals.environment.PotionSplashHandler;
+import com.sonicjumper.enhancedvisuals.environment.TemperatureHandler;
+import com.sonicjumper.enhancedvisuals.environment.WetnessHandler;
+import com.sonicjumper.enhancedvisuals.render.RenderShaderBlurFade;
+import com.sonicjumper.enhancedvisuals.visuals.Blur;
+import com.sonicjumper.enhancedvisuals.visuals.BoxBlur;
+import com.sonicjumper.enhancedvisuals.visuals.Shader;
+import com.sonicjumper.enhancedvisuals.visuals.ShaderBlurFade;
+import com.sonicjumper.enhancedvisuals.visuals.Visual;
+import com.sonicjumper.enhancedvisuals.visuals.VisualType;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSound;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntityGolem;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -33,40 +38,21 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.potion.PotionHelper;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.potion.PotionType;
+import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.lwjgl.input.Keyboard;
-
-import com.google.common.base.Predicates;
-import com.sonicjumper.enhancedvisuals.Base;
-import com.sonicjumper.enhancedvisuals.ConfigCore;
-import com.sonicjumper.enhancedvisuals.environment.BaseEnvironmentEffect;
-import com.sonicjumper.enhancedvisuals.environment.EyeSensitivityHandler;
-import com.sonicjumper.enhancedvisuals.environment.PotionSplashHandler;
-import com.sonicjumper.enhancedvisuals.environment.TemperatureHandler;
-import com.sonicjumper.enhancedvisuals.environment.WetnessHandler;
-import com.sonicjumper.enhancedvisuals.render.RenderShaderBlurFade;
-import com.sonicjumper.enhancedvisuals.util.SplatUtil;
-import com.sonicjumper.enhancedvisuals.visuals.Blur;
-import com.sonicjumper.enhancedvisuals.visuals.BoxBlur;
-import com.sonicjumper.enhancedvisuals.visuals.Shader;
-import com.sonicjumper.enhancedvisuals.visuals.ShaderBlurFade;
-import com.sonicjumper.enhancedvisuals.visuals.Splat;
-import com.sonicjumper.enhancedvisuals.visuals.Visual;
-import com.sonicjumper.enhancedvisuals.visuals.VisualManager;
-import com.sonicjumper.enhancedvisuals.visuals.VisualType;
 
 public class VisualEventHandler {
 	
@@ -202,9 +188,9 @@ public class VisualEventHandler {
 	@SubscribeEvent
 	public void onPlayerDamage(LivingAttackEvent event)
 	{
-		if(event.entity instanceof EntityPlayer)
+		if(event.getEntity() instanceof EntityPlayer)
 		{
-			entityDamaged(event.entityLiving, event.source, event.ammount);
+			entityDamaged(event.getEntityLiving(), event.getSource(), event.getAmount());
 		}
 	}
 	
@@ -243,7 +229,7 @@ public class VisualEventHandler {
 
 	@SubscribeEvent
 	public void onPlayerDeath(LivingDeathEvent e) {
-		if(e.entityLiving.equals(mc.thePlayer)) {
+		if(e.getEntityLiving().equals(mc.thePlayer)) {
 			Base.instance.manager.clearAllVisuals();
 			//this.playerWetness = 0.5F;
 			//this.playerTemp = 1.0F;
@@ -286,12 +272,12 @@ public class VisualEventHandler {
 			if(attacker instanceof EntityLivingBase) {
 				EntityLivingBase lastAttacker = (EntityLivingBase) attacker;
 				// Check weapons
-				if(lastAttacker.getHeldItem() != null) {
-					if(isSharp(lastAttacker.getHeldItem().getItem())) {
+				if(lastAttacker.getHeldItemMainhand() != null) {
+					if(isSharp(lastAttacker.getHeldItemMainhand().getItem())) {
 						Base.instance.manager.createVisualFromDamageAndDistance(VisualType.slash, damage, entity, distanceSq);
-					} else if(isBlunt(lastAttacker.getHeldItem().getItem())) {
+					} else if(isBlunt(lastAttacker.getHeldItemMainhand().getItem())) {
 						Base.instance.manager.createVisualFromDamageAndDistance(VisualType.impact, damage, entity, distanceSq);
-					} else if(isPierce(lastAttacker.getHeldItem().getItem())) {
+					} else if(isPierce(lastAttacker.getHeldItemMainhand().getItem())) {
 						Base.instance.manager.createVisualFromDamageAndDistance(VisualType.pierce, damage, entity, distanceSq);
 					} else {
 						// Default to splatter type
@@ -443,10 +429,10 @@ public class VisualEventHandler {
 				Shader s = new ShaderBlurFade(VisualType.blur, 10, Math.min(0.7F, f1)*50F);
 				Base.instance.manager.addVisualDirect(s);
 				
-				mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("sonicvisuals:heartbeatOut"), (float)player.posX, (float)player.posY, (float)player.posZ));
+				mc.getSoundHandler().playSound(new PositionedSoundRecord(new SoundEvent(new ResourceLocation("sonicvisuals:heartbeatOut")), SoundCategory.MASTER, 1, 1, new BlockPos(player)));
 				//Minecraft.getMinecraft().theWorld.playSoundEffect(player.posX, player.posY, player.posZ, "sonicvisuals:heartbeatOut", 1, 1);
 			} else if(this.lowHealthBuffer == 5) {
-				mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("sonicvisuals:heartbeatIn"), (float)player.posX, (float)player.posY, (float)player.posZ));
+				mc.getSoundHandler().playSound(new PositionedSoundRecord(new SoundEvent(new ResourceLocation("sonicvisuals:heartbeatIn")), SoundCategory.MASTER, 1, 1, new BlockPos(player)));
 
 				Shader s = new ShaderBlurFade(VisualType.blur, 10, 50F);
 				Base.instance.manager.addVisualDirect(s);
@@ -552,12 +538,12 @@ public class VisualEventHandler {
 	
 	private void checkRecentPotions() {
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-		AxisAlignedBB axisBox = AxisAlignedBB.fromBounds(Math.floor(player.posX) - 4.5D, Math.floor(player.posY) - 5.0D, Math.floor(player.posZ) - 4.5D, Math.floor(player.posX) + 4.5D, Math.floor(player.posY) + 2.0D, Math.floor(player.posZ) + 4.5D);
+		AxisAlignedBB axisBox = new AxisAlignedBB(Math.floor(player.posX) - 4.5D, Math.floor(player.posY) - 5.0D, Math.floor(player.posZ) - 4.5D, Math.floor(player.posX) + 4.5D, Math.floor(player.posY) + 2.0D, Math.floor(player.posZ) + 4.5D);
 		for (EntityPotion entityPotion : (ArrayList<EntityPotion>)Minecraft.getMinecraft().theWorld.getEntitiesWithinAABB(EntityPotion.class, axisBox)) {
 			if (entityPotion.isDead) {
 				double distance = Math.sqrt(Math.pow(Math.floor(player.posX) - entityPotion.posX, 2) + Math.pow(Math.floor(player.posY + player.eyeHeight) - entityPotion.posY, 2) + Math.pow(Math.floor(player.posZ) - entityPotion.posZ, 2));
 				double modifier = 1.0D / distance;
-				int bitColor = PotionHelper.getLiquidColor(entityPotion.getPotionDamage(), false);
+				int bitColor = PotionUtils.getPotionColor(PotionUtils.getPotionFromItem(entityPotion.getPotion()));
 				float r = (bitColor >> 16 & 0xFF) / 255.0F;
 				float g = (bitColor >> 8 & 0xFF) / 255.0F;
 				float b = (bitColor & 0xFF) / 255.0F;

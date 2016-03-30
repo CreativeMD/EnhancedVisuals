@@ -32,7 +32,7 @@ public class VisualManager {
 		slenderOverlay = new Animation(VisualType.slender, -1, new Color(1.0F, 1.0F, 1.0F), 100);
 		//blur = new ShaderBlurFade(VisualType.blur, -1, 0);
 		
-		permVisuals.add(heatOverlay);
+		//permVisuals.add(heatOverlay);
 		permVisuals.add(iceOverlay);
 		permVisuals.add(wetOverlay);
 		permVisuals.add(slenderOverlay);

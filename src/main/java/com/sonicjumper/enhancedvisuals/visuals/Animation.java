@@ -23,6 +23,11 @@ public class Animation extends Visual {
 	}
 	
 	@Override
+	public float getTranslucencyByTime() {
+		return intensity;
+	}
+	
+	@Override
 	public RenderVisual getRenderer()
 	{
 		return Base.instance.renderer.getRendererForClass(RenderAnimation.class);

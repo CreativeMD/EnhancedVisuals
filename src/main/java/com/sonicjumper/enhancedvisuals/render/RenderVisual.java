@@ -1,17 +1,14 @@
 package com.sonicjumper.enhancedvisuals.render;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiKeyBindingList;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-
 import org.lwjgl.opengl.GL11;
 
-import com.sonicjumper.enhancedvisuals.Base;
 import com.sonicjumper.enhancedvisuals.visuals.Visual;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 
 public class RenderVisual {
 	public void renderVisual(Visual v, float partialTicks) {
@@ -22,7 +19,7 @@ public class RenderVisual {
 		//GL11.glColor4f(v.getColor().getRed() / 255.0F, v.getColor().getGreen() / 255.0F, v.getColor().getGreen() / 255.0F, v.getTranslucencyByTime());
 		Minecraft.getMinecraft().getTextureManager().bindTexture(v.getResource());
 		Tessellator tessellator = Tessellator.getInstance();
-		WorldRenderer renderer = tessellator.getWorldRenderer();
+		VertexBuffer renderer = tessellator.getBuffer();
 		//Base.log.info("X: " + v.getXOffset() + "; Y: " + v.getYOffset() + "; Width: " + v.getWidth() + "; Height: " + v.getHeight());
 		//GlStateManager.rotate(90, 0, 0, 1);
 		

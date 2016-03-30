@@ -1,15 +1,12 @@
 package com.sonicjumper.enhancedvisuals.render;
 
+import com.sonicjumper.enhancedvisuals.visuals.Visual;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-
-import org.lwjgl.opengl.GL11;
-
-import com.sonicjumper.enhancedvisuals.Base;
-import com.sonicjumper.enhancedvisuals.visuals.Visual;
 
 public class RenderOverlay extends RenderVisual {
 	
@@ -19,7 +16,7 @@ public class RenderOverlay extends RenderVisual {
 		//GL11.glColor4f(v.getColor().getRed() / 255.0F, v.getColor().getGreen() / 255.0F, v.getColor().getGreen() / 255.0F, v.getTranslucencyByTime());
 		Minecraft.getMinecraft().getTextureManager().bindTexture(v.getResource());
 		Tessellator tessellator = Tessellator.getInstance();
-		WorldRenderer renderer = tessellator.getWorldRenderer();
+		VertexBuffer renderer = tessellator.getBuffer();
 		//Base.log.info("Width/Height: " + Minecraft.getMinecraft().displayWidth + "/" + Minecraft.getMinecraft().displayHeight + "; Scaled Width/Height: " + scaledRes.getScaledWidth() + "/" + scaledRes.getScaledHeight());
 		
 		float red = v.getColor().getRed() / 255.0F;
