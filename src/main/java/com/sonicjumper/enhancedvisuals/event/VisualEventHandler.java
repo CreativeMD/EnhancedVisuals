@@ -280,6 +280,9 @@ public class VisualEventHandler {
 		if(entity instanceof EntityPlayer)
 		{
 			Entity attacker = source.getSourceOfDamage();
+			if(attacker instanceof EntityArrow) {
+				Base.instance.manager.createVisualFromDamage(VisualType.pierce, damage, entity);
+			}
 			if(attacker instanceof EntityLivingBase) {
 				EntityLivingBase lastAttacker = (EntityLivingBase) attacker;
 				// Check weapons
@@ -295,9 +298,7 @@ public class VisualEventHandler {
 						Base.instance.manager.createVisualFromDamageAndDistance(VisualType.splatter, damage, entity, distanceSq);
 					}
 				} else {
-					if(source.getEntity() != null && source.getEntity() instanceof EntityArrow) {
-						Base.instance.manager.createVisualFromDamage(VisualType.pierce, damage, entity);
-					}
+					
 					// If player received fall damage
 					
 					
@@ -376,7 +377,8 @@ public class VisualEventHandler {
 				hasBlurShader = true;
 			v.tickUpdate();
 		}
-		if(!hasBlurShader && RenderShaderBlurFade.lastBlurRadius != 1)
+		//RenderShaderBlurFade.resetBlur();
+		if(!hasBlurShader && RenderShaderBlurFade.lastBlurRadius != 0)
 			RenderShaderBlurFade.resetBlur();
 		
 		/*// Sample health values of all entities, if an entity has lost health, then throw a damage event

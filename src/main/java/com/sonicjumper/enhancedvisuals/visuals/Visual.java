@@ -50,7 +50,7 @@ public class Visual {
 		this.rotation = (float) (Math.random()*360F);
 		this.color = rgba;
 		if(type.getCatagory().equals(VisualCatagory.Splat)) {
-			ScaledResolution scaledRes = new ScaledResolution(Minecraft.getMinecraft(), Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
+			ScaledResolution scaledRes = new ScaledResolution(Minecraft.getMinecraft());
 			this.xOffset = generateOffset(scaledRes.getScaledWidth(), this.width);
 			this.yOffset = generateOffset(scaledRes.getScaledHeight(), this.height);
 		} else {
@@ -61,7 +61,7 @@ public class Visual {
 	
 	public Visual(VisualType type, int lifeTime, Color rgba, float xOffset, float yOffset) {
 		this(type, lifeTime, rgba);
-		ScaledResolution scaledRes = new ScaledResolution(Minecraft.getMinecraft(), Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
+		ScaledResolution scaledRes = new ScaledResolution(Minecraft.getMinecraft());
 		this.xOffset = xOffset * scaledRes.getScaledWidth() - width / 2.0F;
 		this.yOffset = yOffset * scaledRes.getScaledHeight() - height / 2.0F;
 	}

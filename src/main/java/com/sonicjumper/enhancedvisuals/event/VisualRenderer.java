@@ -108,7 +108,7 @@ public class VisualRenderer {
 	}
 	
 	public void setupOverlayRendering() {
-        ScaledResolution scaledresolution = new ScaledResolution(Minecraft.getMinecraft(), Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
+        ScaledResolution scaledresolution = new ScaledResolution(Minecraft.getMinecraft());
         GlStateManager.clear(256);
         GlStateManager.matrixMode(5889);
         GlStateManager.loadIdentity();
