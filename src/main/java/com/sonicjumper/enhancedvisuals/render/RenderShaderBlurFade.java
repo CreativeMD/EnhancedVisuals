@@ -17,8 +17,8 @@ public class RenderShaderBlurFade extends RenderShader {
 	@Override
 	protected void updateUniforms(Visual v) {
 		ShaderBlurFade sbf = (ShaderBlurFade) v;
-		if(sbf.getMaxBlurRadius() > 0)
-		{
+		//if(sbf.getMaxBlurRadius() > 0)
+		//{
 			// Update blur radius based on ticks remaining in the Visual
 			ShaderGroupCustom group = shaderHelper.getShaderGroup();
 			// Remember that there are two shaders in this group, the vertical blur and horizontal blur, and the code must change both of their radii
@@ -36,12 +36,12 @@ public class RenderShaderBlurFade extends RenderShader {
 			        }
 				}
 			}
-		}
+		//}
 	}
 	
 	public static void resetBlur()
 	{
-		float currentBlurRadius = 1F;
+		float currentBlurRadius = 0F;
 		ShaderGroupCustom group = Base.instance.shaderHelper.getShaderGroup();
 		// Remember that there are two shaders in this group, the vertical blur and horizontal blur, and the code must change both of their radii
 		if(group != null)
