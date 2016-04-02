@@ -241,13 +241,12 @@ public class VisualEventHandler {
 	public void onEntityTakeDamage(LivingHurtEvent event) {
 		
 		//System.out.println("Entity took damage: " + event.toString());
-		//TODO See if this event fires on multiplayer damage events. Historically it hasn't, but maybe it's updated
+		
 	}*/
 
 	/*@SubscribeEvent
 	public void onExplosion(ExplosionEvent event) {
 		//System.out.println("Explosion occurred: " + event.toString());
-		//TODO See if this event fires on multiplayer explosions. If it does, then use this for explosion dust control
 	}*/
 
 	private void entityDamaged(EntityLivingBase entity, DamageSource source, float damage) {
@@ -444,8 +443,6 @@ public class VisualEventHandler {
 		}
 		// Check to see if potions are splashing
 		checkRecentPotions();
-		// Check surrounding light values and "adjust" eyes(TODO)
-		// Check surrounding temperatures and show cold or heat overlays(TODO)
 		
 		//Slender
 		checkSlender();

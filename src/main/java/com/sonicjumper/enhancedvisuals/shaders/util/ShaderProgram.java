@@ -207,7 +207,6 @@ public class ShaderProgram {
 			dispose();
 			throw e;
 		}
-		//TODO: for convenience it might be nice to warn non-critical errors in a log
 		//but ideally the user should do that himself
 //		if (log != null && log.length() != 0)
 //			Util.warn(log);
@@ -449,7 +448,6 @@ public class ShaderProgram {
 		attributes = new Attrib[len];
 		for (int i = 0; i < len; i++) {
 			Attrib a = new Attrib();
-			// TODO: use proper FloatBuffer method instead of these convenience
 			// methods
 			a.name = glGetActiveAttrib(program, i, strLen);
 			a.size = glGetActiveAttribSize(program, i);

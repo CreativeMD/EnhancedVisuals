@@ -175,7 +175,6 @@ public class Texture implements ITexture {
 
 	public Texture(URL pngRef, int minFilter, int magFilter, int wrap,
 			boolean genMipmap) throws IOException {
-		//TODO: npot check
 		InputStream input = null;
 		try {
 			input = pngRef.openStream();

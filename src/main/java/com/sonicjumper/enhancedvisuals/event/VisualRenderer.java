@@ -51,7 +51,6 @@ public class VisualRenderer {
 			ArrayList<Visual> visualList = Base.instance.manager.getActiveVisuals();
 			if(visualList.size() > 0) {
 				// Base.log.info("Attempting to render " + visualList.size() + " splats");
-				// TODO Find out which blend operations are necessary, and which cause the screen stretching glitch
 		        /*GlStateManager.pushMatrix();
 				GlStateManager.disableDepth();
 		        GlStateManager.disableLighting();

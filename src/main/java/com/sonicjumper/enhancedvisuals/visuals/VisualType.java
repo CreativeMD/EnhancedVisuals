@@ -94,7 +94,6 @@ public class VisualType {
 	{
 		this.themePack = ConfigCore.defaultThemePack;
 		this.resourceArray = createResourcesForVisualType(this);
-		// Attempt to use default pack if missing textures(TODO)
 		/*if ((this.resourceArray == null) || ((this.resourceArray != null) && (this.resourceArray.length == 0)))
 		{
 			System.out.println("[Enhanced Visuals] Using backups for:" + this.visualName);
