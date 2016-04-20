@@ -3,6 +3,8 @@ package com.sonicjumper.enhancedvisuals.event;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.lwjgl.opengl.GL11;
+
 import com.sonicjumper.enhancedvisuals.Base;
 import com.sonicjumper.enhancedvisuals.render.RenderVisual;
 import com.sonicjumper.enhancedvisuals.visuals.Visual;
@@ -66,6 +68,7 @@ public class VisualRenderer {
 		        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
 		        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		        GlStateManager.disableAlpha();
+		        GL11.glEnable(GL11.GL_BLEND);
 				
 		        try{
 				for(int i = 0; i < visualList.size(); i++) {
