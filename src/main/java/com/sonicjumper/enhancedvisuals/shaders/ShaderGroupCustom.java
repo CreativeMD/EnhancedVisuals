@@ -92,8 +92,8 @@ public class ShaderGroupCustom
                     }
                     catch (Exception exception1)
                     {
-                        jsonexception1 = JsonException.func_151379_a(exception1);
-                        jsonexception1.func_151380_a("targets[" + i + "]");
+                        jsonexception1 = JsonException.forException(exception1);
+                        jsonexception1.prependJsonKey("targets[" + i + "]");
                         throw jsonexception1;
                     }
                 }
@@ -114,8 +114,8 @@ public class ShaderGroupCustom
                     }
                     catch (Exception exception)
                     {
-                        jsonexception1 = JsonException.func_151379_a(exception);
-                        jsonexception1.func_151380_a("passes[" + i + "]");
+                        jsonexception1 = JsonException.forException(exception);
+                        jsonexception1.prependJsonKey("passes[" + i + "]");
                         throw jsonexception1;
                     }
                 }
@@ -123,8 +123,8 @@ public class ShaderGroupCustom
         }
         catch (Exception exception2)
         {
-            JsonException jsonexception = JsonException.func_151379_a(exception2);
-            jsonexception.func_151381_b(p_152765_2_.getResourcePath());
+            JsonException jsonexception = JsonException.forException(exception2);
+            jsonexception.prependJsonKey(p_152765_2_.getResourcePath());
             throw jsonexception;
         }
         finally
@@ -231,8 +231,8 @@ public class ShaderGroupCustom
                     }
                     catch (Exception exception1)
                     {
-                        JsonException jsonexception = JsonException.func_151379_a(exception1);
-                        jsonexception.func_151380_a("auxtargets[" + i + "]");
+                        JsonException jsonexception = JsonException.forException(exception1);
+                        jsonexception.prependJsonKey("auxtargets[" + i + "]");
                         throw jsonexception;
                     }
                 }
@@ -254,8 +254,8 @@ public class ShaderGroupCustom
                     }
                     catch (Exception exception)
                     {
-                        JsonException jsonexception1 = JsonException.func_151379_a(exception);
-                        jsonexception1.func_151380_a("uniforms[" + l + "]");
+                        JsonException jsonexception1 = JsonException.forException(exception);
+                        jsonexception1.prependJsonKey("uniforms[" + l + "]");
                         throw jsonexception1;
                     }
                 }
@@ -289,8 +289,8 @@ public class ShaderGroupCustom
                 }
                 catch (Exception exception)
                 {
-                    JsonException jsonexception = JsonException.func_151379_a(exception);
-                    jsonexception.func_151380_a("values[" + i + "]");
+                    JsonException jsonexception = JsonException.forException(exception);
+                    jsonexception.prependJsonKey("values[" + i + "]");
                     throw jsonexception;
                 }
             }

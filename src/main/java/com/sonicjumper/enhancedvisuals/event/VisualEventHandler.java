@@ -9,13 +9,14 @@ import com.sonicjumper.enhancedvisuals.ConfigCore;
 import com.sonicjumper.enhancedvisuals.environment.BaseEnvironmentEffect;
 import com.sonicjumper.enhancedvisuals.environment.EyeSensitivityHandler;
 import com.sonicjumper.enhancedvisuals.environment.PotionSplashHandler;
-import com.sonicjumper.enhancedvisuals.environment.TemperatureHandler;
-import com.sonicjumper.enhancedvisuals.environment.WetnessHandler;
 import com.sonicjumper.enhancedvisuals.render.RenderShaderBlurFade;
+import com.sonicjumper.enhancedvisuals.render.RenderShaderDefault;
+import com.sonicjumper.enhancedvisuals.render.RenderShaderDesaturate;
 import com.sonicjumper.enhancedvisuals.visuals.Blur;
 import com.sonicjumper.enhancedvisuals.visuals.BoxBlur;
 import com.sonicjumper.enhancedvisuals.visuals.Shader;
 import com.sonicjumper.enhancedvisuals.visuals.ShaderBlurFade;
+import com.sonicjumper.enhancedvisuals.visuals.ShaderDesaturate;
 import com.sonicjumper.enhancedvisuals.visuals.Visual;
 import com.sonicjumper.enhancedvisuals.visuals.VisualType;
 
@@ -57,9 +58,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class VisualEventHandler {
 	
 	private ArrayList<BaseEnvironmentEffect> environmentalEffects;
-	public WetnessHandler wetnessHandler = new WetnessHandler(this);
+	//public WetnessHandler wetnessHandler = new WetnessHandler(this);
 	public EyeSensitivityHandler eyeSensitivityHandler = new EyeSensitivityHandler(this);
-	public TemperatureHandler temperatureHandler = new TemperatureHandler(this);
+	//public TemperatureHandler temperatureHandler = new TemperatureHandler(this);
 	public PotionSplashHandler potionSplashHandler = new PotionSplashHandler(this);
 	
 	public Minecraft mc = Minecraft.getMinecraft();
@@ -85,43 +86,43 @@ public class VisualEventHandler {
 		bluntList = new ArrayList<Item>();
 		pierceList = new ArrayList<Item>();
 
-		sharpList.add(Items.iron_sword);
-		sharpList.add(Items.wooden_sword);
-		sharpList.add(Items.stone_sword);
-		sharpList.add(Items.diamond_sword);
-		sharpList.add(Items.golden_sword);
-		sharpList.add(Items.iron_axe);
-		sharpList.add(Items.wooden_axe);
-		sharpList.add(Items.stone_axe);
-		sharpList.add(Items.diamond_axe);
-		sharpList.add(Items.golden_axe);
+		sharpList.add(Items.IRON_SWORD);
+		sharpList.add(Items.WOODEN_SWORD);
+		sharpList.add(Items.STONE_SWORD);
+		sharpList.add(Items.DIAMOND_SWORD);
+		sharpList.add(Items.GOLDEN_SWORD);
+		sharpList.add(Items.IRON_AXE);
+		sharpList.add(Items.WOODEN_AXE);
+		sharpList.add(Items.STONE_AXE);
+		sharpList.add(Items.DIAMOND_AXE);
+		sharpList.add(Items.GOLDEN_AXE);
 
-		bluntList.add(Items.iron_pickaxe);
-		bluntList.add(Items.wooden_pickaxe);
-		bluntList.add(Items.stone_pickaxe);
-		bluntList.add(Items.diamond_pickaxe);
-		bluntList.add(Items.golden_pickaxe);
-		bluntList.add(Items.iron_shovel);
-		bluntList.add(Items.wooden_shovel);
-		bluntList.add(Items.stone_shovel);
-		bluntList.add(Items.diamond_shovel);
-		bluntList.add(Items.golden_shovel);
+		bluntList.add(Items.IRON_PICKAXE);
+		bluntList.add(Items.WOODEN_PICKAXE);
+		bluntList.add(Items.STONE_PICKAXE);
+		bluntList.add(Items.DIAMOND_PICKAXE);
+		bluntList.add(Items.GOLDEN_PICKAXE);
+		bluntList.add(Items.IRON_SHOVEL);
+		bluntList.add(Items.WOODEN_SHOVEL);
+		bluntList.add(Items.STONE_SHOVEL);
+		bluntList.add(Items.DIAMOND_SHOVEL);
+		bluntList.add(Items.GOLDEN_SHOVEL);
 
-		pierceList.add(Items.iron_hoe); 
-		pierceList.add(Items.wooden_hoe);
-		pierceList.add(Items.stone_hoe);
-		pierceList.add(Items.diamond_hoe);
-		pierceList.add(Items.golden_hoe);
-		pierceList.add(Items.arrow);
+		pierceList.add(Items.IRON_HOE); 
+		pierceList.add(Items.WOODEN_HOE);
+		pierceList.add(Items.STONE_HOE);
+		pierceList.add(Items.DIAMOND_HOE);
+		pierceList.add(Items.GOLDEN_HOE);
+		pierceList.add(Items.ARROW);
 
 		//entityHealthMap = new HashMap<EntityLivingBase, Float>();
 
 		rand = new Random();
 		
 		environmentalEffects = new ArrayList<BaseEnvironmentEffect>();
-		environmentalEffects.add(wetnessHandler);
+		//environmentalEffects.add(wetnessHandler);
 		environmentalEffects.add(eyeSensitivityHandler);
-		environmentalEffects.add(temperatureHandler);
+		//environmentalEffects.add(temperatureHandler);
 		environmentalEffects.add(potionSplashHandler);
 	}
 
@@ -255,7 +256,7 @@ public class VisualEventHandler {
 			Splat s = new Splat(VisualType.splatter, 200, Color.WHITE, (float) point.getX(), (float) point.getY());
 			Base.instance.manager.addVisualDirect(s);
 		}*/
-		if(source == DamageSource.outOfWorld)
+		if(source == DamageSource.outOfWorld || damage == 0)
 			return ;
 		// Check distance to player and use that as splat distance pattern
 		double distanceSq = Minecraft.getMinecraft().thePlayer.getDistanceSqToEntity(entity);
@@ -355,16 +356,22 @@ public class VisualEventHandler {
 		
 		// Tick all visuals
 		boolean hasBlurShader = false;
+		boolean hasSaturationShader = false;
 		ArrayList<Visual> vList = Base.instance.manager.getActiveVisuals();
 		for (int i = 0; i < vList.size(); i++) {
 			Visual v = vList.get(i);
 			if(v instanceof ShaderBlurFade)
 				hasBlurShader = true;
+			if(v instanceof ShaderDesaturate)
+				hasSaturationShader = true;
 			v.tickUpdate();
 		}
 		//RenderShaderBlurFade.resetBlur();
 		if(!hasBlurShader && RenderShaderBlurFade.lastBlurRadius != 0)
 			RenderShaderBlurFade.resetBlur();
+		
+		if(!hasSaturationShader && RenderShaderDesaturate.lastSaturation != 1)
+			RenderShaderDesaturate.resetSaturation();
 		
 		/*// Sample health values of all entities, if an entity has lost health, then throw a damage event
 		try {
@@ -405,7 +412,7 @@ public class VisualEventHandler {
 		
 		// Check if player has splashed in water
 		if(hasSplashed(player)) {
-			Shader s = new ShaderBlurFade(VisualType.blur, 100 + rand.nextInt(100), 10.0F + rand.nextFloat() * 5.0F);
+			Shader s = new ShaderBlurFade(VisualType.blur, 30 + rand.nextInt(30), 10.0F + rand.nextFloat() * 5.0F);
 			Base.instance.manager.addVisualDirect(s);
 		}
 		// Check if player is in water, then wash certain splats away
@@ -416,6 +423,18 @@ public class VisualEventHandler {
 				}
 			}
 		}
+		
+		//Saturation
+		float aimedSaturation = 1;
+		if(player.getFoodStats().getFoodLevel() <= 8)
+			aimedSaturation = (player.getFoodStats().getFoodLevel()/8F)*0.875F;
+		
+		float fadeAmount = 0.01F;
+		if(ShaderDesaturate.Saturation < aimedSaturation)
+			ShaderDesaturate.Saturation = Math.min(ShaderDesaturate.Saturation+fadeAmount, aimedSaturation);
+		else if(ShaderDesaturate.Saturation > aimedSaturation)
+			ShaderDesaturate.Saturation = Math.max(ShaderDesaturate.Saturation-fadeAmount, aimedSaturation);
+			
 		
 		// Check if player has less than three hearts, then play heartbeat sound and flash lowhealth screen
 		if (player.getHealth() <= 6.0F) {
@@ -491,7 +510,7 @@ public class VisualEventHandler {
 		int posX = (int)entityPlayer.posX;
 		int posY = (int)(entityPlayer.posY - 2.0D);
 		int posZ = (int)entityPlayer.posZ;
-	    if (mc.theWorld.getBlockState(new BlockPos(posX, posY, posZ)).getBlock() == Blocks.sand && mc.theWorld.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock() == Blocks.sand) {
+	    if (mc.theWorld.getBlockState(new BlockPos(posX, posY, posZ)).getBlock() == Blocks.SAND && mc.theWorld.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock() == Blocks.SAND) {
 	    	return true;
 	    }
 	    return false;
@@ -586,7 +605,7 @@ public class VisualEventHandler {
 		if (Minecraft.getMinecraft().theWorld != null) {
 			Block currentBlockEyesIn = Minecraft.getMinecraft().theWorld.getBlockState(new BlockPos(x, y, z)).getBlock();
 			Block pastBlockEyesIn = Minecraft.getMinecraft().theWorld.getBlockState(new BlockPos(prevX, prevY, prevZ)).getBlock();
-			return (currentBlockEyesIn.equals(Blocks.flowing_water) ^ pastBlockEyesIn.equals(Blocks.flowing_water)) || (currentBlockEyesIn.equals(Blocks.water) ^ pastBlockEyesIn.equals(Blocks.water));
+			return (currentBlockEyesIn.equals(Blocks.FLOWING_WATER) ^ pastBlockEyesIn.equals(Blocks.FLOWING_WATER)) || (currentBlockEyesIn.equals(Blocks.WATER) ^ pastBlockEyesIn.equals(Blocks.WATER));
 		}
 		return false;
 	}

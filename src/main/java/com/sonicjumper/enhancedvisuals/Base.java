@@ -26,7 +26,7 @@ import com.sonicjumper.enhancedvisuals.visuals.VisualType;
 public class Base {
 	public static final String MODID = "sonicvisuals";
 	public static final String MODNAME = "Enhanced Visuals";
-	public static final String MODVER = "0.4";
+	public static final String MODVER = "1.0";
 	
 	@Instance(value = Base.MODID)
 	public static Base instance;
@@ -77,11 +77,11 @@ public class Base {
 		if(FMLCommonHandler.instance().getEffectiveSide().isClient())
 		{
 			MinecraftForge.EVENT_BUS.register(Base.instance.renderer);
-			FMLCommonHandler.instance().bus().register(Base.instance.renderer);
+			//FMLCommonHandler.instance()..bus().register(Base.instance.renderer);
 		}
 		
 		MinecraftForge.EVENT_BUS.register(Base.instance.eventHandler);
-		FMLCommonHandler.instance().bus().register(Base.instance.eventHandler);
+		//FMLCommonHandler.instance().bus().register(Base.instance.eventHandler);
 		
 	}
 	

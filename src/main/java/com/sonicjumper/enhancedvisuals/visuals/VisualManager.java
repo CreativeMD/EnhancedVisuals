@@ -11,6 +11,7 @@ import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntitySquid;
 
+import com.sonicjumper.enhancedvisuals.Base;
 import com.sonicjumper.enhancedvisuals.visuals.Visual.VisualCatagory;
 
 public class VisualManager {
@@ -21,6 +22,7 @@ public class VisualManager {
 	private Overlay iceOverlay;
 	private Overlay wetOverlay;
 	public Animation slenderOverlay;
+	public ShaderDesaturate desaturate;
 	//public Shader blur;
 
 	private Random rand = new Random();
@@ -30,12 +32,14 @@ public class VisualManager {
 		iceOverlay = new Overlay(VisualType.ice, -1, new Color(1.0F, 1.0F, 1.0F, 0.0F));
 		wetOverlay = new Overlay(VisualType.waterO, -1, new Color(1.0F, 1.0F, 1.0F, 0.0F));
 		slenderOverlay = new Animation(VisualType.slender, -1, new Color(1.0F, 1.0F, 1.0F), 100);
+		desaturate = new ShaderDesaturate(VisualType.desaturate, -1);
 		//blur = new ShaderBlurFade(VisualType.blur, -1, 0);
 		
 		//permVisuals.add(heatOverlay);
 		permVisuals.add(iceOverlay);
 		permVisuals.add(wetOverlay);
 		permVisuals.add(slenderOverlay);
+		permVisuals.add(desaturate);
 		//permVisuals.add(blur);
 	}
 

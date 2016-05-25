@@ -54,6 +54,7 @@ public class VisualType {
 	public static VisualType crack = new VisualType(19, Visual.VisualCatagory.Animation, "crack");
 	public static VisualType blur = new VisualType(20, Visual.VisualCatagory.Shader, "blur");
 	public static VisualType defaultShader = new VisualType(21, Visual.VisualCatagory.Shader, "default");
+	public static VisualType desaturate = new VisualType(22, Visual.VisualCatagory.Shader, "desaturate");
 	private int visualID;
 	private Visual.VisualCatagory visualCatagory;
 	private String visualName;
