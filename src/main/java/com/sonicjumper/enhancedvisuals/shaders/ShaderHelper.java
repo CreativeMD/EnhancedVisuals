@@ -1,6 +1,7 @@
 package com.sonicjumper.enhancedvisuals.shaders;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.lwjgl.opengl.GL11;
 
@@ -17,9 +18,9 @@ import com.sonicjumper.enhancedvisuals.Base;
 public class ShaderHelper {
 	private Minecraft mc;
 	private IResourceManager resourceManager;
-	private ShaderGroupCustom theShaderGroup;
+	private ArrayList<ShaderGroupCustom> groups = new ArrayList<>();
 	
-	private String shaderName;
+	private ArrayList<String> shaders = new ArrayList<>();
 	private boolean useShader;
 	
 	public ShaderHelper(Minecraft minecraft, IResourceManager resourceManager) {
@@ -28,28 +29,28 @@ public class ShaderHelper {
 	}
 	
 	public boolean isShaderActive(String name) {
-		return name.equals(shaderName);
+		return shaders.contains(name);
 	}
 	
     public void loadShader(String name, ResourceLocation shadersPostLocation) {
-    	if(this.theShaderGroup != null) {
+    	/*if(this.theShaderGroup != null) {
             this.theShaderGroup.deleteShaderGroup();
-        }
+        }*/
     	
         try {
-            this.theShaderGroup = new ShaderGroupCustom(this.mc.getTextureManager(), this.resourceManager, this.mc.getFramebuffer(), shadersPostLocation);
-            this.theShaderGroup.createBindFramebuffers(this.mc.displayWidth, this.mc.displayHeight);
-            this.useShader = true;
-            this.shaderName = name;
+            ShaderGroupCustom group = new ShaderGroupCustom(this.mc.getTextureManager(), this.resourceManager, this.mc.getFramebuffer(), shadersPostLocation);
+            group.createBindFramebuffers(this.mc.displayWidth, this.mc.displayHeight);
+            groups.add(group);
+            shaders.add(name);
+            //this.shaderName = name;
         } catch (IOException ioexception) {
             Base.log.warn("Failed to load shader: " + shadersPostLocation, ioexception);
-            this.useShader = false;
-            this.shaderName = "";
+            //this.shaderName = "";
         } catch (JsonSyntaxException jsonsyntaxexception) {
             Base.log.warn("Failed to load shader: " + shadersPostLocation, jsonsyntaxexception);
-            this.useShader = false;
-            this.shaderName = "";
+            //this.shaderName = "";
         }
+        this.useShader = groups.size() > 0;
     }
 
 	public void drawShaders(float partialTicks) {
@@ -58,12 +59,15 @@ public class ShaderHelper {
         RenderHelper.enableStandardItemLighting();
         GlStateManager.depthMask(false);*/
         
-		if(Base.instance.shaderHelper.getShaderGroup() != null && this.useShader) {
+		if(groups.size() > 0 && this.useShader) {
 			GlStateManager.matrixMode(5890);
             GlStateManager.pushMatrix();
             
             GlStateManager.loadIdentity();
-			Base.instance.shaderHelper.getShaderGroup().loadShaderGroup(partialTicks);
+            for (int i = 0; i < groups.size(); i++) {
+				groups.get(i).loadShaderGroup(partialTicks);
+			}
+			//Base.instance.shaderHelper.getShaderGroup().loadShaderGroup(partialTicks);
             GlStateManager.popMatrix();
             
 		}
@@ -76,13 +80,26 @@ public class ShaderHelper {
          GlStateManager.enableAlpha();
          GlStateManager.enableRescaleNormal();*/
 	}
+	
+	public ShaderGroupCustom getShaderGroup(String name) {
+		int index = shaders.indexOf(name);
+		if(index != -1)
+			return groups.get(index);
+		return null;
+	}
 
-	public ShaderGroupCustom getShaderGroup() {
-		return theShaderGroup;
+	public ArrayList<ShaderGroupCustom> getShaderGroups() {
+		return groups;
 	}
 
 	public void removeShader(String name) {
-		this.useShader = false;
-		this.theShaderGroup = null;
+		int index = shaders.indexOf(name);
+		if(index != -1)
+		{
+			shaders.remove(index);
+			groups.remove(index);
+		}
+		
+		this.useShader = groups.size() > 0;
 	}
 }

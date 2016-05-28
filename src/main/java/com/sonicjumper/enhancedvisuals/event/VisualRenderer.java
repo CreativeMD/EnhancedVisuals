@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.sonicjumper.enhancedvisuals.Base;
 import com.sonicjumper.enhancedvisuals.render.RenderVisual;
+import com.sonicjumper.enhancedvisuals.shaders.ShaderGroupCustom;
 import com.sonicjumper.enhancedvisuals.visuals.Visual;
 
 import net.minecraft.client.Minecraft;
@@ -47,8 +48,15 @@ public class VisualRenderer {
 		Minecraft mc = Minecraft.getMinecraft();
 		if(!mc.isGamePaused())
 		{
-			if(Base.instance != null && Base.instance.shaderHelper != null && Base.instance.shaderHelper.getShaderGroup() != null && Base.instance.shaderHelper.getShaderGroup().needNewFrameBuffer(mc.displayWidth, mc.displayHeight))
-				Base.instance.shaderHelper.getShaderGroup().createBindFramebuffers(mc.displayWidth, mc.displayHeight);
+			if(Base.instance != null && Base.instance.shaderHelper != null)
+			{
+				ArrayList<ShaderGroupCustom> groups = Base.instance.shaderHelper.getShaderGroups();
+				for (int i = 0; i < groups.size(); i++) {
+					if(groups.get(i).needNewFrameBuffer(mc.displayWidth, mc.displayHeight))
+						groups.get(i).createBindFramebuffers(mc.displayWidth, mc.displayHeight);
+				} 
+			}
+				
 			
 			ArrayList<Visual> visualList = Base.instance.manager.getActiveVisuals();
 			if(visualList.size() > 0) {

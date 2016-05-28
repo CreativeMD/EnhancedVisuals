@@ -21,7 +21,7 @@ public class RenderShaderDesaturate extends RenderShader {
 		//if(sbf.getMaxBlurRadius() > 0)
 		//{
 			// Update blur radius based on ticks remaining in the Visual
-			ShaderGroupCustom group = shaderHelper.getShaderGroup();
+			ShaderGroupCustom group = shaderHelper.getShaderGroup(v.getType().getName());
 			// Remember that there are two shaders in this group, the vertical blur and horizontal blur, and the code must change both of their radii
 			if(group != null)
 			{
@@ -44,7 +44,7 @@ public class RenderShaderDesaturate extends RenderShader {
 	public static void resetSaturation()
 	{
 		float currentSaturation = 1F;
-		ShaderGroupCustom group = Base.instance.shaderHelper.getShaderGroup();
+		ShaderGroupCustom group = Base.instance.shaderHelper.getShaderGroup("desaturate");
 		// Remember that there are two shaders in this group, the vertical blur and horizontal blur, and the code must change both of their radii
 		if(group != null)
 		{

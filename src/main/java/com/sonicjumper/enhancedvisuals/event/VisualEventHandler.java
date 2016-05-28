@@ -364,7 +364,8 @@ public class VisualEventHandler {
 				hasBlurShader = true;
 			if(v instanceof ShaderDesaturate)
 				hasSaturationShader = true;
-			v.tickUpdate();
+			if(v != null)
+				v.tickUpdate();
 		}
 		//RenderShaderBlurFade.resetBlur();
 		if(!hasBlurShader && RenderShaderBlurFade.lastBlurRadius != 0)
@@ -426,8 +427,10 @@ public class VisualEventHandler {
 		
 		//Saturation
 		float aimedSaturation = 1;
-		if(player.getFoodStats().getFoodLevel() <= 8)
-			aimedSaturation = (player.getFoodStats().getFoodLevel()/8F)*0.875F;
+		int min = 8;
+		int max = 2;
+		if(player.getFoodStats().getFoodLevel() <= min)
+			aimedSaturation = Math.max(0, ((player.getFoodStats().getFoodLevel()-max)/((float)(min-max)))*0.875F);
 		
 		float fadeAmount = 0.01F;
 		if(ShaderDesaturate.Saturation < aimedSaturation)
@@ -447,11 +450,12 @@ public class VisualEventHandler {
 				Shader s = new ShaderBlurFade(VisualType.blur, 10, Math.min(0.7F, f1)*50F);
 				Base.instance.manager.addVisualDirect(s);
 				
-				mc.getSoundHandler().playSound(new PositionedSoundRecord(new SoundEvent(new ResourceLocation("sonicvisuals:heartbeatOut")), SoundCategory.MASTER, 1, 1, new BlockPos(player)));
+				playSound(new ResourceLocation("sonicvisuals:heartbeatOut"), new BlockPos(player));
+				//mc.getSoundHandler().playSound(new PositionedSoundRecord(new SoundEvent(new ResourceLocation("sonicvisuals:heartbeatOut")), SoundCategory.MASTER, 1, 1, new BlockPos(player)));
 				//Minecraft.getMinecraft().theWorld.playSoundEffect(player.posX, player.posY, player.posZ, "sonicvisuals:heartbeatOut", 1, 1);
 			} else if(this.lowHealthBuffer == 5) {
-				mc.getSoundHandler().playSound(new PositionedSoundRecord(new SoundEvent(new ResourceLocation("sonicvisuals:heartbeatIn")), SoundCategory.MASTER, 1, 1, new BlockPos(player)));
-
+				//mc.getSoundHandler().playSound(new PositionedSoundRecord(new SoundEvent(new ResourceLocation("sonicvisuals:heartbeatIn")), SoundCategory.MASTER, 1, 1, new BlockPos(player)));
+				playSound(new ResourceLocation("sonicvisuals:heartbeatIn"), new BlockPos(player));
 				Shader s = new ShaderBlurFade(VisualType.blur, 10, 50F);
 				Base.instance.manager.addVisualDirect(s);
 				//Minecraft.getMinecraft().theWorld.playSoundEffect(player.posX, player.posY, player.posZ, "sonicvisuals:heartbeatIn", 1, 1);
@@ -468,6 +472,11 @@ public class VisualEventHandler {
 		
 		//Sand
 		addSandSplatFromTick();
+	}
+	
+	public synchronized void playSound(ResourceLocation location, BlockPos pos)
+	{
+		mc.getSoundHandler().playSound(new PositionedSoundRecord(new SoundEvent(location), SoundCategory.MASTER, 1, 1, pos));
 	}
 	
 	public void addSandSplatFromTick()

@@ -20,7 +20,7 @@ public class RenderShaderBlurFade extends RenderShader {
 		//if(sbf.getMaxBlurRadius() > 0)
 		//{
 			// Update blur radius based on ticks remaining in the Visual
-			ShaderGroupCustom group = shaderHelper.getShaderGroup();
+			ShaderGroupCustom group = shaderHelper.getShaderGroup(v.getType().getName());
 			// Remember that there are two shaders in this group, the vertical blur and horizontal blur, and the code must change both of their radii
 			if(group != null)
 			{
@@ -31,9 +31,9 @@ public class RenderShaderBlurFade extends RenderShader {
 						Float currentBlurRadius = (float) Math.floor((v.getTranslucencyByTime() * (sbf.getMaxBlurRadius() - 1.0F)) + 1.0F);
 			        	shaderuniform.set(currentBlurRadius);
 			        	lastBlurRadius = currentBlurRadius;
-			        } else {
-			        	Base.log.warn("The Shader Uniform " + RADIUS_UNIFORM + " does not exist");
-			        }
+			        }// else {
+			        //	Base.log.warn("The Shader Uniform " + RADIUS_UNIFORM + " does not exist");
+			        //}
 				}
 			}
 		//}
@@ -42,7 +42,7 @@ public class RenderShaderBlurFade extends RenderShader {
 	public static void resetBlur()
 	{
 		float currentBlurRadius = 0F;
-		ShaderGroupCustom group = Base.instance.shaderHelper.getShaderGroup();
+		ShaderGroupCustom group = Base.instance.shaderHelper.getShaderGroup("blur");
 		// Remember that there are two shaders in this group, the vertical blur and horizontal blur, and the code must change both of their radii
 		if(group != null)
 		{
@@ -52,9 +52,9 @@ public class RenderShaderBlurFade extends RenderShader {
 				if (shaderuniform != null) {
 		        	shaderuniform.set(currentBlurRadius);
 		        	lastBlurRadius = currentBlurRadius;
-		        } else {
-		        	Base.log.warn("The Shader Uniform " + RADIUS_UNIFORM + " does not exist");
-		        }
+		        }// else {
+		        //	Base.log.warn("The Shader Uniform " + RADIUS_UNIFORM + " does not exist");
+		        //}
 			}
 		}
 	}

@@ -361,7 +361,7 @@ public class ShaderGroupCustom
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        this.listShaders.add(this.listShaders.size(), shader);
+        this.listShaders.add(shader);
         return shader;
     }
 
