@@ -124,9 +124,9 @@ public class Visual {
 			Float var1 = new Float(this.ticksToLive);
 			Float var2 = new Float(this.maxTime);
 			float var3 = var1.floatValue() / var2.floatValue();
-			return this.color.getAlpha() / 255.0F * var3;
+			return this.color.getAlpha() / 255.0F * var3 * visualType.alpha;
 		}
-		return this.color.getAlpha() / 255.0F;
+		return this.color.getAlpha() / 255.0F * visualType.alpha;
 	}
 
 	public VisualType getType() {

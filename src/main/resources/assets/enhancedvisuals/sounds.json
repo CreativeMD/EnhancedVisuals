@@ -1,0 +1,5 @@
+{
+  "heartbeatIn": {"category": "master","sounds": [{"name": "enhancedvisuals:heartbeatIn","stream": false}]},
+  "heartbeatOut": {"category": "master","sounds": [{"name": "enhancedvisuals:heartbeatOut","stream": false}]},
+  "ringing": {"category": "master","sounds": [{"name": "enhancedvisuals:ringing","stream": false}]}
+}

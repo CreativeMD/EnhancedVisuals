@@ -7,7 +7,7 @@ import com.sonicjumper.enhancedvisuals.render.RenderVisual;
 
 public class ShaderDesaturate extends Shader {
 	
-	public static float Saturation = 1;
+	public static float Saturation = VisualType.desaturate.defaultSaturation;
 	
 	public ShaderDesaturate(VisualType type, int lifeTime) {
 		super(type, lifeTime);

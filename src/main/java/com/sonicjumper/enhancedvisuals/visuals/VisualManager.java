@@ -18,9 +18,9 @@ public class VisualManager {
 	private ArrayList<Visual> playerVisuals = new ArrayList<Visual>();
 	private ArrayList<Visual> permVisuals = new ArrayList<Visual>();
 	
-	private Overlay heatOverlay;
-	private Overlay iceOverlay;
-	private Overlay wetOverlay;
+	//private Overlay heatOverlay;
+	//private Overlay iceOverlay;
+	//private Overlay wetOverlay;
 	public Animation slenderOverlay;
 	public ShaderDesaturate desaturate;
 	//public Shader blur;
@@ -28,18 +28,22 @@ public class VisualManager {
 	private Random rand = new Random();
 
 	public VisualManager() {
-		heatOverlay = new Overlay(VisualType.heat, -1, new Color(1.0F, 1.0F, 1.0F, 0.0F));
-		iceOverlay = new Overlay(VisualType.ice, -1, new Color(1.0F, 1.0F, 1.0F, 0.0F));
-		wetOverlay = new Overlay(VisualType.waterO, -1, new Color(1.0F, 1.0F, 1.0F, 0.0F));
+		//heatOverlay = new Overlay(VisualType.heat, -1, new Color(1.0F, 1.0F, 1.0F, 0.0F));
+		//iceOverlay = new Overlay(VisualType.ice, -1, new Color(1.0F, 1.0F, 1.0F, 0.0F));
+		//wetOverlay = new Overlay(VisualType.waterO, -1, new Color(1.0F, 1.0F, 1.0F, 0.0F));
 		slenderOverlay = new Animation(VisualType.slender, -1, new Color(1.0F, 1.0F, 1.0F), 100);
 		desaturate = new ShaderDesaturate(VisualType.desaturate, -1);
 		//blur = new ShaderBlurFade(VisualType.blur, -1, 0);
 		
 		//permVisuals.add(heatOverlay);
-		permVisuals.add(iceOverlay);
-		permVisuals.add(wetOverlay);
-		permVisuals.add(slenderOverlay);
-		permVisuals.add(desaturate);
+		//if(VisualType.ice.enabled)
+			//permVisuals.add(iceOverlay);
+		//if(VisualType.waterO.enabled)
+			//permVisuals.add(wetOverlay);
+		if(VisualType.slender.enabled)
+			permVisuals.add(slenderOverlay);
+		if(VisualType.desaturate.enabled)
+			permVisuals.add(desaturate);
 		//permVisuals.add(blur);
 	}
 
@@ -74,7 +78,8 @@ public class VisualManager {
 	}
 
 	public void addVisualDirect(Visual v) {
-		playerVisuals.add(v);
+		if(v.getType().enabled)
+			playerVisuals.add(v);
 	}
 	
 	public void addRandomNumVisualsWithColor(VisualType vt, int minNum, int maxNum, int minTime, int maxTime, Color color) {
@@ -86,6 +91,8 @@ public class VisualManager {
 	}
 
 	public void addVisualsWithShading(VisualType vt, int num, int minTime, int maxTime, Color color) {
+		if(!vt.enabled)
+			return ;
 		for(int i = 0; i < num; i++) {
 			Visual v;
 			if(vt.getCatagory().ordinal() == VisualCatagory.Animation.ordinal()) {
@@ -154,15 +161,15 @@ public class VisualManager {
 		return (float) (min + rand.nextDouble() * (max - min));
 	}
 	
-	public void adjustHeatOverlay(float intensity) {
+	/*public void adjustHeatOverlay(float intensity) {
 		heatOverlay.setTranslucency(intensity);
-	}
+	}*/
 	
-	public void adjustColdOverlay(float intensity) {
+	/*public void adjustColdOverlay(float intensity) {
 		iceOverlay.setTranslucency(intensity);
-	}
+	}*/
 	
-	public void adjustWetOverlay(float intensity) {
+	/*public void adjustWetOverlay(float intensity) {
 		wetOverlay.setTranslucency(intensity);
-	}
+	}*/
 }

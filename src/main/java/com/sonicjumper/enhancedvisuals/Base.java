@@ -24,7 +24,7 @@ import com.sonicjumper.enhancedvisuals.visuals.VisualType;
 
 @Mod(modid = Base.MODID, name = Base.MODNAME, version = Base.MODVER)
 public class Base {
-	public static final String MODID = "sonicvisuals";
+	public static final String MODID = "enhancedvisuals";
 	public static final String MODNAME = "Enhanced Visuals";
 	public static final String MODVER = "1.0";
 	
@@ -49,6 +49,8 @@ public class Base {
 	public void preInit(FMLPreInitializationEvent event) {
 		log = event.getModLog();
 		
+		proxy.registerThings(event);
+		
 		ConfigCore cc = new ConfigCore(event.getSuggestedConfigurationFile());
 		cc.loadConfig();
 		
@@ -59,7 +61,7 @@ public class Base {
 		
 		this.shaderHelper = new ShaderHelper(Minecraft.getMinecraft(), Minecraft.getMinecraft().getResourceManager());
 		
-		proxy.registerThings(event);
+		
 		this.manager = new VisualManager();
 		
 		try

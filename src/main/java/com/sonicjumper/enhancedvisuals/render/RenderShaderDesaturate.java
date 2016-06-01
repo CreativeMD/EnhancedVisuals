@@ -9,6 +9,7 @@ import com.sonicjumper.enhancedvisuals.shaders.ShaderGroupCustom;
 import com.sonicjumper.enhancedvisuals.visuals.ShaderBlurFade;
 import com.sonicjumper.enhancedvisuals.visuals.ShaderDesaturate;
 import com.sonicjumper.enhancedvisuals.visuals.Visual;
+import com.sonicjumper.enhancedvisuals.visuals.VisualType;
 
 public class RenderShaderDesaturate extends RenderShader {
 	private static String SATURATION_UNIFORM = "Saturation";
@@ -39,25 +40,5 @@ public class RenderShaderDesaturate extends RenderShader {
 				}
 			}
 		//}
-	}
-	
-	public static void resetSaturation()
-	{
-		float currentSaturation = 1F;
-		ShaderGroupCustom group = Base.instance.shaderHelper.getShaderGroup("desaturate");
-		// Remember that there are two shaders in this group, the vertical blur and horizontal blur, and the code must change both of their radii
-		if(group != null)
-		{
-			for(Shader mcShader : group.getShaders()) {
-				ShaderUniform shaderuniform = mcShader.getShaderManager().getShaderUniform(SATURATION_UNIFORM);
-				
-				if (shaderuniform != null) {
-		        	shaderuniform.set(currentSaturation);
-		        	lastSaturation = currentSaturation;
-		        } else {
-		        	//Base.log.warn("The Shader Uniform " + SATURATION_UNIFORM + " does not exist");
-		        }
-			}
-		}
 	}
 }
