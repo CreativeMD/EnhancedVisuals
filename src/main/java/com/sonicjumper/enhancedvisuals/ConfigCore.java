@@ -2,16 +2,29 @@ package com.sonicjumper.enhancedvisuals;
 
 import java.io.File;
 
+import com.sonicjumper.enhancedvisuals.visuals.VisualType;
+
 import net.minecraftforge.common.config.Configuration;
 
 public class ConfigCore {
+	
 	private Configuration config;
-	//public static String currentThemePack;
-	//public static String backupThemePack;
+	
 	public static String defaultThemePack = "DefaultTheme";
-	//public static boolean shouldRenderBlur;
-	public static boolean useTrueGlow;
-	public static float blurQuality;
+	
+	public static float waterSubstractFactor = 2.5F;
+	
+	public static int maxHearts = 6;
+	public static float minHeartBeatLength = 15;
+	public static float heartBeatHeartFactor = 10;
+	
+	public static int maxExplosionTime = 1000;
+	public static float explosionTimeModifier = 20F;
+	public static float minExplosionVolume = 0F;
+	public static float explosionVolumeModifier = 10F;
+	public static float maxBeepVolume = 0.8F;
+	public static float maxBlur = 100;
+	public static float blurTimeFactor = 2.5F;
 
 	public ConfigCore(File configFile)
 	{
@@ -21,16 +34,23 @@ public class ConfigCore {
 	public void loadConfig()
 	{
 		this.config.load();
-
-		//currentThemePack = this.config.get("general", "Current Theme Pack", defaultThemePack, "Change this to the file name of any theme pack you have installed").getString();
-		//backupThemePack = this.config.get("general", "Backup Theme Pack", defaultThemePack, "This 'fills in' the gaps left by the current theme pack").getString();
-
-		//shouldRenderBlur = this.config.get("general", "Render Blur Flag", false, "Enable this to have blur filters render").getBoolean(false);
-		useTrueGlow = this.config.get("general", "True Glow Flag", false, "Enable this to have better glows").getBoolean(false);
-
-		blurQuality = (float)this.config.get("general", "Blur Quality", 0.25D, "Increase only if you think your computer can handle it. Decrease if you want to keep blurs, but are having lag.").getDouble(0.25D);
 		
+		waterSubstractFactor = config.getFloat("waterSubstractFactor", "general", 2.5F, 0, 100000, "increased fade out factor in water");
 		
+		minHeartBeatLength = config.getFloat("minHeartBeatLength", "heartbeat", 10, 0, 100000, "time between heartbeats = player.health * heartBeatHeartFactor + minHeartBeatLength");
+		heartBeatHeartFactor = config.getFloat("heartBeatHeartFactor", "heartbeat", 10, 0, 100000, "time between heartbeats = player.health * heartBeatHeartFactor + minHeartBeatLength");
+		
+		maxExplosionTime = config.getInt("maxExplosionTime", "explosion", maxExplosionTime, 0, 100000, "maximum explosion duration");
+		explosionTimeModifier = config.getFloat("explosionTimeModifier", "explosion", explosionTimeModifier, 0, 100000, "time = Math.max(maxExplosionTime, damage*explosionTimeModifier)");
+		minExplosionVolume = config.getFloat("minExplosionVolume", "explosion", minExplosionVolume, 0, 100000, "factor of all other sounsd (muting effect)");
+		explosionVolumeModifier = config.getFloat("explosionVolumeModifier", "explosion", explosionVolumeModifier, 0, 100000, "volume of beep = damage/ConfigCore.explosionVolumeModifier");
+		maxBeepVolume = config.getFloat("maxBeepVolume", "explosion", maxBeepVolume, 0, 100000, "max volume of a beep");
+		maxBlur = config.getFloat("maxBlur", "explosion", maxBlur, 0, 100000, "max blur effect");
+		blurTimeFactor = config.getFloat("blurTimeFactor", "explosion", blurTimeFactor, 0, 100000, "time of blur = time of muted sounds / blurTimeFactor");
+		
+		for (int i = 0; i < VisualType.visuals.size(); i++) {
+			VisualType.visuals.get(i).loadConfig(config);
+		}
 		
 		this.config.save();
 	}

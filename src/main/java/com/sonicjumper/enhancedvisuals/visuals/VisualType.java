@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,55 +28,66 @@ import org.apache.commons.compress.archivers.zip.ZipFile;
 import com.sonicjumper.enhancedvisuals.Base;
 import com.sonicjumper.enhancedvisuals.ClientProxy;
 import com.sonicjumper.enhancedvisuals.ConfigCore;
+import com.sonicjumper.enhancedvisuals.visuals.types.BlurType;
+import com.sonicjumper.enhancedvisuals.visuals.types.DrownType;
+import com.sonicjumper.enhancedvisuals.visuals.types.DustType;
+import com.sonicjumper.enhancedvisuals.visuals.types.FireType;
+import com.sonicjumper.enhancedvisuals.visuals.types.SandType;
+import com.sonicjumper.enhancedvisuals.visuals.types.SaturationType;
+import com.sonicjumper.enhancedvisuals.visuals.types.SlenderType;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.config.Configuration;
 
 public class VisualType {
-	public static final VisualType[] visualList = new VisualType[32];
-	public static VisualType splatter = new VisualType(0, Visual.VisualCatagory.Splat, "splatter", true);
-	public static VisualType impact = new VisualType(1, Visual.VisualCatagory.Splat, "impact", true);
-	public static VisualType slash = new VisualType(2, Visual.VisualCatagory.Splat, "slash", true);
-	public static VisualType pierce = new VisualType(3, Visual.VisualCatagory.Splat, "pierce", true);
-	public static VisualType dust = new VisualType(4, Visual.VisualCatagory.Splat, "dust", true);
-	public static VisualType fire = new VisualType(5, Visual.VisualCatagory.Splat, "fire", true);
-	public static VisualType lavaS = new VisualType(6, Visual.VisualCatagory.Splat, "lava", true);
-	public static VisualType sand = new VisualType(7, Visual.VisualCatagory.Splat, "sand", true);
-	public static VisualType waterS = new VisualType(8, Visual.VisualCatagory.Splat, "water");
-	public static VisualType snow = new VisualType(9, Visual.VisualCatagory.Splat, "snow");
-	public static VisualType lowhealth = new VisualType(10, Visual.VisualCatagory.Overlay, "lowhealth");
-	public static VisualType damaged = new VisualType(11, Visual.VisualCatagory.Overlay, "damaged");
-	public static VisualType lavaO = new VisualType(12, Visual.VisualCatagory.Overlay, "lava", true);
-	public static VisualType potion = new VisualType(13, Visual.VisualCatagory.Overlay, "potion", true);
-	public static VisualType waterO = new VisualType(14, Visual.VisualCatagory.Overlay, "water");
-	public static VisualType ice = new VisualType(15, Visual.VisualCatagory.Overlay, "ice");
-	public static VisualType heat = new VisualType(16, Visual.VisualCatagory.Overlay, "heat");
-	public static VisualType colorTemplate = new VisualType(17, Visual.VisualCatagory.Overlay, "colorTemplate");
-	public static VisualType slender = new VisualType(18, Visual.VisualCatagory.Animation, "slender");
-	public static VisualType crack = new VisualType(19, Visual.VisualCatagory.Animation, "crack");
-	public static VisualType blur = new VisualType(20, Visual.VisualCatagory.Shader, "blur");
-	public static VisualType defaultShader = new VisualType(21, Visual.VisualCatagory.Shader, "default");
-	public static VisualType desaturate = new VisualType(22, Visual.VisualCatagory.Shader, "desaturate");
-	private int visualID;
+	//public static final VisualType[] visualList = new VisualType[32];
+	
+	public static ArrayList<VisualType> visuals = new ArrayList<>();
+	
+	public static VisualType splatter = new VisualType(Visual.VisualCatagory.Splat, "splatter", "blood splatter", true);
+	public static VisualType impact = new VisualType(Visual.VisualCatagory.Splat, "impact", "blunt impact", true);
+	public static VisualType slash = new VisualType(Visual.VisualCatagory.Splat, "slash", "sharp slash", true);
+	public static VisualType pierce = new VisualType(Visual.VisualCatagory.Splat, "pierce", "arrow pierce", true);
+	public static DustType dust = new DustType();
+	public static FireType fire = new FireType();
+	public static SandType sand = new SandType();
+	public static DrownType waterS = new DrownType();
+	
+	public static VisualType lowhealth = new VisualType(Visual.VisualCatagory.Overlay, "lowhealth", "heartbeat overlay");
+	public static VisualType potion = new VisualType(Visual.VisualCatagory.Overlay, "potion", "splash potion effect", true);
+	
+	public static SlenderType slender = new SlenderType();
+	
+	public static BlurType blur = new BlurType();
+	public static SaturationType desaturate = new SaturationType();
+	
+	//Config
+	public boolean enabled = true;
+	public float alpha = 1.0F;
+	
 	private Visual.VisualCatagory visualCatagory;
 	private String visualName;
+	public String comment;
 	private String themePack;
 	private Dimension imageDimensions;
 	public ResourceLocation[] resourceArray;
 	public boolean substractByTime;
 	
-	public VisualType(int id, Visual.VisualCatagory catagory, String name)
+	public VisualType(Visual.VisualCatagory catagory, String name, String comment)
 	{
-		this(id, catagory, name, false);
+		this(catagory, name, comment, false);
 	}
 	
-	public VisualType(int id, Visual.VisualCatagory catagory, String name, boolean substractByTime)
+	public VisualType(Visual.VisualCatagory catagory, String name, String comment, boolean substractByTime)
 	{
 		this.substractByTime = substractByTime;
-		if (visualList[id] != null) {
+		this.comment = comment;
+		/*f (visualList[id] != null) {
 			throw new IllegalArgumentException("Slot " + id + " is already occupied by " + visualList[id] + " when adding " + this);
 		}
-		visualList[id] = this;
-		this.visualID = id;
+		visualList[id] = this;*/
+		visuals.add(this);
+		//this.visualID = id;
 		this.visualCatagory = catagory;
 		this.visualName = name;
 		try {
@@ -88,45 +100,19 @@ public class VisualType {
 			Base.log.error("[Enhanced Visuals] Could not find the directory, make sure you installed the mod correctly: " + ClientProxy.getVisualsDirectory(this.themePack) + this.visualCatagory.toString() + "/" + this.visualName);
 		}
 		if(resourceArray != null)
-			Base.log.info(id + " || " + this.visualCatagory.toString() + " || " + name + " || " + this.resourceArray.length);
+			Base.log.info(this.visualCatagory.toString() + " || " + name + " || " + this.resourceArray.length);
+	}
+	
+	public void loadConfig(Configuration config)
+	{
+		this.enabled = config.getBoolean("enabled", this.getName(), true, this.comment);
+		this.alpha = config.getFloat("alphaFactor", this.getName(), 1, 0, 1, "alpha = normalAlpha * alphaFactor");
 	}
 
 	public void createResources()
 	{
 		this.themePack = ConfigCore.defaultThemePack;
 		this.resourceArray = createResourcesForVisualType(this);
-		/*if ((this.resourceArray == null) || ((this.resourceArray != null) && (this.resourceArray.length == 0)))
-		{
-			System.out.println("[Enhanced Visuals] Using backups for:" + this.visualName);
-			this.themePack = ConfigCore.backupThemePack;
-			try
-			{
-				this.resourceArray = createResourcesForVisualType(this);
-			}
-			catch (FileNotFoundException e)
-			{
-				System.out.println("[Enhanced Visuals] Error finding backup directory, make sure you installed the theme pack correctly: " + ClientProxy.getVisualsDirectory(this.themePack) + this.visualCatagory.toString() + "/" + this.visualName);
-			}
-			if ((this.resourceArray == null) || ((this.resourceArray != null) && (this.resourceArray.length == 0)))
-			{
-				System.out.println("[Enhanced Visuals] Using defaults for:" + this.visualName);
-				this.themePack = ConfigCore.defaultThemePack;
-				try
-				{
-					this.resourceArray = createResourcesForVisualType(this);
-				}
-				catch (FileNotFoundException e)
-				{
-					System.out.println("[Enhanced Visuals] Error finding default directory, make sure you installed the mod correctly: " + ClientProxy.getVisualsDirectory(this.themePack) + this.visualCatagory.toString() + "/" + this.visualName);
-				}
-			}
-		}*/
-	}
-
-	public static VisualType addNewType(int id, Visual.VisualCatagory catagory, String name)
-	{
-		System.out.println("Adding id:" + id + " into catagory:" + catagory.toString() + " with name:" + name);
-		return new VisualType(id, catagory, name);
 	}
 
 	private ResourceLocation[] createResourcesForVisualType(VisualType vt)
@@ -239,11 +225,6 @@ public class VisualType {
 	public Visual.VisualCatagory getCatagory()
 	{
 		return this.visualCatagory;
-	}
-
-	public int getID()
-	{
-		return this.visualID;
 	}
 
 	public String getName() {
