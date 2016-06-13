@@ -25,8 +25,8 @@ public class DrownType extends VisualType {
 		minSplashes = config.getInt("minSplashes", getName(), 4, 0, 10000, "min splahes");
 		maxSplashes = config.getInt("maxSplashes", getName(), 8, 0, 10000, "max splahes");
 		
-		maxDuration = config.getInt("maxDuration", getName(), 10, 1, 10000, "max duration of one splash");
-		minDuration = config.getInt("minDuration", getName(), 15, 1, 10000, "min duration of one splash");
+		maxDuration = config.getInt("maxDuration", getName(), 15, 1, 10000, "max duration of one splash");
+		minDuration = config.getInt("minDuration", getName(), 10, 1, 10000, "min duration of one splash");
 	}
 
 }
