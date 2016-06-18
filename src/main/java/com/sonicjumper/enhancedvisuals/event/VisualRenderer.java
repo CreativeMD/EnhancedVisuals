@@ -46,7 +46,7 @@ public class VisualRenderer {
 	
 	private void renderStuff(float partialTicks) {
 		Minecraft mc = Minecraft.getMinecraft();
-		if(!mc.isGamePaused())
+		if(true)
 		{
 			if(Base.instance != null && Base.instance.shaderHelper != null)
 			{
