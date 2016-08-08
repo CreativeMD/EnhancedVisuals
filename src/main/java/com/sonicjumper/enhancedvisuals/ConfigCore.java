@@ -37,6 +37,7 @@ public class ConfigCore {
 		
 		waterSubstractFactor = config.getFloat("waterSubstractFactor", "general", 2.5F, 0, 100000, "increased fade out factor in water");
 		
+		maxHearts = config.getInt("heartLevel", "heartbeat", 6, 0, 20, "below or equal means hearbeat take effect");
 		minHeartBeatLength = config.getFloat("minHeartBeatLength", "heartbeat", 10, 0, 100000, "time between heartbeats = player.health * heartBeatHeartFactor + minHeartBeatLength");
 		heartBeatHeartFactor = config.getFloat("heartBeatHeartFactor", "heartbeat", 10, 0, 100000, "time between heartbeats = player.health * heartBeatHeartFactor + minHeartBeatLength");
 		
