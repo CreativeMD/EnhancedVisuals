@@ -20,6 +20,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.audio.ISound.AttenuationType;
+import net.minecraft.client.gui.GuiGameOver;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityEnderman;
@@ -121,7 +122,7 @@ public class VisualEventHandler {
 
 	@SubscribeEvent
 	public void playerTickEvent(PlayerTickEvent event) {
-		if(event.phase.equals(Phase.END)) {
+		if(event.phase.equals(Phase.END) && !(Minecraft.getMinecraft().currentScreen instanceof GuiGameOver)) {
 			onTickInGame();
 		}
 	}

@@ -2,6 +2,7 @@ package com.sonicjumper.enhancedvisuals;
 
 import java.io.File;
 
+import com.sonicjumper.enhancedvisuals.death.DeathMessages;
 import com.sonicjumper.enhancedvisuals.visuals.VisualType;
 
 import net.minecraftforge.common.config.Configuration;
@@ -52,6 +53,8 @@ public class ConfigCore {
 		for (int i = 0; i < VisualType.visuals.size(); i++) {
 			VisualType.visuals.get(i).loadConfig(config);
 		}
+		
+		DeathMessages.loadConfig(config);
 		
 		this.config.save();
 	}

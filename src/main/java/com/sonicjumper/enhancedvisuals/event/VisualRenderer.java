@@ -6,15 +6,21 @@ import java.util.HashMap;
 import org.lwjgl.opengl.GL11;
 
 import com.sonicjumper.enhancedvisuals.Base;
+import com.sonicjumper.enhancedvisuals.death.DeathMessages;
 import com.sonicjumper.enhancedvisuals.render.RenderVisual;
 import com.sonicjumper.enhancedvisuals.shaders.ShaderGroupCustom;
 import com.sonicjumper.enhancedvisuals.visuals.Visual;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGameOver;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.inventory.Container;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.event.entity.minecart.MinecartCollisionEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
@@ -36,16 +42,26 @@ public class VisualRenderer {
 		}
 	}
 	
+	public static Minecraft mc = Minecraft.getMinecraft();
+	
+	private String lastRenderedMessage = null;
+	
 	@SubscribeEvent
 	public void onRenderTick(RenderTickEvent event) {
 		if(event.phase == Phase.END) {
-			
-			renderStuff(event.renderTickTime);
+			if(!(mc.currentScreen instanceof GuiGameOver)){
+				lastRenderedMessage = null;
+				renderStuff(event.renderTickTime);
+			}else{
+				if(lastRenderedMessage == null)
+					lastRenderedMessage = DeathMessages.pickRandomDeathMessage();
+				
+				mc.fontRendererObj.drawString("\"" + lastRenderedMessage + "\"", mc.currentScreen.width/2-mc.fontRendererObj.getStringWidth(lastRenderedMessage)/2, 114, 16777215);
+			}
 		}
 	}
 	
 	private void renderStuff(float partialTicks) {
-		Minecraft mc = Minecraft.getMinecraft();
 		if(true)
 		{
 			if(Base.instance != null && Base.instance.shaderHelper != null)
