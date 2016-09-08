@@ -3,7 +3,7 @@
   "modid": "sonicvisuals",
   "name": "Enhanced Visuals",
   "description": "Experience realism and extra video effects for your in-game experience.",
-  "mcversion": "1.9",
+  "mcversion": "${mcversion}",
   "url": "http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2549282",
   "updateUrl": "",
   "authorList": ["Sonicjumper", "CreativeMD"],
