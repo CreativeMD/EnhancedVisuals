@@ -146,6 +146,9 @@ public class VisualEventHandler {
 		}
 		if(entity instanceof EntityPlayer)
 		{
+			if(ConfigCore.hitEffect)
+				Base.instance.manager.addVisualsWithShading(VisualType.lowhealth, 1, 15, 20, new Color(1.0F, 1.0F, 1.0F, 0.2F));
+			
 			Entity attacker = source.getSourceOfDamage();
 			if(attacker instanceof EntityArrow) 
 				Base.instance.manager.createVisualFromDamage(VisualType.pierce, damage, entity);

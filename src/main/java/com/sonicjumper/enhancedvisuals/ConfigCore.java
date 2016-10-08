@@ -26,6 +26,8 @@ public class ConfigCore {
 	public static float maxBeepVolume = 0.8F;
 	public static float maxBlur = 100;
 	public static float blurTimeFactor = 2.5F;
+	
+	public static boolean hitEffect = false;
 
 	public ConfigCore(File configFile)
 	{
@@ -49,6 +51,8 @@ public class ConfigCore {
 		maxBeepVolume = config.getFloat("maxBeepVolume", "explosion", maxBeepVolume, 0, 100000, "max volume of a beep");
 		maxBlur = config.getFloat("maxBlur", "explosion", maxBlur, 0, 100000, "max blur effect");
 		blurTimeFactor = config.getFloat("blurTimeFactor", "explosion", blurTimeFactor, 0, 100000, "time of blur = time of muted sounds / blurTimeFactor");
+		
+		hitEffect = config.getBoolean("hitEffect", "hit", false, "Red overlay effect once you get hit");
 		
 		for (int i = 0; i < VisualType.visuals.size(); i++) {
 			VisualType.visuals.get(i).loadConfig(config);
