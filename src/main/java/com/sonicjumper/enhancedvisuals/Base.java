@@ -54,8 +54,7 @@ public class Base {
 		ConfigCore cc = new ConfigCore(event.getSuggestedConfigurationFile());
 		cc.loadConfig();
 		
-		if(FMLCommonHandler.instance().getEffectiveSide().isClient())
-			this.renderer = new VisualRenderer();
+		this.renderer = new VisualRenderer();
 		
 		this.eventHandler = new VisualEventHandler();
 		
@@ -76,11 +75,7 @@ public class Base {
 	
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
-		if(FMLCommonHandler.instance().getEffectiveSide().isClient())
-		{
-			MinecraftForge.EVENT_BUS.register(Base.instance.renderer);
-			//FMLCommonHandler.instance()..bus().register(Base.instance.renderer);
-		}
+		MinecraftForge.EVENT_BUS.register(Base.instance.renderer);
 		
 		MinecraftForge.EVENT_BUS.register(Base.instance.eventHandler);
 		//FMLCommonHandler.instance().bus().register(Base.instance.eventHandler);
