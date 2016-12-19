@@ -9,7 +9,7 @@ public class BlurType extends VisualType {
 	
 	public BlurType()
 	{
-		super(Visual.VisualCatagory.Shader, "blur", "heart beat & splash blur effect");
+		super(Visual.VisualCatagory.shader, "blur", "heart beat & splash blur effect");
 	}
 		
 	public float splashMinDuration = 30.0F;

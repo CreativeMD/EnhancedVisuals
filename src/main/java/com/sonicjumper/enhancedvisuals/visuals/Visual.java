@@ -12,10 +12,10 @@ import net.minecraft.util.ResourceLocation;
 
 public class Visual {
 	public enum VisualCatagory {
-		Splat,
-		Overlay,
-		Animation,
-		Shader;
+		splat,
+		overlay,
+		animation,
+		shader;
 	}
 	
 	public static Random rand = new Random();
@@ -49,7 +49,7 @@ public class Visual {
 		this.height = (int) (type.getSize()*Math.random());
 		this.rotation = (float) (Math.random()*360F);
 		this.color = rgba;
-		if(type.getCatagory().equals(VisualCatagory.Splat)) {
+		if(type.getCatagory().equals(VisualCatagory.splat)) {
 			ScaledResolution scaledRes = new ScaledResolution(Minecraft.getMinecraft());
 			this.xOffset = generateOffset(scaledRes.getScaledWidth(), this.width);
 			this.yOffset = generateOffset(scaledRes.getScaledHeight(), this.height);

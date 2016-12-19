@@ -10,7 +10,7 @@ import com.sonicjumper.enhancedvisuals.visuals.VisualType;
 public class FireType extends VisualType {
 
 	public FireType() {
-		super(Visual.VisualCatagory.Splat, "fire", "burning/ walking on fire", true);
+		super(Visual.VisualCatagory.splat, "fire", "burning/ walking on fire", true);
 	}
 	
 	public int splashes = 1;

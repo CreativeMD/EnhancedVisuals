@@ -10,7 +10,7 @@ import com.sonicjumper.enhancedvisuals.visuals.VisualType;
 public class DrownType extends VisualType {
 
 	public DrownType() {
-		super(Visual.VisualCatagory.Splat, "water", "drowning splashes");
+		super(Visual.VisualCatagory.splat, "water", "drowning splashes");
 	}
 	
 	public int minSplashes = 4;

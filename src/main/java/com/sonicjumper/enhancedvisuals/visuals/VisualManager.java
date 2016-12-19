@@ -95,11 +95,11 @@ public class VisualManager {
 			return ;
 		for(int i = 0; i < num; i++) {
 			Visual v;
-			if(vt.getCatagory().ordinal() == VisualCatagory.Animation.ordinal()) {
+			if(vt.getCatagory().ordinal() == VisualCatagory.animation.ordinal()) {
 				v = minTime == maxTime ? new Animation(vt, minTime, color) : new Animation(vt, minTime + rand.nextInt(maxTime - minTime), color);
-			} else if(vt.getCatagory().ordinal() == VisualCatagory.Overlay.ordinal()) {
+			} else if(vt.getCatagory().ordinal() == VisualCatagory.overlay.ordinal()) {
 				v = minTime == maxTime ? new Overlay(vt, minTime, color) : new Overlay(vt, minTime + rand.nextInt(maxTime - minTime), color);
-			} else if(vt.getCatagory().ordinal() == VisualCatagory.Splat.ordinal()) {
+			} else if(vt.getCatagory().ordinal() == VisualCatagory.splat.ordinal()) {
 				v = minTime == maxTime ? new Splat(vt, minTime, color) : new Splat(vt, minTime + rand.nextInt(maxTime - minTime), color);
 			} else {
 				v = minTime == maxTime ? new Visual(vt, minTime, color) : new Visual(vt, minTime + rand.nextInt(maxTime - minTime), color);

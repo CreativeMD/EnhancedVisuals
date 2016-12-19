@@ -10,7 +10,7 @@ import com.sonicjumper.enhancedvisuals.visuals.VisualType;
 public class SlenderType extends VisualType{
 
 	public SlenderType() {
-		super(Visual.VisualCatagory.Animation, "slender", "slenderman effect if you are near an enderman");
+		super(Visual.VisualCatagory.animation, "slender", "slenderman effect if you are near an enderman");
 	}
 	
 	public float defaultIntensity = 0F;

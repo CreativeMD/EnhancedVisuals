@@ -10,7 +10,7 @@ import com.sonicjumper.enhancedvisuals.visuals.VisualType;
 public class DustType extends VisualType {
 
 	public DustType() {
-		super(Visual.VisualCatagory.Splat, "dust", "explosion dust", true);
+		super(Visual.VisualCatagory.splat, "dust", "explosion dust", true);
 	}
 	
 	public float multiplier = 10F;

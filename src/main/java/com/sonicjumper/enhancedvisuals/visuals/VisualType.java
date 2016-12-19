@@ -44,17 +44,17 @@ public class VisualType {
 	
 	public static ArrayList<VisualType> visuals = new ArrayList<>();
 	
-	public static VisualType splatter = new VisualType(Visual.VisualCatagory.Splat, "splatter", "blood splatter", true);
-	public static VisualType impact = new VisualType(Visual.VisualCatagory.Splat, "impact", "blunt impact", true);
-	public static VisualType slash = new VisualType(Visual.VisualCatagory.Splat, "slash", "sharp slash", true);
-	public static VisualType pierce = new VisualType(Visual.VisualCatagory.Splat, "pierce", "arrow pierce", true);
+	public static VisualType splatter = new VisualType(Visual.VisualCatagory.splat, "splatter", "blood splatter", true);
+	public static VisualType impact = new VisualType(Visual.VisualCatagory.splat, "impact", "blunt impact", true);
+	public static VisualType slash = new VisualType(Visual.VisualCatagory.splat, "slash", "sharp slash", true);
+	public static VisualType pierce = new VisualType(Visual.VisualCatagory.splat, "pierce", "arrow pierce", true);
 	public static DustType dust = new DustType();
 	public static FireType fire = new FireType();
 	public static SandType sand = new SandType();
 	public static DrownType waterS = new DrownType();
 	
-	public static VisualType lowhealth = new VisualType(Visual.VisualCatagory.Overlay, "lowhealth", "heartbeat overlay");
-	public static VisualType potion = new VisualType(Visual.VisualCatagory.Overlay, "potion", "splash potion effect", true);
+	public static VisualType lowhealth = new VisualType(Visual.VisualCatagory.overlay, "lowhealth", "heartbeat overlay");
+	public static VisualType potion = new VisualType(Visual.VisualCatagory.overlay, "potion", "splash potion effect", true);
 	
 	public static SlenderType slender = new SlenderType();
 	
@@ -89,7 +89,7 @@ public class VisualType {
 		visuals.add(this);
 		//this.visualID = id;
 		this.visualCatagory = catagory;
-		this.visualName = name;
+		this.visualName = name.toLowerCase();
 		try {
 			createResources();
 			for (ResourceLocation resourceLoc : this.resourceArray) {
@@ -121,7 +121,7 @@ public class VisualType {
 		String visualNamePath = this.themePack + "/visuals/" + vt.visualCatagory.toString() + "/" + vt.visualName + "/";
 		
 		// Read files normally in developer's environment
-		File f = new File(ClientProxy.getVisualsDirectory(this.themePack) + this.visualCatagory.toString() + "/" + this.visualName + "/");
+		File f = new File(ClientProxy.getVisualsDirectory(this.themePack) + this.visualCatagory.toString().toLowerCase() + "/" + this.visualName + "/");
 
 		File[] list = f.listFiles();
 		if (list != null) {

@@ -10,7 +10,7 @@ import com.sonicjumper.enhancedvisuals.visuals.VisualType;
 public class SandType extends VisualType {
 
 	public SandType() {
-		super(Visual.VisualCatagory.Splat, "sand", "walking on sand", true);
+		super(Visual.VisualCatagory.splat, "sand", "walking on sand", true);
 	}
 	
 	public float defaultmodifier = 0.5F;

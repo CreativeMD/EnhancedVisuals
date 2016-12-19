@@ -10,7 +10,7 @@ import com.sonicjumper.enhancedvisuals.visuals.VisualType;
 public class SaturationType extends VisualType {
 
 	public SaturationType() {
-		super(Visual.VisualCatagory.Shader, "desaturate", "hunger depending saturation");
+		super(Visual.VisualCatagory.shader, "desaturate", "hunger depending saturation");
 	}
 	
 	public float defaultSaturation = 1F;
