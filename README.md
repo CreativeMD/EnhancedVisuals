@@ -1,4 +1,4 @@
 # EnhancedVisuals
-All credit goes to @Sonicjumper!
+This mod was originaly created by @SonicJumper. Sonicjumper started to write a port to 1.8.
 
-I (CreativeMD) only fixed some issues and enhanced small things, but @Sonicjumper wrote 90% of the port.
+I (CreativeMD) finished the port and added more effects over time.
