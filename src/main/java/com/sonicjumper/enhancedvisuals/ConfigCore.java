@@ -11,7 +11,7 @@ public class ConfigCore {
 	
 	private Configuration config;
 	
-	public static String defaultThemePack = "DefaultTheme";
+	public static String defaultThemePack = "defaulttheme";
 	
 	public static float waterSubstractFactor = 2.5F;
 	
