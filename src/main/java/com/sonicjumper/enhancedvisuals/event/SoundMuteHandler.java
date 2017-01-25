@@ -54,13 +54,22 @@ public class SoundMuteHandler {
 	public static void updateSounds()
 	{
 		try{
-			HashMap<String, Source> sourcesAndIDs = new HashMap<>(soundLibrary.getSources());
+			HashMap<String, Source> sourcesAndIDs = null;
+			synchronized (soundLibrary)
+			{
+				HashMap<String, Source> sources = soundLibrary.getSources();
+				synchronized(sources)
+				{
+					sourcesAndIDs = new HashMap<>(sources);
+				}
+			}
 			for (Source source : sourcesAndIDs.values()) {
 				if(!sources.containsKey(source) && !ignoredSounds.contains(source.sourcename))
 					sources.put(source, source.sourceVolume);
 			}
 		}catch(Exception e){
 			//Thread error
+			e.printStackTrace();
 		}
 	}
 	
