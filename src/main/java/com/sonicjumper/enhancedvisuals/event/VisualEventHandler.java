@@ -46,6 +46,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.sound.PlaySoundSourceEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
@@ -129,18 +130,18 @@ public class VisualEventHandler {
 
 	@SubscribeEvent
 	public void onPlayerDeath(LivingDeathEvent e) {
-		if(e.getEntityLiving().equals(mc.thePlayer)) {
+		if(e.getEntityLiving().equals(mc.player)) {
 			Base.instance.manager.clearAllVisuals();
 		}
 	}
 
 	private void entityDamaged(EntityLivingBase entity, DamageSource source, float damage) {
 		
-		if(source == DamageSource.outOfWorld || damage == 0)
+		if(source == DamageSource.OUT_OF_WORLD || damage == 0)
 			return ;
 		
 		// Check distance to player and use that as splat distance pattern
-		double distanceSq = Minecraft.getMinecraft().thePlayer.getDistanceSqToEntity(entity);
+		double distanceSq = Minecraft.getMinecraft().player.getDistanceSqToEntity(entity);
 		if(distanceSq > 64.0D) {
 			return;
 		}
@@ -181,11 +182,11 @@ public class VisualEventHandler {
 				}
 			}
 			
-			if(source == DamageSource.cactus) {
+			if(source == DamageSource.CACTUS) {
 				Base.instance.manager.createVisualFromDamage(VisualType.pierce, damage, entity);
 			}
 			
-			if(source == DamageSource.fall || source == DamageSource.fallingBlock) {
+			if(source == DamageSource.FALL || source == DamageSource.FALLING_BLOCK) {
 				Base.instance.manager.createVisualFromDamage(VisualType.impact, damage, entity);
 			}
 			
@@ -202,26 +203,26 @@ public class VisualEventHandler {
 			
 			
 			
-			if(source.equals(DamageSource.drown)) {
+			if(source.equals(DamageSource.DROWN)) {
 				Base.instance.manager.addRandomNumVisualsWithColor(VisualType.waterS, VisualType.waterS.minSplashes, VisualType.waterS.maxSplashes, VisualType.waterS.minDuration, VisualType.waterS.maxDuration, new Color(1.0F, 1.0F, 1.0F, 1.0F));
 			}
 			
 			
 			
-			if(source.isFireDamage() || source == DamageSource.onFire)
+			if(source.isFireDamage() || source == DamageSource.ON_FIRE)
 				Base.instance.manager.addVisualsWithShading(VisualType.fire, VisualType.fire.splashes, VisualType.fire.minDuration, VisualType.fire.maxDuration, new Color(1, 1, 1));
 			
 		}else{			
 			// For now, just assume damage was another source(falling, drowning, cactus, etc.) and use splatter
-			if(source == DamageSource.anvil || source == DamageSource.fall || source == DamageSource.fallingBlock
+			if(source == DamageSource.ANVIL || source == DamageSource.FALL || source == DamageSource.FALLING_BLOCK
 					|| source.getDamageType().equals("mob") || source.getDamageType().equals("player")) 
-				if(source.getEntity().getDistanceToEntity(mc.thePlayer) < 8.0D)
+				if(source.getEntity().getDistanceToEntity(mc.player) < 8.0D)
 					Base.instance.manager.createVisualFromDamageAndDistance(VisualType.splatter, damage, entity, distanceSq);
 		}
 	}
 
 	public synchronized void onTickInGame() {
-		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+		EntityPlayer player = Minecraft.getMinecraft().player;
 		
 		if(player == null)
 			return ;
@@ -322,10 +323,10 @@ public class VisualEventHandler {
 	
 	public void addSandSplatFromTick()
 	{		
-	    if(mc.thePlayer.onGround && isOnSand(mc.thePlayer))
+	    if(mc.player.onGround && isOnSand(mc.player))
 	    {
 	    	float modifier = VisualType.sand.defaultmodifier;
-			if (mc.thePlayer.isSprinting())
+			if (mc.player.isSprinting())
 				modifier = VisualType.sand.sprintingmodifier;
 	    	Base.instance.manager.addVisuals(VisualType.sand, (int) (Math.random()*modifier), VisualType.sand.minDuration, VisualType.sand.maxDuration);
 	    }
@@ -336,7 +337,7 @@ public class VisualEventHandler {
 		int posX = (int)entityPlayer.posX;
 		int posY = (int)(entityPlayer.posY - 2.0D);
 		int posZ = (int)entityPlayer.posZ;
-	    if (mc.theWorld.getBlockState(new BlockPos(posX, posY, posZ)).getBlock() == Blocks.SAND && mc.theWorld.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock() == Blocks.SAND) {
+	    if (mc.world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock() == Blocks.SAND && mc.world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock() == Blocks.SAND) {
 	    	return true;
 	    }
 	    return false;
@@ -346,14 +347,14 @@ public class VisualEventHandler {
 	{
 		boolean angryNearby = false;
 	    float modifier = 0.0F;
-	    double d0 = mc.thePlayer.posX;
-	    double d1 = mc.thePlayer.posY;
-	    double d2 = mc.thePlayer.posZ;
+	    double d0 = mc.player.posX;
+	    double d1 = mc.player.posY;
+	    double d2 = mc.player.posZ;
 	    
-	    AxisAlignedBB box = mc.thePlayer.getEntityBoundingBox();
+	    AxisAlignedBB box = mc.player.getEntityBoundingBox();
 	    box = box.expand(16, 16, 16);
 	    
-	    EntityEnderman mob = (EntityEnderman) mc.theWorld.findNearestEntityWithinAABB(EntityEnderman.class, box, mc.thePlayer);
+	    EntityEnderman mob = (EntityEnderman) mc.world.findNearestEntityWithinAABB(EntityEnderman.class, box, mc.player);
 	    if(mob != null)
 	    {
 	    	angryNearby = true;
@@ -374,9 +375,9 @@ public class VisualEventHandler {
 	}
 	
 	private void checkRecentPotions() {
-		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+		EntityPlayer player = Minecraft.getMinecraft().player;
 		AxisAlignedBB axisBox = new AxisAlignedBB(Math.floor(player.posX) - 4.5D, Math.floor(player.posY) - 5.0D, Math.floor(player.posZ) - 4.5D, Math.floor(player.posX) + 4.5D, Math.floor(player.posY) + 2.0D, Math.floor(player.posZ) + 4.5D);
-		for (EntityPotion entityPotion : (ArrayList<EntityPotion>)Minecraft.getMinecraft().theWorld.getEntitiesWithinAABB(EntityPotion.class, axisBox)) {
+		for (EntityPotion entityPotion : (ArrayList<EntityPotion>)Minecraft.getMinecraft().world.getEntitiesWithinAABB(EntityPotion.class, axisBox)) {
 			if (entityPotion.isDead) {
 				double distance = Math.sqrt(Math.pow(Math.floor(player.posX) - entityPotion.posX, 2) + Math.pow(Math.floor(player.posY + player.eyeHeight) - entityPotion.posY, 2) + Math.pow(Math.floor(player.posZ) - entityPotion.posZ, 2));
 				double modifier = 1.0D / distance;
@@ -433,9 +434,9 @@ public class VisualEventHandler {
 		int prevX = (int)Math.floor(entityPlayer.prevPosX);
 		int prevY = (int)(entityPlayer.prevPosY + entityPlayer.getDefaultEyeHeight());
 		int prevZ = (int)Math.floor(entityPlayer.prevPosZ);
-		if (Minecraft.getMinecraft().theWorld != null) {
-			Block currentBlockEyesIn = Minecraft.getMinecraft().theWorld.getBlockState(new BlockPos(x, y, z)).getBlock();
-			Block pastBlockEyesIn = Minecraft.getMinecraft().theWorld.getBlockState(new BlockPos(prevX, prevY, prevZ)).getBlock();
+		if (Minecraft.getMinecraft().world != null) {
+			Block currentBlockEyesIn = Minecraft.getMinecraft().world.getBlockState(new BlockPos(x, y, z)).getBlock();
+			Block pastBlockEyesIn = Minecraft.getMinecraft().world.getBlockState(new BlockPos(prevX, prevY, prevZ)).getBlock();
 			return (currentBlockEyesIn.equals(Blocks.FLOWING_WATER) ^ pastBlockEyesIn.equals(Blocks.FLOWING_WATER)) || (currentBlockEyesIn.equals(Blocks.WATER) ^ pastBlockEyesIn.equals(Blocks.WATER));
 		}
 		return false;

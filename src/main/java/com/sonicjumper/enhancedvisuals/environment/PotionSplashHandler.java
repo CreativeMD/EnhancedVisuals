@@ -20,11 +20,11 @@ public class PotionSplashHandler extends BaseEnvironmentEffect {
 
 	@Override
 	public void onTick() {
-		AxisAlignedBB var1 = new AxisAlignedBB(Math.floor(parent.mc.thePlayer.posX) - 4.5D, Math.floor(parent.mc.thePlayer.posY) - 5.0D, Math.floor(parent.mc.thePlayer.posZ) - 4.5D, Math.floor(parent.mc.thePlayer.posX) + 4.5D, Math.floor(parent.mc.thePlayer.posY) + 2.0D, Math.floor(parent.mc.thePlayer.posZ) + 4.5D);
+		AxisAlignedBB var1 = new AxisAlignedBB(Math.floor(parent.mc.player.posX) - 4.5D, Math.floor(parent.mc.player.posY) - 5.0D, Math.floor(parent.mc.player.posZ) - 4.5D, Math.floor(parent.mc.player.posX) + 4.5D, Math.floor(parent.mc.player.posY) + 2.0D, Math.floor(parent.mc.player.posZ) + 4.5D);
 
-		for(EntityPotion ep : (ArrayList<EntityPotion>) parent.mc.theWorld.getEntitiesWithinAABB(EntityPotion.class, var1)) {
+		for(EntityPotion ep : (ArrayList<EntityPotion>) parent.mc.world.getEntitiesWithinAABB(EntityPotion.class, var1)) {
 			if(ep.isDead) {
-				double modifier = 1/Math.sqrt(Math.pow(Math.floor(parent.mc.thePlayer.posX) - ep.posX, 2) + Math.pow(Math.floor(parent.mc.thePlayer.posY) - ep.posY, 2) + Math.pow(Math.floor(parent.mc.thePlayer.posZ) - ep.posZ, 2));
+				double modifier = 1/Math.sqrt(Math.pow(Math.floor(parent.mc.player.posX) - ep.posX, 2) + Math.pow(Math.floor(parent.mc.player.posY) - ep.posY, 2) + Math.pow(Math.floor(parent.mc.player.posZ) - ep.posZ, 2));
 				int var11 = PotionUtils.getPotionColor(PotionUtils.getPotionFromItem(ep.getPotion()));
 				float r = (float)(var11 >> 16 & 255) / 255.0F;
 				float g = (float)(var11 >> 8 & 255) / 255.0F;
