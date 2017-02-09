@@ -220,7 +220,7 @@ public class VisualEventHandler {
 		}
 	}
 
-	public synchronized void onTickInGame() {
+	public synchronized void onTickInGame(boolean isInGame) {
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 		
 		// Tick all visuals
