@@ -123,7 +123,7 @@ public class VisualEventHandler {
 	@SubscribeEvent
 	public void playerTickEvent(PlayerTickEvent event) {
 		if(event.phase.equals(Phase.END) && !(Minecraft.getMinecraft().currentScreen instanceof GuiGameOver)) {
-			onTickInGame();
+			onTickInGame(Minecraft.getMinecraft().thePlayer != null);
 		}
 	}
 
@@ -223,9 +223,6 @@ public class VisualEventHandler {
 	public synchronized void onTickInGame() {
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 		
-		if(player == null)
-			return ;
-		
 		// Tick all visuals
 		boolean hasBlurShader = false;
 		ArrayList<Visual> vList = Base.instance.manager.getActiveVisuals();
@@ -240,6 +237,27 @@ public class VisualEventHandler {
 		if(!hasBlurShader && RenderShaderBlurFade.lastBlurRadius != 0)
 			RenderShaderBlurFade.resetBlur();
 		
+		//Saturation
+		float aimedSaturation = VisualType.desaturate.defaultSaturation;
+		
+		if(isInGame)
+		{
+			if(player.getFoodStats().getFoodLevel() <= VisualType.desaturate.maxFoodLevelEffected)
+			{
+				float leftFoodInSpan = player.getFoodStats().getFoodLevel()-VisualType.desaturate.minFoodLevelEffected;
+				float spanLength = VisualType.desaturate.maxFoodLevelEffected-VisualType.desaturate.minFoodLevelEffected;
+				aimedSaturation = Math.max(VisualType.desaturate.minSaturation, (leftFoodInSpan/spanLength)*VisualType.desaturate.defaultSaturation);
+			}
+		}
+		
+		if(ShaderDesaturate.Saturation < aimedSaturation)
+			ShaderDesaturate.Saturation = Math.min(ShaderDesaturate.Saturation+VisualType.desaturate.fadeFactor, aimedSaturation);
+		else if(ShaderDesaturate.Saturation > aimedSaturation)
+			ShaderDesaturate.Saturation = Math.max(ShaderDesaturate.Saturation-VisualType.desaturate.fadeFactor, aimedSaturation);
+		
+		if(!isInGame)
+			return ;
+		
 		for(BaseEnvironmentEffect ee : environmentalEffects) {
 			ee.onTick();
 		}
@@ -249,6 +267,7 @@ public class VisualEventHandler {
 			Shader s = new ShaderBlurFade(VisualType.blur, (int) (VisualType.blur.splashMinDuration + rand.nextFloat()*VisualType.blur.splashAdditionalDuration), VisualType.blur.splashMinIntensity + rand.nextFloat() * VisualType.blur.splashAdditionalIntensity);
 			Base.instance.manager.addVisualDirect(s);
 		}
+		
 		// Check if player is in water, then wash certain splats away
 		if(player.isInWater()) {
 			for(Visual v : Base.instance.manager.getActiveVisuals()) {
@@ -257,21 +276,6 @@ public class VisualEventHandler {
 				}
 			}
 		}
-		
-		//Saturation
-		float aimedSaturation = VisualType.desaturate.defaultSaturation;
-		if(player.getFoodStats().getFoodLevel() <= VisualType.desaturate.maxFoodLevelEffected)
-		{
-			float leftFoodInSpan = player.getFoodStats().getFoodLevel()-VisualType.desaturate.minFoodLevelEffected;
-			float spanLength = VisualType.desaturate.maxFoodLevelEffected-VisualType.desaturate.minFoodLevelEffected;
-			aimedSaturation = Math.max(VisualType.desaturate.minSaturation, (leftFoodInSpan/spanLength)*VisualType.desaturate.defaultSaturation);
-		}
-		
-		if(ShaderDesaturate.Saturation < aimedSaturation)
-			ShaderDesaturate.Saturation = Math.min(ShaderDesaturate.Saturation+VisualType.desaturate.fadeFactor, aimedSaturation);
-		else if(ShaderDesaturate.Saturation > aimedSaturation)
-			ShaderDesaturate.Saturation = Math.max(ShaderDesaturate.Saturation-VisualType.desaturate.fadeFactor, aimedSaturation);
-			
 		
 		// Check if player has less than three hearts, then play heartbeat sound and flash lowhealth screen
 		if (player.getHealth() <= ConfigCore.maxHearts) {
