@@ -74,6 +74,7 @@ public class ShaderHelper {
 		
 		 //GlStateManager.depthMask(true);
          this.mc.getFramebuffer().bindFramebuffer(false);
+         GlStateManager.matrixMode(5888);
          //GlStateManager.enableFog();
          /*GlStateManager.depthFunc(515);
          GlStateManager.enableDepth();
