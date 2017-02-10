@@ -23,7 +23,7 @@ public class ConfigCore {
 	public static float explosionTimeModifier = 20F;
 	public static float minExplosionVolume = 0F;
 	public static float explosionVolumeModifier = 10F;
-	public static float maxBeepVolume = 0.8F;
+	public static float maxBeepVolume = 0.5F;
 	public static float maxBlur = 100;
 	public static float blurTimeFactor = 2.5F;
 	
