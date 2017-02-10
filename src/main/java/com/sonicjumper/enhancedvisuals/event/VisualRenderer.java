@@ -52,6 +52,8 @@ public class VisualRenderer {
 			if(!(mc.currentScreen instanceof GuiGameOver)){
 				lastRenderedMessage = null;
 				renderStuff(event.renderTickTime);
+				if(mc.player == null)
+					Base.instance.eventHandler.onTickInGame(Minecraft.getMinecraft().player != null);
 			}else{
 				if(lastRenderedMessage == null)
 					lastRenderedMessage = DeathMessages.pickRandomDeathMessage();
