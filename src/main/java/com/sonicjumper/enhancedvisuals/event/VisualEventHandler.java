@@ -44,6 +44,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.sound.PlaySoundSourceEvent;
+import net.minecraftforge.client.event.sound.SoundEvent.SoundSourceEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -51,6 +52,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import paulscode.sound.Source;
 
 public class VisualEventHandler {
 	
@@ -395,12 +397,15 @@ public class VisualEventHandler {
 	}
 	
 	@SubscribeEvent
-	public void onSoundPlayed(PlaySoundSourceEvent event)
+	public void onSoundPlayed(SoundSourceEvent event)
 	{
 		if(SoundMuteHandler.isMuting && SoundMuteHandler.ignoredSounds != null)
 		{
 			if(event.getSound().getSoundLocation().toString().equals("enhancedvisuals:ringing"))
 				SoundMuteHandler.ignoredSounds.add(event.getUuid());
+			//else{
+				//SoundMuteHandler.soundsToBeAdded.add(event.getUuid());
+			//}
 		}
 	}
 

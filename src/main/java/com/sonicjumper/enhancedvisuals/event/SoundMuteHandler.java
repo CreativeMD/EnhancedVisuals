@@ -6,9 +6,11 @@ import java.util.HashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.audio.SoundManager;
+import net.minecraftforge.client.event.sound.SoundEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import paulscode.sound.Library;
 import paulscode.sound.SoundSystem;
+import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.Source;
 
 public class SoundMuteHandler {
@@ -16,6 +18,8 @@ public class SoundMuteHandler {
 	public static boolean isMuting = false;
 	
 	public static HashMap<Source, Float> sources = null;
+	
+	//public static ArrayList<String> soundsToBeAdded = null;
 	
 	public static Library soundLibrary;
 	public static SoundSystem sndSystem;
@@ -35,8 +39,23 @@ public class SoundMuteHandler {
 			if(remaining <= 0)
 				endMuting();
 			else{
+				/*int i = 0;
+				while(i < soundsToBeAdded.size())
+				{
+					try{
+						Source source = SoundMuteHandler.soundLibrary.getSource(soundsToBeAdded.get(i));
+						if(source == null)
+							i++;
+						else{
+							SoundMuteHandler.sources.put(source, source.sourceVolume);
+							soundsToBeAdded.remove(i);
+						}
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+				}*/
 				updateSounds();
-				//System.out.println("mutingFactor: " + muting);
+				
 				setMuteFactor(getMutingFactorPerTick());				
 				timer++;
 			}
@@ -55,7 +74,7 @@ public class SoundMuteHandler {
 	{
 		try{
 			HashMap<String, Source> sourcesAndIDs = null;
-			synchronized (soundLibrary)
+			synchronized (SoundSystemConfig.THREAD_SYNC )
 			{
 				HashMap<String, Source> sources = soundLibrary.getSources();
 				synchronized(sources)
@@ -83,9 +102,12 @@ public class SoundMuteHandler {
 			soundLibrary = ReflectionHelper.getPrivateValue(SoundSystem.class, sndSystem, "soundLibrary");
 		}
 		
-		if(isMuting && getMutingFactorPerTick() < mutingFactor)
-			endMuting();
-		
+		if(isMuting && getMutingFactorPerTick() > mutingFactor)
+		{
+			SoundMuteHandler.mutingFactor = mutingFactor;
+			SoundMuteHandler.mutingTime = mutingTime;
+			SoundMuteHandler.timer = 0;
+		}		
 		if(!isMuting)
 		{
 			SoundMuteHandler.mutingFactor = mutingFactor;
@@ -93,6 +115,7 @@ public class SoundMuteHandler {
 			SoundMuteHandler.timer = 0;
 			sources = new HashMap<>();
 			ignoredSounds = new ArrayList<>();
+			//soundsToBeAdded = new ArrayList<>();
 			updateSounds();
 			isMuting = true;
 		}
@@ -104,6 +127,7 @@ public class SoundMuteHandler {
 		sources = null;
 		isMuting = false;
 		ignoredSounds = null;
+		//soundsToBeAdded = null;
 	}
 		
 	public static synchronized void setMuteFactor(float muteVolume)
