@@ -15,15 +15,15 @@ public class DustType extends VisualType {
 	
 	public float multiplier = 10F;
 	
-	public int maxDuration = 10000;
-	public int minDuration = 1000;
+	public int maxDuration = 1000;
+	public int minDuration = 500;
 	
 	@Override
 	public void loadConfig(Configuration config) {
 		super.loadConfig(config);
 		multiplier = config.getFloat("multiplier", getName(), 10F, 0, 10000, "damage * multiplier = number of splats");
 		
-		maxDuration = config.getInt("maxDuration", getName(), 10000, 1, 100000, "max duration of one particle");
-		minDuration = config.getInt("minDuration", getName(), 1000, 1, 100000, "min duration of one particle");
+		maxDuration = config.getInt("maxDuration", getName(), maxDuration, 1, 100000, "max duration of one particle");
+		minDuration = config.getInt("minDuration", getName(), minDuration, 1, 100000, "min duration of one particle");
 	}
 }
