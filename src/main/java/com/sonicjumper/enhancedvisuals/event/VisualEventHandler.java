@@ -192,14 +192,16 @@ public class VisualEventHandler {
 			}
 			
 			if(source.isExplosion()) {
-				Base.instance.manager.addVisuals(VisualType.dust, (int) Math.max(20, damage*VisualType.dust.multiplier), VisualType.dust.minDuration, VisualType.dust.maxDuration);
+				Base.instance.manager.addVisuals(VisualType.dust, (int) Math.min(40, damage*VisualType.dust.multiplier), VisualType.dust.minDuration, VisualType.dust.maxDuration);
 				
 				float volume = Math.max(ConfigCore.minExplosionVolume, 1-(damage/ConfigCore.explosionVolumeModifier));
 				int time = (int) Math.min(ConfigCore.maxExplosionTime, damage*ConfigCore.explosionTimeModifier);
 				
+				if(!SoundMuteHandler.isMuting)
+					playSound(new ResourceLocation("enhancedvisuals:ringing"), null, (1-volume)*ConfigCore.maxBeepVolume);
 				SoundMuteHandler.startMuting(time, volume);
 				Base.instance.manager.addVisualDirect(new ShaderBlurFade(VisualType.blur, (int) (time/ConfigCore.blurTimeFactor), ConfigCore.maxBlur));
-				playSound(new ResourceLocation("enhancedvisuals:ringing"), null, (1-volume)*ConfigCore.maxBeepVolume);
+				
 			}
 			
 			

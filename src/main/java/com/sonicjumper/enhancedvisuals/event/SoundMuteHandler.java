@@ -76,11 +76,7 @@ public class SoundMuteHandler {
 			HashMap<String, Source> sourcesAndIDs = null;
 			synchronized (SoundSystemConfig.THREAD_SYNC )
 			{
-				HashMap<String, Source> sources = soundLibrary.getSources();
-				synchronized(sources)
-				{
-					sourcesAndIDs = new HashMap<>(sources);
-				}
+				sourcesAndIDs = new HashMap<>(soundLibrary.getSources());
 			}
 			for (Source source : sourcesAndIDs.values()) {
 				if(!sources.containsKey(source) && !ignoredSounds.contains(source.sourcename))
@@ -134,10 +130,13 @@ public class SoundMuteHandler {
 	{
 		if(isMuting && sources != null)
 		{
-			for (Source source : sources.keySet()) {
-				//source.sourceVolume = sources.get(source) * muteVolume;
-				//source.positionChanged();
-				sndSystem.setVolume(source.sourcename, sources.get(source) * muteVolume);
+			synchronized (SoundSystemConfig.THREAD_SYNC )
+			{
+				for (Source source : sources.keySet()) {
+					//source.sourceVolume = sources.get(source) * muteVolume;
+					//source.positionChanged();
+					sndSystem.setVolume(source.sourcename, sources.get(source) * muteVolume);
+				}
 			}
 		}
 	}
