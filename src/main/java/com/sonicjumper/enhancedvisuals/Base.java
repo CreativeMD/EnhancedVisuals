@@ -22,7 +22,7 @@ import com.sonicjumper.enhancedvisuals.visuals.Visual;
 import com.sonicjumper.enhancedvisuals.visuals.VisualManager;
 import com.sonicjumper.enhancedvisuals.visuals.VisualType;
 
-@Mod(modid = Base.MODID, name = Base.MODNAME, version = Base.MODVER,acceptedMinecraftVersions="")
+@Mod(modid = Base.MODID, name = Base.MODNAME, version = Base.MODVER,acceptedMinecraftVersions="",clientSideOnly = true)
 public class Base {
 	public static final String MODID = "enhancedvisuals";
 	public static final String MODNAME = "Enhanced Visuals";
