@@ -385,8 +385,8 @@ public class ShaderGroupCustom
     
     public void createBindFramebuffers(int p_148026_1_, int p_148026_2_)
     {
-        this.mainFramebufferWidth = this.mainFramebuffer.framebufferTextureWidth;
-        this.mainFramebufferHeight = this.mainFramebuffer.framebufferTextureHeight;
+        this.mainFramebufferWidth = p_148026_1_;
+        this.mainFramebufferHeight = p_148026_2_;
         this.resetProjectionMatrix();
         Iterator iterator = this.listShaders.iterator();
 
