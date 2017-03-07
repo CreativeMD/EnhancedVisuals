@@ -383,8 +383,9 @@ public class ShaderGroupCustom
     	return width != mainFramebufferWidth && height != mainFramebufferHeight;
     }
     
-    public void createBindFramebuffers(int p_148026_1_, int p_148026_2_)
+    public void createBindFramebuffers(int p_148026_1_, int p_148026_2_, Framebuffer newFrameBuffer)
     {
+    	this.mainFramebuffer = newFrameBuffer;
         this.mainFramebufferWidth = p_148026_1_;
         this.mainFramebufferHeight = p_148026_2_;
         this.resetProjectionMatrix();

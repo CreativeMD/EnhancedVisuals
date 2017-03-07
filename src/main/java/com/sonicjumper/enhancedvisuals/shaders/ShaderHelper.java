@@ -39,7 +39,7 @@ public class ShaderHelper {
     	
         try {
             ShaderGroupCustom group = new ShaderGroupCustom(this.mc.getTextureManager(), this.resourceManager, this.mc.getFramebuffer(), shadersPostLocation);
-            group.createBindFramebuffers(this.mc.displayWidth, this.mc.displayHeight);
+            group.createBindFramebuffers(this.mc.displayWidth, this.mc.displayHeight, mc.getFramebuffer());
             groups.add(group);
             shaders.add(name);
             //this.shaderName = name;
