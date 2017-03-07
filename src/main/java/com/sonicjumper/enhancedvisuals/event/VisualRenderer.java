@@ -71,7 +71,7 @@ public class VisualRenderer {
 				ArrayList<ShaderGroupCustom> groups = Base.instance.shaderHelper.getShaderGroups();
 				for (int i = 0; i < groups.size(); i++) {
 					if(groups.get(i).needNewFrameBuffer(mc.displayWidth, mc.displayHeight))
-						groups.get(i).createBindFramebuffers(mc.displayWidth, mc.displayHeight);
+						groups.get(i).createBindFramebuffers(mc.displayWidth, mc.displayHeight, mc.getFramebuffer());
 				} 
 			}
 				
