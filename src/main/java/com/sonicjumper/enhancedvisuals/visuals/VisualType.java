@@ -28,6 +28,7 @@ import org.apache.commons.compress.archivers.zip.ZipFile;
 import com.sonicjumper.enhancedvisuals.Base;
 import com.sonicjumper.enhancedvisuals.ClientProxy;
 import com.sonicjumper.enhancedvisuals.ConfigCore;
+import com.sonicjumper.enhancedvisuals.visuals.types.BlobType;
 import com.sonicjumper.enhancedvisuals.visuals.types.BlurType;
 import com.sonicjumper.enhancedvisuals.visuals.types.DrownType;
 import com.sonicjumper.enhancedvisuals.visuals.types.DustType;
@@ -60,6 +61,7 @@ public class VisualType {
 	
 	public static BlurType blur = new BlurType();
 	public static SaturationType desaturate = new SaturationType();
+	public static BlobType blob = new BlobType();
 	
 	//Config
 	public boolean enabled = true;

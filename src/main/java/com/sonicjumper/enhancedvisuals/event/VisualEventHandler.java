@@ -11,6 +11,7 @@ import com.sonicjumper.enhancedvisuals.environment.PotionSplashHandler;
 import com.sonicjumper.enhancedvisuals.render.RenderShaderBlurFade;
 import com.sonicjumper.enhancedvisuals.render.RenderShaderDesaturate;
 import com.sonicjumper.enhancedvisuals.visuals.Shader;
+import com.sonicjumper.enhancedvisuals.visuals.ShaderBlob2;
 import com.sonicjumper.enhancedvisuals.visuals.ShaderBlurFade;
 import com.sonicjumper.enhancedvisuals.visuals.ShaderDesaturate;
 import com.sonicjumper.enhancedvisuals.visuals.Visual;
@@ -271,6 +272,7 @@ public class VisualEventHandler {
 		if(hasSplashed(player)) {
 			Shader s = new ShaderBlurFade(VisualType.blur, (int) (VisualType.blur.splashMinDuration + rand.nextFloat()*VisualType.blur.splashAdditionalDuration), VisualType.blur.splashMinIntensity + rand.nextFloat() * VisualType.blur.splashAdditionalIntensity);
 			Base.instance.manager.addVisualDirect(s);
+			Base.instance.manager.addVisualDirect(new ShaderBlob2(VisualType.blob, 100, 10));
 		}
 		
 		// Check if player is in water, then wash certain splats away
