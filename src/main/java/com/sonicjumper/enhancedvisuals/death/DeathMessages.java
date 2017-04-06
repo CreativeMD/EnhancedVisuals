@@ -10,6 +10,8 @@ public class DeathMessages {
 	
 	public static ArrayList<String> deathMessages = new ArrayList<>();
 	
+	public static boolean enabled = true;
+	
 	private static Random rand = new Random();
 	
 	static{
@@ -27,7 +29,8 @@ public class DeathMessages {
 	
 	public static void loadConfig(Configuration config)
 	{
-		deathMessages = new ArrayList(Arrays.asList(config.getStringList("deathMessages", "Messages", deathMessages.toArray(new String[0]), "")));
+		deathMessages = new ArrayList(Arrays.asList(config.getStringList("messages", "deathMessages", deathMessages.toArray(new String[0]), "")));
+		enabled = config.getBoolean("enabled", "deathMessages", enabled, "");
 	}
 	
 	public static String pickRandomDeathMessage()
