@@ -1,5 +1,7 @@
 package com.sonicjumper.enhancedvisuals.visuals;
 
+import java.awt.Color;
+
 import javax.annotation.Nullable;
 
 import com.sonicjumper.enhancedvisuals.visuals.types.VisualType;
@@ -10,10 +12,14 @@ public class VisualFadeOut extends Visual {
 	
 	public int duration;
 	public int lifeTime = 0;
+	
+	public VisualFadeOut(VisualType type, float intensity, int minDuration, int maxDuration, Color color) {
+		super(type, intensity, color);
+		this.duration = minDuration + (maxDuration - minDuration > 0 ? rand.nextInt(maxDuration - minDuration) : minDuration);
+	}
 
 	public VisualFadeOut(VisualType type, float intensity, int minDuration, int maxDuration) {
-		super(type, intensity);
-		this.duration = minDuration + rand.nextInt(maxDuration - minDuration);
+		this(type, intensity, minDuration, maxDuration, Color.WHITE);
 	}
 	
 	@Override
@@ -26,8 +32,8 @@ public class VisualFadeOut extends Visual {
 	public float getIntensity()
 	{
 		if(type.supportsColor())
-			return color.getAlpha() / 255F * intensity * (lifeTime/duration);
-		return intensity * (lifeTime/duration);
+			return color.getAlpha() / 255F * intensity * (1F - ((float) lifeTime / (float) duration));
+		return (float) (intensity * (1 - ((double) lifeTime / (double) duration)));
 	}
 
 	@Override

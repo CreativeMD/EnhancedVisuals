@@ -10,7 +10,9 @@ import com.sonicjumper.enhancedvisuals.handlers.VisualHandler;
 import com.sonicjumper.enhancedvisuals.visuals.Visual;
 import com.sonicjumper.enhancedvisuals.visuals.types.VisualCategory;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiGameOver;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -21,8 +23,10 @@ import net.minecraft.client.shader.ShaderGroup;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.client.event.sound.SoundEvent.SoundSourceEvent;
+import net.minecraftforge.event.entity.ThrowableImpactEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
@@ -34,10 +38,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class VisualEventHandler {
 	
 	private static Minecraft mc = Minecraft.getMinecraft();
-	private static Framebuffer buffer;
 	public static String lastRenderedMessage;
 	
-	@SubscribeEvent(priority = EventPriority.LOWEST)
+	private static int framebufferWidth;
+	private static int framebufferHeight;
+	//private static int framebufferTextureWidth;
+	//private static int framebufferTextureHeight;
+	
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onRenderTick(RenderTickEvent event)
 	{
 		if(event.phase == Phase.END)
@@ -48,17 +56,18 @@ public class VisualEventHandler {
 				if(mc.player == null)
 					onTickInGame(mc.player != null);
 				
-				if(mc.getFramebuffer() != buffer)
+				if(mc.getFramebuffer().framebufferWidth != framebufferWidth || mc.getFramebuffer().framebufferHeight != framebufferHeight)
 				{
-					buffer = mc.getFramebuffer();
 					for (int i = 0; i < VisualCategory.shader.types.size(); i++) {
-						VisualCategory.shader.types.get(i).onResize(buffer);
+						VisualCategory.shader.types.get(i).onResize(mc.getFramebuffer());
 					}
+					framebufferWidth = mc.getFramebuffer().framebufferWidth;
+					framebufferHeight = mc.getFramebuffer().framebufferHeight;
 				}
 				
 				TextureManager manager = mc.getTextureManager();
 		        ScaledResolution resolution = new ScaledResolution(mc);
-		        float partialTicks = mc.getRenderPartialTicks();
+		        float partialTicks = event.renderTickTime;
 				
 				GlStateManager.clear(256);
 		        GlStateManager.matrixMode(5889);
@@ -88,22 +97,29 @@ public class VisualEventHandler {
 		        GlStateManager.enableDepth();
 		        GlStateManager.enableAlpha();
 		        GlStateManager.disableLighting();
+			}else if(DeathMessages.enabled){
+				if(lastRenderedMessage == null)
+					lastRenderedMessage = DeathMessages.pickRandomDeathMessage();
+				
+				if(lastRenderedMessage != null)
+					mc.fontRendererObj.drawString("\"" + lastRenderedMessage + "\"", mc.currentScreen.width/2-mc.fontRendererObj.getStringWidth(lastRenderedMessage)/2, 114, 16777215);
 			}
-		}else if(DeathMessages.enabled){
-			if(lastRenderedMessage == null)
-				lastRenderedMessage = DeathMessages.pickRandomDeathMessage();
-			
-			mc.fontRendererObj.drawString("\"" + lastRenderedMessage + "\"", mc.currentScreen.width/2-mc.fontRendererObj.getStringWidth(lastRenderedMessage)/2, 114, 16777215);
 		}
 	}
 	
 	private static void renderVisuals(List<Visual> visuals, TextureManager manager, ScaledResolution resolution, float partialTicks)
 	{
+		if(visuals == null || visuals.isEmpty())
+			return ;
 		for (Iterator iterator = visuals.iterator(); iterator.hasNext();) {
 			Visual visual = (Visual) iterator.next();
 			float intensity = visual.getIntensity() * visual.type.alpha;
-			if(intensity > 0)
+			if(visual.type.needsToBeRendered(intensity))
+			{
+				GlStateManager.pushMatrix();
 				visual.type.render(visual, manager, resolution, partialTicks, intensity);
+				GlStateManager.popMatrix();
+			}
 		}
 	}
 	
@@ -112,6 +128,8 @@ public class VisualEventHandler {
 	{
 		if(event.phase == Phase.END && !(mc.currentScreen instanceof GuiGameOver)) {
 			onTickInGame(mc.player != null);
+			
+			SoundMuteHandler.tick();
 		}
 	}
 	
@@ -122,10 +140,14 @@ public class VisualEventHandler {
 		for (int i = 0; i < VisualHandler.activeHandlers.size(); i++) {
 			VisualHandler.activeHandlers.get(i).onTick(mc.player);
 		}
+		
 	}
 	
 	@SubscribeEvent
-	public void onPlayerDeath(LivingDeathEvent event) {
+	public static void onPlayerDeath(LivingDeathEvent event) {
+		if(!event.getEntityLiving().world.isRemote)
+			return ;
+		
 		if(event.getEntityLiving().equals(mc.player)) {
 			VisualManager.clearAllVisuals();
 		}
@@ -133,14 +155,16 @@ public class VisualEventHandler {
 	
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
-	public void onPlayerDamage(LivingAttackEvent event)
+	public static void onPlayerDamage(LivingAttackEvent event)
 	{
+		if(!event.getEntityLiving().world.isRemote)
+			return ;
 		if(event.getEntity() instanceof EntityPlayer)
 		{
 			for (int i = 0; i < VisualHandler.activeHandlers.size(); i++) {
 				VisualHandler.activeHandlers.get(i).onPlayerDamaged((EntityPlayer) event.getEntity(), event.getSource(), event.getAmount());
 			}
-		}else{
+		}else if(mc.player != null){
 			double distance = Math.sqrt(mc.player.getDistanceSqToEntity(event.getEntity()));
 			for (int i = 0; i < VisualHandler.activeHandlers.size(); i++) {
 				VisualHandler.activeHandlers.get(i).onEntityDamaged(event.getEntityLiving(), event.getSource(), event.getAmount(), distance);
@@ -149,12 +173,20 @@ public class VisualEventHandler {
 	}
 	
 	@SubscribeEvent
-	public void onSoundPlayed(SoundSourceEvent event)
+	public static void onSoundPlayed(SoundSourceEvent event)
 	{
 		if(SoundMuteHandler.isMuting && SoundMuteHandler.ignoredSounds != null)
 		{
 			if(event.getSound().getSoundLocation().toString().equals("enhancedvisuals:ringing"))
 				SoundMuteHandler.ignoredSounds.add(event.getUuid());
+		}
+	}
+	
+	@SubscribeEvent
+	public static void onThrowableImpact(ThrowableImpactEvent event)
+	{
+		for (int i = 0; i < VisualHandler.activeHandlers.size(); i++) {
+			VisualHandler.activeHandlers.get(i).onThrowableImpact(event);
 		}
 	}
 }

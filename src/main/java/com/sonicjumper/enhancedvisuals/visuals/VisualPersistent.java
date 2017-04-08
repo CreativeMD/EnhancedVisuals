@@ -50,6 +50,11 @@ public class VisualPersistent extends Visual {
 		}
 		return intensity;
 	}
+	
+	public void setIntensity(float intensity)
+	{
+		this.intensity = intensity;
+	}
 
 	@Override
 	public boolean isRandomized() {

@@ -30,7 +30,7 @@ public abstract class Visual {
 		this.type = type;
 		this.intensity = intensity;
 		this.color = color;
-		variant = rand.nextInt(type.getVariantAmount());
+		variant = type.getVariantAmount() > 0 ? rand.nextInt(type.getVariantAmount()) : 0;
 		if(isRandomized())
 			properties = randomize();
 	}
@@ -61,7 +61,8 @@ public abstract class Visual {
 	
 	public VisualProperties randomize()
 	{
-		VisualProperties properties = new VisualProperties(0, 0, rand.nextInt(type.getSize()), rand.nextInt(type.getSize()), rand.nextFloat()*360);
+		int size = rand.nextInt(type.getSize());
+		VisualProperties properties = new VisualProperties(0, 0, size, size, rand.nextFloat()*360);
 		ScaledResolution scaledRes = new ScaledResolution(Minecraft.getMinecraft());
 		properties.posX = generateOffset(scaledRes.getScaledWidth(), properties.width);
 		properties.posY = generateOffset(scaledRes.getScaledHeight(), properties.height);

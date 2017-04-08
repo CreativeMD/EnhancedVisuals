@@ -26,8 +26,8 @@ public abstract class VisualTypeTexture extends VisualType {
 	
 	public int animationSpeed;
 
-	public VisualTypeTexture(VisualCategory category, String name, String comment, int animationSpeed) {
-		super(category, name, comment);
+	public VisualTypeTexture(VisualCategory category, String name, int animationSpeed, boolean isAffectedByWater) {
+		super(category, name, isAffectedByWater);
 		this.animationSpeed = animationSpeed;
 	}
 	
@@ -43,7 +43,7 @@ public abstract class VisualTypeTexture extends VisualType {
 		ResourceLocation location = null;
 		IResource resource = null;
 		try {
-			while((resource = manager.getResource((location = new ResourceLocation(EnhancedVisuals.modid, baseLocation + i)))) != null)
+			while((resource = manager.getResource((location = new ResourceLocation(EnhancedVisuals.modid, baseLocation + i + ".png")))) != null)
 			{
 				if(i == 0)
 				{
@@ -54,7 +54,7 @@ public abstract class VisualTypeTexture extends VisualType {
 				i++;
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		resources = locations.toArray(new ResourceLocation[0]);
 		if(resources.length == 0)
@@ -83,8 +83,8 @@ public abstract class VisualTypeTexture extends VisualType {
 	{
 		if(animationSpeed > 0)
 		{
-			int time = (int) (System.currentTimeMillis()/animationSpeed);
-			return resources[Math.floorMod(time, resources.length)];
+			long time = Math.abs(System.currentTimeMillis()/animationSpeed);
+			return resources[(int) (time % resources.length)];
 		}
 		return resources[visual.variant];
 	}
@@ -118,5 +118,9 @@ public abstract class VisualTypeTexture extends VisualType {
 		renderer.pos(0.0D, 0.0D, z).tex( 0.0D, 0.0D).color(red, green, blue, intensity).endVertex();
 		tessellator.draw();
 	}
-
+	
+	@Override
+	public boolean needsToBeRendered(float intensity) {
+		return intensity > 0;
+	}
 }

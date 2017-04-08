@@ -22,6 +22,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(modid = EnhancedVisuals.modid, name = EnhancedVisuals.name, acceptedMinecraftVersions = "", clientSideOnly = true)
@@ -34,12 +35,14 @@ public class EnhancedVisuals {
 	public static Logger log = LogManager.getLogger(modid);
 	
 	@EventHandler
-	public void loadComplete(FMLInitializationEvent event) {
-		((IReloadableResourceManager) Minecraft.getMinecraft().getRenderManager()).registerReloadListener(new IResourceManagerReloadListener() {
+	public void init(FMLLoadCompleteEvent event) {
+		((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(new IResourceManagerReloadListener() {
 			
 			@Override
 			public void onResourceManagerReload(IResourceManager resourceManager) {
 				VisualManager.clearAllVisuals();
+				VisualType.onLoadResources();
+				
 				for (int i = 0; i < VisualCategory.values().length; i++) {
 					VisualCategory category = VisualCategory.values()[i];
 					for (int j = 0; j < category.types.size(); j++) {
