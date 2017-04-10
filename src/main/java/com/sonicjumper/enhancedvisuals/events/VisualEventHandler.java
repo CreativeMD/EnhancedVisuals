@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.creativemd.creativecore.common.utils.HashMapList;
+import com.sonicjumper.enhancedvisuals.EnhancedVisuals;
 import com.sonicjumper.enhancedvisuals.VisualManager;
 import com.sonicjumper.enhancedvisuals.death.DeathMessages;
 import com.sonicjumper.enhancedvisuals.handlers.VisualHandler;
@@ -21,7 +22,9 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.client.shader.ShaderGroup;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.potion.PotionEffect;
+import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.client.event.sound.SoundEvent.SoundSourceEvent;
 import net.minecraftforge.event.entity.ThrowableImpactEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -45,10 +48,15 @@ public class VisualEventHandler {
 	//private static int framebufferTextureWidth;
 	//private static int framebufferTextureHeight;
 	
+	public static boolean areEffectsEnabled()
+	{
+		return EnhancedVisuals.noEffectsForCreative ? !mc.player.isCreative() : true;
+	}
+	
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onRenderTick(RenderTickEvent event)
 	{
-		if(event.phase == Phase.END)
+		if(event.phase == Phase.END && areEffectsEnabled())
 		{
 			if(!(mc.currentScreen instanceof GuiGameOver)){
 				lastRenderedMessage = null;
@@ -126,7 +134,7 @@ public class VisualEventHandler {
 	@SubscribeEvent
 	public static void onTick(ClientTickEvent event)
 	{
-		if(event.phase == Phase.END && !(mc.currentScreen instanceof GuiGameOver)) {
+		if(event.phase == Phase.END && areEffectsEnabled() && !(mc.currentScreen instanceof GuiGameOver)) {
 			onTickInGame(mc.player != null);
 			
 			SoundMuteHandler.tick();
@@ -145,7 +153,7 @@ public class VisualEventHandler {
 	
 	@SubscribeEvent
 	public static void onPlayerDeath(LivingDeathEvent event) {
-		if(!event.getEntityLiving().world.isRemote)
+		if(!event.getEntityLiving().world.isRemote || !areEffectsEnabled())
 			return ;
 		
 		if(event.getEntityLiving().equals(mc.player)) {
@@ -153,11 +161,10 @@ public class VisualEventHandler {
 		}
 	}
 	
-	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public static void onPlayerDamage(LivingAttackEvent event)
 	{
-		if(!event.getEntityLiving().world.isRemote)
+		if(!event.getEntityLiving().world.isRemote || !areEffectsEnabled())
 			return ;
 		if(event.getEntity() instanceof EntityPlayer)
 		{
@@ -168,6 +175,20 @@ public class VisualEventHandler {
 			double distance = Math.sqrt(mc.player.getDistanceSqToEntity(event.getEntity()));
 			for (int i = 0; i < VisualHandler.activeHandlers.size(); i++) {
 				VisualHandler.activeHandlers.get(i).onEntityDamaged(event.getEntityLiving(), event.getSource(), event.getAmount(), distance);
+			}
+		}
+	}
+	
+	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
+	public static void onSoundPlay(PlaySoundEvent event)
+	{
+		if(event.getSound().getSoundLocation().equals(SoundEvents.ENTITY_GENERIC_EXPLODE.getSoundName()) && areEffectsEnabled())
+		{
+			//Explosion
+			double distance = Math.sqrt(mc.player.getDistanceSq(event.getSound().getXPosF(), event.getSound().getYPosF(), event.getSound().getZPosF()));
+			for (int i = 0; i < VisualHandler.activeHandlers.size(); i++) {
+				VisualHandler.activeHandlers.get(i).onExplosion(mc.player, event.getSound().getXPosF(), event.getSound().getYPosF(), event.getSound().getZPosF(), distance);
 			}
 		}
 	}
@@ -185,6 +206,8 @@ public class VisualEventHandler {
 	@SubscribeEvent
 	public static void onThrowableImpact(ThrowableImpactEvent event)
 	{
+		if(!areEffectsEnabled())
+			return ;
 		for (int i = 0; i < VisualHandler.activeHandlers.size(); i++) {
 			VisualHandler.activeHandlers.get(i).onThrowableImpact(event);
 		}

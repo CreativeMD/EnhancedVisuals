@@ -48,9 +48,12 @@ public class ExplosionHandler extends VisualHandler {
 	}
 	
 	@Override
-	public void onPlayerDamaged(EntityPlayer player, DamageSource source, float damage)
+	public void onExplosion(EntityPlayer player, double x, double y, double z, double distance)
 	{
-		if(source.isExplosion()) {
+		if(distance < 5)
+		{
+			float damage = (float) (1-(distance/5F))*5;
+			System.out.println(damage);
 			VisualManager.addVisualsWithShading(VisualType.dust, (int) Math.min(40, damage*dustSplatsMultiplier), dustMinDuration, dustMaxDuration);
 			
 			float volume = Math.max(minExplosionVolume, 1-(damage/explosionVolumeModifier));
@@ -60,7 +63,6 @@ public class ExplosionHandler extends VisualHandler {
 				playSound(new ResourceLocation("enhancedvisuals:ringing"), null, (1-volume)*maxBeepVolume);
 			SoundMuteHandler.startMuting(time, volume);
 			VisualManager.addVisualWithShading(VisualType.blur, maxBlur, (int) (time/blurTimeFactor), (int) (time/blurTimeFactor), Color.WHITE);
-			
 		}
 	}
 	

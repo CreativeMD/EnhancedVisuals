@@ -73,6 +73,8 @@ public abstract class VisualHandler {
 	
 	public void onThrowableImpact(ThrowableImpactEvent event) {}
 	
+	public void onExplosion(EntityPlayer player, double x, double y, double z, double distance) {}
+	
 	public synchronized void playSound(ResourceLocation location, BlockPos pos)
 	{
 		playSound(location, pos, 1.0F);

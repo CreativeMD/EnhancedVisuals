@@ -56,11 +56,15 @@ public class EnhancedVisuals {
 		});
 	}
 	
+	public static boolean noEffectsForCreative = false;
+	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
+		noEffectsForCreative = config.getBoolean("noEffectsForCreative", "general", noEffectsForCreative, "If players in creative mod should have effects");
+		
 		for (int i = 0; i < VisualCategory.values().length; i++) {
 			VisualCategory category = VisualCategory.values()[i];
 			for (int j = 0; j < category.types.size(); j++) {
