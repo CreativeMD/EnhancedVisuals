@@ -50,7 +50,7 @@ public class VisualEventHandler {
 	
 	public static boolean areEffectsEnabled()
 	{
-		return EnhancedVisuals.noEffectsForCreative ? mc.player != null && !mc.player.isCreative() : true;
+		return EnhancedVisuals.noEffectsForCreative ? mc.thePlayer != null && !mc.thePlayer.isCreative() : true;
 	}
 	
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -61,8 +61,8 @@ public class VisualEventHandler {
 			if(!(mc.currentScreen instanceof GuiGameOver)){
 				lastRenderedMessage = null;
 				
-				if(mc.player == null)
-					onTickInGame(mc.player != null);
+				if(mc.thePlayer == null)
+					onTickInGame(mc.thePlayer != null);
 				
 				if(mc.getFramebuffer().framebufferWidth != framebufferWidth || mc.getFramebuffer().framebufferHeight != framebufferHeight)
 				{
@@ -145,7 +145,7 @@ public class VisualEventHandler {
 	public static void onTick(ClientTickEvent event)
 	{
 		if(event.phase == Phase.END && areEffectsEnabled() && !(mc.currentScreen instanceof GuiGameOver)) {
-			onTickInGame(mc.player != null);
+			onTickInGame(mc.thePlayer != null);
 			
 			SoundMuteHandler.tick();
 		}
@@ -153,10 +153,10 @@ public class VisualEventHandler {
 	
 	public static void onTickInGame(boolean isInGame)
 	{
-		VisualManager.onTick(mc.player);
+		VisualManager.onTick(mc.thePlayer);
 		
 		for (int i = 0; i < VisualHandler.activeHandlers.size(); i++) {
-			VisualHandler.activeHandlers.get(i).onTick(mc.player);
+			VisualHandler.activeHandlers.get(i).onTick(mc.thePlayer);
 		}
 		
 	}
@@ -164,15 +164,15 @@ public class VisualEventHandler {
 	@SubscribeEvent
 	public static void onPlayerDamage(LivingAttackEvent event)
 	{
-		if(!event.getEntityLiving().world.isRemote || !areEffectsEnabled())
+		if(!event.getEntityLiving().worldObj.isRemote || !areEffectsEnabled())
 			return ;
 		if(event.getEntity() instanceof EntityPlayer)
 		{
 			for (int i = 0; i < VisualHandler.activeHandlers.size(); i++) {
 				VisualHandler.activeHandlers.get(i).onPlayerDamaged((EntityPlayer) event.getEntity(), event.getSource(), event.getAmount());
 			}
-		}else if(mc.player != null){
-			double distance = Math.sqrt(mc.player.getDistanceSqToEntity(event.getEntity()));
+		}else if(mc.thePlayer != null){
+			double distance = Math.sqrt(mc.thePlayer.getDistanceSqToEntity(event.getEntity()));
 			for (int i = 0; i < VisualHandler.activeHandlers.size(); i++) {
 				VisualHandler.activeHandlers.get(i).onEntityDamaged(event.getEntityLiving(), event.getSource(), event.getAmount(), distance);
 			}
@@ -186,9 +186,9 @@ public class VisualEventHandler {
 		if(event.getSound().getSoundLocation().equals(SoundEvents.ENTITY_GENERIC_EXPLODE.getSoundName()) && areEffectsEnabled())
 		{
 			//Explosion
-			double distance = Math.sqrt(mc.player.getDistanceSq(event.getSound().getXPosF(), event.getSound().getYPosF(), event.getSound().getZPosF()));
+			double distance = Math.sqrt(mc.thePlayer.getDistanceSq(event.getSound().getXPosF(), event.getSound().getYPosF(), event.getSound().getZPosF()));
 			for (int i = 0; i < VisualHandler.activeHandlers.size(); i++) {
-				VisualHandler.activeHandlers.get(i).onExplosion(mc.player, event.getSound().getXPosF(), event.getSound().getYPosF(), event.getSound().getZPosF(), distance);
+				VisualHandler.activeHandlers.get(i).onExplosion(mc.thePlayer, event.getSound().getXPosF(), event.getSound().getYPosF(), event.getSound().getZPosF(), distance);
 			}
 		}
 	}

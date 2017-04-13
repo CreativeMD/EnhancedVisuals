@@ -44,7 +44,7 @@ public class SlenderHandler extends VisualHandler {
 		    AxisAlignedBB box = player.getEntityBoundingBox();
 		    box = box.expand(16, 16, 16);
 		    
-		    EntityEnderman mob = (EntityEnderman) player.world.findNearestEntityWithinAABB(EntityEnderman.class, box, player);
+		    EntityEnderman mob = (EntityEnderman) player.worldObj.findNearestEntityWithinAABB(EntityEnderman.class, box, player);
 		    if(mob != null)
 		    {
 		    	angryNearby = true;

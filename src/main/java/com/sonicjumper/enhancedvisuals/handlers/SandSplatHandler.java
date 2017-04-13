@@ -50,7 +50,7 @@ public class SandSplatHandler extends VisualHandler {
 		int posX = (int)player.posX;
 		int posY = (int)(player.posY - 1);
 		int posZ = (int)player.posZ;
-	    if (player.world.getBlockState(pos).getBlock() == Blocks.SAND) {
+	    if (player.worldObj.getBlockState(pos).getBlock() == Blocks.SAND) {
 	    	return true;
 	    }
 	    return false;

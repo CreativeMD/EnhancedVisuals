@@ -127,22 +127,22 @@ public class DamageHandler extends VisualHandler {
 			}
 		}
 		
-		if(source == DamageSource.CACTUS) {
+		if(source == DamageSource.cactus) {
 			VisualManager.createVisualFromDamage(VisualType.pierce, damage, player);
 		}
 		
-		if(source == DamageSource.FALL || source == DamageSource.FALLING_BLOCK) {
+		if(source == DamageSource.fall || source == DamageSource.fallingBlock) {
 			VisualManager.createVisualFromDamage(VisualType.impact, damage, player);
 		}		
 		
 		
-		if(source.equals(DamageSource.DROWN)) {
+		if(source.equals(DamageSource.drown)) {
 			VisualManager.addVisualsWithShading(VisualType.waterS, 1F, drownSplashes, drownMinDuration, drownMaxDuration, new Color(1.0F, 1.0F, 1.0F, 1.0F));
 		}
 		
 		
 		
-		if(source.isFireDamage() || source == DamageSource.ON_FIRE)
+		if(source.isFireDamage() || source == DamageSource.onFire)
 			VisualManager.addVisualsWithShading(VisualType.fire, 1F, fireSplashes, fireMinDuration, fireMaxDuration, new Color(1, 1, 1));
 		
 	}

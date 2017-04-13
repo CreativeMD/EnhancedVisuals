@@ -30,9 +30,9 @@ public class PotionHandler extends VisualHandler {
 		if(event.getEntityThrowable() instanceof EntityPotion && !event.isCanceled())
 		{
 			EntityPotion ep = (EntityPotion) event.getEntityThrowable();
-			if(!ep.world.isRemote)
+			if(!ep.worldObj.isRemote)
 			{
-				double modifier = 1-ep.getDistanceToEntity(Minecraft.getMinecraft().player)/5;
+				double modifier = 1-ep.getDistanceToEntity(Minecraft.getMinecraft().thePlayer)/5;
 				int var11 = PotionUtils.getPotionColor(PotionUtils.getPotionFromItem(ep.getPotion()));
 				float r = (float)(var11 >> 16 & 255) / 255.0F;
 				float g = (float)(var11 >> 8 & 255) / 255.0F;
