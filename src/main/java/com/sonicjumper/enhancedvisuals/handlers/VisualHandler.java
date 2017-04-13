@@ -62,7 +62,7 @@ public abstract class VisualHandler {
 	public void initConfig(Configuration config)
 	{
 		config.addCustomCategoryComment(name, comment);
-		enabled = config.getBoolean("enalbed", name, enabled, "");
+		enabled = config.getBoolean("enabled", name, enabled, "");
 	}
 	
 	public void onPlayerDamaged(EntityPlayer player, DamageSource source, float damage) {}

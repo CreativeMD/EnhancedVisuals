@@ -3,7 +3,7 @@ package com.sonicjumper.enhancedvisuals.visuals.types;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.sonicjumper.enhancedvisuals.addon.ToughAsNailsAddon;
+import com.sonicjumper.enhancedvisuals.addon.toughasnails.ToughAsNailsAddon;
 import com.sonicjumper.enhancedvisuals.visuals.Visual;
 import com.sonicjumper.enhancedvisuals.visuals.VisualPersistent;
 
@@ -93,7 +93,7 @@ public abstract class VisualType {
 		
 	};
 	
-	public static void onLoadResources()
+	public static void onLoad()
 	{
 		if(Loader.isModLoaded("toughasnails"))
 			ToughAsNailsAddon.load();

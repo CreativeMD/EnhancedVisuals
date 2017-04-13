@@ -35,7 +35,7 @@ public class ExplosionHandler extends VisualHandler {
 		super.initConfig(config);
 		maxExplosionTime = config.getInt("maxExplosionTime", name, maxExplosionTime, 0, 100000, "maximum explosion duration");
 		explosionTimeModifier = config.getFloat("explosionTimeModifier", name, explosionTimeModifier, 0, 100000, "time = Math.max(maxExplosionTime, damage*explosionTimeModifier)");
-		minExplosionVolume = config.getFloat("minExplosionVolume", name, minExplosionVolume, 0, 100000, "factor of all other sounsd (muting effect)");
+		minExplosionVolume = config.getFloat("minExplosionVolume", name, minExplosionVolume, 0, 100000, "factor of all other sounds (muting effect)");
 		explosionVolumeModifier = config.getFloat("explosionVolumeModifier", name, explosionVolumeModifier, 0, 100000, "volume of beep = damage/ConfigCore.explosionVolumeModifier");
 		maxBeepVolume = config.getFloat("maxBeepVolume", name, maxBeepVolume, 0, 100000, "max volume of a beep");
 		maxBlur = config.getFloat("maxBlur", name, maxBlur, 0, 100000, "max blur effect");

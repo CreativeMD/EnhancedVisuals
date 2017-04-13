@@ -35,6 +35,8 @@ public class DeathMessages {
 	
 	public static String pickRandomDeathMessage()
 	{
+		if(deathMessages.size() == 0)
+			return null;
 		return deathMessages.get(rand.nextInt(deathMessages.size()-1));
 	}
 	

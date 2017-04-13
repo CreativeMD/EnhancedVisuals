@@ -31,7 +31,7 @@ public class HeartBeatHandler extends VisualHandler {
 		heartBeatIntensity = config.getFloat("heartBeatIntensity", name, heartBeatIntensity, 0, 10000, "heartbeat blur intensity");
 		heartBeatDuration = config.getInt("heartBeatDuration", name, heartBeatDuration, 0, 10000, "heartbeat blur duration");
 		
-		maxHearts = config.getInt("heartLevel", name, maxHearts, 0, 20, "below or equal means the hearbeat will take effect");
+		maxHearts = config.getInt("heartLevel", name, maxHearts, 0, 20, "below or equal means the heartbeat will take effect");
 		minHeartBeatLength = config.getInt("minHeartBeatLength", name, minHeartBeatLength, 0, 100000, "time between heartbeats = player.health * heartBeatHeartFactor + minHeartBeatLength");
 		heartBeatTimeFactor = config.getFloat("heartBeatTimeFactor", name, heartBeatTimeFactor, 0, 100000, "time between heartbeats = player.health * heartBeatHeartFactor + minHeartBeatLength");
 	}

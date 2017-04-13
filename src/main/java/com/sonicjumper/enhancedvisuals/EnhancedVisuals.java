@@ -41,7 +41,6 @@ public class EnhancedVisuals {
 			@Override
 			public void onResourceManagerReload(IResourceManager resourceManager) {
 				VisualManager.clearAllVisuals();
-				VisualType.onLoadResources();
 				
 				for (int i = 0; i < VisualCategory.values().length; i++) {
 					VisualCategory category = VisualCategory.values()[i];
@@ -76,10 +75,13 @@ public class EnhancedVisuals {
 			VisualHandler handler = iterator.next();
 			handler.initConfig(config);
 		}
+		VisualType.onLoad();
 		VisualHandler.afterInit();
 		
 		DeathMessages.loadConfig(config);
 		config.save();
+		
+		
 	}
 	
 	@EventHandler

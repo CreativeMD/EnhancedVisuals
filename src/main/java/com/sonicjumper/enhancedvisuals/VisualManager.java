@@ -127,6 +127,20 @@ public class VisualManager {
 		}
 	}
 	
+	public static void resetAllVisuals()
+	{
+		for (Iterator<VisualPersistent> iterator = persistentVisuals.values().iterator(); iterator.hasNext();) {
+			VisualPersistent visual = iterator.next();
+			visual.reset();
+		}
+		
+		for (Iterator<Visual> iterator = defaultVisuals.iterator(); iterator.hasNext();) {
+			Visual visual = iterator.next();
+			visuals.removeValue(visual.type.category, visual);
+		}
+		defaultVisuals.clear();
+	}
+	
 	public static void clearAllVisuals()
 	{
 		visuals.clear();

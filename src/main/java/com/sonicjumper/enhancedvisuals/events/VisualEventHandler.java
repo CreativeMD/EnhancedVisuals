@@ -50,7 +50,7 @@ public class VisualEventHandler {
 	
 	public static boolean areEffectsEnabled()
 	{
-		return EnhancedVisuals.noEffectsForCreative ? !mc.player.isCreative() : true;
+		return EnhancedVisuals.noEffectsForCreative ? mc.player != null && !mc.player.isCreative() : true;
 	}
 	
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -99,18 +99,28 @@ public class VisualEventHandler {
 	            GlStateManager.pushMatrix();
 	            GlStateManager.loadIdentity();
 	            renderVisuals(VisualManager.visuals.getValues(VisualCategory.shader), manager, resolution, partialTicks);
+	            
+	            
 	            GlStateManager.popMatrix();
 		        
 		        GlStateManager.depthMask(true);
 		        GlStateManager.enableDepth();
 		        GlStateManager.enableAlpha();
 		        GlStateManager.disableLighting();
-			}else if(DeathMessages.enabled){
-				if(lastRenderedMessage == null)
-					lastRenderedMessage = DeathMessages.pickRandomDeathMessage();
+		        
+		        mc.getFramebuffer().bindFramebuffer(false);
+	            GlStateManager.matrixMode(5888);
+			}else{
+				if(areEffectsEnabled())
+					VisualManager.resetAllVisuals();
 				
-				if(lastRenderedMessage != null)
-					mc.fontRendererObj.drawString("\"" + lastRenderedMessage + "\"", mc.currentScreen.width/2-mc.fontRendererObj.getStringWidth(lastRenderedMessage)/2, 114, 16777215);
+				if(DeathMessages.enabled){
+					if(lastRenderedMessage == null)
+						lastRenderedMessage = DeathMessages.pickRandomDeathMessage();
+					
+					if(lastRenderedMessage != null)
+						mc.fontRendererObj.drawString("\"" + lastRenderedMessage + "\"", mc.currentScreen.width/2-mc.fontRendererObj.getStringWidth(lastRenderedMessage)/2, 114, 16777215);
+				}
 			}
 		}
 	}
@@ -149,16 +159,6 @@ public class VisualEventHandler {
 			VisualHandler.activeHandlers.get(i).onTick(mc.player);
 		}
 		
-	}
-	
-	@SubscribeEvent
-	public static void onPlayerDeath(LivingDeathEvent event) {
-		if(!event.getEntityLiving().world.isRemote || !areEffectsEnabled())
-			return ;
-		
-		if(event.getEntityLiving().equals(mc.player)) {
-			VisualManager.clearAllVisuals();
-		}
 	}
 	
 	@SubscribeEvent

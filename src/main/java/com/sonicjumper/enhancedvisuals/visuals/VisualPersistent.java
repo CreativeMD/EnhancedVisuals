@@ -12,8 +12,11 @@ public class VisualPersistent extends Visual {
 	
 	public ArrayList<Visual> subVisuals = new ArrayList<>();
 	
+	private final float defaultIntensity;
+	
 	public VisualPersistent(VisualType type, float intensity) {
 		super(type, intensity);
+		this.defaultIntensity = intensity;
 	}
 
 	@Override
@@ -59,6 +62,12 @@ public class VisualPersistent extends Visual {
 	@Override
 	public boolean isRandomized() {
 		return false;
+	}
+	
+	public void reset()
+	{
+		subVisuals.clear();
+		intensity = defaultIntensity;
 	}
 	
 }
