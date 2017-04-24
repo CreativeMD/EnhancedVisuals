@@ -63,7 +63,7 @@ public abstract class VisualType {
 		
 		@Override
 		public boolean needsToBeRendered(float intensity) {
-			return intensity > 0;
+			return Math.floor(intensity) > 0;
 		}
 		
 	};
