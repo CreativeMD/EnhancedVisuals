@@ -16,7 +16,7 @@ import toughasnails.api.stat.capability.IThirst;
 public class ThirstHandler extends VisualHandler {
 
 	public ThirstHandler() {
-		super("thrist", "addon for ToughAsNailsAddon");
+		super("thirst", "addon for ToughAsNailsAddon");
 	}
 
 	public float defaultIntensity = 0F;
@@ -32,7 +32,7 @@ public class ThirstHandler extends VisualHandler {
 		maxIntensity = config.getFloat("maxIntensity", name, maxIntensity, 0, 10000, "lowest thirst");
 		fadeFactor = config.getFloat("fadeFactor", name, fadeFactor, 0, 10000, "thirst += fadeFactor per Tick");
 		maxThirstLevelEffected = config.getInt("maxThirstLevelEffected", name, maxThirstLevelEffected, 0, 20, "the maximum point thirst is effected");
-		minThirstLevelEffected = config.getInt("minFoodLevelEffected", name, minThirstLevelEffected, 0, 20, "the minimum point thirst is effected");
+		minThirstLevelEffected = config.getInt("minThirstLevelEffected", name, minThirstLevelEffected, 0, 20, "the minimum point thirst is effected");
 	}
 	
 	@Override

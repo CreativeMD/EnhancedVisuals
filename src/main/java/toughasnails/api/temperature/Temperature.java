@@ -14,6 +14,6 @@ public class Temperature {
 	}
 
 	public TemperatureRange getRange() {
-		return null;
+		return TemperatureRange.MILD;
 	}
 }

@@ -64,6 +64,7 @@ public class EnhancedVisuals {
 		config.load();
 		noEffectsForCreative = config.getBoolean("noEffectsForCreative", "general", noEffectsForCreative, "If players in creative mod should have effects");
 		
+		VisualType.onLoad();
 		for (int i = 0; i < VisualCategory.values().length; i++) {
 			VisualCategory category = VisualCategory.values()[i];
 			for (int j = 0; j < category.types.size(); j++) {
@@ -75,7 +76,7 @@ public class EnhancedVisuals {
 			VisualHandler handler = iterator.next();
 			handler.initConfig(config);
 		}
-		VisualType.onLoad();
+		
 		VisualHandler.afterInit();
 		
 		DeathMessages.loadConfig(config);
