@@ -166,7 +166,7 @@ public class VisualEventHandler {
 	{
 		if(!event.getEntityLiving().world.isRemote || !areEffectsEnabled())
 			return ;
-		if(event.getEntity() instanceof EntityPlayer)
+		if(event.getEntity() instanceof EntityPlayer && event.getEntity() == mc.player)
 		{
 			for (int i = 0; i < VisualHandler.activeHandlers.size(); i++) {
 				VisualHandler.activeHandlers.get(i).onPlayerDamaged((EntityPlayer) event.getEntity(), event.getSource(), event.getAmount());
