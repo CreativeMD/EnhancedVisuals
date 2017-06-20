@@ -119,7 +119,7 @@ public class VisualEventHandler {
 						lastRenderedMessage = DeathMessages.pickRandomDeathMessage();
 					
 					if(lastRenderedMessage != null)
-						mc.fontRendererObj.drawString("\"" + lastRenderedMessage + "\"", mc.currentScreen.width/2-mc.fontRendererObj.getStringWidth(lastRenderedMessage)/2, 114, 16777215);
+						mc.fontRenderer.drawString("\"" + lastRenderedMessage + "\"", mc.currentScreen.width/2-mc.fontRenderer.getStringWidth(lastRenderedMessage)/2, 114, 16777215);
 				}
 			}
 		}

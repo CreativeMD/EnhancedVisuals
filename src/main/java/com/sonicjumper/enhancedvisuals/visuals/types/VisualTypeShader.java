@@ -86,7 +86,7 @@ public abstract class VisualTypeShader extends VisualType {
 		if(shaderGroup != null)
 		{
 			changeProperties(intensity);
-			shaderGroup.loadShaderGroup(partialTicks);
+			shaderGroup.render(partialTicks);
 		}
 	}
 

@@ -93,7 +93,7 @@ public class DamageHandler extends VisualHandler {
 		if(hitEffect)
 			VisualManager.addVisualWithShading(VisualType.damaged, 1F, 15, 20, new Color(1.0F, 1.0F, 1.0F, 0.2F));
 		
-		Entity attacker = source.getSourceOfDamage();
+		Entity attacker = source.getImmediateSource();
 		
 		double distanceSq = 1;
 		if(attacker instanceof EntityArrow) 
