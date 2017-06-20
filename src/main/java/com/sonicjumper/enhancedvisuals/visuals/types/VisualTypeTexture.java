@@ -10,17 +10,15 @@ import javax.imageio.ImageIO;
 import com.sonicjumper.enhancedvisuals.EnhancedVisuals;
 import com.sonicjumper.enhancedvisuals.visuals.Visual;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.config.Configuration;
 
 public abstract class VisualTypeTexture extends VisualType {
 	
@@ -93,7 +91,7 @@ public abstract class VisualTypeTexture extends VisualType {
 	public void render(Visual visual, TextureManager manager, ScaledResolution resolution, float partialTicks, float intensity) {
 		manager.bindTexture(getResource(visual));
 		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer renderer = tessellator.getBuffer();
+		BufferBuilder renderer = tessellator.getBuffer();
 		
 		float red = visual.getColor().getRed() / 255.0F;
 		float green = visual.getColor().getGreen() / 255.0F;
