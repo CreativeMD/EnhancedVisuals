@@ -4,11 +4,9 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 
 import javax.annotation.Nullable;
 
-import com.creativemd.creativecore.common.utils.HashMapList;
 import com.sonicjumper.enhancedvisuals.visuals.Visual;
 import com.sonicjumper.enhancedvisuals.visuals.VisualFadeOut;
 import com.sonicjumper.enhancedvisuals.visuals.VisualPersistent;
