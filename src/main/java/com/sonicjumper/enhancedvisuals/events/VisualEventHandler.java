@@ -163,7 +163,7 @@ public class VisualEventHandler {
 				VisualHandler.activeHandlers.get(i).onPlayerDamaged((EntityPlayer) event.getEntity(), event.getSource(), event.getAmount());
 			}
 		}else if(mc.player != null){
-			double distance = Math.sqrt(mc.player.getDistanceSqToEntity(event.getEntity()));
+			double distance = Math.sqrt(mc.player.getDistanceSq(event.getEntity()));
 			for (int i = 0; i < VisualHandler.activeHandlers.size(); i++) {
 				VisualHandler.activeHandlers.get(i).onEntityDamaged(event.getEntityLiving(), event.getSource(), event.getAmount(), distance);
 			}
