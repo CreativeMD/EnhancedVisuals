@@ -3,6 +3,9 @@ package com.sonicjumper.enhancedvisuals.handlers;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import com.creativemd.igcm.api.ConfigBranch;
+import com.creativemd.igcm.api.segments.BooleanSegment;
+import com.creativemd.igcm.api.segments.IntegerSegment;
 import com.sonicjumper.enhancedvisuals.VisualManager;
 import com.sonicjumper.enhancedvisuals.visuals.types.VisualType;
 
@@ -20,6 +23,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.Optional.Method;
 
 public class DamageHandler extends VisualHandler {
 
@@ -78,19 +82,46 @@ public class DamageHandler extends VisualHandler {
 		hitEffect = config.getBoolean("hitEffect", name, hitEffect, "Red overlay effect once you get hit");
 		
 		fireSplashes = config.getInt("fireSplashes", name, fireSplashes, 0, 10000, "splashes per tick");
-		fireMaxDuration = config.getInt("fireMaxDuration", name, fireMaxDuration, 1, 10000, "max duration of one particle");
 		fireMinDuration = config.getInt("fireMinDuration", name, fireMinDuration, 1, 10000, "min duration of one particle");
+		fireMaxDuration = config.getInt("fireMaxDuration", name, fireMaxDuration, 1, 10000, "max duration of one particle");
 		
 		drownSplashes = config.getInt("drownSplashes", name, drownSplashes, 0, 10000, "splashes per hit");
-		
-		drownMaxDuration = config.getInt("drownMaxDuration", name, drownMaxDuration, 1, 10000, "max duration of one splash");
 		drownMinDuration = config.getInt("drownMinDuration", name, drownMinDuration, 1, 10000, "min duration of one splash");
+		drownMaxDuration = config.getInt("drownMaxDuration", name, drownMaxDuration, 1, 10000, "max duration of one splash");
+	}
+	
+	@Override
+	@Method(modid = "igcm")
+	public void registerConfigElements(ConfigBranch branch) {
+		branch.registerElement("hitEffect", new BooleanSegment("hitEffect", false).setToolTip("Red overlay effect once you get hit"));
+		
+		branch.registerElement("fireSplashes", new IntegerSegment("fireSplashes", 1, 0, 10000).setToolTip("splashes per tick"));
+		branch.registerElement("fireMinDuration", new IntegerSegment("fireMinDuration", 100, 0, 10000).setToolTip("min duration of one particle"));
+		branch.registerElement("fireMaxDuration", new IntegerSegment("fireMaxDuration", 1000, 0, 10000).setToolTip("max duration of one particle"));
+		
+		branch.registerElement("drownSplashes", new IntegerSegment("drownSplashes", 4, 0, 10000).setToolTip("splashes per tick"));
+		branch.registerElement("drownMinDuration", new IntegerSegment("drownMinDuration", 10, 0, 10000).setToolTip("min duration of one splash"));
+		branch.registerElement("drownMaxDuration", new IntegerSegment("drownMaxDuration", 15, 0, 10000).setToolTip("max duration of one splash"));
+	}
+	
+	@Override
+	@Method(modid = "igcm")
+	public void receiveConfigElements(ConfigBranch branch) {
+		hitEffect = (Boolean) branch.getValue("hitEffect");
+		
+		fireSplashes = (Integer) branch.getValue("fireSplashes");
+		fireMinDuration = (Integer) branch.getValue("fireMinDuration");
+		fireMaxDuration = (Integer) branch.getValue("fireMaxDuration");
+		
+		drownSplashes = (Integer) branch.getValue("drownSplashes");
+		drownMinDuration = (Integer) branch.getValue("drownMinDuration");
+		drownMaxDuration = (Integer) branch.getValue("drownMaxDuration");
 	}
 	
 	@Override
 	public void onPlayerDamaged(EntityPlayer player, DamageSource source, float damage)
 	{
-		if(hitEffect)
+		if(hitEffect && damage > 1)
 			VisualManager.addVisualWithShading(VisualType.damaged, 1F, 15, 20, new Color(1.0F, 1.0F, 1.0F, 0.2F));
 		
 		Entity attacker = source.getSourceOfDamage();

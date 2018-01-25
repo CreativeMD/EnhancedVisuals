@@ -7,6 +7,7 @@ import java.util.Iterator;
 
 import javax.annotation.Nullable;
 
+import com.creativemd.igcm.api.ConfigBranch;
 import com.sonicjumper.enhancedvisuals.VisualManager;
 import com.sonicjumper.enhancedvisuals.visuals.types.VisualType;
 
@@ -17,6 +18,9 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionUtils;
 import net.minecraftforge.event.entity.ThrowableImpactEvent;
+import net.minecraftforge.fml.common.Optional.Method;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class PotionHandler extends VisualHandler {
 
@@ -25,6 +29,19 @@ public class PotionHandler extends VisualHandler {
 	}
 	
 	@Override
+	@Method(modid = "igcm")
+	public void registerConfigElements(ConfigBranch branch) {
+		
+	}
+	
+	@Override
+	@Method(modid = "igcm")
+	public void receiveConfigElements(ConfigBranch branch) {
+		
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
 	public void onThrowableImpact(ThrowableImpactEvent event)
 	{
 		if(event.getEntityThrowable() instanceof EntityPotion && !event.isCanceled())

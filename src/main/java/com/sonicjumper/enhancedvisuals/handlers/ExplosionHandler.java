@@ -2,6 +2,9 @@ package com.sonicjumper.enhancedvisuals.handlers;
 
 import java.awt.Color;
 
+import com.creativemd.igcm.api.ConfigBranch;
+import com.creativemd.igcm.api.segments.FloatSegment;
+import com.creativemd.igcm.api.segments.IntegerSegment;
 import com.sonicjumper.enhancedvisuals.VisualManager;
 import com.sonicjumper.enhancedvisuals.events.SoundMuteHandler;
 import com.sonicjumper.enhancedvisuals.visuals.types.VisualType;
@@ -10,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.Optional.Method;
 
 public class ExplosionHandler extends VisualHandler {
 
@@ -27,8 +31,8 @@ public class ExplosionHandler extends VisualHandler {
 	
 	public float dustSplatsMultiplier = 10F;
 	
-	public int dustMaxDuration = 1000;
 	public int dustMinDuration = 500;
+	public int dustMaxDuration = 1000;
 	
 	@Override
 	public void initConfig(Configuration config) {
@@ -43,8 +47,42 @@ public class ExplosionHandler extends VisualHandler {
 		
 		dustSplatsMultiplier = config.getFloat("dustSplatsMultiplier", name, dustSplatsMultiplier, 0, 10000, "damage * multiplier = number of splats");
 		
-		dustMaxDuration = config.getInt("dustMaxDuration", name, dustMaxDuration, 1, 100000, "max duration of one particle");
 		dustMinDuration = config.getInt("dustMinDuration", name, dustMinDuration, 1, 100000, "min duration of one particle");
+		dustMaxDuration = config.getInt("dustMaxDuration", name, dustMaxDuration, 1, 100000, "max duration of one particle");
+	}
+	
+	@Override
+	@Method(modid = "igcm")
+	public void registerConfigElements(ConfigBranch branch) {
+		branch.registerElement("maxExplosionTime", new IntegerSegment("maxExplosionTime", 1000, 0, 100000).setToolTip("maximum explosion duration"));
+		branch.registerElement("explosionTimeModifier", new FloatSegment("explosionTimeModifier", 20F, 0, 100000).setToolTip("time = Math.max(maxExplosionTime, damage*explosionTimeModifier)"));
+		branch.registerElement("minExplosionVolume", new FloatSegment("minExplosionVolume", 0F, 0, 10000).setToolTip("factor of all other sounds (muting effect)"));
+		branch.registerElement("explosionVolumeModifier", new FloatSegment("explosionVolumeModifier", 10F, 0, 10000).setToolTip("volume of beep = damage/ConfigCore.explosionVolumeModifier"));
+		branch.registerElement("maxBeepVolume", new FloatSegment("maxBeepVolume", 0.5F, 0, 10000).setToolTip("max volume of a beep"));
+		branch.registerElement("maxBlur", new FloatSegment("maxBlur", 100F, 0, 10000).setToolTip("max blur effect"));
+		branch.registerElement("blurTimeFactor", new FloatSegment("blurTimeFactor", 2.5F, 0, 10000).setToolTip("time of blur = time of muted sounds / blurTimeFactor"));
+		
+		branch.registerElement("dustSplatsMultiplier", new FloatSegment("dustSplatsMultiplier", 10F, 0, 10000).setToolTip("damage * multiplier = number of splats"));
+		
+		branch.registerElement("dustMinDuration", new IntegerSegment("dustMinDuration", 500, 0, 10000).setToolTip("min duration of one particle"));
+		branch.registerElement("dustMaxDuration", new IntegerSegment("dustMaxDuration", 1000, 0, 10000).setToolTip("max duration of one particle"));
+	}
+	
+	@Override
+	@Method(modid = "igcm")
+	public void receiveConfigElements(ConfigBranch branch) {
+		maxExplosionTime = (Integer) branch.getValue("maxExplosionTime");
+		explosionTimeModifier = (Float) branch.getValue("explosionTimeModifier");
+		minExplosionVolume = (Float) branch.getValue("minExplosionVolume");
+		explosionVolumeModifier = (Float) branch.getValue("explosionVolumeModifier");
+		maxBeepVolume = (Float) branch.getValue("maxBeepVolume");
+		maxBlur = (Float) branch.getValue("maxBlur");
+		blurTimeFactor = (Float) branch.getValue("blurTimeFactor");
+		
+		dustSplatsMultiplier = (Float) branch.getValue("dustSplatsMultiplier");
+		
+		dustMinDuration = (Integer) branch.getValue("dustMinDuration");
+		dustMaxDuration = (Integer) branch.getValue("dustMaxDuration");
 	}
 	
 	@Override
