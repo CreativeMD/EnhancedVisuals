@@ -1,6 +1,11 @@
 package com.sonicjumper.enhancedvisuals.visuals.types;
 
+import com.creativemd.igcm.api.ConfigBranch;
+
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.Optional.Method;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class VisualTypeOverlay extends VisualTypeTexture {
 
@@ -13,8 +18,21 @@ public class VisualTypeOverlay extends VisualTypeTexture {
 	}
 	
 	@Override
+	@SideOnly(Side.CLIENT)
 	public boolean isRandomized() {
 		return false;
+	}
+	
+	@Override
+	@Method(modid = "igcm")
+	public void registerConfigElements(ConfigBranch branch) {
+		
+	}
+	
+	@Override
+	@Method(modid = "igcm")
+	public void receiveConfigElements(ConfigBranch branch) {
+		
 	}
 
 }

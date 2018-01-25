@@ -5,6 +5,10 @@ import java.util.Iterator;
 
 import javax.annotation.Nullable;
 
+import com.creativemd.igcm.api.ConfigBranch;
+import com.creativemd.igcm.api.segments.BooleanSegment;
+import com.creativemd.igcm.api.segments.FloatSegment;
+import com.creativemd.igcm.api.segments.IntegerSegment;
 import com.sonicjumper.enhancedvisuals.VisualManager;
 import com.sonicjumper.enhancedvisuals.visuals.Visual;
 import com.sonicjumper.enhancedvisuals.visuals.types.VisualCategory;
@@ -13,6 +17,7 @@ import com.sonicjumper.enhancedvisuals.visuals.types.VisualType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.Optional.Method;
 
 public class SplashHandler extends VisualHandler {
 
@@ -37,6 +42,30 @@ public class SplashHandler extends VisualHandler {
 		splashMaxIntensity = config.getFloat("splashMaxIntensity", name, splashMaxIntensity, 0, 10000, "maximum additional splash intensity");
 		
 		waterSubstractFactor = config.getInt("waterSubstractFactor", name, waterSubstractFactor, 0, 100000, "increased fade out factor in water");
+	}
+	
+	@Override
+	@Method(modid = "igcm")
+	public void registerConfigElements(ConfigBranch branch) {
+		branch.registerElement("splashMinDuration", new IntegerSegment("splashMinDuration", 10, 0, 10000).setToolTip("minimum splash duration"));
+		branch.registerElement("splashMaxDuration", new IntegerSegment("splashMaxDuration", 10, 0, 10000).setToolTip("maximum additional splash duration"));
+		
+		branch.registerElement("splashMinIntensity", new FloatSegment("splashMinIntensity", 10F, 0, 10000).setToolTip("minimum splash intensity"));
+		branch.registerElement("splashMaxIntensity", new FloatSegment("splashMaxIntensity", 5F, 0, 10000).setToolTip("maximum additional splash intensity"));
+		
+		branch.registerElement("waterSubstractFactor", new IntegerSegment("waterSubstractFactor", 10, 0, 10000).setToolTip("increased fade out factor in water"));
+	}
+	
+	@Override
+	@Method(modid = "igcm")
+	public void receiveConfigElements(ConfigBranch branch) {		
+		splashMinDuration = (Integer) branch.getValue("splashMinDuration");
+		splashMaxDuration = (Integer) branch.getValue("splashMaxDuration");
+		
+		splashMinIntensity = (Float) branch.getValue("splashMinIntensity");
+		splashMaxIntensity = (Float) branch.getValue("splashMaxIntensity");
+		
+		waterSubstractFactor = (Integer) branch.getValue("waterSubstractFactor");
 	}
 	
 	public boolean wasInWater = false;

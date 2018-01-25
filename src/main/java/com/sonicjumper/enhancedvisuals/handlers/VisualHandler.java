@@ -5,11 +5,17 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.creativemd.igcm.api.ConfigBranch;
+import com.creativemd.igcm.api.segments.BooleanSegment;
+import com.creativemd.igcm.api.segments.FloatSegment;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound.AttenuationType;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -17,6 +23,9 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.entity.ThrowableImpactEvent;
+import net.minecraftforge.fml.common.Optional.Method;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class VisualHandler {
 	
@@ -65,21 +74,68 @@ public abstract class VisualHandler {
 		enabled = config.getBoolean("enabled", name, enabled, "");
 	}
 	
+	@Method(modid = "igcm")
+	public ConfigBranch getConfigBranch()
+	{
+		return new ConfigBranch(name, ItemStack.EMPTY) {
+			
+			@Override
+			public void saveExtra(NBTTagCompound nbt) {
+				
+			}
+			
+			@Override
+			public void loadExtra(NBTTagCompound nbt) {
+				
+			}
+			
+			@Override
+			public boolean requiresSynchronization() {
+				return true;
+			}
+			
+			@Override
+			public void onRecieveFrom(Side side) {
+				enabled = (Boolean) getValue("enabled");
+				receiveConfigElements(this);
+			}
+			
+			@Override
+			public void createChildren() {
+				registerElement("enabled", new BooleanSegment("Enabled", true).setToolTip("If the effect is enabled!"));
+				registerConfigElements(this);
+			}
+		};
+	}
+	
+	@Method(modid = "igcm")
+	public abstract void registerConfigElements(ConfigBranch branch);
+	
+	@Method(modid = "igcm")
+	public abstract void receiveConfigElements(ConfigBranch branch);
+	
+	@SideOnly(Side.CLIENT)
 	public void onPlayerDamaged(EntityPlayer player, DamageSource source, float damage) {}
 	
+	@SideOnly(Side.CLIENT)
 	public void onEntityDamaged(EntityLivingBase entity, DamageSource source, float damage, double distance) {}
 	
+	@SideOnly(Side.CLIENT)
 	public void onTick(@Nullable EntityPlayer player) {}
 	
+	@SideOnly(Side.CLIENT)
 	public void onThrowableImpact(ThrowableImpactEvent event) {}
 	
+	@SideOnly(Side.CLIENT)
 	public void onExplosion(EntityPlayer player, double x, double y, double z, double distance) {}
 	
+	@SideOnly(Side.CLIENT)
 	public synchronized void playSound(ResourceLocation location, BlockPos pos)
 	{
 		playSound(location, pos, 1.0F);
 	}
 	
+	@SideOnly(Side.CLIENT)
 	public synchronized void playSound(ResourceLocation location, BlockPos pos, float volume)
 	{
 		if(pos != null)

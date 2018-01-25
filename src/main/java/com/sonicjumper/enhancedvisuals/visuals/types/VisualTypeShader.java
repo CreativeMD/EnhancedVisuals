@@ -2,6 +2,7 @@ package com.sonicjumper.enhancedvisuals.visuals.types;
 
 import java.io.IOException;
 
+import com.creativemd.igcm.api.ConfigBranch;
 import com.google.gson.JsonSyntaxException;
 import com.sonicjumper.enhancedvisuals.utils.EnhancedShaderGroup;
 import com.sonicjumper.enhancedvisuals.visuals.Visual;
@@ -15,10 +16,11 @@ import net.minecraft.client.shader.ShaderGroup;
 import net.minecraft.client.shader.ShaderLinkHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.Optional.Method;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class VisualTypeShader extends VisualType {
-	
-	private static Minecraft mc = Minecraft.getMinecraft();
 	
 	public ResourceLocation location;
 	
@@ -28,17 +30,31 @@ public abstract class VisualTypeShader extends VisualType {
 	}
 	
 	public EnhancedShaderGroup shaderGroup = null;
+	
+	@Override
+	@Method(modid = "igcm")
+	public void registerConfigElements(ConfigBranch branch) {
+		
+	}
+	
+	@Override
+	@Method(modid = "igcm")
+	public void receiveConfigElements(ConfigBranch branch) {
+		
+	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void loadTextures(IResourceManager manager) {
 		if(ShaderLinkHelper.getStaticShaderLinkHelper() != null)
 		{
+			Minecraft mc = Minecraft.getMinecraft();
 			if(shaderGroup != null)
 				shaderGroup.deleteShaderGroup();
 			
 			try {
 				shaderGroup = new EnhancedShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), location);
-				shaderGroup.createBindFramebuffers(this.mc.displayWidth, this.mc.displayHeight);
+				shaderGroup.createBindFramebuffers(mc.displayWidth, mc.displayHeight);
 			} catch (JsonSyntaxException | IOException e) {
 				e.printStackTrace();
 			}
@@ -47,37 +63,44 @@ public abstract class VisualTypeShader extends VisualType {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public int getVariantAmount() {
 		return 0;
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public boolean isRandomized() {
 		return false;
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public boolean supportsColor() {
 		return false;
 	}
 	
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void onResize(Framebuffer buffer)
 	{
 		if(shaderGroup != null)
 			shaderGroup.createBindFramebuffers(buffer.framebufferWidth, buffer.framebufferHeight);
 	}
 	
+	@SideOnly(Side.CLIENT)
 	public abstract void changeProperties(float intensity);
 	
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void render(Visual visual, TextureManager manager, ScaledResolution resolution, float partialTicks, float intensity) {
 		if(shaderGroup == null)
 			if(ShaderLinkHelper.getStaticShaderLinkHelper() != null)
 			{
+				Minecraft mc = Minecraft.getMinecraft();
 				try {
 					shaderGroup = new EnhancedShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), location);
-					shaderGroup.createBindFramebuffers(this.mc.displayWidth, this.mc.displayHeight);
+					shaderGroup.createBindFramebuffers(mc.displayWidth, mc.displayHeight);
 				} catch (JsonSyntaxException | IOException e) {
 					e.printStackTrace();
 				}

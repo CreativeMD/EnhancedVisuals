@@ -19,6 +19,8 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class VisualTypeTexture extends VisualType {
 	
@@ -29,10 +31,13 @@ public abstract class VisualTypeTexture extends VisualType {
 		this.animationSpeed = animationSpeed;
 	}
 	
+	@SideOnly(Side.CLIENT)
 	public ResourceLocation[] resources;
+	@SideOnly(Side.CLIENT)
 	public Dimension dimension;
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void loadTextures(IResourceManager manager) {
 		String baseLocation = "visuals/" + category + "/" + name + "/" + name;
 		
@@ -62,21 +67,25 @@ public abstract class VisualTypeTexture extends VisualType {
 	}
 	
 	@Override
+	@SideOnly(Side.CLIENT)
 	public boolean supportsColor() {
 		return true;
 	}
 	
 	@Override
+	@SideOnly(Side.CLIENT)
 	public boolean isEnabled()
 	{
 		return super.isEnabled() && resources.length > 0;
 	}
 	
 	@Override
+	@SideOnly(Side.CLIENT)
 	public int getVariantAmount() {
 		return resources.length;
 	}
 	
+	@SideOnly(Side.CLIENT)
 	public ResourceLocation getResource(Visual visual)
 	{
 		if(animationSpeed > 0)
@@ -88,6 +97,7 @@ public abstract class VisualTypeTexture extends VisualType {
 	}
 	
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void render(Visual visual, TextureManager manager, ScaledResolution resolution, float partialTicks, float intensity) {
 		manager.bindTexture(getResource(visual));
 		Tessellator tessellator = Tessellator.getInstance();
@@ -118,6 +128,7 @@ public abstract class VisualTypeTexture extends VisualType {
 	}
 	
 	@Override
+	@SideOnly(Side.CLIENT)
 	public boolean needsToBeRendered(float intensity) {
 		return intensity > 0;
 	}
