@@ -91,7 +91,7 @@ public abstract class VisualTypeTexture extends VisualType {
 	{
 		if(animationSpeed > 0)
 		{
-			long time = Math.abs(System.currentTimeMillis()/animationSpeed);
+			long time = Math.abs(System.nanoTime()/3000000/animationSpeed);
 			return resources[(int) (time % resources.length)];
 		}
 		return resources[visual.variant];
