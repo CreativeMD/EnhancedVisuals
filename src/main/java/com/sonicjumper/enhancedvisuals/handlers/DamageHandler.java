@@ -46,6 +46,9 @@ public class DamageHandler extends VisualHandler {
 	public int drownMinDuration = 10;
 	public int drownMaxDuration = 15;
 	
+	public int bloodDurationMin = 500;
+	public int bloodDurationMax = 1500;
+	
 	@Override
 	public void initConfig(Configuration config) {
 		super.initConfig(config);
@@ -88,6 +91,9 @@ public class DamageHandler extends VisualHandler {
 		drownSplashes = config.getInt("drownSplashes", name, drownSplashes, 0, 10000, "splashes per hit");
 		drownMinDuration = config.getInt("drownMinDuration", name, drownMinDuration, 1, 10000, "min duration of one splash");
 		drownMaxDuration = config.getInt("drownMaxDuration", name, drownMaxDuration, 1, 10000, "max duration of one splash");
+		
+		bloodDurationMin = config.getInt("bloodDurationMin", name, bloodDurationMin, 1, 100000, "min duration of blood splash");
+		bloodDurationMax = config.getInt("bloodDurationMax", name, bloodDurationMax, 1, 100000, "max duration of blood splash");
 	}
 	
 	@Override
@@ -102,6 +108,9 @@ public class DamageHandler extends VisualHandler {
 		branch.registerElement("drownSplashes", new IntegerSegment("drownSplashes", 4, 0, 10000).setToolTip("splashes per tick"));
 		branch.registerElement("drownMinDuration", new IntegerSegment("drownMinDuration", 10, 0, 10000).setToolTip("min duration of one splash"));
 		branch.registerElement("drownMaxDuration", new IntegerSegment("drownMaxDuration", 15, 0, 10000).setToolTip("max duration of one splash"));
+		
+		branch.registerElement("bloodDurationMin", new IntegerSegment("bloodDurationMin", 500, 0, 100000).setToolTip("min duration of blood slpash"));
+		branch.registerElement("bloodDurationMax", new IntegerSegment("bloodDurationMax", 1500, 0, 100000).setToolTip("max duration of blood slpash"));
 	}
 	
 	@Override
@@ -116,6 +125,9 @@ public class DamageHandler extends VisualHandler {
 		drownSplashes = (Integer) branch.getValue("drownSplashes");
 		drownMinDuration = (Integer) branch.getValue("drownMinDuration");
 		drownMaxDuration = (Integer) branch.getValue("drownMaxDuration");
+		
+		bloodDurationMin = (Integer) branch.getValue("bloodDurationMin");
+		bloodDurationMax = (Integer) branch.getValue("bloodDurationMax");
 	}
 	
 	@Override
@@ -128,30 +140,30 @@ public class DamageHandler extends VisualHandler {
 		
 		double distanceSq = 1;
 		if(attacker instanceof EntityArrow) 
-			VisualManager.createVisualFromDamage(VisualType.pierce, damage, player);
+			VisualManager.createVisualFromDamageAndDistance(VisualType.pierce, damage, player, distanceSq, bloodDurationMin, bloodDurationMax);
 		
 		if(attacker instanceof EntityLivingBase) {
 			EntityLivingBase lastAttacker = (EntityLivingBase) attacker;
 			// Check weapons
 			if(lastAttacker.getHeldItemMainhand() != null) {
 				if(isSharp(lastAttacker.getHeldItemMainhand().getItem())) {
-					VisualManager.createVisualFromDamageAndDistance(VisualType.slash, damage, player, distanceSq);
+					VisualManager.createVisualFromDamageAndDistance(VisualType.slash, damage, player, distanceSq, bloodDurationMin, bloodDurationMax);
 				} else if(isBlunt(lastAttacker.getHeldItemMainhand().getItem())) {
-					VisualManager.createVisualFromDamageAndDistance(VisualType.impact, damage, player, distanceSq);
+					VisualManager.createVisualFromDamageAndDistance(VisualType.impact, damage, player, distanceSq, bloodDurationMin, bloodDurationMax);
 				} else if(isPierce(lastAttacker.getHeldItemMainhand().getItem())) {
-					VisualManager.createVisualFromDamageAndDistance(VisualType.pierce, damage, player, distanceSq);
+					VisualManager.createVisualFromDamageAndDistance(VisualType.pierce, damage, player, distanceSq, bloodDurationMin, bloodDurationMax);
 				} else {
 					// Default to splatter type
-					VisualManager.createVisualFromDamageAndDistance(VisualType.splatter, damage, player, distanceSq);
+					VisualManager.createVisualFromDamageAndDistance(VisualType.splatter, damage, player, distanceSq, bloodDurationMin, bloodDurationMax);
 				}
 			} else {
 				// If player received fall damage					
 				if(lastAttacker instanceof EntityZombie || lastAttacker instanceof EntitySkeleton || lastAttacker instanceof EntityOcelot) {
-					VisualManager.createVisualFromDamageAndDistance(VisualType.slash, damage, player, distanceSq);
+					VisualManager.createVisualFromDamageAndDistance(VisualType.slash, damage, player, distanceSq, bloodDurationMin, bloodDurationMax);
 				} else if(lastAttacker instanceof EntityGolem || lastAttacker instanceof EntityPlayer) {
-					VisualManager.createVisualFromDamageAndDistance(VisualType.impact, damage, player, distanceSq);
+					VisualManager.createVisualFromDamageAndDistance(VisualType.impact, damage, player, distanceSq, bloodDurationMin, bloodDurationMax);
 				} else if(lastAttacker instanceof EntityWolf || lastAttacker instanceof EntitySpider) {
-					VisualManager.createVisualFromDamageAndDistance(VisualType.pierce, damage, player, distanceSq);
+					VisualManager.createVisualFromDamageAndDistance(VisualType.pierce, damage, player, distanceSq, bloodDurationMin, bloodDurationMax);
 				}
 
 				
@@ -159,11 +171,11 @@ public class DamageHandler extends VisualHandler {
 		}
 		
 		if(source == DamageSource.CACTUS) {
-			VisualManager.createVisualFromDamage(VisualType.pierce, damage, player);
+			VisualManager.createVisualFromDamageAndDistance(VisualType.pierce, damage, player, distanceSq, bloodDurationMin, bloodDurationMax);
 		}
 		
 		if(source == DamageSource.FALL || source == DamageSource.FALLING_BLOCK) {
-			VisualManager.createVisualFromDamage(VisualType.impact, damage, player);
+			VisualManager.createVisualFromDamageAndDistance(VisualType.impact, damage, player, distanceSq, bloodDurationMin, bloodDurationMax);
 		}		
 		
 		
