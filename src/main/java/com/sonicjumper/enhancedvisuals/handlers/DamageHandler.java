@@ -121,7 +121,7 @@ public class DamageHandler extends VisualHandler {
 	@Override
 	public void onPlayerDamaged(EntityPlayer player, DamageSource source, float damage)
 	{
-		if(hitEffect && damage > 1)
+		if(hitEffect && damage > 0.5F)
 			VisualManager.addVisualWithShading(VisualType.damaged, 1F, 15, 20, new Color(1.0F, 1.0F, 1.0F, 0.2F));
 		
 		Entity attacker = source.getImmediateSource();
