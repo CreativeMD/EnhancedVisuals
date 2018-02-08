@@ -76,11 +76,11 @@ public class VisualManager {
 		}
 	}
 	
-	public static void createVisualFromDamage(VisualType type, float damage, EntityLivingBase bleedingEntity) {
+	/*public static void createVisualFromDamage(VisualType type, float damage, EntityLivingBase bleedingEntity) {
 		createVisualFromDamageAndDistance(type, damage, bleedingEntity, 1.0D);
-	}
+	}*/
 
-	public static void createVisualFromDamageAndDistance(VisualType type, float damage, EntityLivingBase bleedingEntity, double distanceSqToEntity) {
+	public static void createVisualFromDamageAndDistance(VisualType type, float damage, EntityLivingBase bleedingEntity, double distanceSqToEntity, int minTime, int maxTime) {
 		if(damage <= 0.0F) {
 			return;
 		}
@@ -111,17 +111,14 @@ public class VisualManager {
 		if((type.equals(VisualType.splatter)) || (type.equals(VisualType.slash)) || (type.equals(VisualType.pierce)) || (type.equals(VisualType.impact)))
 		{
 			if(bleedingEntity instanceof EntityCreeper) {
-				addVisualsWithShading(type, 1, splats, 500, 1500, new Color(0.0F, 0.4F, 0.0F, 0.7F));
+				addVisualsWithShading(type, 1, splats, minTime, maxTime, new Color(0.0F, 0.4F, 0.0F, 0.7F));
 			} else if(bleedingEntity instanceof EntitySkeleton) {
-				addVisualsWithShading(type, 1, splats, 500, 1500, new Color(0.1F, 0.1F, 0.1F, 0.7F));
+				addVisualsWithShading(type, 1, splats, minTime, maxTime, new Color(0.1F, 0.1F, 0.1F, 0.7F));
 			} else if(bleedingEntity instanceof EntitySquid) {
-				addVisualsWithShading(type, 1, splats, 500, 1500, new Color(0.0F, 0.0F, 0.2F, 0.7F));
+				addVisualsWithShading(type, 1, splats, minTime, maxTime, new Color(0.0F, 0.0F, 0.2F, 0.7F));
 			} else {
-				addVisualsWithShading(type, 1, splats, 500, 1500, new Color(0.3F, 0.01F, 0.01F, 0.7F));
+				addVisualsWithShading(type, 1, splats, minTime, maxTime, new Color(0.3F, 0.01F, 0.01F, 0.7F));
 			}
-		}
-		else if (type.equals(VisualType.dust)) {
-			addVisualsWithShading(type, 1, splats * 20, 100, 1000, new Color(0.2F, 0.2F, 0.2F, 1.0F));
 		}
 	}
 	
