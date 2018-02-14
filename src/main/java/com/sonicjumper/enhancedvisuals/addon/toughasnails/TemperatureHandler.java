@@ -102,15 +102,15 @@ public class TemperatureHandler extends VisualHandler {
 			}
 			
 			
-			if(freeze.getIntensity() < aimedFreeze)
-				freeze.setIntensity(Math.min(freeze.getIntensity()+fadeFactor, aimedFreeze));
-			else if(freeze.getIntensity() > aimedFreeze)
-				freeze.setIntensity(Math.max(freeze.getIntensity()-fadeFactor, aimedFreeze));
+			if(freeze.getIntensity(1.0F) < aimedFreeze)
+				freeze.setIntensity(Math.min(freeze.getIntensity(1.0F)+fadeFactor, aimedFreeze));
+			else if(freeze.getIntensity(1.0F) > aimedFreeze)
+				freeze.setIntensity(Math.max(freeze.getIntensity(1.0F)-fadeFactor, aimedFreeze));
 			
-			if(heat.getIntensity() < aimedHeat)
-				heat.setIntensity(Math.min(heat.getIntensity()+fadeFactor, aimedHeat));
-			else if(heat.getIntensity() > aimedHeat)
-				heat.setIntensity(Math.max(heat.getIntensity()-fadeFactor, aimedHeat));
+			if(heat.getIntensity(1.0F) < aimedHeat)
+				heat.setIntensity(Math.min(heat.getIntensity(1.0F)+fadeFactor, aimedHeat));
+			else if(heat.getIntensity(1.0F) > aimedHeat)
+				heat.setIntensity(Math.max(heat.getIntensity(1.0F)-fadeFactor, aimedHeat));
 		}
 	}
 	

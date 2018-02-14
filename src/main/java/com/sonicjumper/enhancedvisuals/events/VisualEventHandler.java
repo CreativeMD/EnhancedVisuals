@@ -1,14 +1,17 @@
 package com.sonicjumper.enhancedvisuals.events;
 
+import java.awt.Color;
 import java.util.Iterator;
 import java.util.List;
 
 import com.sonicjumper.enhancedvisuals.EnhancedVisuals;
 import com.sonicjumper.enhancedvisuals.VisualManager;
 import com.sonicjumper.enhancedvisuals.death.DeathMessages;
+import com.sonicjumper.enhancedvisuals.handlers.DamageHandler;
 import com.sonicjumper.enhancedvisuals.handlers.VisualHandler;
 import com.sonicjumper.enhancedvisuals.visuals.Visual;
 import com.sonicjumper.enhancedvisuals.visuals.types.VisualCategory;
+import com.sonicjumper.enhancedvisuals.visuals.types.VisualType;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGameOver;
@@ -21,6 +24,8 @@ import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.client.event.sound.SoundEvent.SoundSourceEvent;
 import net.minecraftforge.event.entity.ThrowableImpactEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
@@ -54,6 +59,13 @@ public class VisualEventHandler {
 				
 				if(mc.player == null)
 					onTickInGame(mc.player != null);
+				else
+				{
+					if(mc.player.maxHurtTime > 0 && mc.player.hurtTime == mc.player.maxHurtTime && DamageHandler.hitEffect)
+						VisualManager.addVisualWithShading(VisualType.damaged, DamageHandler.hitEffectIntensity, DamageHandler.hitEffectMinDuration, DamageHandler.hitEffectMaxDuration, new Color(1.0F, 1.0F, 1.0F, 0.2F));
+				}
+				
+				
 				
 				if(mc.getFramebuffer().framebufferWidth != framebufferWidth || mc.getFramebuffer().framebufferHeight != framebufferHeight)
 				{
@@ -122,7 +134,7 @@ public class VisualEventHandler {
 			return ;
 		for (Iterator iterator = visuals.iterator(); iterator.hasNext();) {
 			Visual visual = (Visual) iterator.next();
-			float intensity = visual.getIntensity() * visual.type.alpha;
+			float intensity = visual.getIntensity(partialTicks) * visual.type.alpha;
 			if(visual.type.needsToBeRendered(intensity))
 			{
 				GlStateManager.pushMatrix();

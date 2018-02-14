@@ -29,11 +29,12 @@ public class VisualFadeOut extends Visual {
 	}
 	
 	@Override
-	public float getIntensity()
+	public float getIntensity(float partialTicks)
 	{
+		float lifeTime = this.lifeTime + partialTicks;
 		if(type.supportsColor())
-			return color.getAlpha() / 255F * intensity * (1F - ((float) lifeTime / (float) duration));
-		return (float) (intensity * (1 - ((double) lifeTime / (double) duration)));
+			return color.getAlpha() / 255F * intensity * (1F - (lifeTime / (float) duration));
+		return (float) (intensity * (1 - (lifeTime / (float) duration)));
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.creativemd.igcm.api.ConfigBranch;
 import com.creativemd.igcm.api.segments.BooleanSegment;
+import com.creativemd.igcm.api.segments.FloatSegment;
 import com.creativemd.igcm.api.segments.IntegerSegment;
 import com.sonicjumper.enhancedvisuals.VisualManager;
 import com.sonicjumper.enhancedvisuals.visuals.types.VisualType;
@@ -36,6 +37,10 @@ public class DamageHandler extends VisualHandler {
 	public final ArrayList<Item> pierceList = new ArrayList<>();
 	
 	public static boolean hitEffect = false;
+	
+	public static float hitEffectIntensity = 1.0F;
+	public static int hitEffectMinDuration = 1;
+	public static int hitEffectMaxDuration = 10;
 	
 	public int fireSplashes = 1;
 	public int fireMinDuration = 100;
@@ -83,6 +88,9 @@ public class DamageHandler extends VisualHandler {
 		pierceList.add(Items.ARROW);
 		
 		hitEffect = config.getBoolean("hitEffect", name, hitEffect, "Red overlay effect once you get hit");
+		hitEffectIntensity = config.getFloat("hitEffectIntensity", name, hitEffectIntensity, 0, 1, "Intensity of red overlay");
+		hitEffectMinDuration = config.getInt("hitEffectMinDuration", name, hitEffectMinDuration, 1, 100000, "min duration of hit effect");
+		hitEffectMaxDuration = config.getInt("hitEffectMaxDuration", name, hitEffectMaxDuration, 1, 100000, "max duration of hit effect");
 		
 		fireSplashes = config.getInt("fireSplashes", name, fireSplashes, 0, 10000, "splashes per tick");
 		fireMinDuration = config.getInt("fireMinDuration", name, fireMinDuration, 1, 10000, "min duration of one particle");
@@ -94,12 +102,16 @@ public class DamageHandler extends VisualHandler {
 		
 		bloodDurationMin = config.getInt("bloodDurationMin", name, bloodDurationMin, 1, 100000, "min duration of blood splash");
 		bloodDurationMax = config.getInt("bloodDurationMax", name, bloodDurationMax, 1, 100000, "max duration of blood splash");
+		
 	}
 	
 	@Override
 	@Method(modid = "igcm")
 	public void registerConfigElements(ConfigBranch branch) {
 		branch.registerElement("hitEffect", new BooleanSegment("hitEffect", false).setToolTip("Red overlay effect once you get hit"));
+		branch.registerElement("hitEffectIntensity", new FloatSegment("hitEffectIntensity", 1F, 0, 1).setToolTip("Intensity of red overlay"));
+		branch.registerElement("hitEffectMinDuration", new IntegerSegment("hitEffectMinDuration", 1, 1, 10000).setToolTip("min duration of hit effect"));
+		branch.registerElement("hitEffectMaxDuration", new IntegerSegment("hitEffectMaxDuration", 10, 1, 10000).setToolTip("max duration of hit effecte"));
 		
 		branch.registerElement("fireSplashes", new IntegerSegment("fireSplashes", 1, 0, 10000).setToolTip("splashes per tick"));
 		branch.registerElement("fireMinDuration", new IntegerSegment("fireMinDuration", 100, 0, 10000).setToolTip("min duration of one particle"));
@@ -117,6 +129,9 @@ public class DamageHandler extends VisualHandler {
 	@Method(modid = "igcm")
 	public void receiveConfigElements(ConfigBranch branch) {
 		hitEffect = (Boolean) branch.getValue("hitEffect");
+		hitEffectIntensity = (Float) branch.getValue("hitEffectIntensity");
+		hitEffectMinDuration = (Integer) branch.getValue("hitEffectMinDuration");
+		hitEffectMaxDuration = (Integer) branch.getValue("hitEffectMaxDuration");
 		
 		fireSplashes = (Integer) branch.getValue("fireSplashes");
 		fireMinDuration = (Integer) branch.getValue("fireMinDuration");
@@ -133,9 +148,6 @@ public class DamageHandler extends VisualHandler {
 	@Override
 	public void onPlayerDamaged(EntityPlayer player, DamageSource source, float damage)
 	{
-		if(hitEffect && damage > 0.5F)
-			VisualManager.addVisualWithShading(VisualType.damaged, 1F, 15, 20, new Color(1.0F, 1.0F, 1.0F, 0.2F));
-		
 		Entity attacker = source.getImmediateSource();
 		
 		double distanceSq = 1;
