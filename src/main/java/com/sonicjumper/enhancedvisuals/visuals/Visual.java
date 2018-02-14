@@ -40,7 +40,7 @@ public abstract class Visual {
 		
 	}
 	
-	public float getIntensity()
+	public float getIntensity(float partialTicks)
 	{
 		return intensity;
 	}

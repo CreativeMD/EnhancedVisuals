@@ -45,11 +45,11 @@ public class VisualPersistent extends Visual {
 	}
 	
 	@Override
-	public float getIntensity()
+	public float getIntensity(float partialTicks)
 	{
 		float intensity = this.intensity;
 		for (int i = 0; i < subVisuals.size(); i++) {
-			intensity += subVisuals.get(i).getIntensity();
+			intensity += subVisuals.get(i).getIntensity(partialTicks);
 		}
 		return intensity;
 	}

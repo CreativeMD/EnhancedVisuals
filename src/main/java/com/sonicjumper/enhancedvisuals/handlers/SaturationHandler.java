@@ -77,10 +77,10 @@ public class SaturationHandler extends VisualHandler {
 				}
 			}
 			
-			if(visual.getIntensity() < aimedSaturation)
-				visual.setIntensity(Math.min(visual.getIntensity()+fadeFactor, aimedSaturation));
-			else if(visual.getIntensity() > aimedSaturation)
-				visual.setIntensity(Math.max(visual.getIntensity()-fadeFactor, aimedSaturation));
+			if(visual.getIntensity(1.0F) < aimedSaturation)
+				visual.setIntensity(Math.min(visual.getIntensity(1.0F)+fadeFactor, aimedSaturation));
+			else if(visual.getIntensity(1.0F) > aimedSaturation)
+				visual.setIntensity(Math.max(visual.getIntensity(1.0F)-fadeFactor, aimedSaturation));
 		}
 	}
 
