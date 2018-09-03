@@ -17,6 +17,7 @@ import net.minecraft.entity.projectile.EntityPotion;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionUtils;
+import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.ThrowableImpactEvent;
 import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
@@ -42,11 +43,11 @@ public class PotionHandler extends VisualHandler {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void onThrowableImpact(ThrowableImpactEvent event)
+	public void onThrowableImpact(ProjectileImpactEvent.Throwable event)
 	{
-		if(event.getEntityThrowable() instanceof EntityPotion && !event.isCanceled())
+		if(event.getEntity() instanceof EntityPotion && !event.isCanceled())
 		{
-			EntityPotion ep = (EntityPotion) event.getEntityThrowable();
+			EntityPotion ep = (EntityPotion) event.getEntity();
 			if(!ep.world.isRemote)
 			{
 				double modifier = 1-ep.getDistance(Minecraft.getMinecraft().player)/5;

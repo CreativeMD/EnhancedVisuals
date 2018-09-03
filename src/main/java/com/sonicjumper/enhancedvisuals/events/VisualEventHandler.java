@@ -22,6 +22,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.client.event.sound.SoundEvent.SoundSourceEvent;
+import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.ThrowableImpactEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
@@ -207,7 +208,7 @@ public class VisualEventHandler {
 	}
 	
 	@SubscribeEvent
-	public static void onThrowableImpact(ThrowableImpactEvent event)
+	public static void onThrowableImpact(ProjectileImpactEvent.Throwable event)
 	{
 		if(!areEffectsEnabled())
 			return ;

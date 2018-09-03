@@ -22,6 +22,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.ThrowableImpactEvent;
 import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
@@ -124,7 +125,7 @@ public abstract class VisualHandler {
 	public void onTick(@Nullable EntityPlayer player) {}
 	
 	@SideOnly(Side.CLIENT)
-	public void onThrowableImpact(ThrowableImpactEvent event) {}
+	public void onThrowableImpact(ProjectileImpactEvent.Throwable event) {}
 	
 	@SideOnly(Side.CLIENT)
 	public void onExplosion(EntityPlayer player, double x, double y, double z, double distance) {}
