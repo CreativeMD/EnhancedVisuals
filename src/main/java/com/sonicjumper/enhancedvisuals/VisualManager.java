@@ -27,68 +27,61 @@ public class VisualManager {
 	
 	private static ArrayList<Visual> defaultVisuals = new ArrayList<>();
 	
-	public static VisualPersistent getPersitentVisual(VisualType type)
-	{
+	public static VisualPersistent getPersitentVisual(VisualType type) {
 		return persistentVisuals.get(type);
 	}
 	
-	/**There can be only one persistent visual for each type**/
-	public static void addPersistentVisual(VisualPersistent visual)
-	{
-		if(!visual.type.isEnabled())
-			return ;
+	/** There can be only one persistent visual for each type **/
+	public static void addPersistentVisual(VisualPersistent visual) {
+		if (!visual.type.isEnabled())
+			return;
 		persistentVisuals.put(visual.type, visual);
 		visuals.add(visual.type.category, visual);
 	}
 	
-	public static void addVisual(Visual visual)
-	{
-		if(!visual.type.isEnabled())
-			return ;
+	public static void addVisual(Visual visual) {
+		if (!visual.type.isEnabled())
+			return;
 		VisualPersistent persitent = persistentVisuals.get(visual.type);
-		if(persitent != null)
-		{
+		if (persitent != null) {
 			persitent.addVisual(visual);
-		}else{
+		} else {
 			defaultVisuals.add(visual);
 			visuals.add(visual.type.category, visual);
 		}
 	}
 	
-	public static void addVisualsWithShading(VisualType vt, int num, int minTime, int maxTime)
-	{
+	public static void addVisualsWithShading(VisualType vt, int num, int minTime, int maxTime) {
 		addVisualsWithShading(vt, 1, num, minTime, maxTime, Color.WHITE);
 	}
 	
-	public static void addVisualWithShading(VisualType vt, float intensity, int minTime, int maxTime, Color color)
-	{
-		if(intensity <= 0)
-			return ;
+	public static void addVisualWithShading(VisualType vt, float intensity, int minTime, int maxTime, Color color) {
+		if (intensity <= 0)
+			return;
 		addVisual(new VisualFadeOut(vt, intensity, minTime, maxTime, color));
 	}
 	
-	public static void addVisualsWithShading(VisualType vt, float intensity, int num, int minTime, int maxTime, Color color)
-	{
-		if(intensity <= 0)
-			return ;
-		for(int i = 0; i < num; i++) {
+	public static void addVisualsWithShading(VisualType vt, float intensity, int num, int minTime, int maxTime, Color color) {
+		if (intensity <= 0)
+			return;
+		for (int i = 0; i < num; i++) {
 			addVisualWithShading(vt, intensity, minTime, maxTime, color);
 		}
 	}
 	
-	/*public static void createVisualFromDamage(VisualType type, float damage, EntityLivingBase bleedingEntity) {
-		createVisualFromDamageAndDistance(type, damage, bleedingEntity, 1.0D);
-	}*/
-
+	/* public static void createVisualFromDamage(VisualType type, float damage, EntityLivingBase bleedingEntity) {
+	 * createVisualFromDamageAndDistance(type, damage, bleedingEntity, 1.0D);
+	 * } */
+	
 	public static void createVisualFromDamageAndDistance(VisualType type, float damage, EntityLivingBase bleedingEntity, double distanceSqToEntity, int minTime, int maxTime) {
-		if(damage <= 0.0F) {
+		if (damage <= 0.0F) {
 			return;
 		}
-
+		
 		double distance = Math.sqrt(distanceSqToEntity);
 		distance = Math.max(distance, 1.0D);
 		double distMultiplier = 1.0D / (distance / 2.0D);
-
+		
 		float rate = 0.0F;
 		float health = bleedingEntity.getHealth() - damage;
 		if (health > 12.0F) {
@@ -106,15 +99,14 @@ public class VisualManager {
 		if (health <= 0.0F) {
 			rate = 3.0F;
 		}
-		int splats = (int)(damage * rate * distMultiplier);
+		int splats = (int) (damage * rate * distMultiplier);
 		//System.out.println("Created " + splats + " splats of type " + type.getName());
-		if((type.equals(VisualType.splatter)) || (type.equals(VisualType.slash)) || (type.equals(VisualType.pierce)) || (type.equals(VisualType.impact)))
-		{
-			if(bleedingEntity instanceof EntityCreeper) {
+		if ((type.equals(VisualType.splatter)) || (type.equals(VisualType.slash)) || (type.equals(VisualType.pierce)) || (type.equals(VisualType.impact))) {
+			if (bleedingEntity instanceof EntityCreeper) {
 				addVisualsWithShading(type, 1, splats, minTime, maxTime, new Color(0.0F, 0.4F, 0.0F, 0.7F));
-			} else if(bleedingEntity instanceof EntitySkeleton) {
+			} else if (bleedingEntity instanceof EntitySkeleton) {
 				addVisualsWithShading(type, 1, splats, minTime, maxTime, new Color(0.1F, 0.1F, 0.1F, 0.7F));
-			} else if(bleedingEntity instanceof EntitySquid) {
+			} else if (bleedingEntity instanceof EntitySquid) {
 				addVisualsWithShading(type, 1, splats, minTime, maxTime, new Color(0.0F, 0.0F, 0.2F, 0.7F));
 			} else {
 				addVisualsWithShading(type, 1, splats, minTime, maxTime, new Color(0.3F, 0.01F, 0.01F, 0.7F));
@@ -122,8 +114,7 @@ public class VisualManager {
 		}
 	}
 	
-	public static void resetAllVisuals()
-	{
+	public static void resetAllVisuals() {
 		for (Iterator<VisualPersistent> iterator = persistentVisuals.values().iterator(); iterator.hasNext();) {
 			VisualPersistent visual = iterator.next();
 			visual.reset();
@@ -136,30 +127,26 @@ public class VisualManager {
 		defaultVisuals.clear();
 	}
 	
-	public static void clearAllVisuals()
-	{
+	public static void clearAllVisuals() {
 		visuals.clear();
 		persistentVisuals.clear();
 		defaultVisuals.clear();
 	}
 	
-	public static void onTick(@Nullable EntityPlayer player)
-	{
+	public static void onTick(@Nullable EntityPlayer player) {
 		for (Iterator<VisualPersistent> iterator = persistentVisuals.values().iterator(); iterator.hasNext();) {
 			VisualPersistent visual = iterator.next();
 			visual.onTick(player);
 		}
 		
 		int i = 0;
-		while(i < defaultVisuals.size())
-		{
+		while (i < defaultVisuals.size()) {
 			Visual visual = defaultVisuals.get(i);
 			visual.onTick(player);
-			if(visual.hasFinished())
-			{
+			if (visual.hasFinished()) {
 				defaultVisuals.remove(i);
 				visuals.removeValue(visual.type.category, visual);
-			}else
+			} else
 				i++;
 		}
 	}

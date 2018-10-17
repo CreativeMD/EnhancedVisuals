@@ -6,7 +6,6 @@ import java.util.HashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.audio.SoundManager;
-import net.minecraftforge.client.event.sound.SoundEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import paulscode.sound.Library;
 import paulscode.sound.SoundSystem;
@@ -28,67 +27,58 @@ public class SoundMuteHandler {
 	public static int timer = 0;
 	public static float mutingFactor;
 	
-	public static void tick()
-	{
-		if(isMuting)
-		{
+	public static void tick() {
+		if (isMuting) {
 			int remaining = mutingTime - timer;
 			
-			if(remaining <= 0)
+			if (remaining <= 0)
 				endMuting();
-			else{
+			else {
 				updateSounds();
 				
-				setMuteFactor(getMutingFactorPerTick());				
+				setMuteFactor(getMutingFactorPerTick());
 				timer++;
 			}
 		}
 	}
 	
-	public static float getMutingFactorPerTick()
-	{
+	public static float getMutingFactorPerTick() {
 		int remaining = mutingTime - timer;
-		float percentage = remaining/(float)mutingTime;
-		float volumeSpan = 1-mutingFactor;
-		return (float) (volumeSpan*Math.pow(1-percentage, 2)+mutingFactor);
+		float percentage = remaining / (float) mutingTime;
+		float volumeSpan = 1 - mutingFactor;
+		return (float) (volumeSpan * Math.pow(1 - percentage, 2) + mutingFactor);
 	}
 	
-	public static void updateSounds()
-	{
-		try{
+	public static void updateSounds() {
+		try {
 			HashMap<String, Source> sourcesAndIDs = null;
-			synchronized (SoundSystemConfig.THREAD_SYNC )
-			{
+			synchronized (SoundSystemConfig.THREAD_SYNC) {
 				sourcesAndIDs = new HashMap<>(soundLibrary.getSources());
 			}
 			for (Source source : sourcesAndIDs.values()) {
-				if(!sources.containsKey(source) && !ignoredSounds.contains(source.sourcename))
+				if (!sources.containsKey(source) && !ignoredSounds.contains(source.sourcename))
 					sources.put(source, source.sourceVolume);
 			}
-		}catch(Exception e){
+		} catch (Exception e) {
 			//Thread error
 			e.printStackTrace();
 		}
 	}
 	
-	public static void startMuting(int mutingTime, float mutingFactor)
-	{
-		if(soundLibrary == null)
-		{
+	public static void startMuting(int mutingTime, float mutingFactor) {
+		if (soundLibrary == null) {
 			SoundHandler handler = Minecraft.getMinecraft().getSoundHandler();
 			SoundManager sndManager = ReflectionHelper.getPrivateValue(SoundHandler.class, handler, "sndManager", "field_147694_f");
 			sndSystem = ReflectionHelper.getPrivateValue(SoundManager.class, sndManager, "sndSystem", "field_148620_e");
 			soundLibrary = ReflectionHelper.getPrivateValue(SoundSystem.class, sndSystem, "soundLibrary");
 		}
 		
-		if(isMuting && getMutingFactorPerTick() > mutingFactor)
-		{
+		if (isMuting && getMutingFactorPerTick() > mutingFactor) {
 			SoundMuteHandler.mutingFactor = mutingFactor;
 			SoundMuteHandler.mutingTime = mutingTime;
 			SoundMuteHandler.timer = 0;
-		}		
-		if(!isMuting)
-		{
+		}
+		if (!isMuting) {
 			SoundMuteHandler.mutingFactor = mutingFactor;
 			SoundMuteHandler.mutingTime = mutingTime;
 			SoundMuteHandler.timer = 0;
@@ -99,20 +89,16 @@ public class SoundMuteHandler {
 		}
 	}
 	
-	public static void endMuting()
-	{
+	public static void endMuting() {
 		setMuteFactor(1F);
 		sources = null;
 		isMuting = false;
 		ignoredSounds = null;
 	}
-		
-	public static synchronized void setMuteFactor(float muteVolume)
-	{
-		if(isMuting && sources != null)
-		{
-			synchronized (SoundSystemConfig.THREAD_SYNC )
-			{
+	
+	public static synchronized void setMuteFactor(float muteVolume) {
+		if (isMuting && sources != null) {
+			synchronized (SoundSystemConfig.THREAD_SYNC) {
 				for (Source source : sources.keySet()) {
 					sndSystem.setVolume(source.sourcename, sources.get(source) * muteVolume);
 				}

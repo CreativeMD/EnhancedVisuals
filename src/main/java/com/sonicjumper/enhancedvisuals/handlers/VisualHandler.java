@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 
 import com.creativemd.igcm.api.ConfigBranch;
 import com.creativemd.igcm.api.segments.BooleanSegment;
-import com.creativemd.igcm.api.segments.FloatSegment;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound.AttenuationType;
@@ -23,7 +22,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
-import net.minecraftforge.event.entity.ThrowableImpactEvent;
 import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -43,17 +41,15 @@ public abstract class VisualHandler {
 	public static SaturationHandler saturation = new SaturationHandler();
 	public static SlenderHandler slender = new SlenderHandler();
 	
-	public static List<VisualHandler> getAllHandlers()
-	{
+	public static List<VisualHandler> getAllHandlers() {
 		return handlers;
 	}
 	
 	public static ArrayList<VisualHandler> activeHandlers = new ArrayList<>();
 	
-	public static void afterInit()
-	{
+	public static void afterInit() {
 		for (int i = 0; i < handlers.size(); i++) {
-			if(handlers.get(i).enabled)
+			if (handlers.get(i).enabled)
 				activeHandlers.add(handlers.get(i));
 		}
 	}
@@ -69,15 +65,13 @@ public abstract class VisualHandler {
 		this.comment = comment;
 	}
 	
-	public void initConfig(Configuration config)
-	{
+	public void initConfig(Configuration config) {
 		config.addCustomCategoryComment(name, comment);
 		enabled = config.getBoolean("enabled", name, enabled, "");
 	}
 	
 	@Method(modid = "igcm")
-	public ConfigBranch getConfigBranch()
-	{
+	public ConfigBranch getConfigBranch() {
 		return new ConfigBranch(name, ItemStack.EMPTY) {
 			
 			@Override
@@ -116,30 +110,33 @@ public abstract class VisualHandler {
 	public abstract void receiveConfigElements(ConfigBranch branch);
 	
 	@SideOnly(Side.CLIENT)
-	public void onPlayerDamaged(EntityPlayer player, DamageSource source, float damage) {}
+	public void onPlayerDamaged(EntityPlayer player, DamageSource source, float damage) {
+	}
 	
 	@SideOnly(Side.CLIENT)
-	public void onEntityDamaged(EntityLivingBase entity, DamageSource source, float damage, double distance) {}
+	public void onEntityDamaged(EntityLivingBase entity, DamageSource source, float damage, double distance) {
+	}
 	
 	@SideOnly(Side.CLIENT)
-	public void onTick(@Nullable EntityPlayer player) {}
+	public void onTick(@Nullable EntityPlayer player) {
+	}
 	
 	@SideOnly(Side.CLIENT)
-	public void onThrowableImpact(ProjectileImpactEvent.Throwable event) {}
+	public void onThrowableImpact(ProjectileImpactEvent.Throwable event) {
+	}
 	
 	@SideOnly(Side.CLIENT)
-	public void onExplosion(EntityPlayer player, double x, double y, double z, double distance) {}
+	public void onExplosion(EntityPlayer player, double x, double y, double z, double distance) {
+	}
 	
 	@SideOnly(Side.CLIENT)
-	public synchronized void playSound(ResourceLocation location, BlockPos pos)
-	{
+	public synchronized void playSound(ResourceLocation location, BlockPos pos) {
 		playSound(location, pos, 1.0F);
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public synchronized void playSound(ResourceLocation location, BlockPos pos, float volume)
-	{
-		if(pos != null)
+	public synchronized void playSound(ResourceLocation location, BlockPos pos, float volume) {
+		if (pos != null)
 			Minecraft.getMinecraft().getSoundHandler().playDelayedSound(new PositionedSoundRecord(new SoundEvent(location), SoundCategory.MASTER, volume, 1, pos), 0);
 		else
 			Minecraft.getMinecraft().getSoundHandler().playDelayedSound(new PositionedSoundRecord(location, SoundCategory.MASTER, volume, 1, false, 0, AttenuationType.NONE, 0, 0, 0), 0);

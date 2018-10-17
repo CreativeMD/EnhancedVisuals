@@ -15,7 +15,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Optional.Method;
 
 public class SandSplatHandler extends VisualHandler {
-
+	
 	public SandSplatHandler() {
 		super("sand", "walking on sand");
 	}
@@ -57,27 +57,24 @@ public class SandSplatHandler extends VisualHandler {
 	}
 	
 	@Override
-	public void onTick(@Nullable EntityPlayer player)
-	{
-		if(player != null && player.onGround && isOnSand(player))
-	    {
-	    	float modifier = defaultmodifier;
+	public void onTick(@Nullable EntityPlayer player) {
+		if (player != null && player.onGround && isOnSand(player)) {
+			float modifier = defaultmodifier;
 			if (player.isSprinting())
 				modifier = sprintingmodifier;
-	    	VisualManager.addVisualsWithShading(VisualType.sand, (int) (Math.random()*modifier), minDuration, maxDuration);
-	    }
+			VisualManager.addVisualsWithShading(VisualType.sand, (int) (Math.random() * modifier), minDuration, maxDuration);
+		}
 	}
 	
-	private boolean isOnSand(EntityPlayer player)
-	{
+	private boolean isOnSand(EntityPlayer player) {
 		BlockPos pos = player.getPosition().down();
-		int posX = (int)player.posX;
-		int posY = (int)(player.posY - 1);
-		int posZ = (int)player.posZ;
-	    if (player.world.getBlockState(pos).getBlock() == Blocks.SAND) {
-	    	return true;
-	    }
-	    return false;
+		int posX = (int) player.posX;
+		int posY = (int) (player.posY - 1);
+		int posZ = (int) player.posZ;
+		if (player.world.getBlockState(pos).getBlock() == Blocks.SAND) {
+			return true;
+		}
+		return false;
 	}
-
+	
 }

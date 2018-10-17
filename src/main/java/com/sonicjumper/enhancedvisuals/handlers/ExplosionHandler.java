@@ -10,13 +10,12 @@ import com.sonicjumper.enhancedvisuals.events.SoundMuteHandler;
 import com.sonicjumper.enhancedvisuals.visuals.types.VisualType;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Optional.Method;
 
 public class ExplosionHandler extends VisualHandler {
-
+	
 	public ExplosionHandler() {
 		super("explosion", "");
 	}
@@ -86,21 +85,19 @@ public class ExplosionHandler extends VisualHandler {
 	}
 	
 	@Override
-	public void onExplosion(EntityPlayer player, double x, double y, double z, double distance)
-	{
-		if(distance < 5)
-		{
-			float damage = (float) (1-(distance/5F))*5;
+	public void onExplosion(EntityPlayer player, double x, double y, double z, double distance) {
+		if (distance < 5) {
+			float damage = (float) (1 - (distance / 5F)) * 5;
 			System.out.println(damage);
-			VisualManager.addVisualsWithShading(VisualType.dust, (int) Math.min(40, damage*dustSplatsMultiplier), dustMinDuration, dustMaxDuration);
+			VisualManager.addVisualsWithShading(VisualType.dust, (int) Math.min(40, damage * dustSplatsMultiplier), dustMinDuration, dustMaxDuration);
 			
-			float volume = Math.max(minExplosionVolume, 1-(damage/explosionVolumeModifier));
-			int time = (int) Math.min(maxExplosionTime, damage*explosionTimeModifier);
+			float volume = Math.max(minExplosionVolume, 1 - (damage / explosionVolumeModifier));
+			int time = (int) Math.min(maxExplosionTime, damage * explosionTimeModifier);
 			
-			if(!SoundMuteHandler.isMuting)
-				playSound(new ResourceLocation("enhancedvisuals:ringing"), null, (1-volume)*maxBeepVolume);
+			if (!SoundMuteHandler.isMuting)
+				playSound(new ResourceLocation("enhancedvisuals:ringing"), null, (1 - volume) * maxBeepVolume);
 			SoundMuteHandler.startMuting(time, volume);
-			VisualManager.addVisualWithShading(VisualType.blur, maxBlur, (int) (time/blurTimeFactor), (int) (time/blurTimeFactor), Color.WHITE);
+			VisualManager.addVisualWithShading(VisualType.blur, maxBlur, (int) (time / blurTimeFactor), (int) (time / blurTimeFactor), Color.WHITE);
 		}
 	}
 	

@@ -14,7 +14,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Optional.Method;
 
 public class SaturationHandler extends VisualHandler {
-
+	
 	public SaturationHandler() {
 		super("saturation", "saturation depending on hunger");
 	}
@@ -60,28 +60,24 @@ public class SaturationHandler extends VisualHandler {
 	}
 	
 	@Override
-	public void onTick(@Nullable EntityPlayer player)
-	{
+	public void onTick(@Nullable EntityPlayer player) {
 		VisualPersistent visual = VisualManager.getPersitentVisual(VisualType.desaturate);
-		if(visual != null)
-		{
+		if (visual != null) {
 			float aimedSaturation = defaultSaturation;
 			
-			if(player != null)
-			{
-				if(player.getFoodStats().getFoodLevel() <= maxFoodLevelEffected)
-				{
-					float leftFoodInSpan = player.getFoodStats().getFoodLevel()-minFoodLevelEffected;
-					float spanLength = maxFoodLevelEffected-minFoodLevelEffected;
-					aimedSaturation = Math.max(minSaturation, (leftFoodInSpan/spanLength)*defaultSaturation);
+			if (player != null) {
+				if (player.getFoodStats().getFoodLevel() <= maxFoodLevelEffected) {
+					float leftFoodInSpan = player.getFoodStats().getFoodLevel() - minFoodLevelEffected;
+					float spanLength = maxFoodLevelEffected - minFoodLevelEffected;
+					aimedSaturation = Math.max(minSaturation, (leftFoodInSpan / spanLength) * defaultSaturation);
 				}
 			}
 			
-			if(visual.getIntensity(1.0F) < aimedSaturation)
-				visual.setIntensity(Math.min(visual.getIntensity(1.0F)+fadeFactor, aimedSaturation));
-			else if(visual.getIntensity(1.0F) > aimedSaturation)
-				visual.setIntensity(Math.max(visual.getIntensity(1.0F)-fadeFactor, aimedSaturation));
+			if (visual.getIntensity(1.0F) < aimedSaturation)
+				visual.setIntensity(Math.min(visual.getIntensity(1.0F) + fadeFactor, aimedSaturation));
+			else if (visual.getIntensity(1.0F) > aimedSaturation)
+				visual.setIntensity(Math.max(visual.getIntensity(1.0F) - fadeFactor, aimedSaturation));
 		}
 	}
-
+	
 }

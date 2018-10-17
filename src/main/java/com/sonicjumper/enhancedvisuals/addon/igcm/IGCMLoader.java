@@ -14,8 +14,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class IGCMLoader {
 	
-	public static void initConfiguration()
-	{
+	public static void initConfiguration() {
 		ConfigTab.root.registerElement("enhancedvisuals", new ConfigBranch("Enhanced Visuals", new ItemStack(Items.BONE)) {
 			
 			@Override
@@ -60,22 +59,22 @@ public class IGCMLoader {
 					registerElement(handler.name, handler.getConfigBranch());
 				}
 			}
-
+			
 			@Override
 			public boolean requiresSynchronization() {
 				return true;
 			}
-
+			
 			@Override
 			public void onRecieveFrom(Side side) {
 				
 			}
-
+			
 			@Override
 			public void loadExtra(NBTTagCompound nbt) {
 				
 			}
-
+			
 			@Override
 			public void saveExtra(NBTTagCompound nbt) {
 				

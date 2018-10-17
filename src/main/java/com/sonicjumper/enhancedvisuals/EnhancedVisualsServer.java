@@ -6,18 +6,15 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class EnhancedVisualsServer {
 	
-	public void init(FMLLoadCompleteEvent event)
-	{
+	public void init(FMLLoadCompleteEvent event) {
 		
 	}
 	
-	public void preInit(FMLPreInitializationEvent event)
-	{
+	public void preInit(FMLPreInitializationEvent event) {
 		
 	}
 	
-	public void load(FMLInitializationEvent event)
-	{
+	public void load(FMLInitializationEvent event) {
 		
 	}
 	

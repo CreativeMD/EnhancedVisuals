@@ -18,7 +18,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Optional.Method;
 
 public class HeartBeatHandler extends VisualHandler {
-
+	
 	public HeartBeatHandler() {
 		super("heart beat", "blur & bloody overlay");
 	}
@@ -40,7 +40,7 @@ public class HeartBeatHandler extends VisualHandler {
 		maxHearts = config.getInt("heartLevel", name, maxHearts, 0, 20, "below or equal means the heartbeat will take effect");
 		minHeartBeatLength = config.getInt("minHeartBeatLength", name, minHeartBeatLength, 0, 100000, "time between heartbeats = player.health * heartBeatHeartFactor + minHeartBeatLength");
 		heartBeatTimeFactor = config.getFloat("heartBeatTimeFactor", name, heartBeatTimeFactor, 0, 100000, "time between heartbeats = player.health * heartBeatHeartFactor + minHeartBeatLength");
-	
+		
 		heartBeatVolume = config.getFloat("heartBeatVolume", name, heartBeatVolume, 0, 1, "How loud the heart beat sounds should be");
 	}
 	
@@ -51,7 +51,7 @@ public class HeartBeatHandler extends VisualHandler {
 		branch.registerElement("heartBeatDuration", new IntegerSegment("heartBeatDuration", 5, 0, 10000).setToolTip("heartbeat blur duration"));
 		
 		branch.registerElement("maxHearts", new IntegerSegment("maxHearts", 6, 0, 20).setToolTip("below or equal means the heartbeat will take effect"));
-		branch.registerElement("minHeartBeatLength", new IntegerSegment("minHeartBeatLength", 15, 0, 100000).setToolTip( "time between heartbeats = player.health * heartBeatHeartFactor + minHeartBeatLength"));
+		branch.registerElement("minHeartBeatLength", new IntegerSegment("minHeartBeatLength", 15, 0, 100000).setToolTip("time between heartbeats = player.health * heartBeatHeartFactor + minHeartBeatLength"));
 		branch.registerElement("heartBeatTimeFactor", new FloatSegment("heartBeatTimeFactor", 5F, 0, 10000).setToolTip("time between heartbeats = player.health * heartBeatHeartFactor + minHeartBeatLength"));
 		
 		branch.registerElement("heartBeatVolume", new FloatSegment("heartBeatVolume", 1F, 0, 1).setToolTip("How loud the heart beat sounds should be"));
@@ -73,19 +73,17 @@ public class HeartBeatHandler extends VisualHandler {
 	public int lowHealthBuffer;
 	
 	@Override
-	public void onTick(@Nullable EntityPlayer player)
-	{
-		if(player != null)
-		{
+	public void onTick(@Nullable EntityPlayer player) {
+		if (player != null) {
 			if (player.getHealth() <= maxHearts) {
-				if(this.lowHealthBuffer <= 0) {
+				if (this.lowHealthBuffer <= 0) {
 					float f1 = (7.0F - player.getHealth()) * 0.2F;
 					this.lowHealthBuffer = (int) (player.getHealth() * heartBeatTimeFactor + minHeartBeatLength);
 					VisualManager.addVisualWithShading(VisualType.lowhealth, Math.min(0.7F, f1), lowHealthBuffer, lowHealthBuffer, Color.WHITE);
 					
-					VisualManager.addVisualWithShading(VisualType.blur, Math.min(0.7F, f1)*heartBeatIntensity, heartBeatDuration, heartBeatDuration, Color.WHITE);					
+					VisualManager.addVisualWithShading(VisualType.blur, Math.min(0.7F, f1) * heartBeatIntensity, heartBeatDuration, heartBeatDuration, Color.WHITE);
 					playSound(new ResourceLocation(EnhancedVisuals.modid + ":heartbeatOut"), new BlockPos(player), heartBeatVolume);
-				} else if(this.lowHealthBuffer == 5) {
+				} else if (this.lowHealthBuffer == 5) {
 					playSound(new ResourceLocation(EnhancedVisuals.modid + ":heartbeatIn"), new BlockPos(player), heartBeatVolume);
 					VisualManager.addVisualWithShading(VisualType.blur, heartBeatIntensity, heartBeatDuration, heartBeatDuration, Color.WHITE);
 					

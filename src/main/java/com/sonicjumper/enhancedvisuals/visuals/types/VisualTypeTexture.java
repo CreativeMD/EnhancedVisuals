@@ -25,7 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public abstract class VisualTypeTexture extends VisualType {
 	
 	public int animationSpeed;
-
+	
 	public VisualTypeTexture(VisualCategory category, String name, int animationSpeed, boolean isAffectedByWater) {
 		super(category, name, isAffectedByWater);
 		this.animationSpeed = animationSpeed;
@@ -35,7 +35,7 @@ public abstract class VisualTypeTexture extends VisualType {
 	public ResourceLocation[] resources;
 	@SideOnly(Side.CLIENT)
 	public Dimension dimension;
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void loadTextures(IResourceManager manager) {
@@ -46,10 +46,8 @@ public abstract class VisualTypeTexture extends VisualType {
 		ResourceLocation location = null;
 		IResource resource = null;
 		try {
-			while((resource = manager.getResource((location = new ResourceLocation(EnhancedVisuals.modid, baseLocation + i + ".png")))) != null)
-			{
-				if(i == 0)
-				{
+			while ((resource = manager.getResource((location = new ResourceLocation(EnhancedVisuals.modid, baseLocation + i + ".png")))) != null) {
+				if (i == 0) {
 					BufferedImage image = ImageIO.read(resource.getInputStream());
 					dimension = new Dimension(image.getWidth(), image.getHeight());
 				}
@@ -60,8 +58,7 @@ public abstract class VisualTypeTexture extends VisualType {
 			//e.printStackTrace();
 		}
 		resources = locations.toArray(new ResourceLocation[0]);
-		if(resources.length == 0)
-		{
+		if (resources.length == 0) {
 			EnhancedVisuals.log.warn("Could not find any resources for '" + name + "'!");
 		}
 	}
@@ -74,8 +71,7 @@ public abstract class VisualTypeTexture extends VisualType {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean isEnabled()
-	{
+	public boolean isEnabled() {
 		return super.isEnabled() && resources.length > 0;
 	}
 	
@@ -86,11 +82,9 @@ public abstract class VisualTypeTexture extends VisualType {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public ResourceLocation getResource(Visual visual)
-	{
-		if(animationSpeed > 0)
-		{
-			long time = Math.abs(System.nanoTime()/3000000/animationSpeed);
+	public ResourceLocation getResource(Visual visual) {
+		if (animationSpeed > 0) {
+			long time = Math.abs(System.nanoTime() / 3000000 / animationSpeed);
 			return resources[(int) (time % resources.length)];
 		}
 		return resources[visual.variant];
@@ -111,8 +105,7 @@ public abstract class VisualTypeTexture extends VisualType {
 		int width = resolution.getScaledWidth();
 		int height = resolution.getScaledHeight();
 		
-		if(visual.properties != null)
-		{
+		if (visual.properties != null) {
 			width = visual.properties.width;
 			height = visual.properties.height;
 			GlStateManager.translate(visual.properties.posX + width / 2, visual.properties.posY + height / 2, 0);
@@ -122,8 +115,8 @@ public abstract class VisualTypeTexture extends VisualType {
 		renderer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
 		renderer.pos(0.0D, height, z).tex(0.0D, 1.0D).color(red, green, blue, intensity).endVertex();
 		renderer.pos(width, height, z).tex(1.0D, 1.0D).color(red, green, blue, intensity).endVertex();
-		renderer.pos(width, 0.0D, z).tex( 1.0D, 0.0D).color(red, green, blue, intensity).endVertex();
-		renderer.pos(0.0D, 0.0D, z).tex( 0.0D, 0.0D).color(red, green, blue, intensity).endVertex();
+		renderer.pos(width, 0.0D, z).tex(1.0D, 0.0D).color(red, green, blue, intensity).endVertex();
+		renderer.pos(0.0D, 0.0D, z).tex(0.0D, 0.0D).color(red, green, blue, intensity).endVertex();
 		tessellator.draw();
 	}
 	

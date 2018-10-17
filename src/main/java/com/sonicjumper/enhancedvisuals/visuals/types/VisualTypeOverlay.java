@@ -2,13 +2,12 @@ package com.sonicjumper.enhancedvisuals.visuals.types;
 
 import com.creativemd.igcm.api.ConfigBranch;
 
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class VisualTypeOverlay extends VisualTypeTexture {
-
+	
 	public VisualTypeOverlay(String name, int animationSpeed, boolean isAffectedByWater) {
 		super(VisualCategory.overlay, name, animationSpeed, isAffectedByWater);
 	}
@@ -34,5 +33,5 @@ public class VisualTypeOverlay extends VisualTypeTexture {
 	public void receiveConfigElements(ConfigBranch branch) {
 		
 	}
-
+	
 }

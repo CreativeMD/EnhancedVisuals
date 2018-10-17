@@ -8,7 +8,6 @@ import com.creativemd.igcm.api.segments.IntegerSegment;
 import com.sonicjumper.enhancedvisuals.VisualManager;
 import com.sonicjumper.enhancedvisuals.handlers.VisualHandler;
 import com.sonicjumper.enhancedvisuals.visuals.VisualPersistent;
-import com.sonicjumper.enhancedvisuals.visuals.types.VisualType;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.config.Configuration;
@@ -16,13 +15,12 @@ import net.minecraftforge.fml.common.Optional.Method;
 import toughasnails.api.TANCapabilities;
 import toughasnails.api.stat.capability.IThirst;
 
-
 public class ThirstHandler extends VisualHandler {
-
+	
 	public ThirstHandler() {
 		super("thirst", "addon for ToughAsNailsAddon");
 	}
-
+	
 	public float defaultIntensity = 0F;
 	public float maxIntensity = 5;
 	public float fadeFactor = 0.05F;
@@ -64,26 +62,22 @@ public class ThirstHandler extends VisualHandler {
 	}
 	
 	@Override
-	public void onTick(@Nullable EntityPlayer player)
-	{
+	public void onTick(@Nullable EntityPlayer player) {
 		VisualPersistent visual = VisualManager.getPersitentVisual(ToughAsNailsAddon.focus);
-		if(visual != null)
-		{
+		if (visual != null) {
 			float aimedSaturation = defaultIntensity;
-			if(player != null)
-			{
-				if(((IThirst) player.getCapability(TANCapabilities.THIRST, null)).getThirst() <= maxThirstLevelEffected)
-				{
-					float leftFoodInSpan = ((IThirst) player.getCapability(TANCapabilities.THIRST, null)).getThirst()-minThirstLevelEffected;
-					float spanLength = maxThirstLevelEffected-minThirstLevelEffected;
-					aimedSaturation = (1-(leftFoodInSpan/spanLength))*maxIntensity;
+			if (player != null) {
+				if (((IThirst) player.getCapability(TANCapabilities.THIRST, null)).getThirst() <= maxThirstLevelEffected) {
+					float leftFoodInSpan = ((IThirst) player.getCapability(TANCapabilities.THIRST, null)).getThirst() - minThirstLevelEffected;
+					float spanLength = maxThirstLevelEffected - minThirstLevelEffected;
+					aimedSaturation = (1 - (leftFoodInSpan / spanLength)) * maxIntensity;
 				}
 			}
 			
-			if(visual.getIntensity(1.0F) < aimedSaturation)
-				visual.setIntensity(Math.min(visual.getIntensity(1.0F)+fadeFactor, aimedSaturation));
-			else if(visual.getIntensity(1.0F) > aimedSaturation)
-				visual.setIntensity(Math.max(visual.getIntensity(1.0F)-fadeFactor, aimedSaturation));
+			if (visual.getIntensity(1.0F) < aimedSaturation)
+				visual.setIntensity(Math.min(visual.getIntensity(1.0F) + fadeFactor, aimedSaturation));
+			else if (visual.getIntensity(1.0F) > aimedSaturation)
+				visual.setIntensity(Math.max(visual.getIntensity(1.0F) - fadeFactor, aimedSaturation));
 		}
 	}
 	

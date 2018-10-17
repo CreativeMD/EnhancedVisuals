@@ -4,7 +4,6 @@ import javax.annotation.Nullable;
 
 import com.creativemd.igcm.api.ConfigBranch;
 import com.creativemd.igcm.api.segments.FloatSegment;
-import com.creativemd.igcm.api.segments.IntegerSegment;
 import com.sonicjumper.enhancedvisuals.VisualManager;
 import com.sonicjumper.enhancedvisuals.handlers.VisualHandler;
 import com.sonicjumper.enhancedvisuals.visuals.VisualPersistent;
@@ -13,13 +12,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Optional.Method;
 import toughasnails.api.TANCapabilities;
-import toughasnails.api.stat.capability.IThirst;
+import toughasnails.api.stat.capability.ITemperature;
 import toughasnails.api.temperature.Temperature;
 import toughasnails.api.temperature.TemperatureScale.TemperatureRange;
-import toughasnails.api.stat.capability.ITemperature;
 
 public class TemperatureHandler extends VisualHandler {
-
+	
 	public TemperatureHandler() {
 		super("freeze", "addon for ToughAsNailsAddon");
 	}
@@ -59,32 +57,29 @@ public class TemperatureHandler extends VisualHandler {
 	private static Temperature defaultTemperature = new Temperature(12);
 	
 	@Override
-	public void onTick(@Nullable EntityPlayer player)
-	{
+	public void onTick(@Nullable EntityPlayer player) {
 		VisualPersistent freeze = VisualManager.getPersitentVisual(ToughAsNailsAddon.freeze);
 		VisualPersistent heat = VisualManager.getPersitentVisual(ToughAsNailsAddon.heat);
-		if(freeze != null && heat != null)
-		{
+		if (freeze != null && heat != null) {
 			float aimedHeat = defaultIntensity;
 			float aimedFreeze = defaultIntensity;
 			Temperature temp = defaultTemperature;
 			
-			if(player != null)
+			if (player != null)
 				temp = ((ITemperature) player.getCapability(TANCapabilities.TEMPERATURE, null)).getTemperature();
 			
-			if(temp == null)
+			if (temp == null)
 				temp = defaultTemperature;
 			
 			TemperatureRange range = temp.getRange();
-			switch(range)
-			{
+			switch (range) {
 			case ICY:
 				aimedHeat = 0;
 				aimedFreeze = maxIntensity;
 				break;
 			case COOL:
 				aimedHeat = 0;
-				aimedFreeze = mediumIntensity*temp.getRangeDelta(true);
+				aimedFreeze = mediumIntensity * temp.getRangeDelta(true);
 				
 				break;
 			case MILD:
@@ -92,25 +87,24 @@ public class TemperatureHandler extends VisualHandler {
 				aimedFreeze = defaultIntensity;
 				break;
 			case WARM:
-				aimedHeat = mediumIntensity*temp.getRangeDelta(false);
+				aimedHeat = mediumIntensity * temp.getRangeDelta(false);
 				aimedFreeze = 0;
 				break;
 			case HOT:
 				aimedHeat = maxIntensity;
 				aimedFreeze = 0;
-				break;			
+				break;
 			}
 			
+			if (freeze.getIntensity(1.0F) < aimedFreeze)
+				freeze.setIntensity(Math.min(freeze.getIntensity(1.0F) + fadeFactor, aimedFreeze));
+			else if (freeze.getIntensity(1.0F) > aimedFreeze)
+				freeze.setIntensity(Math.max(freeze.getIntensity(1.0F) - fadeFactor, aimedFreeze));
 			
-			if(freeze.getIntensity(1.0F) < aimedFreeze)
-				freeze.setIntensity(Math.min(freeze.getIntensity(1.0F)+fadeFactor, aimedFreeze));
-			else if(freeze.getIntensity(1.0F) > aimedFreeze)
-				freeze.setIntensity(Math.max(freeze.getIntensity(1.0F)-fadeFactor, aimedFreeze));
-			
-			if(heat.getIntensity(1.0F) < aimedHeat)
-				heat.setIntensity(Math.min(heat.getIntensity(1.0F)+fadeFactor, aimedHeat));
-			else if(heat.getIntensity(1.0F) > aimedHeat)
-				heat.setIntensity(Math.max(heat.getIntensity(1.0F)-fadeFactor, aimedHeat));
+			if (heat.getIntensity(1.0F) < aimedHeat)
+				heat.setIntensity(Math.min(heat.getIntensity(1.0F) + fadeFactor, aimedHeat));
+			else if (heat.getIntensity(1.0F) > aimedHeat)
+				heat.setIntensity(Math.max(heat.getIntensity(1.0F) - fadeFactor, aimedHeat));
 		}
 	}
 	

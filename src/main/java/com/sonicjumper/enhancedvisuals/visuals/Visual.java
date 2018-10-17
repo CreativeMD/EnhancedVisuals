@@ -31,27 +31,23 @@ public abstract class Visual {
 		this.intensity = intensity;
 		this.color = color;
 		variant = type.getVariantAmount() > 0 ? rand.nextInt(type.getVariantAmount()) : 0;
-		if(isRandomized())
+		if (isRandomized())
 			properties = randomize();
 	}
 	
-	public void onTick(@Nullable EntityPlayer player)
-	{
+	public void onTick(@Nullable EntityPlayer player) {
 		
 	}
 	
-	public float getIntensity(float partialTicks)
-	{
+	public float getIntensity(float partialTicks) {
 		return intensity;
 	}
 	
-	public boolean supportsColor()
-	{
+	public boolean supportsColor() {
 		return type.supportsColor();
 	}
 	
-	public Color getColor()
-	{
+	public Color getColor() {
 		return color;
 	}
 	
@@ -59,16 +55,15 @@ public abstract class Visual {
 	
 	public abstract boolean isRandomized();
 	
-	public VisualProperties randomize()
-	{
+	public VisualProperties randomize() {
 		int size = rand.nextInt(type.getSize());
-		VisualProperties properties = new VisualProperties(0, 0, size, size, rand.nextFloat()*360);
+		VisualProperties properties = new VisualProperties(0, 0, size, size, rand.nextFloat() * 360);
 		ScaledResolution scaledRes = new ScaledResolution(Minecraft.getMinecraft());
 		properties.posX = generateOffset(scaledRes.getScaledWidth(), properties.width);
 		properties.posY = generateOffset(scaledRes.getScaledHeight(), properties.height);
 		return properties;
 	}
-		
+	
 	public static int generateOffset(int dimensionLength, int spacingBuffer) {
 		float halfDimLength = (float) dimensionLength / 2.0F;
 		float multiplier = (float) (1 - Math.pow(rand.nextDouble(), 2));

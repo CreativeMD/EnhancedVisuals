@@ -4,9 +4,7 @@ import java.util.ArrayList;
 
 public enum VisualCategory {
 	
-	overlay,
-	splat,
-	shader;
+	overlay, splat, shader;
 	
 	public ArrayList<VisualType> types = new ArrayList<>();
 	

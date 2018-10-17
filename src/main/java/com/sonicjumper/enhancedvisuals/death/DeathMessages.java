@@ -14,7 +14,7 @@ public class DeathMessages {
 	
 	private static Random rand = new Random();
 	
-	static{
+	static {
 		//Init default messages
 		deathMessages.add("Do you really want to respawn? think of it again.");
 		deathMessages.add("Life is hard. Deal with it!");
@@ -27,17 +27,15 @@ public class DeathMessages {
 		deathMessages.add("Time for a break?");
 	}
 	
-	public static void loadConfig(Configuration config)
-	{
+	public static void loadConfig(Configuration config) {
 		deathMessages = new ArrayList(Arrays.asList(config.getStringList("messages", "deathMessages", deathMessages.toArray(new String[0]), "")));
 		enabled = config.getBoolean("enabled", "deathMessages", enabled, "");
 	}
 	
-	public static String pickRandomDeathMessage()
-	{
-		if(deathMessages.size() == 0)
+	public static String pickRandomDeathMessage() {
+		if (deathMessages.size() == 0)
 			return null;
-		return deathMessages.get(rand.nextInt(deathMessages.size()-1));
+		return deathMessages.get(rand.nextInt(deathMessages.size() - 1));
 	}
 	
 }

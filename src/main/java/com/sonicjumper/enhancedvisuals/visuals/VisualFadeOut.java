@@ -17,34 +17,32 @@ public class VisualFadeOut extends Visual {
 		super(type, intensity, color);
 		this.duration = minDuration + (maxDuration - minDuration > 0 ? rand.nextInt(maxDuration - minDuration) : minDuration);
 	}
-
+	
 	public VisualFadeOut(VisualType type, float intensity, int minDuration, int maxDuration) {
 		this(type, intensity, minDuration, maxDuration, Color.WHITE);
 	}
 	
 	@Override
-	public void onTick(@Nullable EntityPlayer player)
-	{
+	public void onTick(@Nullable EntityPlayer player) {
 		lifeTime++;
 	}
 	
 	@Override
-	public float getIntensity(float partialTicks)
-	{
+	public float getIntensity(float partialTicks) {
 		float lifeTime = this.lifeTime + partialTicks;
-		if(type.supportsColor())
+		if (type.supportsColor())
 			return color.getAlpha() / 255F * intensity * (1F - (lifeTime / (float) duration));
 		return (float) (intensity * (1 - (lifeTime / (float) duration)));
 	}
-
+	
 	@Override
 	public boolean hasFinished() {
 		return lifeTime >= duration;
 	}
-
+	
 	@Override
 	public boolean isRandomized() {
 		return type.isRandomized();
 	}
-
+	
 }

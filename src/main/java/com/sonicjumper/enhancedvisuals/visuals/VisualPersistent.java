@@ -18,35 +18,31 @@ public class VisualPersistent extends Visual {
 		super(type, intensity);
 		this.defaultIntensity = intensity;
 	}
-
+	
 	@Override
 	public boolean hasFinished() {
 		return false;
 	}
 	
 	@Override
-	public void onTick(@Nullable EntityPlayer player)
-	{
+	public void onTick(@Nullable EntityPlayer player) {
 		int i = 0;
-		while(i < subVisuals.size())
-		{
-			if(subVisuals.get(i).hasFinished())
+		while (i < subVisuals.size()) {
+			if (subVisuals.get(i).hasFinished())
 				subVisuals.remove(i);
-			else{
+			else {
 				subVisuals.get(i).onTick(player);
 				i++;
 			}
 		}
 	}
 	
-	public void addVisual(Visual visual)
-	{
+	public void addVisual(Visual visual) {
 		subVisuals.add(visual);
 	}
 	
 	@Override
-	public float getIntensity(float partialTicks)
-	{
+	public float getIntensity(float partialTicks) {
 		float intensity = this.intensity;
 		for (int i = 0; i < subVisuals.size(); i++) {
 			intensity += subVisuals.get(i).getIntensity(partialTicks);
@@ -54,18 +50,16 @@ public class VisualPersistent extends Visual {
 		return intensity;
 	}
 	
-	public void setIntensity(float intensity)
-	{
+	public void setIntensity(float intensity) {
 		this.intensity = intensity;
 	}
-
+	
 	@Override
 	public boolean isRandomized() {
 		return false;
 	}
 	
-	public void reset()
-	{
+	public void reset() {
 		subVisuals.clear();
 		intensity = defaultIntensity;
 	}

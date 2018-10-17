@@ -1,8 +1,5 @@
 package com.sonicjumper.enhancedvisuals.visuals.types;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import com.creativemd.igcm.api.ConfigBranch;
 import com.creativemd.igcm.api.segments.BooleanSegment;
 import com.creativemd.igcm.api.segments.FloatSegment;
@@ -40,35 +37,33 @@ public abstract class VisualType {
 	public static VisualType damaged = new VisualTypeOverlay("damaged", false);
 	public static VisualType potion = new VisualTypeOverlay("potion", false);
 	
-	public static VisualType slender = new VisualTypeOverlay("slender", 50, false){
+	public static VisualType slender = new VisualTypeOverlay("slender", 50, false) {
 		
 		@Override
 		@SideOnly(Side.CLIENT)
-		public VisualPersistent createPersitentVisual()
-		{
+		public VisualPersistent createPersitentVisual() {
 			return new VisualPersistent(this, 0);
 		}
 		
 	};
 	
-	public static VisualType blur = new VisualTypeShader("blur", new ResourceLocation("shaders/post/blur.json"), false){
+	public static VisualType blur = new VisualTypeShader("blur", new ResourceLocation("shaders/post/blur.json"), false) {
 		
 		@Override
 		@SideOnly(Side.CLIENT)
-		public VisualPersistent createPersitentVisual()
-		{
+		public VisualPersistent createPersitentVisual() {
 			return new VisualPersistent(this, 0);
 		}
 		
 		@Override
 		@SideOnly(Side.CLIENT)
 		public void changeProperties(float intensity) {
-			for(Shader mcShader : shaderGroup.getShaders()) {
+			for (Shader mcShader : shaderGroup.getShaders()) {
 				ShaderUniform shaderuniform = mcShader.getShaderManager().getShaderUniform("Radius");
 				
 				if (shaderuniform != null) {
-		        	shaderuniform.set((float) Math.floor(intensity));
-		        }
+					shaderuniform.set((float) Math.floor(intensity));
+				}
 			}
 		}
 		
@@ -79,24 +74,23 @@ public abstract class VisualType {
 		}
 		
 	};
-	public static VisualType desaturate = new VisualTypeShader("desaturate", new ResourceLocation("shaders/post/desaturate.json"), false){
+	public static VisualType desaturate = new VisualTypeShader("desaturate", new ResourceLocation("shaders/post/desaturate.json"), false) {
 		
 		@Override
 		@SideOnly(Side.CLIENT)
-		public VisualPersistent createPersitentVisual()
-		{
+		public VisualPersistent createPersitentVisual() {
 			return new VisualPersistent(this, 1);
 		}
 		
 		@Override
 		@SideOnly(Side.CLIENT)
 		public void changeProperties(float intensity) {
-			for(Shader mcShader : shaderGroup.getShaders()) {
+			for (Shader mcShader : shaderGroup.getShaders()) {
 				ShaderUniform shaderuniform = mcShader.getShaderManager().getShaderUniform("Saturation");
 				
 				if (shaderuniform != null) {
-		        	shaderuniform.set(intensity);
-		        }
+					shaderuniform.set(intensity);
+				}
 			}
 		}
 		
@@ -108,9 +102,8 @@ public abstract class VisualType {
 		
 	};
 	
-	public static void onLoad()
-	{
-		if(Loader.isModLoaded("toughasnails"))
+	public static void onLoad() {
+		if (Loader.isModLoaded("toughasnails"))
 			ToughAsNailsAddon.load();
 	}
 	
@@ -129,25 +122,21 @@ public abstract class VisualType {
 		category.types.add(this);
 	}
 	
-	public boolean isEnabled()
-	{
+	public boolean isEnabled() {
 		return enabled;
 	}
 	
-	public String getConfigCat()
-	{
+	public String getConfigCat() {
 		return name + "-type";
 	}
 	
-	public void initConfig(Configuration config)
-	{
+	public void initConfig(Configuration config) {
 		enabled = config.getBoolean("enabled", getConfigCat(), true, "If the effect is enabled!");
 		alpha = config.getFloat("alpha", getConfigCat(), alpha, 0, 1, "");
 	}
 	
 	@Method(modid = "igcm")
-	public ConfigBranch getConfigBranch()
-	{
+	public ConfigBranch getConfigBranch() {
 		return new ConfigBranch(getConfigCat(), ItemStack.EMPTY) {
 			
 			@Override
@@ -197,11 +186,10 @@ public abstract class VisualType {
 	public abstract boolean isRandomized();
 	
 	@SideOnly(Side.CLIENT)
-	public int getSize()
-	{
+	public int getSize() {
 		return -1;
 	}
-
+	
 	@SideOnly(Side.CLIENT)
 	public abstract boolean supportsColor();
 	
@@ -209,11 +197,11 @@ public abstract class VisualType {
 	public abstract void render(Visual visual, TextureManager manager, ScaledResolution resolution, float partialTicks, float intensity);
 	
 	@SideOnly(Side.CLIENT)
-	public void onResize(Framebuffer buffer) {}
+	public void onResize(Framebuffer buffer) {
+	}
 	
 	@SideOnly(Side.CLIENT)
-	public VisualPersistent createPersitentVisual()
-	{
+	public VisualPersistent createPersitentVisual() {
 		return null;
 	}
 	

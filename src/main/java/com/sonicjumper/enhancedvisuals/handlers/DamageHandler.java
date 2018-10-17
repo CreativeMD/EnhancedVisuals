@@ -27,7 +27,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Optional.Method;
 
 public class DamageHandler extends VisualHandler {
-
+	
 	public DamageHandler() {
 		super("damage", "when the player is taking damage");
 	}
@@ -57,7 +57,7 @@ public class DamageHandler extends VisualHandler {
 	@Override
 	public void initConfig(Configuration config) {
 		super.initConfig(config);
-
+		
 		sharpList.add(Items.IRON_SWORD);
 		sharpList.add(Items.WOODEN_SWORD);
 		sharpList.add(Items.STONE_SWORD);
@@ -68,7 +68,7 @@ public class DamageHandler extends VisualHandler {
 		sharpList.add(Items.STONE_AXE);
 		sharpList.add(Items.DIAMOND_AXE);
 		sharpList.add(Items.GOLDEN_AXE);
-
+		
 		bluntList.add(Items.IRON_PICKAXE);
 		bluntList.add(Items.WOODEN_PICKAXE);
 		bluntList.add(Items.STONE_PICKAXE);
@@ -79,8 +79,8 @@ public class DamageHandler extends VisualHandler {
 		bluntList.add(Items.STONE_SHOVEL);
 		bluntList.add(Items.DIAMOND_SHOVEL);
 		bluntList.add(Items.GOLDEN_SHOVEL);
-
-		pierceList.add(Items.IRON_HOE); 
+		
+		pierceList.add(Items.IRON_HOE);
 		pierceList.add(Items.WOODEN_HOE);
 		pierceList.add(Items.STONE_HOE);
 		pierceList.add(Items.DIAMOND_HOE);
@@ -146,23 +146,22 @@ public class DamageHandler extends VisualHandler {
 	}
 	
 	@Override
-	public void onPlayerDamaged(EntityPlayer player, DamageSource source, float damage)
-	{
+	public void onPlayerDamaged(EntityPlayer player, DamageSource source, float damage) {
 		Entity attacker = source.getImmediateSource();
 		
 		double distanceSq = 1;
-		if(attacker instanceof EntityArrow) 
+		if (attacker instanceof EntityArrow)
 			VisualManager.createVisualFromDamageAndDistance(VisualType.pierce, damage, player, distanceSq, bloodDurationMin, bloodDurationMax);
 		
-		if(attacker instanceof EntityLivingBase) {
+		if (attacker instanceof EntityLivingBase) {
 			EntityLivingBase lastAttacker = (EntityLivingBase) attacker;
 			// Check weapons
-			if(lastAttacker.getHeldItemMainhand() != null) {
-				if(isSharp(lastAttacker.getHeldItemMainhand().getItem())) {
+			if (lastAttacker.getHeldItemMainhand() != null) {
+				if (isSharp(lastAttacker.getHeldItemMainhand().getItem())) {
 					VisualManager.createVisualFromDamageAndDistance(VisualType.slash, damage, player, distanceSq, bloodDurationMin, bloodDurationMax);
-				} else if(isBlunt(lastAttacker.getHeldItemMainhand().getItem())) {
+				} else if (isBlunt(lastAttacker.getHeldItemMainhand().getItem())) {
 					VisualManager.createVisualFromDamageAndDistance(VisualType.impact, damage, player, distanceSq, bloodDurationMin, bloodDurationMax);
-				} else if(isPierce(lastAttacker.getHeldItemMainhand().getItem())) {
+				} else if (isPierce(lastAttacker.getHeldItemMainhand().getItem())) {
 					VisualManager.createVisualFromDamageAndDistance(VisualType.pierce, damage, player, distanceSq, bloodDurationMin, bloodDurationMax);
 				} else {
 					// Default to splatter type
@@ -170,50 +169,43 @@ public class DamageHandler extends VisualHandler {
 				}
 			} else {
 				// If player received fall damage					
-				if(lastAttacker instanceof EntityZombie || lastAttacker instanceof EntitySkeleton || lastAttacker instanceof EntityOcelot) {
+				if (lastAttacker instanceof EntityZombie || lastAttacker instanceof EntitySkeleton || lastAttacker instanceof EntityOcelot) {
 					VisualManager.createVisualFromDamageAndDistance(VisualType.slash, damage, player, distanceSq, bloodDurationMin, bloodDurationMax);
-				} else if(lastAttacker instanceof EntityGolem || lastAttacker instanceof EntityPlayer) {
+				} else if (lastAttacker instanceof EntityGolem || lastAttacker instanceof EntityPlayer) {
 					VisualManager.createVisualFromDamageAndDistance(VisualType.impact, damage, player, distanceSq, bloodDurationMin, bloodDurationMax);
-				} else if(lastAttacker instanceof EntityWolf || lastAttacker instanceof EntitySpider) {
+				} else if (lastAttacker instanceof EntityWolf || lastAttacker instanceof EntitySpider) {
 					VisualManager.createVisualFromDamageAndDistance(VisualType.pierce, damage, player, distanceSq, bloodDurationMin, bloodDurationMax);
 				}
-
 				
 			}
 		}
 		
-		if(source == DamageSource.CACTUS) {
+		if (source == DamageSource.CACTUS) {
 			VisualManager.createVisualFromDamageAndDistance(VisualType.pierce, damage, player, distanceSq, bloodDurationMin, bloodDurationMax);
 		}
 		
-		if(source == DamageSource.FALL || source == DamageSource.FALLING_BLOCK) {
+		if (source == DamageSource.FALL || source == DamageSource.FALLING_BLOCK) {
 			VisualManager.createVisualFromDamageAndDistance(VisualType.impact, damage, player, distanceSq, bloodDurationMin, bloodDurationMax);
-		}		
+		}
 		
-		
-		if(source.equals(DamageSource.DROWN)) {
+		if (source.equals(DamageSource.DROWN)) {
 			VisualManager.addVisualsWithShading(VisualType.waterS, 1F, drownSplashes, drownMinDuration, drownMaxDuration, new Color(1.0F, 1.0F, 1.0F, 1.0F));
 		}
 		
-		
-		
-		if(source.isFireDamage() || source == DamageSource.ON_FIRE)
+		if (source.isFireDamage() || source == DamageSource.ON_FIRE)
 			VisualManager.addVisualsWithShading(VisualType.fire, 1F, fireSplashes, fireMinDuration, fireMaxDuration, new Color(1, 1, 1));
 		
 	}
 	
-	private boolean isSharp(Item item)
-	{
+	private boolean isSharp(Item item) {
 		return sharpList.contains(item);
 	}
-
-	private boolean isBlunt(Item item)
-	{
+	
+	private boolean isBlunt(Item item) {
 		return bluntList.contains(item);
 	}
-
-	private boolean isPierce(Item item)
-	{
+	
+	private boolean isPierce(Item item) {
 		return pierceList.contains(item);
 	}
 }

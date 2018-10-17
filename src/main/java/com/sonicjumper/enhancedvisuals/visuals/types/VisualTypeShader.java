@@ -12,10 +12,8 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.shader.Framebuffer;
-import net.minecraft.client.shader.ShaderGroup;
 import net.minecraft.client.shader.ShaderLinkHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -42,14 +40,13 @@ public abstract class VisualTypeShader extends VisualType {
 	public void receiveConfigElements(ConfigBranch branch) {
 		
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void loadTextures(IResourceManager manager) {
-		if(ShaderLinkHelper.getStaticShaderLinkHelper() != null)
-		{
+		if (ShaderLinkHelper.getStaticShaderLinkHelper() != null) {
 			Minecraft mc = Minecraft.getMinecraft();
-			if(shaderGroup != null)
+			if (shaderGroup != null)
 				shaderGroup.deleteShaderGroup();
 			
 			try {
@@ -61,19 +58,19 @@ public abstract class VisualTypeShader extends VisualType {
 		}
 		
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getVariantAmount() {
 		return 0;
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean isRandomized() {
 		return false;
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean supportsColor() {
@@ -82,9 +79,8 @@ public abstract class VisualTypeShader extends VisualType {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void onResize(Framebuffer buffer)
-	{
-		if(shaderGroup != null)
+	public void onResize(Framebuffer buffer) {
+		if (shaderGroup != null)
 			shaderGroup.createBindFramebuffers(buffer.framebufferWidth, buffer.framebufferHeight);
 	}
 	
@@ -94,9 +90,8 @@ public abstract class VisualTypeShader extends VisualType {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void render(Visual visual, TextureManager manager, ScaledResolution resolution, float partialTicks, float intensity) {
-		if(shaderGroup == null)
-			if(ShaderLinkHelper.getStaticShaderLinkHelper() != null)
-			{
+		if (shaderGroup == null)
+			if (ShaderLinkHelper.getStaticShaderLinkHelper() != null) {
 				Minecraft mc = Minecraft.getMinecraft();
 				try {
 					shaderGroup = new EnhancedShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), location);
@@ -106,11 +101,10 @@ public abstract class VisualTypeShader extends VisualType {
 				}
 			}
 		
-		if(shaderGroup != null)
-		{
+		if (shaderGroup != null) {
 			changeProperties(intensity);
 			shaderGroup.render(partialTicks);
 		}
 	}
-
+	
 }
