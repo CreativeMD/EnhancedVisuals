@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.util.Iterator;
 import java.util.List;
 
+import org.lwjgl.opengl.GL11;
+
 import com.sonicjumper.enhancedvisuals.EnhancedVisuals;
 import com.sonicjumper.enhancedvisuals.VisualManager;
 import com.sonicjumper.enhancedvisuals.death.DeathMessages;
@@ -17,6 +19,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGameOver;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -67,10 +70,13 @@ public class VisualEventHandler {
 					framebufferHeight = mc.getFramebuffer().framebufferHeight;
 				}
 				
+				GlStateManager.pushMatrix();
+				
 				TextureManager manager = mc.getTextureManager();
 				ScaledResolution resolution = new ScaledResolution(mc);
 				float partialTicks = event.renderTickTime;
 				
+				RenderHelper.enableStandardItemLighting();
 				GlStateManager.clear(256);
 				GlStateManager.matrixMode(5889);
 				GlStateManager.loadIdentity();
@@ -85,6 +91,7 @@ public class VisualEventHandler {
 				GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
 				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 				GlStateManager.disableAlpha();
+				GL11.glEnable(GL11.GL_BLEND);
 				
 				renderVisuals(VisualManager.visuals.getValues(VisualCategory.splat), manager, resolution, partialTicks);
 				renderVisuals(VisualManager.visuals.getValues(VisualCategory.overlay), manager, resolution, partialTicks);
@@ -103,6 +110,8 @@ public class VisualEventHandler {
 				
 				mc.getFramebuffer().bindFramebuffer(false);
 				GlStateManager.matrixMode(5888);
+				
+				GlStateManager.popMatrix();
 			} else {
 				if (areEffectsEnabled())
 					VisualManager.resetAllVisuals();
@@ -121,14 +130,18 @@ public class VisualEventHandler {
 	private static void renderVisuals(List<Visual> visuals, TextureManager manager, ScaledResolution resolution, float partialTicks) {
 		if (visuals == null || visuals.isEmpty())
 			return;
-		for (Iterator iterator = visuals.iterator(); iterator.hasNext();) {
-			Visual visual = (Visual) iterator.next();
-			float intensity = visual.getIntensity(partialTicks) * visual.type.alpha;
-			if (visual.type.needsToBeRendered(intensity)) {
-				GlStateManager.pushMatrix();
-				visual.type.render(visual, manager, resolution, partialTicks, intensity);
-				GlStateManager.popMatrix();
+		try {
+			for (Iterator iterator = visuals.iterator(); iterator.hasNext();) {
+				Visual visual = (Visual) iterator.next();
+				float intensity = visual.getIntensity(partialTicks) * visual.type.alpha;
+				if (visual.type.needsToBeRendered(intensity)) {
+					GlStateManager.pushMatrix();
+					visual.type.render(visual, manager, resolution, partialTicks, intensity);
+					GlStateManager.popMatrix();
+				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
