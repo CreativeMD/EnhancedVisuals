@@ -8,6 +8,7 @@ import com.sonicjumper.enhancedvisuals.EnhancedVisuals;
 import com.sonicjumper.enhancedvisuals.VisualManager;
 import com.sonicjumper.enhancedvisuals.visuals.types.VisualType;
 import java.awt.Color;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -20,10 +21,6 @@ public class HeartBeatHandler extends VisualHandler {
 	private static String HEALTH_LEVEL = "healthLevel";
 	private static String HEALTH_LEVEL_PERCENTAGE = "healthLevelPercentage";
 	
-	public HeartBeatHandler() {
-		super("heart beat", "blur & bloody overlay");
-	}
-	
 	private boolean useHealthPercentage = false;
 	private int maxHealth = 6;
 	private float maxHealthPercentage = 0.3F;
@@ -32,6 +29,10 @@ public class HeartBeatHandler extends VisualHandler {
 	private int minHeartBeatLength = 15;
 	private float heartBeatTimeFactor = 100;
 	private float heartBeatVolume = 1F;
+
+	public HeartBeatHandler() {
+		super("heart beat", "blur & bloody overlay");
+	}
 	
 	@Override
 	public void initConfig(Configuration config) {
@@ -69,9 +70,9 @@ public class HeartBeatHandler extends VisualHandler {
 		heartBeatIntensity = (Float) branch.getValue("heartBeatIntensity");
 		heartBeatDuration = (Integer) branch.getValue("heartBeatDuration");
 
-		useHealthPercentage = (Boolean) branch.getValue("maxHealth");
-		maxHealth = (Integer) branch.getValue("maxHealth");
-		maxHealthPercentage = (Float) branch.getValue("maxHealth");
+		useHealthPercentage = (Boolean) branch.getValue(USE_HEALTH_PERCENTAGE);
+		maxHealth = (Integer) branch.getValue(HEALTH_LEVEL);
+		maxHealthPercentage = (Float) branch.getValue(HEALTH_LEVEL_PERCENTAGE);
 		minHeartBeatLength = (Integer) branch.getValue("minHeartBeatLength");
 		heartBeatTimeFactor = (Float) branch.getValue("heartBeatTimeFactor");
 		
@@ -84,15 +85,15 @@ public class HeartBeatHandler extends VisualHandler {
 	public void onTick(@Nullable EntityPlayer player) {
 		if (shouldHeartbeatTrigger(player)) {
 			if (this.effectBufferTicks <= 0) {
-				float percentHealthLeft = (player.getHealth() / player.getMaxHealth());
-				float intensity = (maxHealthPercentage - percentHealthLeft) * 2.0F;
-				this.effectBufferTicks = (int) (percentHealthLeft * heartBeatTimeFactor + minHeartBeatLength);
+				float intensity = getIntensity(player);
 
 				VisualManager.addVisualWithShading(VisualType.lowhealth, Math.min(0.7F, intensity), effectBufferTicks, effectBufferTicks, Color.WHITE);
 				VisualManager.addVisualWithShading(VisualType.blur, Math.min(0.7F, intensity) * heartBeatIntensity, heartBeatDuration, heartBeatDuration, Color.WHITE);
 				playSound(new ResourceLocation(EnhancedVisuals.modid + ":heartbeatOut"), new BlockPos(player), heartBeatVolume);
+
+				resetBufferTicks(player);
 			} else if (this.effectBufferTicks == 5) {
-				float intensity = maxHealthPercentage - (player.getHealth() / player.getMaxHealth());
+				float intensity = getIntensity(player);
 
 				playSound(new ResourceLocation(EnhancedVisuals.modid + ":heartbeatIn"), new BlockPos(player), heartBeatVolume);
 				VisualManager.addVisualWithShading(VisualType.blur, Math.min(0.7F, intensity) * heartBeatIntensity, heartBeatDuration, heartBeatDuration, Color.WHITE);
@@ -100,7 +101,21 @@ public class HeartBeatHandler extends VisualHandler {
 		}
 		this.effectBufferTicks -= 1;
 	}
-	
+
+	private void resetBufferTicks(@Nonnull EntityPlayer player) {
+		float percentHealthLeft = (player.getHealth() / player.getMaxHealth());
+		this.effectBufferTicks = (int) (percentHealthLeft * heartBeatTimeFactor + minHeartBeatLength);
+	}
+
+	private float getIntensity(@Nonnull EntityPlayer player) {
+		float percentHealthLeft = (player.getHealth() / player.getMaxHealth());
+		if(useHealthPercentage) {
+			return (maxHealthPercentage - percentHealthLeft) * 2.0F;
+		} else {
+			return ((maxHealth - player.getHealth()) / player.getMaxHealth()) * 2.0F;
+		}
+	}
+
 	private boolean shouldHeartbeatTrigger(@Nullable EntityPlayer player) {
 		if (player != null) {
 			if (useHealthPercentage) {
