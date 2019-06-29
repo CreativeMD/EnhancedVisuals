@@ -1,5 +1,10 @@
 package com.sonicjumper.enhancedvisuals.handlers;
 
+import java.awt.Color;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.creativemd.igcm.api.ConfigBranch;
 import com.creativemd.igcm.api.segments.BooleanSegment;
 import com.creativemd.igcm.api.segments.FloatSegment;
@@ -7,9 +12,7 @@ import com.creativemd.igcm.api.segments.IntegerSegment;
 import com.sonicjumper.enhancedvisuals.EnhancedVisuals;
 import com.sonicjumper.enhancedvisuals.VisualManager;
 import com.sonicjumper.enhancedvisuals.visuals.types.VisualType;
-import java.awt.Color;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -29,7 +32,7 @@ public class HeartBeatHandler extends VisualHandler {
 	private int minHeartBeatLength = 15;
 	private float heartBeatTimeFactor = 100;
 	private float heartBeatVolume = 1F;
-
+	
 	public HeartBeatHandler() {
 		super("heart beat", "blur & bloody overlay");
 	}
@@ -69,7 +72,7 @@ public class HeartBeatHandler extends VisualHandler {
 	public void receiveConfigElements(ConfigBranch branch) {
 		heartBeatIntensity = (Float) branch.getValue("heartBeatIntensity");
 		heartBeatDuration = (Integer) branch.getValue("heartBeatDuration");
-
+		
 		useHealthPercentage = (Boolean) branch.getValue(USE_HEALTH_PERCENTAGE);
 		maxHealth = (Integer) branch.getValue(HEALTH_LEVEL);
 		maxHealthPercentage = (Float) branch.getValue(HEALTH_LEVEL_PERCENTAGE);
@@ -86,36 +89,37 @@ public class HeartBeatHandler extends VisualHandler {
 		if (shouldHeartbeatTrigger(player)) {
 			if (this.effectBufferTicks <= 0) {
 				float intensity = getIntensity(player);
-
+				
+				resetBufferTicks(player);
+				
 				VisualManager.addVisualWithShading(VisualType.lowhealth, Math.min(0.7F, intensity), effectBufferTicks, effectBufferTicks, Color.WHITE);
 				VisualManager.addVisualWithShading(VisualType.blur, Math.min(0.7F, intensity) * heartBeatIntensity, heartBeatDuration, heartBeatDuration, Color.WHITE);
 				playSound(new ResourceLocation(EnhancedVisuals.modid + ":heartbeatOut"), new BlockPos(player), heartBeatVolume);
-
-				resetBufferTicks(player);
+				
 			} else if (this.effectBufferTicks == 5) {
 				float intensity = getIntensity(player);
-
+				
 				playSound(new ResourceLocation(EnhancedVisuals.modid + ":heartbeatIn"), new BlockPos(player), heartBeatVolume);
 				VisualManager.addVisualWithShading(VisualType.blur, Math.min(0.7F, intensity) * heartBeatIntensity, heartBeatDuration, heartBeatDuration, Color.WHITE);
 			}
 		}
 		this.effectBufferTicks -= 1;
 	}
-
+	
 	private void resetBufferTicks(@Nonnull EntityPlayer player) {
 		float percentHealthLeft = (player.getHealth() / player.getMaxHealth());
 		this.effectBufferTicks = (int) (percentHealthLeft * heartBeatTimeFactor + minHeartBeatLength);
 	}
-
+	
 	private float getIntensity(@Nonnull EntityPlayer player) {
 		float percentHealthLeft = (player.getHealth() / player.getMaxHealth());
-		if(useHealthPercentage) {
+		if (useHealthPercentage) {
 			return (maxHealthPercentage - percentHealthLeft) * 2.0F;
 		} else {
 			return ((maxHealth - player.getHealth()) / player.getMaxHealth()) * 2.0F;
 		}
 	}
-
+	
 	private boolean shouldHeartbeatTrigger(@Nullable EntityPlayer player) {
 		if (player != null) {
 			if (useHealthPercentage) {
