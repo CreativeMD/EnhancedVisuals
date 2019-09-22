@@ -3,6 +3,7 @@ package com.sonicjumper.enhancedvisuals.handlers;
 import java.awt.Color;
 
 import com.creativemd.igcm.api.ConfigBranch;
+import com.creativemd.igcm.api.segments.BooleanSegment;
 import com.creativemd.igcm.api.segments.FloatSegment;
 import com.creativemd.igcm.api.segments.IntegerSegment;
 import com.sonicjumper.enhancedvisuals.VisualManager;
@@ -20,13 +21,15 @@ public class ExplosionHandler extends VisualHandler {
 		super("explosion", "");
 	}
 	
-	public static int maxExplosionTime = 1000;
-	public static float explosionTimeModifier = 20F;
-	public static float minExplosionVolume = 0F;
-	public static float explosionVolumeModifier = 10F;
-	public static float maxBeepVolume = 0.5F;
-	public static float maxBlur = 100;
-	public static float blurTimeFactor = 2.5F;
+	public int maxExplosionTime = 1000;
+	public float explosionTimeModifier = 20F;
+	public float minExplosionVolume = 0F;
+	public float explosionVolumeModifier = 10F;
+	public float maxBeepVolume = 0.5F;
+	public float maxBlur = 100;
+	public float blurTimeFactor = 2.5F;
+	
+	public boolean useShortRinging = false;
 	
 	public float dustSplatsMultiplier = 10F;
 	
@@ -43,6 +46,8 @@ public class ExplosionHandler extends VisualHandler {
 		maxBeepVolume = config.getFloat("maxBeepVolume", name, maxBeepVolume, 0, 100000, "max volume of a beep");
 		maxBlur = config.getFloat("maxBlur", name, maxBlur, 0, 100000, "max blur effect");
 		blurTimeFactor = config.getFloat("blurTimeFactor", name, blurTimeFactor, 0, 100000, "time of blur = time of muted sounds / blurTimeFactor");
+		
+		useShortRinging = config.getBoolean("useShortRinging", name, false, "If true plays short ringing sound");
 		
 		dustSplatsMultiplier = config.getFloat("dustSplatsMultiplier", name, dustSplatsMultiplier, 0, 10000, "damage * multiplier = number of splats");
 		
@@ -61,6 +66,8 @@ public class ExplosionHandler extends VisualHandler {
 		branch.registerElement("maxBlur", new FloatSegment("maxBlur", 100F, 0, 10000).setToolTip("max blur effect"));
 		branch.registerElement("blurTimeFactor", new FloatSegment("blurTimeFactor", 2.5F, 0, 10000).setToolTip("time of blur = time of muted sounds / blurTimeFactor"));
 		
+		branch.registerElement("useShortRinging", new BooleanSegment("useShortRinging", false).setToolTip("If true plays short ringing sound"));
+		
 		branch.registerElement("dustSplatsMultiplier", new FloatSegment("dustSplatsMultiplier", 10F, 0, 10000).setToolTip("damage * multiplier = number of splats"));
 		
 		branch.registerElement("dustMinDuration", new IntegerSegment("dustMinDuration", 500, 0, 10000).setToolTip("min duration of one particle"));
@@ -77,6 +84,8 @@ public class ExplosionHandler extends VisualHandler {
 		maxBeepVolume = (Float) branch.getValue("maxBeepVolume");
 		maxBlur = (Float) branch.getValue("maxBlur");
 		blurTimeFactor = (Float) branch.getValue("blurTimeFactor");
+		
+		useShortRinging = (Boolean) branch.getValue("useShortRinging");
 		
 		dustSplatsMultiplier = (Float) branch.getValue("dustSplatsMultiplier");
 		
@@ -95,7 +104,7 @@ public class ExplosionHandler extends VisualHandler {
 			int time = (int) Math.min(maxExplosionTime, damage * explosionTimeModifier);
 			
 			if (!SoundMuteHandler.isMuting)
-				playSound(new ResourceLocation("enhancedvisuals:ringing"), null, (1 - volume) * maxBeepVolume);
+				playSound(new ResourceLocation(useShortRinging ? "enhancedvisuals:ringing-short" : "enhancedvisuals:ringing"), null, (1 - volume) * maxBeepVolume);
 			SoundMuteHandler.startMuting(time, volume);
 			VisualManager.addVisualWithShading(VisualType.blur, maxBlur, (int) (time / blurTimeFactor), (int) (time / blurTimeFactor), Color.WHITE);
 		}
