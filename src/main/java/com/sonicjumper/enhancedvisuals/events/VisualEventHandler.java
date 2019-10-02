@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.util.Iterator;
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
 import com.sonicjumper.enhancedvisuals.EnhancedVisuals;
 import com.sonicjumper.enhancedvisuals.VisualManager;
 import com.sonicjumper.enhancedvisuals.death.DeathMessages;
@@ -77,6 +75,8 @@ public class VisualEventHandler {
 				float partialTicks = event.renderTickTime;
 				
 				RenderHelper.enableStandardItemLighting();
+				
+				GlStateManager.disableLighting();
 				GlStateManager.clear(256);
 				GlStateManager.matrixMode(5889);
 				GlStateManager.loadIdentity();
@@ -91,7 +91,6 @@ public class VisualEventHandler {
 				GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
 				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 				GlStateManager.disableAlpha();
-				GL11.glEnable(GL11.GL_BLEND);
 				
 				renderVisuals(VisualManager.visuals.getValues(VisualCategory.splat), manager, resolution, partialTicks);
 				renderVisuals(VisualManager.visuals.getValues(VisualCategory.overlay), manager, resolution, partialTicks);
