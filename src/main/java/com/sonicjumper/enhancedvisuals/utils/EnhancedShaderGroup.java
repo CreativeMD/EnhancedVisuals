@@ -22,7 +22,7 @@ public class EnhancedShaderGroup extends ShaderGroup {
 		super(p_i1050_1_, resourceManagerIn, mainFramebufferIn, p_i1050_4_);
 	}
 	
-	private static Field shaders = ReflectionHelper.findField(ShaderGroup.class, "listShaders", "field_148031_d");
+	private static Field shaders = ReflectionHelper.findField(ShaderGroup.class, new String[] { "listShaders", "field_148031_d" });
 	
 	public List<Shader> getShaders() {
 		try {
