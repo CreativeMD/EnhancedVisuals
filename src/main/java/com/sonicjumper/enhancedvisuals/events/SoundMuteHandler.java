@@ -68,9 +68,9 @@ public class SoundMuteHandler {
 	public static void startMuting(int mutingTime, float mutingFactor) {
 		if (soundLibrary == null) {
 			SoundHandler handler = Minecraft.getMinecraft().getSoundHandler();
-			SoundManager sndManager = ReflectionHelper.getPrivateValue(SoundHandler.class, handler, "sndManager", "field_147694_f");
-			sndSystem = ReflectionHelper.getPrivateValue(SoundManager.class, sndManager, "sndSystem", "field_148620_e");
-			soundLibrary = ReflectionHelper.getPrivateValue(SoundSystem.class, sndSystem, "soundLibrary");
+			SoundManager sndManager = ReflectionHelper.getPrivateValue(SoundHandler.class, handler, new String[] { "sndManager", "field_147694_f" });
+			sndSystem = ReflectionHelper.getPrivateValue(SoundManager.class, sndManager, new String[] { "sndSystem", "field_148620_e" });
+			soundLibrary = ReflectionHelper.getPrivateValue(SoundSystem.class, sndSystem, new String[] { "soundLibrary" });
 		}
 		
 		if (isMuting && getMutingFactorPerTick() > mutingFactor) {
