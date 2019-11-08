@@ -9,8 +9,6 @@ import com.creativemd.igcm.api.ConfigBranch;
 import com.creativemd.igcm.api.segments.BooleanSegment;
 import com.creativemd.igcm.api.segments.FloatSegment;
 import com.creativemd.igcm.api.segments.IntegerSegment;
-import com.sonicjumper.enhancedvisuals.EnhancedVisuals;
-import com.sonicjumper.enhancedvisuals.VisualManager;
 import com.sonicjumper.enhancedvisuals.visuals.types.VisualType;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,6 +16,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Optional.Method;
+import team.creative.enhancedvisuals.EnhancedVisuals;
+import team.creative.enhancedvisuals.client.VisualManager;
 
 public class HeartBeatHandler extends VisualHandler {
 	private static String USE_HEALTH_PERCENTAGE = "useHealthPercentage";

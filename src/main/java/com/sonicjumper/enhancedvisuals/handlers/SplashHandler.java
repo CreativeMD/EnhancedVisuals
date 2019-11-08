@@ -8,15 +8,15 @@ import javax.annotation.Nullable;
 import com.creativemd.igcm.api.ConfigBranch;
 import com.creativemd.igcm.api.segments.FloatSegment;
 import com.creativemd.igcm.api.segments.IntegerSegment;
-import com.sonicjumper.enhancedvisuals.VisualManager;
 import com.sonicjumper.enhancedvisuals.visuals.Visual;
-import com.sonicjumper.enhancedvisuals.visuals.types.VisualCategory;
 import com.sonicjumper.enhancedvisuals.visuals.types.VisualType;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Optional.Method;
+import team.creative.enhancedvisuals.api.VisualCategory;
+import team.creative.enhancedvisuals.client.VisualManager;
 
 public class SplashHandler extends VisualHandler {
 	

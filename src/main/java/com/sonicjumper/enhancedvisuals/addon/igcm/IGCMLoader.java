@@ -5,12 +5,12 @@ import java.util.Iterator;
 import com.creativemd.igcm.api.ConfigBranch;
 import com.creativemd.igcm.api.ConfigTab;
 import com.sonicjumper.enhancedvisuals.handlers.VisualHandler;
-import com.sonicjumper.enhancedvisuals.visuals.types.VisualCategory;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
+import team.creative.enhancedvisuals.api.VisualCategory;
 
 public class IGCMLoader {
 	

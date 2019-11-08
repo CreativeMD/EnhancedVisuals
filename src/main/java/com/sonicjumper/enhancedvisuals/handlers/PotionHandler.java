@@ -3,7 +3,6 @@ package com.sonicjumper.enhancedvisuals.handlers;
 import java.awt.Color;
 
 import com.creativemd.igcm.api.ConfigBranch;
-import com.sonicjumper.enhancedvisuals.VisualManager;
 import com.sonicjumper.enhancedvisuals.visuals.types.VisualType;
 
 import net.minecraft.client.Minecraft;
@@ -13,6 +12,7 @@ import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import team.creative.enhancedvisuals.client.VisualManager;
 
 public class PotionHandler extends VisualHandler {
 	

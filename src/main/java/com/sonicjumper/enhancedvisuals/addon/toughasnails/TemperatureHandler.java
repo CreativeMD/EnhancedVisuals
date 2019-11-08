@@ -4,13 +4,13 @@ import javax.annotation.Nullable;
 
 import com.creativemd.igcm.api.ConfigBranch;
 import com.creativemd.igcm.api.segments.FloatSegment;
-import com.sonicjumper.enhancedvisuals.VisualManager;
 import com.sonicjumper.enhancedvisuals.handlers.VisualHandler;
 import com.sonicjumper.enhancedvisuals.visuals.VisualPersistent;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Optional.Method;
+import team.creative.enhancedvisuals.client.VisualManager;
 import toughasnails.api.TANCapabilities;
 import toughasnails.api.stat.capability.ITemperature;
 import toughasnails.api.temperature.Temperature;

@@ -6,13 +6,9 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-import com.sonicjumper.enhancedvisuals.EnhancedVisuals;
-import com.sonicjumper.enhancedvisuals.VisualManager;
-import com.sonicjumper.enhancedvisuals.death.DeathMessages;
 import com.sonicjumper.enhancedvisuals.handlers.DamageHandler;
 import com.sonicjumper.enhancedvisuals.handlers.VisualHandler;
 import com.sonicjumper.enhancedvisuals.visuals.Visual;
-import com.sonicjumper.enhancedvisuals.visuals.types.VisualCategory;
 import com.sonicjumper.enhancedvisuals.visuals.types.VisualType;
 
 import net.minecraft.client.Minecraft;
@@ -34,6 +30,11 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import team.creative.enhancedvisuals.EnhancedVisuals;
+import team.creative.enhancedvisuals.api.VisualCategory;
+import team.creative.enhancedvisuals.client.VisualManager;
+import team.creative.enhancedvisuals.client.sound.SoundMuteHandler;
+import team.creative.enhancedvisuals.common.death.DeathMessages;
 
 public class VisualEventHandler {
 	

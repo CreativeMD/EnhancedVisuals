@@ -2,12 +2,12 @@ package com.sonicjumper.enhancedvisuals.addon.toughasnails;
 
 import com.sonicjumper.enhancedvisuals.visuals.VisualPersistent;
 import com.sonicjumper.enhancedvisuals.visuals.types.VisualType;
-import com.sonicjumper.enhancedvisuals.visuals.types.VisualTypeOverlay;
-import com.sonicjumper.enhancedvisuals.visuals.types.VisualTypeShader;
 
 import net.minecraft.client.shader.Shader;
 import net.minecraft.client.shader.ShaderUniform;
 import net.minecraft.util.ResourceLocation;
+import team.creative.enhancedvisuals.api.type.VisualTypeOverlay;
+import team.creative.enhancedvisuals.api.type.VisualTypeShader;
 
 public class ToughAsNailsAddon {
 	
