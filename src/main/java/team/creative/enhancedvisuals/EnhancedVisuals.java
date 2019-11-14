@@ -21,7 +21,7 @@ public class EnhancedVisuals {
 	
 	public static final String MODID = "enhancedvisuals";
 	
-	public static final Logger LOGGER = LogManager.getLogger();
+	public static final Logger LOGGER = LogManager.getLogger(EnhancedVisuals.MODID);
 	public static CreativeNetwork NETWORK;
 	public static EVEvents EVENTS;
 	public static DeathMessages MESSAGES;
