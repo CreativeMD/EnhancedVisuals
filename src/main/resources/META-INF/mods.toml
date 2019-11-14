@@ -1,0 +1,13 @@
+modLoader="javafml"
+loaderVersion="[24,)"
+#issueTrackerURL="https://github.com/CreativeMD/EnhancedVisuals/issues"
+logoFile="enhancedvisuals.png"
+
+[[mods]]
+	modId="enhancedvisuals"
+	version="1.3.0"
+	displayName="EnhancedVisuals"
+	side="CLIENT"
+	displayURL="https://www.curseforge.com/minecraft/mc-mods/enhancedvisuals"
+	authors=["CreativeMD", "Sonicjumper"]
+	description='''Experience realism and extra video effects for your in-game experience.'''
