@@ -12,11 +12,11 @@ import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.RenderTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import team.creative.enhancedvisuals.EnhancedVisuals;
+import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualCategory;
 import team.creative.enhancedvisuals.api.type.VisualType;
 import team.creative.enhancedvisuals.client.EVClient;
 import team.creative.enhancedvisuals.client.VisualManager;
-import team.creative.enhancedvisuals.common.visual.Visual;
 
 public class EVRenderer {
 	
@@ -47,6 +47,7 @@ public class EVRenderer {
 				float partialTicks = event.renderTickTime;
 				
 				RenderHelper.enableStandardItemLighting();
+				GlStateManager.disableLighting();
 				GlStateManager.clear(256, false);
 				GlStateManager.matrixMode(5889);
 				GlStateManager.loadIdentity();
@@ -64,13 +65,12 @@ public class EVRenderer {
 				GlStateManager.enableBlend();
 				
 				renderVisuals(VisualManager.visuals(VisualCategory.overlay), manager, screenWidth, screenHeight, partialTicks);
-				renderVisuals(VisualManager.visuals(VisualCategory.particle), manager, screenWidth, screenWidth, partialTicks);
+				renderVisuals(VisualManager.visuals(VisualCategory.particle), manager, screenWidth, screenHeight, partialTicks);
 				
 				GlStateManager.matrixMode(5890);
 				GlStateManager.pushMatrix();
 				GlStateManager.loadIdentity();
 				renderVisuals(VisualManager.visuals(VisualCategory.shader), manager, screenWidth, screenHeight, partialTicks);
-				
 				GlStateManager.popMatrix();
 				
 				GlStateManager.depthMask(true);
