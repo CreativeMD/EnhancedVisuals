@@ -1,6 +1,38 @@
 {
-  "heartbeatIn": {"category": "master","sounds": [{"name": "enhancedvisuals:heartbeatin","stream": false}]},
-  "heartbeatOut": {"category": "master","sounds": [{"name": "enhancedvisuals:heartbeatout","stream": false}]},
-  "ringing": {"category": "master","sounds": [{"name": "enhancedvisuals:ringing","stream": false}]},
-  "ringing-short": {"category": "master","sounds": [{"name": "enhancedvisuals:ringing-short","stream": false}]}
+  "heartbeat_in": {
+    "category": "master",
+    "sounds": [
+      {
+        "name": "enhancedvisuals:heartbeatin",
+        "stream": false
+      }
+    ]
+  },
+  "heartbeat_out": {
+    "category": "master",
+    "sounds": [
+      {
+        "name": "enhancedvisuals:heartbeatout",
+        "stream": false
+      }
+    ]
+  },
+  "ringing": {
+    "category": "master",
+    "sounds": [
+      {
+        "name": "enhancedvisuals:ringing",
+        "stream": false
+      }
+    ]
+  },
+  "ringing-short": {
+    "category": "master",
+    "sounds": [
+      {
+        "name": "enhancedvisuals:ringing-short",
+        "stream": false
+      }
+    ]
+  }
 }

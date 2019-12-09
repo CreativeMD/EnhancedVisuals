@@ -15,6 +15,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
 
 @OnlyIn(value = Dist.CLIENT)
 public class SoundMuteHandler {
@@ -28,28 +29,24 @@ public class SoundMuteHandler {
 	
 	public static ArrayList<String> ignoredSounds;
 	
-	public static int mutingTime;
-	public static int timer = 0;
-	public static float mutingFactor;
+	public static DecimalCurve muteGraph;
+	public static int timeTick = 0;
 	
 	public static void tick() {
 		if (isMuting) {
-			int remaining = mutingTime - timer;
+			double factor = muteGraph.valueAt(timeTick);
 			
-			if (remaining <= 0)
+			if (factor <= 0)
 				endMuting();
 			else {
-				setMuteVolume(getMutingFactorPerTick());
-				timer++;
+				setMuteVolume((float) (1 - factor));
+				timeTick++;
 			}
 		}
 	}
 	
-	public static float getMutingFactorPerTick() {
-		int remaining = mutingTime - timer;
-		float percentage = remaining / (float) mutingTime;
-		float volumeSpan = 1 - mutingFactor;
-		return (float) (volumeSpan * Math.pow(1 - percentage, 2) + mutingFactor);
+	public static float getClampedVolume(ISound soundIn) {
+		return getClampedVolume(soundIn, isMuting ? (float) (1 - muteGraph.valueAt(timeTick)) : 1);
 	}
 	
 	private static Field playingSoundsChannelField = ObfuscationReflectionHelper.findField(SoundEngine.class, "playingSoundsChannel");
@@ -70,43 +67,41 @@ public class SoundMuteHandler {
 		getSounds().forEach((p_217926_1_, p_217926_2_) -> {
 			float f = getClampedVolume(p_217926_1_, muteVolume);
 			p_217926_2_.runOnSoundExecutor((p_217923_1_) -> {
-				if (f <= 0.0F) {
-					p_217923_1_.func_216418_f();
-				} else {
-					p_217923_1_.func_216430_b(f);
-				}
+				p_217923_1_.func_216430_b(f);
 				
 			});
 		});
 	}
 	
 	private static float getClampedVolume(ISound soundIn, float muteVolume) {
-		return MathHelper.clamp(soundIn.getVolume() * getVolume(soundIn.getCategory()) * muteVolume, 0.0F, 1.0F);
+		return MathHelper.clamp(soundIn.getVolume() * getVolume(soundIn.getCategory()), 0.0F, 1.0F) * muteVolume;
 	}
 	
 	private static float getVolume(SoundCategory category) {
 		return category != null && category != SoundCategory.MASTER ? mc.gameSettings.getSoundLevel(category) : 1.0F;
 	}
 	
-	public static void startMuting(int mutingTime, float mutingFactor) {
+	public static boolean startMuting(DecimalCurve muteGraph) {
 		if (engine == null) {
 			handler = Minecraft.getInstance().getSoundHandler();
 			engine = ObfuscationReflectionHelper.getPrivateValue(SoundHandler.class, handler, "sndManager");
 		}
 		
-		if (isMuting && getMutingFactorPerTick() > mutingFactor) {
-			SoundMuteHandler.mutingFactor = mutingFactor;
-			SoundMuteHandler.mutingTime = mutingTime;
-			SoundMuteHandler.timer = 0;
-		}
-		if (!isMuting) {
-			SoundMuteHandler.mutingFactor = mutingFactor;
-			SoundMuteHandler.mutingTime = mutingTime;
-			SoundMuteHandler.timer = 0;
+		if (isMuting && SoundMuteHandler.muteGraph.valueAt(timeTick) > muteGraph.valueAt(0)) {
+			SoundMuteHandler.muteGraph = muteGraph;
+			SoundMuteHandler.timeTick = 0;
+			tick();
+			return true;
+		} else if (!isMuting) {
+			SoundMuteHandler.muteGraph = muteGraph;
+			SoundMuteHandler.timeTick = 0;
 			ignoredSounds = new ArrayList<>();
 			isMuting = true;
 			tick();
+			return true;
 		}
+		
+		return false;
 	}
 	
 	public static void endMuting() {
