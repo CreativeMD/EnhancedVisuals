@@ -1,28 +1,28 @@
 package team.creative.enhancedvisuals.api.type;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedHashMap;
+import java.util.List;
 
 import javax.vecmath.Color3b;
 
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.resources.IResourceManager;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import team.creative.creativecore.common.config.CreativeConfig;
 import team.creative.creativecore.common.config.CreativeConfig.FloatRange;
-import team.creative.creativecore.common.config.CreativeConfigBase;
+import team.creative.creativecore.common.config.ICreativeConfig;
+import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualCategory;
-import team.creative.enhancedvisuals.common.visual.Visual;
 
-public abstract class VisualType extends CreativeConfigBase {
+public abstract class VisualType implements ICreativeConfig {
 	
-	private static LinkedHashMap<ResourceLocation, VisualType> types = new LinkedHashMap<>();
+	private static List<VisualType> types = new ArrayList<>();
 	
 	public static Collection<VisualType> getTypes() {
-		return types.values();
+		return types;
 	}
 	
 	@CreativeConfig
@@ -32,14 +32,14 @@ public abstract class VisualType extends CreativeConfigBase {
 	@FloatRange(max = 1, min = 0)
 	public float opacity = 1;
 	
-	public final ResourceLocation name;
+	public final String name;
 	public final VisualCategory cat;
 	
-	public VisualType(ResourceLocation name, VisualCategory cat) {
+	public VisualType(String name, VisualCategory cat) {
 		this.name = name;
 		this.cat = cat;
 		
-		types.put(name, this);
+		types.add(this);
 	}
 	
 	public boolean isAffectedByWater() {
@@ -73,6 +73,18 @@ public abstract class VisualType extends CreativeConfigBase {
 	@OnlyIn(value = Dist.CLIENT)
 	public void resize(Framebuffer buffer) {
 		
+	}
+	
+	public boolean isVisible(Visual visual) {
+		return visual.opacity > 0;
+	}
+	
+	public int getWidth(int screenWidth) {
+		return screenWidth;
+	}
+	
+	public int getHeight(int screenHeight) {
+		return screenHeight;
 	}
 	
 }

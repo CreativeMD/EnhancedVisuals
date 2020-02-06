@@ -12,15 +12,15 @@ import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualCategory;
 import team.creative.enhancedvisuals.client.render.EnhancedShaderGroup;
-import team.creative.enhancedvisuals.common.visual.Visual;
 
 public abstract class VisualTypeShader extends VisualType {
 	
 	public ResourceLocation location;
 	
-	public VisualTypeShader(ResourceLocation name, ResourceLocation location) {
+	public VisualTypeShader(String name, ResourceLocation location) {
 		super(name, VisualCategory.shader);
 		this.location = location;
 	}
@@ -37,12 +37,11 @@ public abstract class VisualTypeShader extends VisualType {
 			
 			try {
 				shaderGroup = new EnhancedShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), location);
-				shaderGroup.createBindFramebuffers(mc.getFramebuffer().framebufferWidth, mc.getFramebuffer().framebufferHeight);
+				shaderGroup.createBindFramebuffers(mc.mainWindow.getFramebufferWidth(), mc.mainWindow.getFramebufferHeight());
 			} catch (JsonSyntaxException | IOException e) {
 				e.printStackTrace();
 			}
 		}
-		
 	}
 	
 	@Override
@@ -61,16 +60,15 @@ public abstract class VisualTypeShader extends VisualType {
 	@OnlyIn(value = Dist.CLIENT)
 	public void resize(Framebuffer buffer) {
 		if (shaderGroup != null)
-			shaderGroup.createBindFramebuffers(buffer.framebufferWidth, buffer.framebufferHeight);
+			shaderGroup.createBindFramebuffers(Minecraft.getInstance().mainWindow.getFramebufferWidth(), Minecraft.getInstance().mainWindow.getFramebufferHeight());
 	}
 	
 	@Override
 	public void render(Visual visual, TextureManager manager, int screenWidth, int screenHeight, float partialTicks) {
 		if (shaderGroup == null)
 			loadResources(Minecraft.getInstance().getResourceManager());
-		
 		if (shaderGroup != null) {
-			changeProperties(visual.properties.opacity);
+			changeProperties(visual.opacity);
 			shaderGroup.render(partialTicks);
 		}
 	}

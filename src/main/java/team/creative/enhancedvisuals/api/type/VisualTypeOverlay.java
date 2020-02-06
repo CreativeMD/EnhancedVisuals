@@ -1,15 +1,14 @@
 package team.creative.enhancedvisuals.api.type;
 
-import net.minecraft.util.ResourceLocation;
 import team.creative.enhancedvisuals.api.VisualCategory;
 
 public class VisualTypeOverlay extends VisualTypeTexture {
 	
-	public VisualTypeOverlay(ResourceLocation name, int animationSpeed) {
-		super(VisualCategory.overlay, name, animationSpeed);
+	public VisualTypeOverlay(String name, int animationSpeed) {
+		super(VisualCategory.overlay, name, animationSpeed, 1F);
 	}
 	
-	public VisualTypeOverlay(ResourceLocation name) {
+	public VisualTypeOverlay(String name) {
 		this(name, 0);
 	}
 }

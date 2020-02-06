@@ -1,5 +1,5 @@
 {
-  "heartbeat_in": {
+  "heartbeatin": {
     "category": "master",
     "sounds": [
       {
@@ -8,7 +8,7 @@
       }
     ]
   },
-  "heartbeat_out": {
+  "heartbeatout": {
     "category": "master",
     "sounds": [
       {

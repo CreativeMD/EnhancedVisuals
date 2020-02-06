@@ -23,7 +23,8 @@ public class ExplosionPacket extends CreativePacket {
 	
 	@Override
 	public void executeClient(PlayerEntity player) {
-		VisualHandlers.EXPLOSION.onExploded(player, pos, size, player.world.getEntityByID(sourceEntity));
+		if (VisualHandlers.EXPLOSION.isEnabled(player))
+			VisualHandlers.EXPLOSION.onExploded(player, pos, size, player.world.getEntityByID(sourceEntity));
 	}
 	
 	@Override

@@ -5,7 +5,7 @@ function initializeCoreMod() {
             'target': {
                 'type': 'METHOD',
 				'class': 'net.minecraft.client.audio.SoundEngine',
-				'methodName': 'play',
+				'methodName': 'func_148611_c',
 				'methodDesc': '(Lnet/minecraft/client/audio/ISound;)V'
             },
             'transformer': function(method) {

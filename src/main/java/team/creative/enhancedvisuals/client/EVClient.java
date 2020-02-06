@@ -30,7 +30,7 @@ public class EVClient {
 					
 					@Override
 					public void run() {
-						VisualManager.clearVisuals();
+						VisualManager.clearParticles();
 						
 						for (VisualType type : VisualType.getTypes()) {
 							type.loadResources(resourceManager);
@@ -41,6 +41,11 @@ public class EVClient {
 				return future;
 			}
 		});
+		
+		IResourceManager manager = mc.getResourceManager();
+		for (VisualType type : VisualType.getTypes()) {
+			type.loadResources(manager);
+		}
 		
 		MinecraftForge.EVENT_BUS.register(EVRenderer.class);
 	}

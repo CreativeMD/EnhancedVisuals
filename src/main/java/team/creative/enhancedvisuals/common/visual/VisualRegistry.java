@@ -1,5 +1,6 @@
 package team.creative.enhancedvisuals.common.visual;
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
 
 import net.minecraft.util.ResourceLocation;
@@ -11,6 +12,10 @@ public class VisualRegistry {
 	
 	public static void registerHandler(ResourceLocation location, VisualHandler handler) {
 		handlers.put(location, handler);
+	}
+	
+	public static Collection<VisualHandler> handlers() {
+		return handlers.values();
 	}
 	
 }

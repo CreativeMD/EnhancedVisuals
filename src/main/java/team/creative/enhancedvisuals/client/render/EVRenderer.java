@@ -51,7 +51,7 @@ public class EVRenderer {
 				GlStateManager.clear(256, false);
 				GlStateManager.matrixMode(5889);
 				GlStateManager.loadIdentity();
-				GlStateManager.ortho(0.0D, mc.mainWindow.getFramebufferWidth(), mc.mainWindow.getFramebufferHeight(), 0.0D, 1000.0D, 3000.0D);
+				GlStateManager.ortho(0.0D, mc.mainWindow.getScaledWidth(), mc.mainWindow.getScaledHeight(), 0.0D, 1000.0D, 3000.0D);
 				GlStateManager.matrixMode(5888);
 				GlStateManager.loadIdentity();
 				GlStateManager.translatef(0.0F, 0.0F, -2000.0F);

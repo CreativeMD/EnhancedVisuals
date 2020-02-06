@@ -16,17 +16,35 @@ import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import team.creative.creativecore.common.config.CreativeConfig;
 import team.creative.enhancedvisuals.EnhancedVisuals;
+import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualCategory;
-import team.creative.enhancedvisuals.common.visual.Visual;
 
 public abstract class VisualTypeTexture extends VisualType {
 	
-	public int animationSpeed;
+	@CreativeConfig
+	public float scale = 1F;
 	
-	public VisualTypeTexture(VisualCategory category, ResourceLocation name, int animationSpeed) {
+	@CreativeConfig
+	public int animationSpeed;
+	public String domain;
+	
+	public VisualTypeTexture(VisualCategory category, String name, String domain, int animationSpeed) {
 		super(name, category);
+		this.domain = domain;
 		this.animationSpeed = animationSpeed;
+	}
+	
+	public VisualTypeTexture(VisualCategory category, String name, String domain, int animationSpeed, float scale) {
+		super(name, category);
+		this.domain = domain;
+		this.animationSpeed = animationSpeed;
+		this.scale = scale;
+	}
+	
+	public VisualTypeTexture(VisualCategory category, String name, int animationSpeed, float scale) {
+		this(category, name, null, animationSpeed, scale);
 	}
 	
 	@OnlyIn(value = Dist.CLIENT)
@@ -44,7 +62,7 @@ public abstract class VisualTypeTexture extends VisualType {
 		ResourceLocation location = null;
 		IResource resource = null;
 		try {
-			while ((resource = manager.getResource((location = new ResourceLocation(EnhancedVisuals.MODID, baseLocation + i + ".png")))) != null) {
+			while ((resource = manager.getResource((location = new ResourceLocation(domain == null ? EnhancedVisuals.MODID : domain, baseLocation + i + ".png")))) != null) {
 				if (i == 0) {
 					BufferedImage image = ImageIO.read(resource.getInputStream());
 					dimension = new Dimension(image.getWidth(), image.getHeight());
@@ -89,24 +107,29 @@ public abstract class VisualTypeTexture extends VisualType {
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder renderer = tessellator.getBuffer();
 		
-		/* float red = visual.getColor().getRed() / 255.0F;
-		 * float green = visual.getColor().getGreen() / 255.0F;
-		 * float blue = visual.getColor().getBlue() / 255.0F; */
-		float red = 1;
-		float green = 1;
-		float blue = 1;
+		float red = visual.color != null ? visual.color.getRed() / 255.0F : 1;
+		float green = visual.color != null ? visual.color.getGreen() / 255.0F : 1;
+		float blue = visual.color != null ? visual.color.getBlue() / 255.0F : 1;
 		double z = -90;
 		
-		int width = cat.getWidth(visual.properties, screenWidth);
-		int height = cat.getHeight(visual.properties, screenHeight);
-		
-		cat.translate(visual.properties);
+		int width = visual.getWidth(screenWidth);
+		int height = visual.getHeight(screenHeight);
 		
 		renderer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-		renderer.pos(0.0D, height, z).tex(0.0D, 1.0D).color(red, green, blue, visual.properties.opacity).endVertex();
-		renderer.pos(width, height, z).tex(1.0D, 1.0D).color(red, green, blue, visual.properties.opacity).endVertex();
-		renderer.pos(width, 0.0D, z).tex(1.0D, 0.0D).color(red, green, blue, visual.properties.opacity).endVertex();
-		renderer.pos(0.0D, 0.0D, z).tex(0.0D, 0.0D).color(red, green, blue, visual.properties.opacity).endVertex();
+		renderer.pos(0.0D, height, z).tex(0.0D, 1.0D).color(red, green, blue, visual.opacity).endVertex();
+		renderer.pos(width, height, z).tex(1.0D, 1.0D).color(red, green, blue, visual.opacity).endVertex();
+		renderer.pos(width, 0.0D, z).tex(1.0D, 0.0D).color(red, green, blue, visual.opacity).endVertex();
+		renderer.pos(0.0D, 0.0D, z).tex(0.0D, 0.0D).color(red, green, blue, visual.opacity).endVertex();
 		tessellator.draw();
+	}
+	
+	@Override
+	public int getWidth(int screenWidth) {
+		return (int) (dimension.width * scale);
+	}
+	
+	@Override
+	public int getHeight(int screenHeight) {
+		return (int) (dimension.height * scale);
 	}
 }

@@ -14,6 +14,7 @@ import team.creative.enhancedvisuals.client.EVClient;
 import team.creative.enhancedvisuals.common.death.DeathMessages;
 import team.creative.enhancedvisuals.common.event.EVEvents;
 import team.creative.enhancedvisuals.common.handler.VisualHandlers;
+import team.creative.enhancedvisuals.common.packet.DamagePacket;
 import team.creative.enhancedvisuals.common.packet.ExplosionPacket;
 
 @Mod(value = EnhancedVisuals.MODID)
@@ -39,6 +40,7 @@ public class EnhancedVisuals {
 	private void init(final FMLCommonSetupEvent event) {
 		NETWORK = new CreativeNetwork("1.0", LOGGER, new ResourceLocation(EnhancedVisuals.MODID, "main"));
 		NETWORK.registerType(ExplosionPacket.class);
+		NETWORK.registerType(DamagePacket.class);
 		
 		MinecraftForge.EVENT_BUS.register(EVENTS = new EVEvents());
 		

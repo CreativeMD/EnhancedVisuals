@@ -1,35 +1,32 @@
-package team.creative.enhancedvisuals.common.visual;
+package team.creative.enhancedvisuals.api;
+
+import java.awt.Color;
 
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import team.creative.enhancedvisuals.api.VisualCategory;
-import team.creative.enhancedvisuals.api.animation.IVisualAnimation;
-import team.creative.enhancedvisuals.api.property.VisualProperties;
+import team.creative.creativecore.common.config.premade.curve.Curve;
 import team.creative.enhancedvisuals.api.type.VisualType;
 
-public class Visual<T extends VisualProperties> {
+public class Visual {
 	
 	public final VisualType type;
 	
-	public final T properties;
-	public final T inital;
+	public float opacity;
 	
-	public final IVisualAnimation animation;
+	public final Curve animation;
 	
 	private boolean displayed = false;
 	private int tick = 0;
 	
+	public Color color;
+	
 	public int variant;
 	
-	public Visual(VisualType type, T properties, IVisualAnimation animation) {
+	public Visual(VisualType type, Curve animation, int variant) {
 		this.type = type;
-		this.inital = properties;
-		this.properties = (T) properties.copy();
 		this.animation = animation;
-		
-		if (!getCategory().supportsProperties(properties))
-			throw new RuntimeException("Invalid properties for category");
+		this.variant = variant;
 	}
 	
 	public boolean displayed() {
@@ -54,11 +51,24 @@ public class Visual<T extends VisualProperties> {
 	}
 	
 	public boolean isVisible() {
-		return animation.visible(properties);
+		return type.isVisible(this);
 	}
 	
 	public boolean tick() {
-		return animation.apply(inital, properties, tick);
+		opacity = (float) animation.valueAt(tick++);
+		return opacity > 0;
+	}
+	
+	public int getWidth(int screenWidth) {
+		return screenWidth;
+	}
+	
+	public int getHeight(int screenHeight) {
+		return screenHeight;
+	}
+	
+	public boolean isAffectedByWater() {
+		return type.isAffectedByWater();
 	}
 	
 }
