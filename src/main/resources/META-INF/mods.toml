@@ -1,6 +1,6 @@
 modLoader="javafml"
 loaderVersion="[24,)"
-#issueTrackerURL="https://github.com/CreativeMD/EnhancedVisuals/issues"
+issueTrackerURL="https://github.com/CreativeMD/EnhancedVisuals/issues"
 logoFile="enhancedvisuals.png"
 
 [[mods]]
@@ -11,3 +11,10 @@ logoFile="enhancedvisuals.png"
 	displayURL="https://www.curseforge.com/minecraft/mc-mods/enhancedvisuals"
 	authors=["CreativeMD", "Sonicjumper"]
 	description='''Experience realism and extra video effects for your in-game experience.'''
+	
+[[dependencies.enhancedvisuals]]
+	modId="creativecore"
+	mandatory=true
+	ordering="NONE"
+	side="BOTH"
+	versionRange="[2.0.0,)"
