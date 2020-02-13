@@ -27,9 +27,18 @@ public class EVRenderer {
 	private static int framebufferWidth;
 	private static int framebufferHeight;
 	
+	public static boolean reloadResources = false;
+	
 	@SubscribeEvent
 	public static void render(RenderTickEvent event) {
 		if (event.phase == Phase.END && EVClient.shouldRender()) {
+			
+			if (reloadResources) {
+				for (VisualType type : VisualType.getTypes()) {
+					type.loadResources(mc.getResourceManager());
+				}
+				reloadResources = false;
+			}
 			
 			if (!(mc.currentScreen instanceof DeathScreen)) {
 				if (mc.getFramebuffer().framebufferWidth != framebufferWidth || mc.getFramebuffer().framebufferHeight != framebufferHeight) {

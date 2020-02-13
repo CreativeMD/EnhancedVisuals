@@ -1,7 +1,7 @@
 package team.creative.enhancedvisuals.api.type;
 
 import net.minecraft.client.shader.Shader;
-import net.minecraft.client.shader.ShaderDefault;
+import net.minecraft.client.shader.ShaderUniform;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -17,7 +17,7 @@ public class VisualTypeSaturation extends VisualTypeShader {
 	@OnlyIn(value = Dist.CLIENT)
 	public void changeProperties(float intensity) {
 		for (Shader mcShader : shaderGroup.getShaders()) {
-			ShaderDefault shaderuniform = mcShader.getShaderManager().getShaderUniform("Saturation");
+			ShaderUniform shaderuniform = mcShader.getShaderManager().func_216539_a("Saturation");
 			
 			if (shaderuniform != null)
 				shaderuniform.set(intensity);

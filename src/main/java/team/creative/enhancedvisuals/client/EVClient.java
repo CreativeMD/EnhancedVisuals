@@ -32,9 +32,7 @@ public class EVClient {
 					public void run() {
 						VisualManager.clearParticles();
 						
-						for (VisualType type : VisualType.getTypes()) {
-							type.loadResources(resourceManager);
-						}
+						EVRenderer.reloadResources = true;
 					}
 				}, arg4);
 				
