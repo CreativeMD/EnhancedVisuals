@@ -49,7 +49,7 @@ public class SoundMuteHandler {
 		return getClampedVolume(soundIn, isMuting ? (float) (1 - muteGraph.valueAt(timeTick)) : 1);
 	}
 	
-	private static Field playingSoundsChannelField = ObfuscationReflectionHelper.findField(SoundEngine.class, "playingSoundsChannel");
+	private static Field playingSoundsChannelField = ObfuscationReflectionHelper.findField(SoundEngine.class, "field_217942_m");
 	
 	public static Map<ISound, ChannelManager.Entry> getSounds() {
 		try {
