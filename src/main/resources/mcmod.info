@@ -1,13 +1,14 @@
 [
 {
-  "modid": "sonicvisuals",
+  "modid": "enhancedvisuals",
   "name": "Enhanced Visuals",
   "description": "Experience realism and extra video effects for your in-game experience.",
   "mcversion": "${mcversion}",
-  "url": "http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2549282",
+  "url": "https://www.curseforge.com/minecraft/mc-mods/enhancedvisuals",
+  "version": "1.3",
   "updateUrl": "",
   "authorList": ["Sonicjumper", "CreativeMD"],
-  "credits": "Authored by Sonicjumper & CreativeMD",
+  "credits": "",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
