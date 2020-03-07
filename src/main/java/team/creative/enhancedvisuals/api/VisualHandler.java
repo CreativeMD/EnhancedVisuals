@@ -4,7 +4,6 @@ import javax.annotation.Nullable;
 
 import com.creativemd.creativecore.common.config.api.CreativeConfig;
 import com.creativemd.creativecore.common.config.api.ICreativeConfig;
-import com.creativemd.creativecore.common.config.api.CreativeConfig.FloatRange;
 import com.creativemd.creativecore.common.config.premade.curve.DecimalCurve;
 
 import net.minecraft.client.Minecraft;
@@ -23,7 +22,7 @@ public class VisualHandler implements ICreativeConfig {
 	public boolean enabled = true;
 	
 	@CreativeConfig
-	@FloatRange(max = 1, min = 0)
+	@CreativeConfig.DecimalRange(max = 1, min = 0)
 	public float opacity = 1;
 	
 	@Override

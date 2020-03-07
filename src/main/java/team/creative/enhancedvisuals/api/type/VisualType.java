@@ -8,7 +8,6 @@ import javax.vecmath.Color3b;
 
 import com.creativemd.creativecore.common.config.api.CreativeConfig;
 import com.creativemd.creativecore.common.config.api.ICreativeConfig;
-import com.creativemd.creativecore.common.config.api.CreativeConfig.FloatRange;
 
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.IResourceManager;
@@ -30,7 +29,7 @@ public abstract class VisualType implements ICreativeConfig {
 	public boolean enabled;
 	
 	@CreativeConfig
-	@FloatRange(max = 1, min = 0)
+	@CreativeConfig.DecimalRange(max = 1, min = 0)
 	public float opacity = 1;
 	
 	public final String name;
