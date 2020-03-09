@@ -84,7 +84,8 @@ public class ExplosionHandler extends VisualHandler {
 						double d6 = lerp(f1, axisalignedbb.minY, axisalignedbb.maxY);
 						double d7 = lerp(f2, axisalignedbb.minZ, axisalignedbb.maxZ);
 						Vec3d vec3d = new Vec3d(d5 + d3, d6, d7 + d4);
-						if (p_222259_1_.world.rayTraceBlocks(vec3d, p_222259_0_).typeOfHit == RayTraceResult.Type.MISS) {
+						RayTraceResult result = p_222259_1_.world.rayTraceBlocks(vec3d, p_222259_0_);
+						if (result == null || result.typeOfHit == RayTraceResult.Type.MISS) {
 							++i;
 						}
 						
