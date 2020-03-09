@@ -28,8 +28,8 @@ import team.creative.enhancedvisuals.common.packet.ExplosionPacket;
 
 public class EVEvents {
 	
-	private Field size = ObfuscationReflectionHelper.findField(Explosion.class, "size");
-	private Field exploder = ObfuscationReflectionHelper.findField(Explosion.class, "exploder");
+	private Field size = ObfuscationReflectionHelper.findField(Explosion.class, "field_77280_f");
+	private Field exploder = ObfuscationReflectionHelper.findField(Explosion.class, "field_77283_e");
 	
 	@SubscribeEvent
 	public void explosion(ExplosionEvent.Detonate event) {
