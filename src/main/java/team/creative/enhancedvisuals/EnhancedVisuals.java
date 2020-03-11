@@ -27,7 +27,7 @@ import team.creative.enhancedvisuals.common.packet.ExplosionPacket;
 import team.creative.enhancedvisuals.common.visual.VisualRegistry;
 import team.creative.enhancedvisuals.server.EVServer;
 
-@Mod(modid = EnhancedVisuals.MODID, name = EnhancedVisuals.NAME, version = EnhancedVisuals.VERSION, acceptedMinecraftVersions = "", guiFactory = "team.creative.enhancedvisuals.client.EVSettings")
+@Mod(modid = EnhancedVisuals.MODID, name = EnhancedVisuals.NAME, version = EnhancedVisuals.VERSION, acceptedMinecraftVersions = "", dependencies = "required-before:creativecore", guiFactory = "team.creative.enhancedvisuals.client.EVSettings")
 public class EnhancedVisuals {
 	
 	public static final String MODID = "enhancedvisuals";
