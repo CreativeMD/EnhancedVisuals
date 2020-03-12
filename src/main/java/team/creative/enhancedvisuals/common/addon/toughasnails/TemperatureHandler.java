@@ -55,8 +55,11 @@ public class TemperatureHandler extends VisualHandler {
 			if (player != null)
 				temp = ((ITemperature) player.getCapability(TANCapabilities.TEMPERATURE, null)).getTemperature();
 			
-			if (temp == null)
+			double fadeFactor = this.fadeFactor;
+			if (temp == null) {
 				temp = defaultTemperature;
+				this.fadeFactor = 1;
+			}
 			
 			TemperatureRange range = temp.getRange();
 			switch (range) {
