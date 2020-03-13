@@ -11,7 +11,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
 import team.creative.enhancedvisuals.api.VisualHandler;
+import team.creative.enhancedvisuals.api.event.FireParticlesEvent;
 import team.creative.enhancedvisuals.api.type.VisualType;
 import team.creative.enhancedvisuals.api.type.VisualTypeParticle;
 import team.creative.enhancedvisuals.client.VisualManager;
@@ -101,8 +103,11 @@ public class DamageHandler extends VisualHandler {
 			createVisualFromDamageAndDistance(impact, packet.damage, player, bloodDuration);
 		else if (packet.source == EnhancedDamageSource.DROWN)
 			VisualManager.addParticlesFadeOut(waterDrown, drownSplashes, drownDuration, true);
-		else if (packet.source == EnhancedDamageSource.FIRE)
-			VisualManager.addParticlesFadeOut(fire, fireSplashes, fireDuration, true);
+		else if (packet.source == EnhancedDamageSource.FIRE) {
+			FireParticlesEvent event = new FireParticlesEvent(fireSplashes, fireDuration.min, fireDuration.max);
+			MinecraftForge.EVENT_BUS.post(event);
+			VisualManager.addParticlesFadeOut(fire, event.getNewFireSplashes(), new IntMinMax(event.getNewFireDurationMin(), event.getNewFireDurationMax()), true);
+		}
 		
 	}
 	
