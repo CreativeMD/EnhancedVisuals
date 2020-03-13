@@ -28,7 +28,7 @@ public class SaturationHandler extends VisualHandler {
 	@Override
 	public void tick(@Nullable EntityPlayer player) {
 		if (saturationVisual == null) {
-			saturationVisual = new Visual(desaturate, new DecimalCurve(0, 1, 1, 1), 0);
+			saturationVisual = new Visual(desaturate, 0);
 			VisualManager.add(saturationVisual);
 		}
 		

@@ -4,7 +4,6 @@ import javax.annotation.Nullable;
 
 import com.creativemd.creativecore.common.config.api.CreativeConfig;
 import com.creativemd.creativecore.common.config.premade.IntMinMax;
-import com.creativemd.creativecore.common.config.premade.curve.DecimalCurve;
 
 import net.minecraft.client.shader.Shader;
 import net.minecraft.client.shader.ShaderUniform;
@@ -51,7 +50,7 @@ public class ThirstHandler extends VisualHandler {
 	@Override
 	public void tick(@Nullable EntityPlayer player) {
 		if (focusVisual == null) {
-			focusVisual = new Visual(focus, new DecimalCurve(0, 1, 1, 1), 0);
+			focusVisual = new Visual(focus, 0);
 			VisualManager.add(focusVisual);
 		}
 		

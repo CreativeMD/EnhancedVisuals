@@ -3,7 +3,6 @@ package team.creative.enhancedvisuals.common.handler;
 import javax.annotation.Nullable;
 
 import com.creativemd.creativecore.common.config.api.CreativeConfig;
-import com.creativemd.creativecore.common.config.premade.curve.DecimalCurve;
 
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,7 +34,7 @@ public class SlenderHandler extends VisualHandler {
 	@Override
 	public void tick(@Nullable EntityPlayer player) {
 		if (slenderVisual == null) {
-			slenderVisual = new Visual(slender, new DecimalCurve(0, 1, 1, 1), 0);
+			slenderVisual = new Visual(slender, 0);
 			VisualManager.add(slenderVisual);
 		}
 		
@@ -71,7 +70,7 @@ public class SlenderHandler extends VisualHandler {
 				}
 				
 				slenderVisual.opacity = (float) Math.max(defaultIntensity, Math.min(maxIntensity, distanceFactor * modifier));
-				
+				return;
 			}
 		}
 		
