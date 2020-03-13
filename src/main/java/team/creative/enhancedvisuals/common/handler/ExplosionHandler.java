@@ -13,8 +13,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.common.MinecraftForge;
 import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.api.VisualHandler;
+import team.creative.enhancedvisuals.api.event.VisualExplosionEvent;
 import team.creative.enhancedvisuals.api.type.VisualType;
 import team.creative.enhancedvisuals.api.type.VisualTypeBlur;
 import team.creative.enhancedvisuals.api.type.VisualTypeParticle;
@@ -50,7 +52,10 @@ public class ExplosionHandler extends VisualHandler {
 		double d10 = (1.0D - d12) * d14;
 		
 		float damage = ((int) ((d10 * d10 + d10) / 2.0D * 7.0D * f3 + 1.0D));
-		if (damage > 0) {
+		VisualExplosionEvent event = new VisualExplosionEvent(damage);
+		MinecraftForge.EVENT_BUS.post(event);
+		if (!event.isCanceled() && event.getNewDamage() > 0) {
+			damage = event.getNewDamage();
 			VisualManager.addParticlesFadeOut(dust, (int) dustAmount.valueAt(damage), dustDuration, true);
 			
 			DecimalCurve explosionSoundVolume = new DecimalCurve(0, maxExplosionVolume, explosionSoundTime.valueAt(damage), 0);
@@ -58,7 +63,8 @@ public class ExplosionHandler extends VisualHandler {
 			if (SoundMuteHandler.startMuting(explosionSoundMuteVolume))
 				playSoundFadeOut(new ResourceLocation(EnhancedVisuals.MODID, "ringing"), null, explosionSoundVolume);
 			
-			VisualManager.addVisualFadeOut(blur, new DecimalCurve(0, maxBlur.valueAt(damage), (int) (explosionBlurTime.valueAt(damage)), 0));
+			if (!event.isBlurDisabled())
+				VisualManager.addVisualFadeOut(blur, new DecimalCurve(0, maxBlur.valueAt(damage), (int) (explosionBlurTime.valueAt(damage)), 0));
 		}
 	}
 	

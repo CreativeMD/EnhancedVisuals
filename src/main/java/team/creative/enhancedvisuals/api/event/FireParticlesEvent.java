@@ -13,9 +13,9 @@ public class FireParticlesEvent extends Event {
 	protected int newFireDurationMax;
 	
 	public FireParticlesEvent(int fireSplashes, int fireDurationMin, int fireDurationMax) {
-		this.fireSplashes = fireSplashes;
-		this.fireDurationMin = fireDurationMin;
-		this.fireDurationMax = fireDurationMax;
+		this.fireSplashes = this.newFireSplashes = fireSplashes;
+		this.fireDurationMin = this.newFireDurationMin = fireDurationMin;
+		this.fireDurationMax = this.newFireDurationMax = fireDurationMax;
 	}
 	
 	public void setFireSplashes(int count) {
