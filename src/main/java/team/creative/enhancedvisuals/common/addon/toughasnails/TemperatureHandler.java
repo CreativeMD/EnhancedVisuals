@@ -47,19 +47,17 @@ public class TemperatureHandler extends VisualHandler {
 			VisualManager.add(heatVisual);
 		}
 		
-		if (freeze != null && heat != null) {
+		if (freezeVisual != null && heatVisual != null) {
 			double aimedHeat = defaultIntensity;
 			double aimedFreeze = defaultIntensity;
-			Temperature temp = defaultTemperature;
+			Temperature temp = null;
 			
 			if (player != null)
 				temp = ((ITemperature) player.getCapability(TANCapabilities.TEMPERATURE, null)).getTemperature();
 			
 			double fadeFactor = this.fadeFactor;
-			if (temp == null) {
+			if (temp == null)
 				temp = defaultTemperature;
-				this.fadeFactor = 1;
-			}
 			
 			TemperatureRange range = temp.getRange();
 			switch (range) {
@@ -86,15 +84,15 @@ public class TemperatureHandler extends VisualHandler {
 				break;
 			}
 			
-			if (freeze.opacity < aimedFreeze)
-				freeze.opacity = (float) Math.min(freeze.opacity + fadeFactor, aimedFreeze);
-			else if (freeze.opacity > aimedFreeze)
-				freeze.opacity = (float) Math.max(freeze.opacity - fadeFactor, aimedFreeze);
+			if (freezeVisual.opacity < aimedFreeze)
+				freezeVisual.opacity = (float) Math.min(freezeVisual.opacity + fadeFactor, aimedFreeze);
+			else if (freezeVisual.opacity > aimedFreeze)
+				freezeVisual.opacity = (float) Math.max(freezeVisual.opacity - fadeFactor, aimedFreeze);
 			
-			if (heat.opacity < aimedHeat)
-				heat.opacity = (float) Math.min(heat.opacity + fadeFactor, aimedHeat);
-			else if (heat.opacity > aimedHeat)
-				heat.opacity = (float) Math.max(heat.opacity - fadeFactor, aimedHeat);
+			if (heatVisual.opacity < aimedHeat)
+				heatVisual.opacity = (float) Math.min(heatVisual.opacity + fadeFactor, aimedHeat);
+			else if (heatVisual.opacity > aimedHeat)
+				heatVisual.opacity = (float) Math.max(heatVisual.opacity - fadeFactor, aimedHeat);
 		}
 	}
 	
