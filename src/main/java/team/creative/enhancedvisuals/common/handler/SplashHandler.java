@@ -10,7 +10,9 @@ import com.creativemd.creativecore.common.config.premade.IntMinMax;
 import com.creativemd.creativecore.common.config.premade.curve.DecimalCurve;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.MinecraftForge;
 import team.creative.enhancedvisuals.api.VisualHandler;
+import team.creative.enhancedvisuals.api.event.SplashEvent;
 import team.creative.enhancedvisuals.api.type.VisualType;
 import team.creative.enhancedvisuals.api.type.VisualTypeBlur;
 import team.creative.enhancedvisuals.client.VisualManager;
@@ -35,8 +37,12 @@ public class SplashHandler extends VisualHandler {
 	public void tick(@Nullable EntityPlayer player) {
 		if (player != null) {
 			boolean isInWater = EVEvents.areEyesInWater(player);
-			if (isInWater != wasInWater)
-				VisualManager.addVisualFadeOut(blur, new DecimalCurve(rand, duration, intensity));
+			if (isInWater != wasInWater) {
+				SplashEvent event = new SplashEvent(player);
+				MinecraftForge.EVENT_BUS.post(event);
+				if (!event.isCanceled())
+					VisualManager.addVisualFadeOut(blur, new DecimalCurve(rand, duration, intensity));
+			}
 			wasInWater = isInWater;
 			
 		}
