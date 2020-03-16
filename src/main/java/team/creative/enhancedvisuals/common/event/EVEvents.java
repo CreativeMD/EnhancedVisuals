@@ -33,7 +33,7 @@ public class EVEvents {
 	
 	@SubscribeEvent
 	public void explosion(ExplosionEvent.Detonate event) {
-		if (!event.getWorld().isRemote) {
+		if (event.getWorld() != null && !event.getWorld().isRemote) {
 			try {
 				int sourceEntity = -1;
 				Entity source = ((Entity) exploder.get(event.getExplosion()));
