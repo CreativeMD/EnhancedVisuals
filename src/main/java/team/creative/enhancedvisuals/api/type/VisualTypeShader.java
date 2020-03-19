@@ -25,7 +25,8 @@ public abstract class VisualTypeShader extends VisualType {
 		this.location = location;
 	}
 	
-	public EnhancedShaderGroup shaderGroup = null;
+	@SideOnly(Side.CLIENT)
+	public EnhancedShaderGroup shaderGroup;
 	
 	@Override
 	@SideOnly(Side.CLIENT)
