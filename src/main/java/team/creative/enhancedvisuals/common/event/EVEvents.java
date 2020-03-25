@@ -45,6 +45,7 @@ public class EVEvents {
 	}
 	
 	@SubscribeEvent
+	@OnlyIn(value = Dist.CLIENT)
 	public void impact(ProjectileImpactEvent.Throwable event) {
 		if (!event.getEntity().world.isRemote)
 			if (VisualHandlers.POTION.isEnabled(Minecraft.getInstance().player))

@@ -2,11 +2,10 @@ package team.creative.enhancedvisuals.client.render;
 
 import java.util.Collection;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.DeathScreen;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.RenderTickEvent;
@@ -48,49 +47,49 @@ public class EVRenderer {
 					framebufferHeight = mc.getFramebuffer().framebufferHeight;
 				}
 				
-				int screenWidth = mc.mainWindow.getScaledWidth();
-				int screenHeight = mc.mainWindow.getScaledHeight();
+				int screenWidth = mc.func_228018_at_().getScaledWidth();
+				int screenHeight = mc.func_228018_at_().getScaledHeight();
 				
-				GlStateManager.pushMatrix();
+				RenderSystem.pushMatrix();
 				TextureManager manager = mc.getTextureManager();
 				float partialTicks = event.renderTickTime;
 				
-				RenderHelper.enableStandardItemLighting();
-				GlStateManager.disableLighting();
-				GlStateManager.clear(256, false);
-				GlStateManager.matrixMode(5889);
-				GlStateManager.loadIdentity();
-				GlStateManager.ortho(0.0D, mc.mainWindow.getScaledWidth(), mc.mainWindow.getScaledHeight(), 0.0D, 1000.0D, 3000.0D);
-				GlStateManager.matrixMode(5888);
-				GlStateManager.loadIdentity();
-				GlStateManager.translatef(0.0F, 0.0F, -2000.0F);
+				//RenderHelper.enableStandardItemLighting();
+				RenderSystem.disableLighting();
+				RenderSystem.clear(256, false);
+				RenderSystem.matrixMode(5889);
+				RenderSystem.loadIdentity();
+				RenderSystem.ortho(0.0D, mc.func_228018_at_().getScaledWidth(), mc.func_228018_at_().getScaledHeight(), 0.0D, 1000.0D, 3000.0D);
+				RenderSystem.matrixMode(5888);
+				RenderSystem.loadIdentity();
+				RenderSystem.translatef(0.0F, 0.0F, -2000.0F);
 				
-				GlStateManager.enableBlend();
-				GlStateManager.disableDepthTest();
-				GlStateManager.depthMask(false);
-				GlStateManager.blendFuncSeparate(770, 771, 1, 0);
-				GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-				GlStateManager.disableAlphaTest();
-				GlStateManager.enableBlend();
+				RenderSystem.enableBlend();
+				RenderSystem.disableDepthTest();
+				RenderSystem.depthMask(false);
+				RenderSystem.blendFuncSeparate(770, 771, 1, 0);
+				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+				RenderSystem.disableAlphaTest();
+				RenderSystem.enableBlend();
 				
 				renderVisuals(VisualManager.visuals(VisualCategory.overlay), manager, screenWidth, screenHeight, partialTicks);
 				renderVisuals(VisualManager.visuals(VisualCategory.particle), manager, screenWidth, screenHeight, partialTicks);
 				
-				GlStateManager.matrixMode(5890);
-				GlStateManager.pushMatrix();
-				GlStateManager.loadIdentity();
+				RenderSystem.matrixMode(5890);
+				RenderSystem.pushMatrix();
+				RenderSystem.loadIdentity();
 				renderVisuals(VisualManager.visuals(VisualCategory.shader), manager, screenWidth, screenHeight, partialTicks);
-				GlStateManager.popMatrix();
+				RenderSystem.popMatrix();
 				
-				GlStateManager.depthMask(true);
-				GlStateManager.enableDepthTest();
-				GlStateManager.enableAlphaTest();
-				GlStateManager.disableLighting();
+				RenderSystem.depthMask(true);
+				RenderSystem.enableDepthTest();
+				RenderSystem.enableAlphaTest();
+				RenderSystem.disableLighting();
 				
 				mc.getFramebuffer().bindFramebuffer(false);
-				GlStateManager.matrixMode(5888);
+				RenderSystem.matrixMode(5888);
 				
-				GlStateManager.popMatrix();
+				RenderSystem.popMatrix();
 				
 			} else {
 				if (EnhancedVisuals.MESSAGES.enabled) {
@@ -111,9 +110,9 @@ public class EVRenderer {
 			
 			for (Visual visual : visuals) {
 				if (visual.isVisible()) {
-					GlStateManager.pushMatrix();
+					RenderSystem.pushMatrix();
 					visual.render(manager, screenWidth, screenHeight, partialTicks);
-					GlStateManager.popMatrix();
+					RenderSystem.popMatrix();
 				}
 			}
 		} catch (Exception e) {

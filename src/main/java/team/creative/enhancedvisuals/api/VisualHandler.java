@@ -9,9 +9,8 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import team.creative.creativecore.common.config.CreativeConfig;
-import team.creative.creativecore.common.config.CreativeConfig.FloatRange;
-import team.creative.creativecore.common.config.ICreativeConfig;
+import team.creative.creativecore.common.config.api.CreativeConfig;
+import team.creative.creativecore.common.config.api.ICreativeConfig;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
 import team.creative.enhancedvisuals.client.sound.PositionedSound;
 import team.creative.enhancedvisuals.client.sound.TickedSound;
@@ -22,7 +21,7 @@ public class VisualHandler implements ICreativeConfig {
 	public boolean enabled = true;
 	
 	@CreativeConfig
-	@FloatRange(max = 1, min = 0)
+	@CreativeConfig.DecimalRange(max = 1, min = 0)
 	public float opacity = 1;
 	
 	@Override

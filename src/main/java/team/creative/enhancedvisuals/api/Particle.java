@@ -1,6 +1,6 @@
 package team.creative.enhancedvisuals.api;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.renderer.texture.TextureManager;
 import team.creative.creativecore.common.config.premade.curve.Curve;
@@ -27,8 +27,8 @@ public class Particle extends Visual {
 	
 	@Override
 	public void render(TextureManager manager, int screenWidth, int screenHeight, float partialTicks) {
-		GlStateManager.translatef(x + width / 2, y + height / 2, 0);
-		GlStateManager.rotatef(rotation, 0, 0, 1);
+		RenderSystem.translatef(x + width / 2, y + height / 2, 0);
+		RenderSystem.rotatef(rotation, 0, 0, 1);
 		super.render(manager, screenWidth, screenHeight, partialTicks);
 	}
 	

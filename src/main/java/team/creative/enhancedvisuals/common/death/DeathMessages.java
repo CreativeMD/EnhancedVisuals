@@ -2,8 +2,8 @@ package team.creative.enhancedvisuals.common.death;
 
 import java.util.Random;
 
-import team.creative.creativecore.common.config.CreativeConfig;
-import team.creative.creativecore.common.config.ICreativeConfig;
+import team.creative.creativecore.common.config.api.CreativeConfig;
+import team.creative.creativecore.common.config.api.ICreativeConfig;
 
 public class DeathMessages implements ICreativeConfig {
 	

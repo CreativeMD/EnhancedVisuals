@@ -5,7 +5,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
-import team.creative.creativecore.common.config.CreativeConfig;
+import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
 import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.api.VisualHandler;

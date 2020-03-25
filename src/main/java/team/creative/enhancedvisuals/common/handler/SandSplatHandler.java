@@ -5,7 +5,7 @@ import javax.annotation.Nullable;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.Tags.Blocks;
-import team.creative.creativecore.common.config.CreativeConfig;
+import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.premade.IntMinMax;
 import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.api.type.VisualType;

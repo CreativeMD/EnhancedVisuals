@@ -1,7 +1,7 @@
 package team.creative.enhancedvisuals;
 
-import team.creative.creativecore.common.config.CreativeConfig;
-import team.creative.creativecore.common.config.ICreativeConfig;
+import team.creative.creativecore.common.config.api.CreativeConfig;
+import team.creative.creativecore.common.config.api.ICreativeConfig;
 
 public class EnhancedVisualsConfig implements ICreativeConfig {
 	

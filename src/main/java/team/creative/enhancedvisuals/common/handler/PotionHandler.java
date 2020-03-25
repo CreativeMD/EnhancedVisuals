@@ -8,7 +8,7 @@ import net.minecraft.potion.PotionUtils;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
-import team.creative.creativecore.common.config.CreativeConfig;
+import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.premade.IntMinMax;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualHandler;

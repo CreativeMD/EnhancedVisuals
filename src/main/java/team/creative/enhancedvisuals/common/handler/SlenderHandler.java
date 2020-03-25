@@ -7,8 +7,7 @@ import net.minecraft.entity.monster.EndermanEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.MinecraftForge;
-import team.creative.creativecore.common.config.CreativeConfig;
-import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
+import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.api.event.SelectEndermanEvent;
@@ -35,7 +34,7 @@ public class SlenderHandler extends VisualHandler {
 	@Override
 	public void tick(@Nullable PlayerEntity player) {
 		if (slenderVisual == null) {
-			slenderVisual = new Visual(slender, new DecimalCurve(0, 1, 1, 1), 0);
+			slenderVisual = new Visual(slender, 0);
 			VisualManager.add(slenderVisual);
 		}
 		
@@ -43,9 +42,9 @@ public class SlenderHandler extends VisualHandler {
 		
 		if (player != null) {
 			float modifier = 0.0F;
-			double d0 = player.posX;
-			double d1 = player.posY;
-			double d2 = player.posZ;
+			double d0 = player.func_226277_ct_();
+			double d1 = player.func_226278_cu_();
+			double d2 = player.func_226281_cx_();
 			
 			AxisAlignedBB box = player.getBoundingBox();
 			box = box.grow(16, 16, 16);
@@ -55,7 +54,7 @@ public class SlenderHandler extends VisualHandler {
 			if (!event.isCanceled()) {
 				EndermanEntity mob = player.world.getClosestEntityWithinAABB(EndermanEntity.class, event.predicate, player, d0, d1, d2, box);
 				if (mob != null) {
-					float distModifier = (float) (1.0F / Math.pow(Math.sqrt(Math.pow(d0 - mob.posX, 2) + Math.pow(d1 - mob.posY, 2) + Math.pow(d2 - mob.posZ, 2)) / 3.0D, 2));
+					float distModifier = (float) (1.0F / Math.pow(Math.sqrt(Math.pow(d0 - mob.func_226277_ct_(), 2) + Math.pow(d1 - mob.func_226278_cu_(), 2) + Math.pow(d2 - mob.func_226281_cx_(), 2)) / 3.0D, 2));
 					if (distModifier > modifier) {
 						modifier = distModifier;
 						if (modifier > 3.5F) {

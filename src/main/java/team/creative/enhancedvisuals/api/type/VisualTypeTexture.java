@@ -16,7 +16,7 @@ import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import team.creative.creativecore.common.config.CreativeConfig;
+import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualCategory;
@@ -107,19 +107,19 @@ public abstract class VisualTypeTexture extends VisualType {
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder renderer = tessellator.getBuffer();
 		
-		float red = visual.color != null ? visual.color.getRed() / 255.0F : 1;
-		float green = visual.color != null ? visual.color.getGreen() / 255.0F : 1;
-		float blue = visual.color != null ? visual.color.getBlue() / 255.0F : 1;
+		int red = visual.color != null ? visual.color.getRed() : 255;
+		int green = visual.color != null ? visual.color.getGreen() : 255;
+		int blue = visual.color != null ? visual.color.getBlue() : 255;
 		double z = -90;
 		
 		int width = visual.getWidth(screenWidth);
 		int height = visual.getHeight(screenHeight);
 		
 		renderer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-		renderer.pos(0.0D, height, z).tex(0.0D, 1.0D).color(red, green, blue, visual.opacity).endVertex();
-		renderer.pos(width, height, z).tex(1.0D, 1.0D).color(red, green, blue, visual.opacity).endVertex();
-		renderer.pos(width, 0.0D, z).tex(1.0D, 0.0D).color(red, green, blue, visual.opacity).endVertex();
-		renderer.pos(0.0D, 0.0D, z).tex(0.0D, 0.0D).color(red, green, blue, visual.opacity).endVertex();
+		renderer.func_225582_a_(0.0D, height, z).func_225583_a_(0.0F, 1.0F).func_225586_a_(red, green, blue, (int) (visual.opacity * 255)).endVertex();
+		renderer.func_225582_a_(width, height, z).func_225583_a_(1.0F, 1.0F).func_225586_a_(red, green, blue, (int) (visual.opacity * 255)).endVertex();
+		renderer.func_225582_a_(width, 0.0D, z).func_225583_a_(1.0F, 0.0F).func_225586_a_(red, green, blue, (int) (visual.opacity * 255)).endVertex();
+		renderer.func_225582_a_(0.0D, 0.0D, z).func_225583_a_(0.0F, 0.0F).func_225586_a_(red, green, blue, (int) (visual.opacity * 255)).endVertex();
 		tessellator.draw();
 	}
 	

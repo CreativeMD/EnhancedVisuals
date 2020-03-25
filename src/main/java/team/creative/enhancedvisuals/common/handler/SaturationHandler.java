@@ -3,7 +3,7 @@ package team.creative.enhancedvisuals.common.handler;
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.PlayerEntity;
-import team.creative.creativecore.common.config.CreativeConfig;
+import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualHandler;
@@ -27,7 +27,7 @@ public class SaturationHandler extends VisualHandler {
 	@Override
 	public void tick(@Nullable PlayerEntity player) {
 		if (saturationVisual == null) {
-			saturationVisual = new Visual(desaturate, new DecimalCurve(0, 1, 1, 1), 0);
+			saturationVisual = new Visual(desaturate, 0);
 			VisualManager.add(saturationVisual);
 		}
 		

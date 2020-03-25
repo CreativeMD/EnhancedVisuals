@@ -15,6 +15,7 @@ public class Visual {
 	public float opacity;
 	
 	public final Curve animation;
+	public final boolean endless;
 	
 	private boolean displayed = false;
 	private int tick = 0;
@@ -27,6 +28,14 @@ public class Visual {
 		this.type = type;
 		this.animation = animation;
 		this.variant = variant;
+		this.endless = false;
+	}
+	
+	public Visual(VisualType type, int variant) {
+		this.type = type;
+		this.animation = null;
+		this.variant = variant;
+		this.endless = true;
 	}
 	
 	public boolean displayed() {
@@ -55,6 +64,8 @@ public class Visual {
 	}
 	
 	public boolean tick() {
+		if (endless)
+			return true;
 		opacity = (float) animation.valueAt(tick++);
 		return opacity > 0;
 	}

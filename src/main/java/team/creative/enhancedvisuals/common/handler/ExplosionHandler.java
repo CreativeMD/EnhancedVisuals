@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Explosion;
-import team.creative.creativecore.common.config.CreativeConfig;
+import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.premade.IntMinMax;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
 import team.creative.creativecore.common.config.premade.curve.IntCurve;
@@ -45,7 +45,7 @@ public class ExplosionHandler extends VisualHandler {
 		float f3 = size * 2.0F;
 		double d12 = MathHelper.sqrt(player.getDistanceSq(pos)) / f3;
 		
-		double d14 = Explosion.getBlockDensity(pos, player);
+		double d14 = Explosion.func_222259_a(pos, player);
 		double d10 = (1.0D - d12) * d14;
 		
 		float damage = ((int) ((d10 * d10 + d10) / 2.0D * 7.0D * f3 + 1.0D));

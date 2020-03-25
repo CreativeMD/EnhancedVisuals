@@ -5,7 +5,7 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.PlayerEntity;
-import team.creative.creativecore.common.config.CreativeConfig;
+import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.premade.DecimalMinMax;
 import team.creative.creativecore.common.config.premade.IntMinMax;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;

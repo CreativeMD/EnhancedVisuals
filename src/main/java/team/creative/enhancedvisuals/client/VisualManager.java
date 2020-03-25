@@ -12,7 +12,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import team.creative.creativecore.common.config.premade.IntMinMax;
 import team.creative.creativecore.common.config.premade.curve.Curve;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
-import team.creative.creativecore.common.utils.type.HashMapList;
+import team.creative.creativecore.common.util.type.HashMapList;
 import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.api.Particle;
 import team.creative.enhancedvisuals.api.Visual;
@@ -97,8 +97,8 @@ public class VisualManager {
 	
 	public static void addParticlesFadeOut(VisualType vt, int count, Curve curve, boolean rotate, Color color) {
 		for (int i = 0; i < count; i++) {
-			int screenWidth = mc.mainWindow.getScaledWidth();
-			int screenHeight = mc.mainWindow.getScaledHeight();
+			int screenWidth = mc.func_228018_at_().getScaledWidth();
+			int screenHeight = mc.func_228018_at_().getScaledHeight();
 			
 			int width = vt.getWidth(screenWidth);
 			int height = vt.getHeight(screenHeight);

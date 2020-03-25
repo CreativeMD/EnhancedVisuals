@@ -7,7 +7,6 @@ import com.google.gson.JsonSyntaxException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.shader.Framebuffer;
-import net.minecraft.client.shader.ShaderLinkHelper;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -25,22 +24,21 @@ public abstract class VisualTypeShader extends VisualType {
 		this.location = location;
 	}
 	
-	public EnhancedShaderGroup shaderGroup = null;
+	@OnlyIn(value = Dist.CLIENT)
+	public EnhancedShaderGroup shaderGroup;
 	
 	@Override
 	@OnlyIn(value = Dist.CLIENT)
 	public void loadResources(IResourceManager manager) {
-		if (ShaderLinkHelper.getStaticShaderLinkHelper() != null) {
-			Minecraft mc = Minecraft.getInstance();
-			if (shaderGroup != null)
-				shaderGroup.close();
-			
-			try {
-				shaderGroup = new EnhancedShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), location);
-				shaderGroup.createBindFramebuffers(mc.mainWindow.getFramebufferWidth(), mc.mainWindow.getFramebufferHeight());
-			} catch (JsonSyntaxException | IOException e) {
-				e.printStackTrace();
-			}
+		Minecraft mc = Minecraft.getInstance();
+		if (shaderGroup != null)
+			shaderGroup.close();
+		
+		try {
+			shaderGroup = new EnhancedShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), location);
+			shaderGroup.createBindFramebuffers(mc.func_228018_at_().getFramebufferWidth(), mc.func_228018_at_().getFramebufferHeight());
+		} catch (JsonSyntaxException | IOException e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -60,7 +58,7 @@ public abstract class VisualTypeShader extends VisualType {
 	@OnlyIn(value = Dist.CLIENT)
 	public void resize(Framebuffer buffer) {
 		if (shaderGroup != null)
-			shaderGroup.createBindFramebuffers(Minecraft.getInstance().mainWindow.getFramebufferWidth(), Minecraft.getInstance().mainWindow.getFramebufferHeight());
+			shaderGroup.createBindFramebuffers(Minecraft.getInstance().func_228018_at_().getFramebufferWidth(), Minecraft.getInstance().func_228018_at_().getFramebufferHeight());
 	}
 	
 	@Override

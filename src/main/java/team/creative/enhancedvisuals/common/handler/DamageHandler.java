@@ -7,7 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import team.creative.creativecore.common.config.CreativeConfig;
+import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.premade.IntMinMax;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
 import team.creative.enhancedvisuals.api.VisualHandler;
