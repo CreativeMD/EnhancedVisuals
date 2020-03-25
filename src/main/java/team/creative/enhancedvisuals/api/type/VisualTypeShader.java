@@ -35,8 +35,10 @@ public abstract class VisualTypeShader extends VisualType {
 			shaderGroup.close();
 		
 		try {
-			shaderGroup = new EnhancedShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), location);
-			shaderGroup.createBindFramebuffers(mc.func_228018_at_().getFramebufferWidth(), mc.func_228018_at_().getFramebufferHeight());
+			if (mc.isOnExecutionThread()) {
+				shaderGroup = new EnhancedShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), location);
+				shaderGroup.createBindFramebuffers(mc.func_228018_at_().getFramebufferWidth(), mc.func_228018_at_().getFramebufferHeight());
+			}
 		} catch (JsonSyntaxException | IOException e) {
 			e.printStackTrace();
 		}

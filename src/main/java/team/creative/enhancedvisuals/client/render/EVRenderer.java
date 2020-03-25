@@ -75,6 +75,10 @@ public class EVRenderer {
 				renderVisuals(VisualManager.visuals(VisualCategory.overlay), manager, screenWidth, screenHeight, partialTicks);
 				renderVisuals(VisualManager.visuals(VisualCategory.particle), manager, screenWidth, screenHeight, partialTicks);
 				
+				RenderSystem.disableBlend();
+				RenderSystem.disableDepthTest();
+				RenderSystem.disableAlphaTest();
+				RenderSystem.enableTexture();
 				RenderSystem.matrixMode(5890);
 				RenderSystem.pushMatrix();
 				RenderSystem.loadIdentity();
@@ -84,9 +88,10 @@ public class EVRenderer {
 				RenderSystem.depthMask(true);
 				RenderSystem.enableDepthTest();
 				RenderSystem.enableAlphaTest();
+				RenderSystem.enableBlend();
 				RenderSystem.disableLighting();
 				
-				mc.getFramebuffer().bindFramebuffer(false);
+				mc.getFramebuffer().bindFramebuffer(true);
 				RenderSystem.matrixMode(5888);
 				
 				RenderSystem.popMatrix();
