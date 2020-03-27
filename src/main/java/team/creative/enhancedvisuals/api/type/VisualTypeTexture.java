@@ -116,10 +116,10 @@ public abstract class VisualTypeTexture extends VisualType {
 		int height = visual.getHeight(screenHeight);
 		
 		renderer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-		renderer.func_225582_a_(0.0D, height, z).func_225583_a_(0.0F, 1.0F).func_225586_a_(red, green, blue, (int) (visual.opacity * 255)).endVertex();
-		renderer.func_225582_a_(width, height, z).func_225583_a_(1.0F, 1.0F).func_225586_a_(red, green, blue, (int) (visual.opacity * 255)).endVertex();
-		renderer.func_225582_a_(width, 0.0D, z).func_225583_a_(1.0F, 0.0F).func_225586_a_(red, green, blue, (int) (visual.opacity * 255)).endVertex();
-		renderer.func_225582_a_(0.0D, 0.0D, z).func_225583_a_(0.0F, 0.0F).func_225586_a_(red, green, blue, (int) (visual.opacity * 255)).endVertex();
+		renderer.pos(0.0D, height, z).tex(0.0F, 1.0F).color(red, green, blue, (int) (visual.opacity * 255)).endVertex();
+		renderer.pos(width, height, z).tex(1.0F, 1.0F).color(red, green, blue, (int) (visual.opacity * 255)).endVertex();
+		renderer.pos(width, 0.0D, z).tex(1.0F, 0.0F).color(red, green, blue, (int) (visual.opacity * 255)).endVertex();
+		renderer.pos(0.0D, 0.0D, z).tex(0.0F, 0.0F).color(red, green, blue, (int) (visual.opacity * 255)).endVertex();
 		tessellator.draw();
 	}
 	

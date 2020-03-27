@@ -47,8 +47,8 @@ public class EVRenderer {
 					framebufferHeight = mc.getFramebuffer().framebufferHeight;
 				}
 				
-				int screenWidth = mc.func_228018_at_().getScaledWidth();
-				int screenHeight = mc.func_228018_at_().getScaledHeight();
+				int screenWidth = mc.getMainWindow().getScaledWidth();
+				int screenHeight = mc.getMainWindow().getScaledHeight();
 				
 				RenderSystem.pushMatrix();
 				TextureManager manager = mc.getTextureManager();
@@ -59,7 +59,7 @@ public class EVRenderer {
 				RenderSystem.clear(256, false);
 				RenderSystem.matrixMode(5889);
 				RenderSystem.loadIdentity();
-				RenderSystem.ortho(0.0D, mc.func_228018_at_().getScaledWidth(), mc.func_228018_at_().getScaledHeight(), 0.0D, 1000.0D, 3000.0D);
+				RenderSystem.ortho(0.0D, mc.getMainWindow().getScaledWidth(), mc.getMainWindow().getScaledHeight(), 0.0D, 1000.0D, 3000.0D);
 				RenderSystem.matrixMode(5888);
 				RenderSystem.loadIdentity();
 				RenderSystem.translatef(0.0F, 0.0F, -2000.0F);

@@ -1,5 +1,5 @@
 function initializeCoreMod() {
-	print("Init CreativeCore coremods ...")
+	print("Init EnhancedVisuals coremods ...")
     return {
         'soundtransformer': {
             'target': {

@@ -37,7 +37,7 @@ public abstract class VisualTypeShader extends VisualType {
 		try {
 			if (mc.isOnExecutionThread()) {
 				shaderGroup = new EnhancedShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), location);
-				shaderGroup.createBindFramebuffers(mc.func_228018_at_().getFramebufferWidth(), mc.func_228018_at_().getFramebufferHeight());
+				shaderGroup.createBindFramebuffers(mc.getMainWindow().getFramebufferWidth(), mc.getMainWindow().getFramebufferHeight());
 			}
 		} catch (JsonSyntaxException | IOException e) {
 			e.printStackTrace();
@@ -60,7 +60,7 @@ public abstract class VisualTypeShader extends VisualType {
 	@OnlyIn(value = Dist.CLIENT)
 	public void resize(Framebuffer buffer) {
 		if (shaderGroup != null)
-			shaderGroup.createBindFramebuffers(Minecraft.getInstance().func_228018_at_().getFramebufferWidth(), Minecraft.getInstance().func_228018_at_().getFramebufferHeight());
+			shaderGroup.createBindFramebuffers(Minecraft.getInstance().getMainWindow().getFramebufferWidth(), Minecraft.getInstance().getMainWindow().getFramebufferHeight());
 	}
 	
 	@Override

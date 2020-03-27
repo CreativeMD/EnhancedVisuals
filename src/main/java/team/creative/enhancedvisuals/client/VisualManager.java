@@ -97,8 +97,8 @@ public class VisualManager {
 	
 	public static void addParticlesFadeOut(VisualType vt, int count, Curve curve, boolean rotate, Color color) {
 		for (int i = 0; i < count; i++) {
-			int screenWidth = mc.func_228018_at_().getScaledWidth();
-			int screenHeight = mc.func_228018_at_().getScaledHeight();
+			int screenWidth = mc.getMainWindow().getScaledWidth();
+			int screenHeight = mc.getMainWindow().getScaledHeight();
 			
 			int width = vt.getWidth(screenWidth);
 			int height = vt.getHeight(screenHeight);
