@@ -2,6 +2,7 @@ package team.creative.enhancedvisuals.common.handler;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityPredicate;
 import net.minecraft.entity.monster.EndermanEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -31,6 +32,16 @@ public class SlenderHandler extends VisualHandler {
 	
 	public Visual slenderVisual;
 	
+	public Class mutantEnderman = loadMutantEnderman();
+	
+	private Class loadMutantEnderman() {
+		try {
+			return Class.forName("chumbanotz.mutantbeasts.entity.mutant.MutantEndermanEntity");
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
 	@Override
 	public void tick(@Nullable PlayerEntity player) {
 		if (slenderVisual == null) {
@@ -52,7 +63,10 @@ public class SlenderHandler extends VisualHandler {
 			SelectEndermanEvent event = new SelectEndermanEvent(new EntityPredicate());
 			MinecraftForge.EVENT_BUS.post(event);
 			if (!event.isCanceled()) {
-				EndermanEntity mob = player.world.getClosestEntityWithinAABB(EndermanEntity.class, event.predicate, player, d0, d1, d2, box);
+				Entity mob = player.world.getClosestEntityWithinAABB(EndermanEntity.class, event.predicate, player, d0, d1, d2, box);
+				if (mutantEnderman != null)
+					player.world.getClosestEntityWithinAABB(mutantEnderman, null, player, d0, d1, d2, box);
+				
 				if (mob != null) {
 					float distModifier = (float) (1.0F / Math.pow(Math.sqrt(Math.pow(d0 - mob.getPosX(), 2) + Math.pow(d1 - mob.getPosY(), 2) + Math.pow(d2 - mob.getPosZ(), 2)) / 3.0D, 2));
 					if (distModifier > modifier) {
@@ -62,7 +76,7 @@ public class SlenderHandler extends VisualHandler {
 						}
 					}
 					
-					slenderVisual.opacity = (float) Math.max(defaultIntensity, Math.min(maxIntensity, distanceFactor * modifier));
+					intensity = (float) Math.max(defaultIntensity, Math.min(maxIntensity, distanceFactor * modifier));
 				}
 			}
 		}
