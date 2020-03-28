@@ -33,7 +33,7 @@ public class EVEvents {
 	public void explosion(ExplosionEvent.Detonate event) {
 		if (!event.getWorld().isRemote) {
 			try {
-				ExplosionPacket packet = new ExplosionPacket(event.getExplosion().getPosition(), size.getFloat(event.getExplosion()), ((Entity) exploder.get(event.getExplosion())).getEntityId());
+				ExplosionPacket packet = new ExplosionPacket(event.getExplosion().getPosition(), size.getFloat(event.getExplosion()), (Entity) exploder.get(event.getExplosion()) != null ? ((Entity) exploder.get(event.getExplosion())).getEntityId() : null);
 				for (Entity entity : event.getAffectedEntities())
 					if (entity instanceof ServerPlayerEntity)
 						EnhancedVisuals.NETWORK.sendToClient(packet, (ServerPlayerEntity) entity);
