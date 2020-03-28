@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import team.creative.creativecore.common.config.holder.CreativeConfigRegistry;
 import team.creative.creativecore.common.network.CreativeNetwork;
 import team.creative.enhancedvisuals.client.EVClient;
 import team.creative.enhancedvisuals.common.death.DeathMessages;
@@ -50,7 +51,7 @@ public class EnhancedVisuals {
 		
 		VisualHandlers.init();
 		MESSAGES = new DeathMessages();
-		CONFIG = new EnhancedVisualsConfig();
+		CreativeConfigRegistry.ROOT.registerValue(MODID, CONFIG = new EnhancedVisualsConfig());
 	}
 	
 }
