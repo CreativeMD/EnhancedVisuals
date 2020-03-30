@@ -2,6 +2,8 @@ package team.creative.enhancedvisuals.common.visual;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import net.minecraft.util.ResourceLocation;
 import team.creative.enhancedvisuals.api.VisualHandler;
@@ -16,6 +18,10 @@ public class VisualRegistry {
 	
 	public static Collection<VisualHandler> handlers() {
 		return handlers.values();
+	}
+	
+	public static Set<Entry<ResourceLocation, VisualHandler>> entrySet() {
+		return handlers.entrySet();
 	}
 	
 }

@@ -1,5 +1,7 @@
 package team.creative.enhancedvisuals;
 
+import java.util.Map.Entry;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,14 +14,18 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import team.creative.creativecore.common.config.holder.ConfigHolderDynamic;
 import team.creative.creativecore.common.config.holder.CreativeConfigRegistry;
+import team.creative.creativecore.common.config.sync.ConfigSynchronization;
 import team.creative.creativecore.common.network.CreativeNetwork;
+import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.client.EVClient;
 import team.creative.enhancedvisuals.common.death.DeathMessages;
 import team.creative.enhancedvisuals.common.event.EVEvents;
 import team.creative.enhancedvisuals.common.handler.VisualHandlers;
 import team.creative.enhancedvisuals.common.packet.DamagePacket;
 import team.creative.enhancedvisuals.common.packet.ExplosionPacket;
+import team.creative.enhancedvisuals.common.visual.VisualRegistry;
 
 @Mod(value = EnhancedVisuals.MODID)
 public class EnhancedVisuals {
@@ -51,7 +57,12 @@ public class EnhancedVisuals {
 		
 		VisualHandlers.init();
 		MESSAGES = new DeathMessages();
-		CreativeConfigRegistry.ROOT.registerValue(MODID, CONFIG = new EnhancedVisualsConfig());
+		
+		ConfigHolderDynamic root = CreativeConfigRegistry.ROOT.registerFolder(MODID);
+		root.registerValue("general", CONFIG = new EnhancedVisualsConfig(), ConfigSynchronization.CLIENT, false);
+		ConfigHolderDynamic handlers = root.registerFolder("handlers", ConfigSynchronization.CLIENT);
+		for (Entry<ResourceLocation, VisualHandler> entry : VisualRegistry.entrySet())
+			handlers.registerValue(entry.getKey().getPath(), entry.getValue());
 	}
 	
 }
