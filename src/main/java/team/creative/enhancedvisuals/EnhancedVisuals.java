@@ -33,7 +33,7 @@ public class EnhancedVisuals {
 	public static final String MODID = "enhancedvisuals";
 	
 	public static final Logger LOGGER = LogManager.getLogger(EnhancedVisuals.MODID);
-	public static CreativeNetwork NETWORK;
+	public static final CreativeNetwork NETWORK = new CreativeNetwork("1.0", LOGGER, new ResourceLocation(EnhancedVisuals.MODID, "main"));
 	public static EVEvents EVENTS;
 	public static DeathMessages MESSAGES;
 	public static EnhancedVisualsConfig CONFIG;
@@ -49,7 +49,6 @@ public class EnhancedVisuals {
 	}
 	
 	private void init(final FMLCommonSetupEvent event) {
-		NETWORK = new CreativeNetwork("1.0", LOGGER, new ResourceLocation(EnhancedVisuals.MODID, "main"));
 		NETWORK.registerType(ExplosionPacket.class);
 		NETWORK.registerType(DamagePacket.class);
 		
