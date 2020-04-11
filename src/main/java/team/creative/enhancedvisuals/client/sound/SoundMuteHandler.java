@@ -84,7 +84,7 @@ public class SoundMuteHandler {
 	public static boolean startMuting(DecimalCurve muteGraph) {
 		if (engine == null) {
 			handler = Minecraft.getInstance().getSoundHandler();
-			engine = ObfuscationReflectionHelper.getPrivateValue(SoundHandler.class, handler, "sndManager");
+			engine = ObfuscationReflectionHelper.getPrivateValue(SoundHandler.class, handler, "field_147694_f");
 		}
 		
 		if (isMuting && SoundMuteHandler.muteGraph.valueAt(timeTick) > muteGraph.valueAt(0)) {
