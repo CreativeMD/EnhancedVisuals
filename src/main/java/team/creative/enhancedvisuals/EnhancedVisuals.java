@@ -25,6 +25,7 @@ import team.creative.enhancedvisuals.common.event.EVEvents;
 import team.creative.enhancedvisuals.common.handler.VisualHandlers;
 import team.creative.enhancedvisuals.common.packet.DamagePacket;
 import team.creative.enhancedvisuals.common.packet.ExplosionPacket;
+import team.creative.enhancedvisuals.common.packet.PotionPacket;
 import team.creative.enhancedvisuals.common.visual.VisualRegistry;
 
 @Mod(value = EnhancedVisuals.MODID)
@@ -51,6 +52,7 @@ public class EnhancedVisuals {
 	private void init(final FMLCommonSetupEvent event) {
 		NETWORK.registerType(ExplosionPacket.class);
 		NETWORK.registerType(DamagePacket.class);
+		NETWORK.registerType(PotionPacket.class);
 		
 		MinecraftForge.EVENT_BUS.register(EVENTS = new EVEvents());
 		

@@ -1,11 +1,15 @@
 package team.creative.enhancedvisuals.common.event;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.projectile.PotionEntity;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.Explosion;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -20,9 +24,9 @@ import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.client.EVClient;
 import team.creative.enhancedvisuals.client.VisualManager;
 import team.creative.enhancedvisuals.client.sound.SoundMuteHandler;
-import team.creative.enhancedvisuals.common.handler.VisualHandlers;
 import team.creative.enhancedvisuals.common.packet.DamagePacket;
 import team.creative.enhancedvisuals.common.packet.ExplosionPacket;
+import team.creative.enhancedvisuals.common.packet.PotionPacket;
 
 public class EVEvents {
 	
@@ -45,12 +49,23 @@ public class EVEvents {
 	}
 	
 	@SubscribeEvent
-	@OnlyIn(value = Dist.CLIENT)
 	public void impact(ProjectileImpactEvent.Throwable event) {
-		if (!event.getEntity().world.isRemote)
-			if (VisualHandlers.POTION.isEnabled(Minecraft.getInstance().player))
-				VisualHandlers.POTION.impact(event);
-			
+		if (!event.getEntity().world.isRemote && event.getEntity() instanceof PotionEntity && !event.isCanceled()) {
+			PotionEntity entity = (PotionEntity) event.getEntity();
+			AxisAlignedBB axisalignedbb = entity.getBoundingBox().grow(4.0D, 2.0D, 4.0D);
+			List<LivingEntity> list = entity.world.getEntitiesWithinAABB(LivingEntity.class, axisalignedbb);
+			if (!list.isEmpty()) {
+				for (LivingEntity livingentity : list) {
+					if (livingentity.canBeHitWithPotion() && livingentity instanceof PlayerEntity) {
+						double d0 = entity.getDistanceSq(livingentity);
+						if (d0 < 16.0D) {
+							EnhancedVisuals.NETWORK.sendToClient(new PotionPacket(Math.sqrt(d0), entity.getItem()), (ServerPlayerEntity) livingentity);
+						}
+					}
+				}
+			}
+		}
+		
 	}
 	
 	@SubscribeEvent
