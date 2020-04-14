@@ -4,13 +4,10 @@ import java.awt.Color;
 
 import com.creativemd.creativecore.common.config.api.CreativeConfig;
 import com.creativemd.creativecore.common.config.premade.IntMinMax;
+import com.creativemd.creativecore.common.config.premade.curve.DecimalCurve;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.projectile.EntityPotion;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionUtils;
-import net.minecraftforge.event.entity.ProjectileImpactEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.api.type.VisualType;
@@ -25,22 +22,16 @@ public class PotionHandler extends VisualHandler {
 	@CreativeConfig
 	public VisualType potion = new VisualTypeOverlay("potion");
 	
-	@SideOnly(Side.CLIENT)
-	public void impact(ProjectileImpactEvent.Throwable event) {
-		if (event.getEntity() instanceof EntityPotion && !event.isCanceled()) {
-			EntityPotion ep = (EntityPotion) event.getEntity();
-			if (!ep.world.isRemote) {
-				double modifier = 1 - ep.getDistance(Minecraft.getMinecraft().player) / 5;
-				int var11 = PotionUtils.getPotionColor(PotionUtils.getPotionFromItem(ep.getPotion()));
-				float r = (var11 >> 16 & 255) / 255.0F;
-				float g = (var11 >> 8 & 255) / 255.0F;
-				float b = (var11 & 255) / 255.0F;
-				float f1 = (float) (modifier * 2.0F);
-				Visual v = VisualManager.addVisualFadeOut(potion, duration);
-				v.opacity = Math.min(1, f1);
-				v.color = new Color(r, g, b);
-			}
-		}
+	public void impact(double distance, ItemStack stack) {
+		double modifier = 1 - Math.min(5, distance) / 5;
+		int var11 = PotionUtils.getPotionColor(PotionUtils.getPotionFromItem(stack));
+		float r = (var11 >> 16 & 255) / 255.0F;
+		float g = (var11 >> 8 & 255) / 255.0F;
+		float b = (var11 & 255) / 255.0F;
+		if (modifier <= 0)
+			return;
+		Visual v = VisualManager.addVisualFadeOut(potion, new DecimalCurve(0, Math.min(1, modifier * 2), duration.next(VisualManager.rand), 0));
+		v.color = new Color(r, g, b);
 	}
 	
 }

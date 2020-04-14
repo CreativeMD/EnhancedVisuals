@@ -1,14 +1,19 @@
 package team.creative.enhancedvisuals.common.event;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 import com.creativemd.creativecore.common.packet.PacketHandler;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.projectile.EntityPotion;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.Explosion;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
@@ -22,9 +27,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import team.creative.enhancedvisuals.client.EVClient;
 import team.creative.enhancedvisuals.client.VisualManager;
 import team.creative.enhancedvisuals.client.sound.SoundMuteHandler;
-import team.creative.enhancedvisuals.common.handler.VisualHandlers;
 import team.creative.enhancedvisuals.common.packet.DamagePacket;
 import team.creative.enhancedvisuals.common.packet.ExplosionPacket;
+import team.creative.enhancedvisuals.common.packet.PotionPacket;
 
 public class EVEvents {
 	
@@ -51,12 +56,23 @@ public class EVEvents {
 	}
 	
 	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
 	public void impact(ProjectileImpactEvent.Throwable event) {
-		if (!event.getEntity().world.isRemote)
-			if (VisualHandlers.POTION.isEnabled(Minecraft.getMinecraft().player))
-				VisualHandlers.POTION.impact(event);
-			
+		if (!event.getEntity().world.isRemote && event.getEntity() instanceof EntityPotion && !event.isCanceled()) {
+			EntityPotion entity = (EntityPotion) event.getEntity();
+			AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().grow(4.0D, 2.0D, 4.0D);
+			List<EntityLivingBase> list = entity.world.getEntitiesWithinAABB(EntityLiving.class, axisalignedbb);
+			if (!list.isEmpty()) {
+				for (EntityLivingBase livingentity : list) {
+					if (livingentity.canBeHitWithPotion() && livingentity instanceof EntityPlayer) {
+						double d0 = entity.getDistanceSq(livingentity);
+						if (d0 < 16.0D) {
+							PacketHandler.sendPacketToPlayer(new PotionPacket(Math.sqrt(d0), entity.getPotion()), (EntityPlayerMP) livingentity);
+						}
+					}
+				}
+			}
+		}
+		
 	}
 	
 	@SubscribeEvent

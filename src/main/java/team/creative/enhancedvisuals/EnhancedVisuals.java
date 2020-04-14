@@ -24,6 +24,7 @@ import team.creative.enhancedvisuals.common.event.EVEvents;
 import team.creative.enhancedvisuals.common.handler.VisualHandlers;
 import team.creative.enhancedvisuals.common.packet.DamagePacket;
 import team.creative.enhancedvisuals.common.packet.ExplosionPacket;
+import team.creative.enhancedvisuals.common.packet.PotionPacket;
 import team.creative.enhancedvisuals.common.visual.VisualRegistry;
 import team.creative.enhancedvisuals.server.EVServer;
 
@@ -46,6 +47,7 @@ public class EnhancedVisuals {
 	public void load(FMLInitializationEvent event) {
 		CreativeCorePacket.registerPacket(ExplosionPacket.class);
 		CreativeCorePacket.registerPacket(DamagePacket.class);
+		CreativeCorePacket.registerPacket(PotionPacket.class);
 		
 		MinecraftForge.EVENT_BUS.register(EVENTS = new EVEvents());
 		
