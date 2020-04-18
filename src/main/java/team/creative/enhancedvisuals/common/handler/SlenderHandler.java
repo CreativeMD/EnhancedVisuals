@@ -65,7 +65,7 @@ public class SlenderHandler extends VisualHandler {
 			if (!event.isCanceled()) {
 				Entity mob = player.world.getClosestEntityWithinAABB(EndermanEntity.class, event.predicate, player, d0, d1, d2, box);
 				if (mutantEnderman != null)
-					player.world.getClosestEntityWithinAABB(mutantEnderman, null, player, d0, d1, d2, box);
+					mob = player.world.getClosestEntityWithinAABB(mutantEnderman, EntityPredicate.DEFAULT, player, d0, d1, d2, box);
 				
 				if (mob != null) {
 					float distModifier = (float) (1.0F / Math.pow(Math.sqrt(Math.pow(d0 - mob.getPosX(), 2) + Math.pow(d1 - mob.getPosY(), 2) + Math.pow(d2 - mob.getPosZ(), 2)) / 3.0D, 2));
