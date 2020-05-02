@@ -10,6 +10,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -20,6 +21,7 @@ import team.creative.creativecore.common.config.sync.ConfigSynchronization;
 import team.creative.creativecore.common.network.CreativeNetwork;
 import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.client.EVClient;
+import team.creative.enhancedvisuals.common.addon.survive.SurviveAddon;
 import team.creative.enhancedvisuals.common.death.DeathMessages;
 import team.creative.enhancedvisuals.common.event.EVEvents;
 import team.creative.enhancedvisuals.common.handler.VisualHandlers;
@@ -58,6 +60,8 @@ public class EnhancedVisuals {
 		
 		VisualHandlers.init();
 		MESSAGES = new DeathMessages();
+		if (ModList.get().isLoaded("survive"))
+			SurviveAddon.load();
 		
 		ConfigHolderDynamic root = CreativeConfigRegistry.ROOT.registerFolder(MODID);
 		root.registerValue("general", CONFIG = new EnhancedVisualsConfig(), ConfigSynchronization.CLIENT, false);
