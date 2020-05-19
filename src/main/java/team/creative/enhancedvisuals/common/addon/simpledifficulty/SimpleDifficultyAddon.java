@@ -5,12 +5,12 @@ import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.common.visual.VisualRegistry;
 
 public class SimpleDifficultyAddon {
-
+	
 	public static ThirstHandler thirst;
 	public static TemperatureHandler temperature;
 	
 	public static void load() {
-		VisualRegistry.registerHandler(new ResourceLocation(EnhancedVisuals.MODID, "thirst"), thirst = new ThirstHandler());
-		VisualRegistry.registerHandler(new ResourceLocation(EnhancedVisuals.MODID, "temperature"), temperature = new TemperatureHandler());
+		VisualRegistry.registerHandler(new ResourceLocation(EnhancedVisuals.MODID, "simple-thirst"), thirst = new ThirstHandler());
+		VisualRegistry.registerHandler(new ResourceLocation(EnhancedVisuals.MODID, "simple-temperature"), temperature = new TemperatureHandler());
 	}
 }
