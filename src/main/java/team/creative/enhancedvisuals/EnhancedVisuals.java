@@ -19,6 +19,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.common.addon.toughasnails.ToughAsNailsAddon;
+import team.creative.enhancedvisuals.common.addon.simpledifficulty.SimpleDifficultyAddon;
 import team.creative.enhancedvisuals.common.death.DeathMessages;
 import team.creative.enhancedvisuals.common.event.EVEvents;
 import team.creative.enhancedvisuals.common.handler.VisualHandlers;
@@ -57,6 +58,9 @@ public class EnhancedVisuals {
 		
 		if (Loader.isModLoaded("toughasnails"))
 			ToughAsNailsAddon.load();
+		
+		if (Loader.isModLoaded("simpledifficulty"))
+			SimpleDifficultyAddon.load();
 		
 		proxy.load(event);
 		
