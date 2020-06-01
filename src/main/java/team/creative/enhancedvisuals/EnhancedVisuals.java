@@ -65,6 +65,7 @@ public class EnhancedVisuals {
 		
 		ConfigHolderDynamic root = CreativeConfigRegistry.ROOT.registerFolder(MODID);
 		root.registerValue("general", CONFIG = new EnhancedVisualsConfig(), ConfigSynchronization.CLIENT, false);
+		root.registerValue("messages", MESSAGES);
 		ConfigHolderDynamic handlers = root.registerFolder("handlers", ConfigSynchronization.CLIENT);
 		for (Entry<ResourceLocation, VisualHandler> entry : VisualRegistry.entrySet())
 			handlers.registerValue(entry.getKey().getPath(), entry.getValue());
