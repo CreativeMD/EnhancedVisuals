@@ -18,8 +18,8 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import team.creative.enhancedvisuals.api.VisualHandler;
-import team.creative.enhancedvisuals.common.addon.toughasnails.ToughAsNailsAddon;
 import team.creative.enhancedvisuals.common.addon.simpledifficulty.SimpleDifficultyAddon;
+import team.creative.enhancedvisuals.common.addon.toughasnails.ToughAsNailsAddon;
 import team.creative.enhancedvisuals.common.death.DeathMessages;
 import team.creative.enhancedvisuals.common.event.EVEvents;
 import team.creative.enhancedvisuals.common.handler.VisualHandlers;
@@ -66,6 +66,7 @@ public class EnhancedVisuals {
 		
 		ConfigHolderDynamic root = CreativeConfigRegistry.ROOT.registerFolder(MODID);
 		root.registerValue("general", CONFIG, ConfigSynchronization.CLIENT, false);
+		root.registerValue("messages", MESSAGES);
 		ConfigHolderDynamic handlers = root.registerFolder("handlers", ConfigSynchronization.CLIENT);
 		for (Entry<ResourceLocation, VisualHandler> entry : VisualRegistry.entrySet())
 			handlers.registerValue(entry.getKey().getResourcePath(), entry.getValue());
