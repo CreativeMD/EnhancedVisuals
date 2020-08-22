@@ -67,7 +67,7 @@ public class SoundMuteHandler {
 		getSounds().forEach((p_217926_1_, p_217926_2_) -> {
 			float f = getClampedVolume(p_217926_1_, muteVolume);
 			p_217926_2_.runOnSoundExecutor((p_217923_1_) -> {
-				p_217923_1_.func_216430_b(f);
+				p_217923_1_.setGain(f);
 				
 			});
 		});

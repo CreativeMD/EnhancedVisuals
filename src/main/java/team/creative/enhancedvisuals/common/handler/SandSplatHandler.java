@@ -25,7 +25,7 @@ public class SandSplatHandler extends VisualHandler {
 	
 	@Override
 	public void tick(@Nullable PlayerEntity player) {
-		if (player != null && player.onGround && isOnSand(player)) {
+		if (player != null && player.func_233570_aj_() && isOnSand(player)) {
 			double modifier = 0;
 			if (player.isSprinting())
 				modifier = sprintModifier;
@@ -34,7 +34,7 @@ public class SandSplatHandler extends VisualHandler {
 	}
 	
 	private boolean isOnSand(PlayerEntity player) {
-		BlockPos pos = player.getPosition().down();
+		BlockPos pos = new BlockPos(player.getPositionVec()).down();
 		if (player.world.getBlockState(pos).getBlock().isIn(Blocks.SAND))
 			return true;
 		return false;

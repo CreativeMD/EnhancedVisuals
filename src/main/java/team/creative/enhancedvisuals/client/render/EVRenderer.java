@@ -2,6 +2,7 @@ package team.creative.enhancedvisuals.client.render;
 
 import java.util.Collection;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.Minecraft;
@@ -102,7 +103,7 @@ public class EVRenderer {
 						lastRenderedMessage = EnhancedVisuals.MESSAGES.pickRandomDeathMessage();
 					
 					if (lastRenderedMessage != null)
-						mc.fontRenderer.drawString("\"" + lastRenderedMessage + "\"", mc.currentScreen.width / 2 - mc.fontRenderer.getStringWidth(lastRenderedMessage) / 2, 114, 16777215);
+						mc.fontRenderer.func_238405_a_(new MatrixStack(), "\"" + lastRenderedMessage + "\"", mc.currentScreen.field_230708_k_ / 2 - mc.fontRenderer.getStringWidth(lastRenderedMessage) / 2, 114, 16777215);
 				}
 			}
 		}

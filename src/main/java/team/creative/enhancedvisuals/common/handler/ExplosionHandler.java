@@ -6,7 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Explosion;
 import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.premade.IntMinMax;
@@ -41,7 +41,7 @@ public class ExplosionHandler extends VisualHandler {
 	@CreativeConfig
 	public IntCurve explosionBlurTime = new IntCurve(0, 10, 20, 20);
 	
-	public void onExploded(PlayerEntity player, Vec3d pos, float size, @Nullable Entity source) {
+	public void onExploded(PlayerEntity player, Vector3d pos, float size, @Nullable Entity source) {
 		float f3 = size * 2.0F;
 		double d12 = MathHelper.sqrt(player.getDistanceSq(pos)) / f3;
 		

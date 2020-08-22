@@ -1,17 +1,17 @@
 package team.creative.enhancedvisuals.common.packet;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import team.creative.creativecore.common.network.CreativePacket;
 import team.creative.enhancedvisuals.common.handler.VisualHandlers;
 
 public class ExplosionPacket extends CreativePacket {
 	
-	public Vec3d pos;
+	public Vector3d pos;
 	public float size;
 	public int sourceEntity;
 	
-	public ExplosionPacket(Vec3d pos, float size, int sourceEntity) {
+	public ExplosionPacket(Vector3d pos, float size, int sourceEntity) {
 		this.pos = pos;
 		this.size = size;
 		this.sourceEntity = sourceEntity;
