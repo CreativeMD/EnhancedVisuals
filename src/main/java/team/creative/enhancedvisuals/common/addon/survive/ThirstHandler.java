@@ -44,7 +44,7 @@ public class ThirstHandler extends VisualHandler {
 	public Visual focusVisual;
 	
 	public double getThirst(PlayerEntity player) {
-		return player.getPersistentData().getDouble("survive:Thirst");
+		return player.getPersistentData().getDouble("survive:PlayerData#WaterStats#waterLevel");
 	}
 	
 	@Override
