@@ -69,8 +69,10 @@ public class VisualManager {
 	}
 	
 	public static void add(Visual visual) {
-		visual.addToDisplay();
-		visuals.add(visual.getCategory(), visual);
+		if (!visual.type.disabled) {
+			visual.addToDisplay();
+			visuals.add(visual.getCategory(), visual);
+		}
 	}
 	
 	public static Visual addVisualFadeOut(VisualType vt, IntMinMax time) {
@@ -96,6 +98,8 @@ public class VisualManager {
 	}
 	
 	public static void addParticlesFadeOut(VisualType vt, int count, Curve curve, boolean rotate, Color color) {
+		if (vt.disabled)
+			return;
 		for (int i = 0; i < count; i++) {
 			int screenWidth = mc.getMainWindow().getScaledWidth();
 			int screenHeight = mc.getMainWindow().getScaledHeight();

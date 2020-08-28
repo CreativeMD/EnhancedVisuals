@@ -24,7 +24,7 @@ public abstract class VisualType implements ICreativeConfig {
 	}
 	
 	@CreativeConfig
-	public boolean enabled;
+	public boolean disabled = false;
 	
 	@CreativeConfig
 	@CreativeConfig.DecimalRange(max = 1, min = 0)
