@@ -47,7 +47,7 @@ public class TemperatureHandler extends VisualHandler {
 	public double hottestTemperature = 41;
 	
 	public double getTemperature(PlayerEntity player) {
-		return player.getPersistentData().getDouble("survive:PlayerData#TemperatureStats#temperatureLevel");
+		return player.getPersistentData().getCompound("survive:PlayerData").getCompound("TemperatureStats").getDouble("temperatureLevel");
 	}
 	
 	@Override
