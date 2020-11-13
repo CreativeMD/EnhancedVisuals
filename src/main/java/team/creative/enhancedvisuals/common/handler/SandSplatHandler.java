@@ -25,7 +25,7 @@ public class SandSplatHandler extends VisualHandler {
 	
 	@Override
 	public void tick(@Nullable PlayerEntity player) {
-		if (player != null && player.func_233570_aj_() && isOnSand(player)) {
+		if (player != null && player.isOnGround() && isOnSand(player)) {
 			double modifier = 0;
 			if (player.isSprinting())
 				modifier = sprintModifier;

@@ -103,7 +103,7 @@ public class EVRenderer {
 						lastRenderedMessage = EnhancedVisuals.MESSAGES.pickRandomDeathMessage();
 					
 					if (lastRenderedMessage != null)
-						mc.fontRenderer.func_238405_a_(new MatrixStack(), "\"" + lastRenderedMessage + "\"", mc.currentScreen.field_230708_k_ / 2 - mc.fontRenderer.getStringWidth(lastRenderedMessage) / 2, 114, 16777215);
+						mc.fontRenderer.drawStringWithShadow(new MatrixStack(), "\"" + lastRenderedMessage + "\"", mc.currentScreen.width / 2 - mc.fontRenderer.getStringWidth(lastRenderedMessage) / 2, 114, 16777215);
 				}
 			}
 		}
