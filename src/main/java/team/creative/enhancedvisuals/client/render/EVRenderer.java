@@ -57,7 +57,7 @@ public class EVRenderer {
 				GlStateManager.loadIdentity();
 				GlStateManager.translate(0.0F, 0.0F, -2000.0F);
 				
-				GlStateManager.enableBlend();
+				GlStateManager.disableBlend();
 				GlStateManager.disableDepth();
 				GlStateManager.depthMask(false);
 				GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
