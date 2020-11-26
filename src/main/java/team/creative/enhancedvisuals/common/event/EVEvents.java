@@ -77,7 +77,7 @@ public class EVEvents {
 	
 	@SubscribeEvent
 	public void damage(LivingDamageEvent event) {
-		if (event.getEntity() instanceof EntityPlayer)
+		if (event.getEntity() instanceof EntityPlayerMP)
 			PacketHandler.sendPacketToPlayer(new DamagePacket(event), (EntityPlayerMP) event.getEntity());
 	}
 	
