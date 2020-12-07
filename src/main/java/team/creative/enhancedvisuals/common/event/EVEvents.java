@@ -18,10 +18,10 @@ import net.minecraft.world.Explosion;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import team.creative.enhancedvisuals.client.EVClient;
@@ -33,8 +33,8 @@ import team.creative.enhancedvisuals.common.packet.PotionPacket;
 
 public class EVEvents {
 	
-	private Field size = ObfuscationReflectionHelper.findField(Explosion.class, "field_77280_f");
-	private Field exploder = ObfuscationReflectionHelper.findField(Explosion.class, "field_77283_e");
+	private Field size = ReflectionHelper.findField(Explosion.class, new String[] { "field_77280_f", "size" });
+	private Field exploder = ReflectionHelper.findField(Explosion.class, new String[] { "field_77283_e", "exploder" });
 	
 	@SubscribeEvent
 	public void explosion(ExplosionEvent.Detonate event) {
