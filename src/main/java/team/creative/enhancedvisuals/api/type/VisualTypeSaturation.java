@@ -26,6 +26,6 @@ public class VisualTypeSaturation extends VisualTypeShader {
 	
 	@Override
 	public boolean isVisible(Visual visual) {
-		return opacity != 1;
+		return visual.opacity != 1;
 	}
 }
