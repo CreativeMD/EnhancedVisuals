@@ -96,7 +96,7 @@ public class EVRenderer {
 				RenderSystem.matrixMode(5888);
 				
 				RenderSystem.popMatrix();
-				
+				lastRenderedMessage = null;
 			} else {
 				if (EnhancedVisuals.MESSAGES.enabled) {
 					if (lastRenderedMessage == null)
