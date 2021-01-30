@@ -28,6 +28,7 @@ public class SaturationHandler extends VisualHandler {
 	public void tick(@Nullable PlayerEntity player) {
 		if (saturationVisual == null) {
 			saturationVisual = new Visual(desaturate, 0);
+			saturationVisual.opacity = 1;
 			VisualManager.add(saturationVisual);
 		}
 		
