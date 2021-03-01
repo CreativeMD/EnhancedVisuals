@@ -6,10 +6,10 @@ import net.minecraftforge.eventbus.api.Event;
 
 @Cancelable
 public class SelectEndermanEvent extends Event {
-	
-	public EntityPredicate predicate;
-	
-	public SelectEndermanEvent(EntityPredicate predicate) {
-		this.predicate = predicate;
-	}
+    
+    public EntityPredicate predicate;
+    
+    public SelectEndermanEvent(EntityPredicate predicate) {
+        this.predicate = predicate;
+    }
 }

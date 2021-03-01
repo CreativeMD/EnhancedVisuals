@@ -13,31 +13,31 @@ import team.creative.enhancedvisuals.api.type.VisualTypeParticle;
 import team.creative.enhancedvisuals.client.VisualManager;
 
 public class SandSplatHandler extends VisualHandler {
-	
-	@CreativeConfig
-	public IntMinMax duration = new IntMinMax(100, 100);
-	
-	@CreativeConfig
-	public double sprintModifier = 1.5F;
-	
-	@CreativeConfig
-	public VisualType sand = new VisualTypeParticle("sand", 1F);
-	
-	@Override
-	public void tick(@Nullable PlayerEntity player) {
-		if (player != null && player.isOnGround() && isOnSand(player)) {
-			double modifier = 0;
-			if (player.isSprinting())
-				modifier = sprintModifier;
-			VisualManager.addParticlesFadeOut(sand, (int) (Math.random() * modifier), duration, true);
-		}
-	}
-	
-	private boolean isOnSand(PlayerEntity player) {
-		BlockPos pos = new BlockPos(player.getPositionVec()).down();
-		if (player.world.getBlockState(pos).getBlock().isIn(Blocks.SAND))
-			return true;
-		return false;
-	}
-	
+    
+    @CreativeConfig
+    public IntMinMax duration = new IntMinMax(100, 100);
+    
+    @CreativeConfig
+    public double sprintModifier = 1.5F;
+    
+    @CreativeConfig
+    public VisualType sand = new VisualTypeParticle("sand", 1F);
+    
+    @Override
+    public void tick(@Nullable PlayerEntity player) {
+        if (player != null && player.isOnGround() && isOnSand(player)) {
+            double modifier = 0;
+            if (player.isSprinting())
+                modifier = sprintModifier;
+            VisualManager.addParticlesFadeOut(sand, (int) (Math.random() * modifier), duration, true);
+        }
+    }
+    
+    private boolean isOnSand(PlayerEntity player) {
+        BlockPos pos = new BlockPos(player.getPositionVec()).down();
+        if (player.world.getBlockState(pos).getBlock().isIn(Blocks.SAND))
+            return true;
+        return false;
+    }
+    
 }

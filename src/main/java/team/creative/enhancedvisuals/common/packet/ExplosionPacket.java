@@ -6,30 +6,30 @@ import team.creative.creativecore.common.network.CreativePacket;
 import team.creative.enhancedvisuals.common.handler.VisualHandlers;
 
 public class ExplosionPacket extends CreativePacket {
-	
-	public Vector3d pos;
-	public float size;
-	public int sourceEntity;
-	
-	public ExplosionPacket(Vector3d pos, float size, int sourceEntity) {
-		this.pos = pos;
-		this.size = size;
-		this.sourceEntity = sourceEntity;
-	}
-	
-	public ExplosionPacket() {
-		
-	}
-	
-	@Override
-	public void executeClient(PlayerEntity player) {
-		if (VisualHandlers.EXPLOSION.isEnabled(player))
-			VisualHandlers.EXPLOSION.onExploded(player, pos, size, player.world.getEntityByID(sourceEntity));
-	}
-	
-	@Override
-	public void executeServer(PlayerEntity player) {
-		
-	}
-	
+    
+    public Vector3d pos;
+    public float size;
+    public int sourceEntity;
+    
+    public ExplosionPacket(Vector3d pos, float size, int sourceEntity) {
+        this.pos = pos;
+        this.size = size;
+        this.sourceEntity = sourceEntity;
+    }
+    
+    public ExplosionPacket() {
+        
+    }
+    
+    @Override
+    public void executeClient(PlayerEntity player) {
+        if (VisualHandlers.EXPLOSION.isEnabled(player))
+            VisualHandlers.EXPLOSION.onExploded(player, pos, size, player.world.getEntityByID(sourceEntity));
+    }
+    
+    @Override
+    public void executeServer(PlayerEntity player) {
+        
+    }
+    
 }

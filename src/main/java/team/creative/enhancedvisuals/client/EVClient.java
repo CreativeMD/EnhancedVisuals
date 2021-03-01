@@ -17,34 +17,34 @@ import team.creative.enhancedvisuals.client.render.EVRenderer;
 
 @OnlyIn(value = Dist.CLIENT)
 public class EVClient {
-	
-	private static Minecraft mc = Minecraft.getInstance();
-	
-	public static void init(FMLClientSetupEvent event) {
-		IReloadableResourceManager reloadableResourceManager = (IReloadableResourceManager) event.getMinecraftSupplier().get().getResourceManager();
-		
-		reloadableResourceManager.addReloadListener(new ISelectiveResourceReloadListener() {
-			@Override
-			public void onResourceManagerReload(IResourceManager resourceManager, Predicate<IResourceType> resourcePredicate) {
-				VisualManager.clearParticles();
-				
-				EVRenderer.reloadResources = true;
-			}
-		});
-		
-		IResourceManager manager = mc.getResourceManager();
-		for (VisualType type : VisualType.getTypes()) {
-			type.loadResources(manager);
-		}
-		
-		MinecraftForge.EVENT_BUS.register(EVRenderer.class);
-	}
-	
-	public static boolean shouldRender() {
-		return mc.player != null ? (!mc.player.isCreative() || !EnhancedVisuals.CONFIG.doEffectsInCreative) : true;
-	}
-	
-	public static boolean shouldTick() {
-		return true;
-	}
+    
+    private static Minecraft mc = Minecraft.getInstance();
+    
+    public static void init(FMLClientSetupEvent event) {
+        IReloadableResourceManager reloadableResourceManager = (IReloadableResourceManager) event.getMinecraftSupplier().get().getResourceManager();
+        
+        reloadableResourceManager.addReloadListener(new ISelectiveResourceReloadListener() {
+            @Override
+            public void onResourceManagerReload(IResourceManager resourceManager, Predicate<IResourceType> resourcePredicate) {
+                VisualManager.clearParticles();
+                
+                EVRenderer.reloadResources = true;
+            }
+        });
+        
+        IResourceManager manager = mc.getResourceManager();
+        for (VisualType type : VisualType.getTypes()) {
+            type.loadResources(manager);
+        }
+        
+        MinecraftForge.EVENT_BUS.register(EVRenderer.class);
+    }
+    
+    public static boolean shouldRender() {
+        return mc.player != null ? (!mc.player.isCreative() || !EnhancedVisuals.CONFIG.doEffectsInCreative) : true;
+    }
+    
+    public static boolean shouldTick() {
+        return true;
+    }
 }
