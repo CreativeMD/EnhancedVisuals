@@ -41,7 +41,7 @@ public class EVClient {
     }
     
     public static boolean shouldRender() {
-        return mc.player != null ? (!mc.player.isCreative() || !EnhancedVisuals.CONFIG.doEffectsInCreative) : true;
+        return mc.player != null ? (!mc.player.isSpectator() && (!mc.player.isCreative() || EnhancedVisuals.CONFIG.doEffectsInCreative)) : true;
     }
     
     public static boolean shouldTick() {
