@@ -15,35 +15,35 @@ import team.creative.enhancedvisuals.server.EVServer;
 
 @SideOnly(Side.CLIENT)
 public class EVClient extends EVServer {
-	
-	private static Minecraft mc = Minecraft.getMinecraft();
-	
-	@Override
-	public void load(FMLInitializationEvent event) {
-		((IReloadableResourceManager) mc.getResourceManager()).registerReloadListener(new IResourceManagerReloadListener() {
-			
-			@Override
-			public void onResourceManagerReload(IResourceManager resourceManager) {
-				VisualManager.clearParticles();
-				
-				for (VisualType type : VisualType.getTypes()) {
-					type.loadResources(resourceManager);
-				}
-			}
-		});
-		
-		IResourceManager manager = mc.getResourceManager();
-		for (VisualType type : VisualType.getTypes())
-			type.loadResources(manager);
-		
-		MinecraftForge.EVENT_BUS.register(EVRenderer.class);
-	}
-	
-	public static boolean shouldRender() {
-		return mc.player != null ? (!mc.player.isCreative() || EnhancedVisuals.CONFIG.doEffectsInCreative) : true;
-	}
-	
-	public static boolean shouldTick() {
-		return true;
-	}
+    
+    private static Minecraft mc = Minecraft.getMinecraft();
+    
+    @Override
+    public void load(FMLInitializationEvent event) {
+        ((IReloadableResourceManager) mc.getResourceManager()).registerReloadListener(new IResourceManagerReloadListener() {
+            
+            @Override
+            public void onResourceManagerReload(IResourceManager resourceManager) {
+                VisualManager.clearParticles();
+                
+                for (VisualType type : VisualType.getTypes()) {
+                    type.loadResources(resourceManager);
+                }
+            }
+        });
+        
+        IResourceManager manager = mc.getResourceManager();
+        for (VisualType type : VisualType.getTypes())
+            type.loadResources(manager);
+        
+        MinecraftForge.EVENT_BUS.register(EVRenderer.class);
+    }
+    
+    public static boolean shouldRender() {
+        return mc.player != null ? (!mc.player.isSpectator() && (!mc.player.isCreative() || EnhancedVisuals.CONFIG.doEffectsInCreative)) : true;
+    }
+    
+    public static boolean shouldTick() {
+        return true;
+    }
 }
