@@ -102,6 +102,8 @@ public class DamageHandler extends VisualHandler {
             VisualManager.addParticlesFadeOut(waterDrown, drownSplashes, drownDuration, true);
         else if (packet.source == EnhancedDamageSource.FIRE)
             VisualManager.addParticlesFadeOut(fire, fireSplashes, fireDuration, true);
+        else
+            createVisualFromDamageAndDistance(splatter, packet.damage, player, bloodDuration);
         
     }
     
