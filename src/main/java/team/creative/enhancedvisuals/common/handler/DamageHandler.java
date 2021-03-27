@@ -100,9 +100,11 @@ public class DamageHandler extends VisualHandler {
             createVisualFromDamageAndDistance(impact, packet.damage, player, bloodDuration);
         else if (packet.source == EnhancedDamageSource.DROWN)
             VisualManager.addParticlesFadeOut(waterDrown, drownSplashes, drownDuration, true);
-        else if (packet.source == EnhancedDamageSource.FIRE)
-            VisualManager.addParticlesFadeOut(fire, fireSplashes, fireDuration, true);
-        else
+        else if (packet.source == EnhancedDamageSource.FIRE) {
+            FireParticlesEvent event = new FireParticlesEvent(fireSplashes, fireDuration.min, fireDuration.max);
+            MinecraftForge.EVENT_BUS.post(event);
+            VisualManager.addParticlesFadeOut(fire, event.getNewFireSplashes(), new IntMinMax(event.getNewFireDurationMin(), event.getNewFireDurationMax()), true, new Color(0, 0, 0));
+        } else
             createVisualFromDamageAndDistance(splatter, packet.damage, player, bloodDuration);
         
     }

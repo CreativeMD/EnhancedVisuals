@@ -93,6 +93,10 @@ public class VisualManager {
         addParticlesFadeOut(vt, count, new DecimalCurve(0, 1, time.next(rand), 0), rotate, null);
     }
     
+    public static void addParticlesFadeOut(VisualType vt, int count, IntMinMax time, boolean rotate, Color color) {
+        addParticlesFadeOut(vt, count, new DecimalCurve(0, 1, time.next(rand), 0), rotate, color);
+    }
+    
     public static void addParticlesFadeOut(VisualType vt, int count, int time, boolean rotate) {
         addParticlesFadeOut(vt, count, new DecimalCurve(0, 1, time, 0), rotate, null);
     }
