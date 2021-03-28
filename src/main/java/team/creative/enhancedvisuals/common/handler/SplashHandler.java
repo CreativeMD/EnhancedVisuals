@@ -35,7 +35,7 @@ public class SplashHandler extends VisualHandler {
         if (player != null) {
             boolean isInWater = EVEvents.areEyesInWater(player);
             if (isInWater != wasInWater)
-                VisualManager.addVisualFadeOut(blur, new DecimalCurve(rand, duration, intensity));
+                VisualManager.addVisualFadeOut(blur, this, new DecimalCurve(rand, duration, intensity));
             wasInWater = isInWater;
             
         }

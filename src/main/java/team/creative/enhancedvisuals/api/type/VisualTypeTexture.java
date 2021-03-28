@@ -20,6 +20,7 @@ import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualCategory;
+import team.creative.enhancedvisuals.api.VisualHandler;
 
 public abstract class VisualTypeTexture extends VisualType {
     
@@ -115,11 +116,12 @@ public abstract class VisualTypeTexture extends VisualType {
         int width = visual.getWidth(screenWidth);
         int height = visual.getHeight(screenHeight);
         
+        float opacity = visual.getOpacity();
         renderer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-        renderer.pos(0.0D, height, z).tex(0.0F, 1.0F).color(red, green, blue, (int) (visual.opacity * 255)).endVertex();
-        renderer.pos(width, height, z).tex(1.0F, 1.0F).color(red, green, blue, (int) (visual.opacity * 255)).endVertex();
-        renderer.pos(width, 0.0D, z).tex(1.0F, 0.0F).color(red, green, blue, (int) (visual.opacity * 255)).endVertex();
-        renderer.pos(0.0D, 0.0D, z).tex(0.0F, 0.0F).color(red, green, blue, (int) (visual.opacity * 255)).endVertex();
+        renderer.pos(0.0D, height, z).tex(0.0F, 1.0F).color(red, green, blue, (int) (opacity * 255)).endVertex();
+        renderer.pos(width, height, z).tex(1.0F, 1.0F).color(red, green, blue, (int) (opacity * 255)).endVertex();
+        renderer.pos(width, 0.0D, z).tex(1.0F, 0.0F).color(red, green, blue, (int) (opacity * 255)).endVertex();
+        renderer.pos(0.0D, 0.0D, z).tex(0.0F, 0.0F).color(red, green, blue, (int) (opacity * 255)).endVertex();
         tessellator.draw();
     }
     

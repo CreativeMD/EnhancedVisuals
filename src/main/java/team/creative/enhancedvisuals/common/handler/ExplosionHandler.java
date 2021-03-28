@@ -50,14 +50,14 @@ public class ExplosionHandler extends VisualHandler {
         
         float damage = ((int) ((d10 * d10 + d10) / 2.0D * 7.0D * f3 + 1.0D));
         if (damage > 0) {
-            VisualManager.addParticlesFadeOut(dust, (int) dustAmount.valueAt(damage), dustDuration, true);
+            VisualManager.addParticlesFadeOut(dust, this, (int) dustAmount.valueAt(damage), dustDuration, true);
             
             DecimalCurve explosionSoundVolume = new DecimalCurve(0, maxExplosionVolume, explosionSoundTime.valueAt(damage), 0);
             DecimalCurve explosionSoundMuteVolume = new DecimalCurve(0, 1, explosionSoundTime.valueAt(damage), 0);
             if (SoundMuteHandler.startMuting(explosionSoundMuteVolume))
                 playSoundFadeOut(new ResourceLocation(EnhancedVisuals.MODID, "ringing"), null, explosionSoundVolume);
             
-            VisualManager.addVisualFadeOut(blur, new DecimalCurve(0, maxBlur.valueAt(damage), (int) (explosionBlurTime.valueAt(damage)), 0));
+            VisualManager.addVisualFadeOut(blur, this, new DecimalCurve(0, maxBlur.valueAt(damage), (int) (explosionBlurTime.valueAt(damage)), 0));
         }
     }
 }

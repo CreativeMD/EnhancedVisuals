@@ -14,6 +14,7 @@ import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.api.ICreativeConfig;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualCategory;
+import team.creative.enhancedvisuals.api.VisualHandler;
 
 public abstract class VisualType implements ICreativeConfig {
     
@@ -48,7 +49,7 @@ public abstract class VisualType implements ICreativeConfig {
     public abstract void loadResources(IResourceManager manager);
     
     @OnlyIn(value = Dist.CLIENT)
-    public abstract void render(Visual visual, TextureManager manager, int screenWidth, int screenHeight, float partialTicks);
+    public abstract void render(VisualHandler handler, Visual visual, TextureManager manager, int screenWidth, int screenHeight, float partialTicks);
     
     @Override
     public void configured() {
@@ -73,8 +74,8 @@ public abstract class VisualType implements ICreativeConfig {
         
     }
     
-    public boolean isVisible(Visual visual) {
-        return visual.opacity > 0;
+    public boolean isVisible(VisualHandler handler, Visual visual) {
+        return visual.getOpacity() > 0;
     }
     
     public int getWidth(int screenWidth) {

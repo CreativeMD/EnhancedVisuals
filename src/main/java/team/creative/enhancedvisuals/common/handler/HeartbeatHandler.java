@@ -51,15 +51,15 @@ public class HeartbeatHandler extends VisualHandler {
                 
                 resetBufferTicks(player);
                 
-                VisualManager.addVisualFadeOut(lowhealth, new DecimalCurve(0, Math.min(0.7F, intensity), effectBufferTicks, 0));
-                VisualManager.addVisualFadeOut(blur, new DecimalCurve(0, Math.min(0.7F, intensity) * heartbeatIntensity, heartbeatDuration, 0));
+                VisualManager.addVisualFadeOut(lowhealth, this, new DecimalCurve(0, Math.min(0.7F, intensity), effectBufferTicks, 0));
+                VisualManager.addVisualFadeOut(blur, this, new DecimalCurve(0, Math.min(0.7F, intensity) * heartbeatIntensity, heartbeatDuration, 0));
                 playSound(new ResourceLocation(EnhancedVisuals.MODID, "heartbeatout"), heartbeatVolume);
                 
             } else if (this.effectBufferTicks == 5) {
                 float intensity = getIntensity(player);
                 
                 playSound(new ResourceLocation(EnhancedVisuals.MODID, "heartbeatin"), heartbeatVolume);
-                VisualManager.addVisualFadeOut(blur, new DecimalCurve(0, Math.min(0.7F, intensity) * heartbeatIntensity, heartbeatDuration, 0));
+                VisualManager.addVisualFadeOut(blur, this, new DecimalCurve(0, Math.min(0.7F, intensity) * heartbeatIntensity, heartbeatDuration, 0));
             }
         }
         this.effectBufferTicks -= 1;

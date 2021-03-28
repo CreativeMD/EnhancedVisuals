@@ -27,8 +27,8 @@ public class SaturationHandler extends VisualHandler {
     @Override
     public void tick(@Nullable PlayerEntity player) {
         if (saturationVisual == null) {
-            saturationVisual = new Visual(desaturate, 0);
-            saturationVisual.opacity = 1;
+            saturationVisual = new Visual(desaturate, this, 0);
+            saturationVisual.setOpacityInternal(1);
             VisualManager.add(saturationVisual);
         }
         
@@ -37,10 +37,10 @@ public class SaturationHandler extends VisualHandler {
         if (player != null)
             aimedSaturation = saturation.valueAt(player.getFoodStats().getFoodLevel());
         
-        if (saturationVisual.opacity < aimedSaturation)
-            saturationVisual.opacity = (float) Math.min(saturationVisual.opacity + fadeFactor, aimedSaturation);
-        else if (saturationVisual.opacity > aimedSaturation)
-            saturationVisual.opacity = (float) Math.max(saturationVisual.opacity - fadeFactor, aimedSaturation);
+        if (saturationVisual.getOpacityInternal() < aimedSaturation)
+            saturationVisual.setOpacityInternal((float) Math.min(saturationVisual.getOpacityInternal() + fadeFactor, aimedSaturation));
+        else if (saturationVisual.getOpacityInternal() > aimedSaturation)
+            saturationVisual.setOpacityInternal((float) Math.max(saturationVisual.getOpacityInternal() - fadeFactor, aimedSaturation));
     }
     
 }

@@ -45,7 +45,7 @@ public class SlenderHandler extends VisualHandler {
     @Override
     public void tick(@Nullable PlayerEntity player) {
         if (slenderVisual == null) {
-            slenderVisual = new Visual(slender, 0);
+            slenderVisual = new Visual(slender, this, 0);
             VisualManager.add(slenderVisual);
         }
         
@@ -81,7 +81,7 @@ public class SlenderHandler extends VisualHandler {
                 }
             }
         }
+        slenderVisual.setOpacityInternal(intensity);
         
-        slenderVisual.opacity = intensity;
     }
 }

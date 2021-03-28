@@ -16,8 +16,8 @@ public class Particle extends Visual {
     
     public float rotation;
     
-    public Particle(VisualType type, Curve animation, int x, int y, int width, int height, float rotation, int variant) {
-        super(type, animation, variant);
+    public Particle(VisualType type, VisualHandler handler, Curve animation, int x, int y, int width, int height, float rotation, int variant) {
+        super(type, handler, animation, variant);
         this.x = x;
         this.y = y;
         this.width = width;

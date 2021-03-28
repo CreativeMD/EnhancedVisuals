@@ -6,6 +6,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import team.creative.enhancedvisuals.api.Visual;
+import team.creative.enhancedvisuals.api.VisualHandler;
 
 public class VisualTypeSaturation extends VisualTypeShader {
     
@@ -25,7 +26,7 @@ public class VisualTypeSaturation extends VisualTypeShader {
     }
     
     @Override
-    public boolean isVisible(Visual visual) {
-        return visual.opacity != 1;
+    public boolean isVisible(VisualHandler handler, Visual visual) {
+        return visual.getOpacity() != 1;
     }
 }

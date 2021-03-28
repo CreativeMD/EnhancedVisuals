@@ -29,7 +29,7 @@ public class SandSplatHandler extends VisualHandler {
             double modifier = 0;
             if (player.isSprinting())
                 modifier = sprintModifier;
-            VisualManager.addParticlesFadeOut(sand, (int) (Math.random() * modifier), duration, true);
+            VisualManager.addParticlesFadeOut(sand, this, (int) (Math.random() * modifier), duration, true);
         }
     }
     

@@ -11,11 +11,12 @@ import team.creative.enhancedvisuals.api.type.VisualType;
 public class Visual {
     
     public final VisualType type;
+    public final VisualHandler handler;
     
-    public float opacity;
+    private float opacity;
     
-    public final Curve animation;
     public final boolean endless;
+    public final Curve animation;
     
     private boolean displayed = false;
     private int tick = 0;
@@ -24,18 +25,32 @@ public class Visual {
     
     public int variant;
     
-    public Visual(VisualType type, Curve animation, int variant) {
+    public Visual(VisualType type, VisualHandler handler, Curve animation, int variant) {
         this.type = type;
+        this.handler = handler;
         this.animation = animation;
         this.variant = variant;
         this.endless = false;
     }
     
-    public Visual(VisualType type, int variant) {
+    public Visual(VisualType type, VisualHandler handler, int variant) {
         this.type = type;
+        this.handler = handler;
         this.animation = null;
         this.variant = variant;
         this.endless = true;
+    }
+    
+    public void setOpacityInternal(float opacity) {
+        this.opacity = opacity;
+    }
+    
+    public float getOpacityInternal() {
+        return opacity;
+    }
+    
+    public float getOpacity() {
+        return handler.opacity * opacity * type.opacity;
     }
     
     public boolean displayed() {
@@ -56,11 +71,11 @@ public class Visual {
     
     @OnlyIn(value = Dist.CLIENT)
     public void render(TextureManager manager, int screenWidth, int screenHeight, float partialTicks) {
-        type.render(this, manager, screenWidth, screenHeight, partialTicks);
+        type.render(handler, this, manager, screenWidth, screenHeight, partialTicks);
     }
     
     public boolean isVisible() {
-        return type.isVisible(this);
+        return type.isVisible(handler, this);
     }
     
     public boolean tick() {

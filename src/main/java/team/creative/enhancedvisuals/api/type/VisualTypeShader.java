@@ -13,6 +13,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualCategory;
+import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.client.render.EnhancedShaderGroup;
 
 public abstract class VisualTypeShader extends VisualType {
@@ -40,7 +41,6 @@ public abstract class VisualTypeShader extends VisualType {
                 shaderGroup.createBindFramebuffers(mc.getMainWindow().getFramebufferWidth(), mc.getMainWindow().getFramebufferHeight());
             }
         } catch (JsonSyntaxException | IOException e) {
-            e.printStackTrace();
         }
     }
     
@@ -68,7 +68,7 @@ public abstract class VisualTypeShader extends VisualType {
         if (shaderGroup == null)
             loadResources(Minecraft.getInstance().getResourceManager());
         if (shaderGroup != null) {
-            changeProperties(visual.opacity);
+            changeProperties(visual.getOpacity());
             shaderGroup.render(partialTicks);
         }
     }
