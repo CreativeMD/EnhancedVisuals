@@ -12,4 +12,8 @@ public class VisualTypeParticle extends VisualTypeTexture {
         this(name, 0, scale);
     }
     
+    @Override
+    public boolean scaleVariants() {
+        return true;
+    }
 }

@@ -111,6 +111,12 @@ public class VisualManager {
             int width = vt.getWidth(screenWidth);
             int height = vt.getHeight(screenHeight);
             
+            if (vt.scaleVariants()) {
+                double scale = Math.random();
+                width *= scale;
+                height *= scale;
+            }
+            
             Particle particle = new Particle(vt, handler, curve, generateOffset(rand, screenWidth, width), generateOffset(rand, screenHeight, height), width, height, rotate ? rand
                     .nextFloat() * 360 : 0, rand.nextInt(vt.getVariantAmount()));
             particle.color = color;
