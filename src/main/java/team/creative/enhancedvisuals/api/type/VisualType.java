@@ -80,6 +80,10 @@ public abstract class VisualType implements ICreativeConfig {
         return visual.getOpacity() > 0;
     }
     
+    public boolean scaleVariants() {
+        return false;
+    }
+    
     public int getWidth(int screenWidth) {
         return screenWidth;
     }
