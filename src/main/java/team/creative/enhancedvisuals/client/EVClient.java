@@ -45,6 +45,6 @@ public class EVClient {
     }
     
     public static boolean shouldTick() {
-        return true;
+        return shouldRender();
     }
 }
