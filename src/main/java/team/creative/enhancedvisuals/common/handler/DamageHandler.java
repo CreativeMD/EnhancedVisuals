@@ -56,14 +56,19 @@ public class DamageHandler extends VisualHandler {
         pierceList.add(Items.ARROW);
     }
     
+    @CreativeConfig
     public VisualType splatter = new VisualTypeParticle("splatter", 1);
+    @CreativeConfig
     public VisualType impact = new VisualTypeParticle("impact", 1);
+    @CreativeConfig
     public VisualType slash = new VisualTypeParticle("slash", 1);
+    @CreativeConfig
     public VisualType pierce = new VisualTypeParticle("pierce", 1);
     @CreativeConfig
     public IntMinMax bloodDuration = new IntMinMax(500, 1500);
     
-    public static VisualType fire = new VisualTypeParticle("fire", 1);
+    @CreativeConfig
+    public VisualType fire = new VisualTypeParticle("fire", 1);
     @CreativeConfig
     public int fireSplashes = 1;
     @CreativeConfig
@@ -73,6 +78,7 @@ public class DamageHandler extends VisualHandler {
     public int drownSplashes = 4;
     @CreativeConfig
     public IntMinMax drownDuration = new IntMinMax(10, 15);
+    @CreativeConfig
     public VisualType waterDrown = new VisualTypeParticle("water", 1);
     
     public static Color bloodColor = new Color(0.3F, 0.01F, 0.01F, 0.7F);
