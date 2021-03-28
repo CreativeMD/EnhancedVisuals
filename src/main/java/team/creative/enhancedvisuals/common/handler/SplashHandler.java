@@ -19,33 +19,33 @@ import team.creative.enhancedvisuals.client.VisualManager;
 import team.creative.enhancedvisuals.common.event.EVEvents;
 
 public class SplashHandler extends VisualHandler {
-	
-	@CreativeConfig
-	public IntMinMax duration = new IntMinMax(10, 10);
-	
-	@CreativeConfig
-	public DecimalMinMax intensity = new DecimalMinMax(5, 10);
-	
-	@CreativeConfig
-	public VisualType blur = new VisualTypeBlur("blur");
-	
-	public boolean wasInWater = false;
-	
-	public Random rand = new Random();
-	
-	@Override
-	public void tick(@Nullable EntityPlayer player) {
-		if (player != null) {
-			boolean isInWater = EVEvents.areEyesInWater(player);
-			if (isInWater != wasInWater) {
-				SplashEvent event = new SplashEvent(player);
-				MinecraftForge.EVENT_BUS.post(event);
-				if (!event.isCanceled())
-					VisualManager.addVisualFadeOut(blur, new DecimalCurve(rand, duration, intensity));
-			}
-			wasInWater = isInWater;
-			
-		}
-	}
-	
+    
+    @CreativeConfig
+    public IntMinMax duration = new IntMinMax(10, 10);
+    
+    @CreativeConfig
+    public DecimalMinMax intensity = new DecimalMinMax(5, 10);
+    
+    @CreativeConfig
+    public VisualType blur = new VisualTypeBlur("blur");
+    
+    public boolean wasInWater = false;
+    
+    public Random rand = new Random();
+    
+    @Override
+    public void tick(@Nullable EntityPlayer player) {
+        if (player != null) {
+            boolean isInWater = EVEvents.areEyesInWater(player);
+            if (isInWater != wasInWater) {
+                SplashEvent event = new SplashEvent(player);
+                MinecraftForge.EVENT_BUS.post(event);
+                if (!event.isCanceled())
+                    VisualManager.addVisualFadeOut(blur, this, new DecimalCurve(rand, duration, intensity));
+            }
+            wasInWater = isInWater;
+            
+        }
+    }
+    
 }

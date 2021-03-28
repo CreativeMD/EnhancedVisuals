@@ -18,55 +18,55 @@ import toughasnails.api.TANCapabilities;
 import toughasnails.api.stat.capability.IThirst;
 
 public class ThirstHandler extends VisualHandler {
-	
-	@CreativeConfig
-	public double defaultIntensity = 0F;
-	
-	@CreativeConfig
-	public double maxIntensity = 5;
-	
-	@CreativeConfig
-	public double fadeFactor = 0.05F;
-	
-	@CreativeConfig
-	public IntMinMax thirstLevel = new IntMinMax(2, 8);
-	
-	@CreativeConfig
-	public VisualType focus = new VisualTypeShader("focus", new ResourceLocation("shaders/post/blobs2.json")) {
-		
-		@Override
-		public void changeProperties(float intensity) {
-			for (Shader mcShader : shaderGroup.getShaders()) {
-				ShaderUniform shaderuniform = mcShader.getShaderManager().getShaderUniform("Radius");
-				
-				if (shaderuniform != null) {
-					shaderuniform.set(intensity);
-				}
-			}
-		}
-	};
-	public Visual focusVisual;
-	
-	@Override
-	public void tick(@Nullable EntityPlayer player) {
-		if (focusVisual == null) {
-			focusVisual = new Visual(focus, 0);
-			VisualManager.add(focusVisual);
-		}
-		
-		double aimedSaturation = defaultIntensity;
-		if (player != null) {
-			if (((IThirst) player.getCapability(TANCapabilities.THIRST, null)).getThirst() <= thirstLevel.max) {
-				double leftFoodInSpan = ((IThirst) player.getCapability(TANCapabilities.THIRST, null)).getThirst() - thirstLevel.min;
-				double spanLength = thirstLevel.spanLength();
-				aimedSaturation = (1 - (leftFoodInSpan / spanLength)) * maxIntensity;
-			}
-		}
-		
-		if (focusVisual.opacity < aimedSaturation)
-			focusVisual.opacity = (float) Math.min(focusVisual.opacity + fadeFactor, aimedSaturation);
-		else if (focusVisual.opacity > aimedSaturation)
-			focusVisual.opacity = (float) Math.max(focusVisual.opacity - fadeFactor, aimedSaturation);
-	}
-	
+    
+    @CreativeConfig
+    public double defaultIntensity = 0F;
+    
+    @CreativeConfig
+    public double maxIntensity = 5;
+    
+    @CreativeConfig
+    public double fadeFactor = 0.05F;
+    
+    @CreativeConfig
+    public IntMinMax thirstLevel = new IntMinMax(2, 8);
+    
+    @CreativeConfig
+    public VisualType focus = new VisualTypeShader("focus", new ResourceLocation("shaders/post/blobs2.json")) {
+        
+        @Override
+        public void changeProperties(float intensity) {
+            for (Shader mcShader : shaderGroup.getShaders()) {
+                ShaderUniform shaderuniform = mcShader.getShaderManager().getShaderUniform("Radius");
+                
+                if (shaderuniform != null) {
+                    shaderuniform.set(intensity);
+                }
+            }
+        }
+    };
+    public Visual focusVisual;
+    
+    @Override
+    public void tick(@Nullable EntityPlayer player) {
+        if (focusVisual == null) {
+            focusVisual = new Visual(focus, this, 0);
+            VisualManager.add(focusVisual);
+        }
+        
+        double aimedSaturation = defaultIntensity;
+        if (player != null) {
+            if (((IThirst) player.getCapability(TANCapabilities.THIRST, null)).getThirst() <= thirstLevel.max) {
+                double leftFoodInSpan = ((IThirst) player.getCapability(TANCapabilities.THIRST, null)).getThirst() - thirstLevel.min;
+                double spanLength = thirstLevel.spanLength();
+                aimedSaturation = (1 - (leftFoodInSpan / spanLength)) * maxIntensity;
+            }
+        }
+        
+        if (focusVisual.getOpacityInternal() < aimedSaturation)
+            focusVisual.setOpacityInternal((float) Math.min(focusVisual.getOpacityInternal() + fadeFactor, aimedSaturation));
+        else if (focusVisual.getOpacityInternal() > aimedSaturation)
+            focusVisual.setOpacityInternal((float) Math.max(focusVisual.getOpacityInternal() - fadeFactor, aimedSaturation));
+    }
+    
 }

@@ -77,33 +77,33 @@ public class VisualManager {
         }
     }
     
-    public static Visual addVisualFadeOut(VisualType vt, IntMinMax time) {
-        return addVisualFadeOut(vt, new DecimalCurve(0, 1, time.next(rand), 0));
+    public static Visual addVisualFadeOut(VisualType vt, VisualHandler handler, IntMinMax time) {
+        return addVisualFadeOut(vt, handler, new DecimalCurve(0, 1, time.next(rand), 0));
     }
     
-    public static Visual addVisualFadeOut(VisualType vt, int time) {
-        return addVisualFadeOut(vt, new DecimalCurve(0, 1, time, 0));
+    public static Visual addVisualFadeOut(VisualType vt, VisualHandler handler, int time) {
+        return addVisualFadeOut(vt, handler, new DecimalCurve(0, 1, time, 0));
     }
     
-    public static Visual addVisualFadeOut(VisualType vt, Curve curve) {
-        Visual v = new Visual(vt, curve, vt.getVariantAmount() > 1 ? rand.nextInt(vt.getVariantAmount()) : 0);
+    public static Visual addVisualFadeOut(VisualType vt, VisualHandler handler, Curve curve) {
+        Visual v = new Visual(vt, handler, curve, vt.getVariantAmount() > 1 ? rand.nextInt(vt.getVariantAmount()) : 0);
         add(v);
         return v;
     }
     
-    public static void addParticlesFadeOut(VisualType vt, int count, IntMinMax time, boolean rotate) {
-        addParticlesFadeOut(vt, count, new DecimalCurve(0, 1, time.next(rand), 0), rotate, null);
+    public static void addParticlesFadeOut(VisualType vt, VisualHandler handler, int count, IntMinMax time, boolean rotate) {
+        addParticlesFadeOut(vt, handler, count, new DecimalCurve(0, 1, time.next(rand), 0), rotate, null);
     }
     
-    public static void addParticlesFadeOut(VisualType vt, int count, IntMinMax time, boolean rotate, Color color) {
-        addParticlesFadeOut(vt, count, new DecimalCurve(0, 1, time.next(rand), 0), rotate, color);
+    public static void addParticlesFadeOut(VisualType vt, VisualHandler handler, int count, IntMinMax time, boolean rotate, Color color) {
+        addParticlesFadeOut(vt, handler, count, new DecimalCurve(0, 1, time.next(rand), 0), rotate, color);
     }
     
-    public static void addParticlesFadeOut(VisualType vt, int count, int time, boolean rotate) {
-        addParticlesFadeOut(vt, count, new DecimalCurve(0, 1, time, 0), rotate, null);
+    public static void addParticlesFadeOut(VisualType vt, VisualHandler handler, int count, int time, boolean rotate) {
+        addParticlesFadeOut(vt, handler, count, new DecimalCurve(0, 1, time, 0), rotate, null);
     }
     
-    public static void addParticlesFadeOut(VisualType vt, int count, Curve curve, boolean rotate, Color color) {
+    public static void addParticlesFadeOut(VisualType vt, VisualHandler handler, int count, Curve curve, boolean rotate, Color color) {
         if (vt.disabled)
             return;
         for (int i = 0; i < count; i++) {
@@ -114,7 +114,7 @@ public class VisualManager {
             int width = vt.getWidth(screenWidth);
             int height = vt.getHeight(screenHeight);
             
-            Particle particle = new Particle(vt, curve, generateOffset(rand, screenWidth, width), generateOffset(rand, screenHeight, height), width, height, rotate ? rand
+            Particle particle = new Particle(vt, handler, curve, generateOffset(rand, screenWidth, width), generateOffset(rand, screenHeight, height), width, height, rotate ? rand
                 .nextFloat() * 360 : 0, rand.nextInt(vt.getVariantAmount()));
             particle.color = color;
             add(particle);

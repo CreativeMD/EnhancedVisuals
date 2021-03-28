@@ -102,17 +102,17 @@ public class DamageHandler extends VisualHandler {
         else if (packet.source == EnhancedDamageSource.FALL)
             createVisualFromDamageAndDistance(impact, packet.damage, player, bloodDuration);
         else if (packet.source == EnhancedDamageSource.DROWN)
-            VisualManager.addParticlesFadeOut(waterDrown, drownSplashes, drownDuration, true);
+            VisualManager.addParticlesFadeOut(waterDrown, this, drownSplashes, drownDuration, true);
         else if (packet.source == EnhancedDamageSource.FIRE) {
             FireParticlesEvent event = new FireParticlesEvent(fireSplashes, fireDuration.min, fireDuration.max);
             MinecraftForge.EVENT_BUS.post(event);
-            VisualManager.addParticlesFadeOut(fire, event.getNewFireSplashes(), new IntMinMax(event.getNewFireDurationMin(), event.getNewFireDurationMax()), true, new Color(0, 0, 0));
+            VisualManager.addParticlesFadeOut(fire, this, event.getNewFireSplashes(), new IntMinMax(event.getNewFireDurationMin(), event.getNewFireDurationMax()), true, new Color(0, 0, 0));
         } else
             createVisualFromDamageAndDistance(splatter, packet.damage, player, bloodDuration);
         
     }
     
-    public static void createVisualFromDamageAndDistance(VisualType type, float damage, EntityPlayer player, IntMinMax duration) {
+    public void createVisualFromDamageAndDistance(VisualType type, float damage, EntityPlayer player, IntMinMax duration) {
         if (damage <= 0.0F)
             return;
         
@@ -133,7 +133,7 @@ public class DamageHandler extends VisualHandler {
         if (health <= 0.0F)
             rate = 3.0F;
         
-        VisualManager.addParticlesFadeOut(type, (int) (damage * rate), new DecimalCurve(0, 1, duration.next(VisualManager.rand), 0), true, bloodColor);
+        VisualManager.addParticlesFadeOut(type, this, (int) (damage * rate), new DecimalCurve(0, 1, duration.next(VisualManager.rand), 0), true, bloodColor);
     }
     
     private static boolean isSharp(ItemStack item) {
