@@ -3,6 +3,7 @@ package team.creative.enhancedvisuals.common.handler;
 import javax.annotation.Nullable;
 
 import com.creativemd.creativecore.common.config.api.CreativeConfig;
+import com.creativemd.creativecore.common.config.premade.DecimalMinMax;
 import com.creativemd.creativecore.common.config.premade.IntMinMax;
 
 import net.minecraft.block.BlockSand;
@@ -22,7 +23,7 @@ public class SandSplatHandler extends VisualHandler {
     public double sprintModifier = 1.5F;
     
     @CreativeConfig
-    public VisualType sand = new VisualTypeParticle("sand", 0.5F);
+    public VisualType sand = new VisualTypeParticle("sand", 0, new DecimalMinMax(0.1, 0.5));
     
     @Override
     public void tick(@Nullable EntityPlayer player) {

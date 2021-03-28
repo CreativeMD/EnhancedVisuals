@@ -3,6 +3,7 @@ package team.creative.enhancedvisuals.api.type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 
 import javax.vecmath.Color3b;
 
@@ -82,6 +83,10 @@ public abstract class VisualType implements ICreativeConfig {
     
     public boolean scaleVariants() {
         return false;
+    }
+    
+    public double randomScale(Random rand) {
+        return 1;
     }
     
     public int getWidth(int screenWidth) {

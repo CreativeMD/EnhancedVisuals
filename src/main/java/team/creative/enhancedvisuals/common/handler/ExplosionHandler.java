@@ -26,7 +26,7 @@ import team.creative.enhancedvisuals.client.sound.SoundMuteHandler;
 public class ExplosionHandler extends VisualHandler {
     
     @CreativeConfig
-    public VisualType dust = new VisualTypeParticle("dust", 1.0F);
+    public VisualType dust = new VisualTypeParticle("dust");
     @CreativeConfig
     public IntMinMax dustDuration = new IntMinMax(500, 1000);
     @CreativeConfig
