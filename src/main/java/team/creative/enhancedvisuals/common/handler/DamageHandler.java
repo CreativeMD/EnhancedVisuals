@@ -54,18 +54,18 @@ public class DamageHandler extends VisualHandler {
     }
     
     @CreativeConfig
-    public VisualType splatter = new VisualTypeParticle("splatter", 1);
+    public VisualType splatter = new VisualTypeParticle("splatter");
     @CreativeConfig
-    public VisualType impact = new VisualTypeParticle("impact", 1);
+    public VisualType impact = new VisualTypeParticle("impact");
     @CreativeConfig
-    public VisualType slash = new VisualTypeParticle("slash", 1);
+    public VisualType slash = new VisualTypeParticle("slash");
     @CreativeConfig
-    public VisualType pierce = new VisualTypeParticle("pierce", 1);
+    public VisualType pierce = new VisualTypeParticle("pierce");
     @CreativeConfig
     public IntMinMax bloodDuration = new IntMinMax(500, 1500);
     
     @CreativeConfig
-    public VisualType fire = new VisualTypeParticle("fire", 1);
+    public VisualType fire = new VisualTypeParticle("fire");
     @CreativeConfig
     public int fireSplashes = 1;
     @CreativeConfig
@@ -76,7 +76,7 @@ public class DamageHandler extends VisualHandler {
     @CreativeConfig
     public IntMinMax drownDuration = new IntMinMax(10, 15);
     @CreativeConfig
-    public VisualType waterDrown = new VisualTypeParticle("water", 1);
+    public VisualType waterDrown = new VisualTypeParticle("water");
     
     public static Color bloodColor = new Color(0.3F, 0.01F, 0.01F, 0.7F);
     

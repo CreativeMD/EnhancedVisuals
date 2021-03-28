@@ -5,7 +5,7 @@ import team.creative.enhancedvisuals.api.VisualCategory;
 public class VisualTypeOverlay extends VisualTypeTexture {
     
     public VisualTypeOverlay(String name, int animationSpeed) {
-        super(VisualCategory.overlay, name, animationSpeed, 1F);
+        super(VisualCategory.overlay, name, animationSpeed);
     }
     
     public VisualTypeOverlay(String name) {

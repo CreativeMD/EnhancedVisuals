@@ -25,9 +25,6 @@ import team.creative.enhancedvisuals.api.VisualHandler;
 public abstract class VisualTypeTexture extends VisualType {
     
     @CreativeConfig
-    public float scale = 1F;
-    
-    @CreativeConfig
     public int animationSpeed;
     public String domain;
     
@@ -37,15 +34,8 @@ public abstract class VisualTypeTexture extends VisualType {
         this.animationSpeed = animationSpeed;
     }
     
-    public VisualTypeTexture(VisualCategory category, String name, String domain, int animationSpeed, float scale) {
-        super(name, category);
-        this.domain = domain;
-        this.animationSpeed = animationSpeed;
-        this.scale = scale;
-    }
-    
-    public VisualTypeTexture(VisualCategory category, String name, int animationSpeed, float scale) {
-        this(category, name, null, animationSpeed, scale);
+    public VisualTypeTexture(VisualCategory category, String name, int animationSpeed) {
+        this(category, name, null, animationSpeed);
     }
     
     @OnlyIn(value = Dist.CLIENT)
@@ -127,11 +117,11 @@ public abstract class VisualTypeTexture extends VisualType {
     
     @Override
     public int getWidth(int screenWidth) {
-        return (int) (dimension.width * scale);
+        return (dimension.width);
     }
     
     @Override
     public int getHeight(int screenHeight) {
-        return (int) (dimension.height * scale);
+        return (dimension.height);
     }
 }

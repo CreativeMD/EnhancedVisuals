@@ -21,7 +21,7 @@ public class SandSplatHandler extends VisualHandler {
     public double sprintModifier = 1.5F;
     
     @CreativeConfig
-    public VisualType sand = new VisualTypeParticle("sand", 1F);
+    public VisualType sand = new VisualTypeParticle("sand", 0, new DecimalMinMax(0.1, 0.5));
     
     @Override
     public void tick(@Nullable PlayerEntity player) {

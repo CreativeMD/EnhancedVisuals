@@ -1,19 +1,33 @@
 package team.creative.enhancedvisuals.api.type;
 
+import java.util.Random;
+
+import com.creativemd.creativecore.common.config.api.CreativeConfig;
+import com.creativemd.creativecore.common.config.premade.DecimalMinMax;
+
 import team.creative.enhancedvisuals.api.VisualCategory;
 
 public class VisualTypeParticle extends VisualTypeTexture {
     
-    public VisualTypeParticle(String name, int animationSpeed, float scale) {
-        super(VisualCategory.particle, name, animationSpeed, scale);
+    @CreativeConfig
+    public DecimalMinMax scale;
+    
+    public VisualTypeParticle(String name, int animationSpeed, DecimalMinMax scale) {
+        super(VisualCategory.particle, name, animationSpeed);
+        this.scale = scale;
     }
     
-    public VisualTypeParticle(String name, float scale) {
-        this(name, 0, scale);
+    public VisualTypeParticle(String name) {
+        this(name, 0, new DecimalMinMax(0.2, 1));
     }
     
     @Override
     public boolean scaleVariants() {
         return true;
+    }
+    
+    @Override
+    public double randomScale(Random rand) {
+        return scale.next(rand);
     }
 }

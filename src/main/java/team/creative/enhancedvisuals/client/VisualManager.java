@@ -112,7 +112,7 @@ public class VisualManager {
             int height = vt.getHeight(screenHeight);
             
             if (vt.scaleVariants()) {
-                double scale = Math.random();
+                double scale = vt.randomScale(rand);
                 width *= scale;
                 height *= scale;
             }
