@@ -78,6 +78,12 @@ public class DamageHandler extends VisualHandler {
     @CreativeConfig
     public VisualType waterDrown = new VisualTypeParticle("water");
     
+    @CreativeConfig
+    public DecimalCurve healthScaler = new DecimalCurve(0, 3, 12, 1.5);
+    
+    @CreativeConfig
+    public float damageScale = 1;
+    
     public static Color bloodColor = new Color(0.3F, 0.01F, 0.01F, 0.7F);
     
     public void playerDamaged(PlayerEntity player, DamagePacket packet) {
@@ -119,24 +125,10 @@ public class DamageHandler extends VisualHandler {
         if (damage <= 0.0F)
             return;
         
-        float rate = 0.0F;
         float health = player.getHealth() - damage;
-        if (health > 12.0F)
-            rate = 1.0F;
+        double rate = Math.max(0, healthScaler.valueAt(health));
         
-        if ((health <= 12.0F) && (health > 8.0F))
-            rate = 1.5F;
-        
-        if ((health <= 8.0F) && (health > 4.0F))
-            rate = 2.0F;
-        
-        if ((health <= 4.0F) && (health > 0.0F))
-            rate = 2.5F;
-        
-        if (health <= 0.0F)
-            rate = 3.0F;
-        
-        VisualManager.addParticlesFadeOut(type, this, (int) (damage * rate), new DecimalCurve(0, 1, duration.next(VisualManager.rand), 0), true, bloodColor);
+        VisualManager.addParticlesFadeOut(type, this, (int) (damageScale * damage * rate), new DecimalCurve(0, 1, duration.next(VisualManager.rand), 0), true, bloodColor);
     }
     
     private static boolean isSharp(ItemStack item) {
