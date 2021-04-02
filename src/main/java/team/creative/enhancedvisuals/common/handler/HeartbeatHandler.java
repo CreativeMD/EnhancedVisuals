@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 import com.creativemd.creativecore.common.config.api.CreativeConfig;
 import com.creativemd.creativecore.common.config.premade.curve.DecimalCurve;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import team.creative.enhancedvisuals.EnhancedVisuals;
@@ -81,7 +82,7 @@ public class HeartbeatHandler extends VisualHandler {
     }
     
     private boolean shouldHeartbeatTrigger(@Nullable EntityPlayer player) {
-        if (player != null) {
+        if (player != null && !Minecraft.getMinecraft().isGamePaused()) {
             if (useHealthPercentage) {
                 float percentageHealth = player.getHealth() / player.getMaxHealth();
                 return percentageHealth < maxHealthPercentage;
