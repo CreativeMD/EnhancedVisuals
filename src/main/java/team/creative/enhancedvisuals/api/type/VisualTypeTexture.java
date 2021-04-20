@@ -93,10 +93,10 @@ public abstract class VisualTypeTexture extends VisualType {
     
     @Override
     @OnlyIn(value = Dist.CLIENT)
-    public void render(Visual visual, TextureManager manager, int screenWidth, int screenHeight, float partialTicks) {
-        manager.bindTexture(getResource(visual));
+    public void render(VisualHandler handler, Visual visual, TextureManager manager, int screenWidth, int screenHeight, float partialTicks) {
+        manager.bind(getResource(visual));
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder renderer = tessellator.getBuffer();
+        BufferBuilder renderer = tessellator.getBuilder();
         
         int red = visual.color != null ? visual.color.getRed() : 255;
         int green = visual.color != null ? visual.color.getGreen() : 255;
@@ -108,11 +108,11 @@ public abstract class VisualTypeTexture extends VisualType {
         
         float opacity = visual.getOpacity();
         renderer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-        renderer.pos(0.0D, height, z).tex(0.0F, 1.0F).color(red, green, blue, (int) (opacity * 255)).endVertex();
-        renderer.pos(width, height, z).tex(1.0F, 1.0F).color(red, green, blue, (int) (opacity * 255)).endVertex();
-        renderer.pos(width, 0.0D, z).tex(1.0F, 0.0F).color(red, green, blue, (int) (opacity * 255)).endVertex();
-        renderer.pos(0.0D, 0.0D, z).tex(0.0F, 0.0F).color(red, green, blue, (int) (opacity * 255)).endVertex();
-        tessellator.draw();
+        renderer.vertex(0.0D, height, z).uv(0.0F, 1.0F).color(red, green, blue, (int) (opacity * 255)).endVertex();
+        renderer.vertex(width, height, z).uv(1.0F, 1.0F).color(red, green, blue, (int) (opacity * 255)).endVertex();
+        renderer.vertex(width, 0.0D, z).uv(1.0F, 0.0F).color(red, green, blue, (int) (opacity * 255)).endVertex();
+        renderer.vertex(0.0D, 0.0D, z).uv(0.0F, 0.0F).color(red, green, blue, (int) (opacity * 255)).endVertex();
+        tessellator.end();
     }
     
     @Override

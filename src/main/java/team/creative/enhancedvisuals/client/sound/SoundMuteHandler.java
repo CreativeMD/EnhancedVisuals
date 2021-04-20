@@ -66,24 +66,24 @@ public class SoundMuteHandler {
         
         getSounds().forEach((p_217926_1_, p_217926_2_) -> {
             float f = getClampedVolume(p_217926_1_, muteVolume);
-            p_217926_2_.runOnSoundExecutor((p_217923_1_) -> {
-                p_217923_1_.setGain(f);
+            p_217926_2_.execute((p_217923_1_) -> {
+                p_217923_1_.setVolume(f);
                 
             });
         });
     }
     
     private static float getClampedVolume(ISound soundIn, float muteVolume) {
-        return MathHelper.clamp(soundIn.getVolume() * getVolume(soundIn.getCategory()), 0.0F, 1.0F) * muteVolume;
+        return MathHelper.clamp(soundIn.getVolume() * getVolume(soundIn.getSource()), 0.0F, 1.0F) * muteVolume;
     }
     
     private static float getVolume(SoundCategory category) {
-        return category != null && category != SoundCategory.MASTER ? mc.gameSettings.getSoundLevel(category) : 1.0F;
+        return category != null && category != SoundCategory.MASTER ? mc.options.getSoundSourceVolume(category) : 1.0F;
     }
     
     public static boolean startMuting(DecimalCurve muteGraph) {
         if (engine == null) {
-            handler = Minecraft.getInstance().getSoundHandler();
+            handler = Minecraft.getInstance().getSoundManager();
             engine = ObfuscationReflectionHelper.getPrivateValue(SoundHandler.class, handler, "field_147694_f");
         }
         

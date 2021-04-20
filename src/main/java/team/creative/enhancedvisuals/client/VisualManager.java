@@ -105,8 +105,8 @@ public class VisualManager {
         if (vt.disabled)
             return;
         for (int i = 0; i < count; i++) {
-            int screenWidth = mc.getMainWindow().getScaledWidth();
-            int screenHeight = mc.getMainWindow().getScaledHeight();
+            int screenWidth = mc.getWindow().getGuiScaledWidth();
+            int screenHeight = mc.getWindow().getGuiScaledHeight();
             
             int width = vt.getWidth(screenWidth);
             int height = vt.getHeight(screenHeight);

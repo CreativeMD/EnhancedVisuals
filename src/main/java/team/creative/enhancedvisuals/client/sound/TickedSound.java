@@ -14,17 +14,17 @@ public class TickedSound extends PositionedSound implements ITickableSound {
     public TickedSound(ResourceLocation location, SoundCategory category, float pitch, DecimalCurve volumeGraph) {
         super(location, category, (float) volumeGraph.valueAt(0), pitch);
         this.volumeGraph = volumeGraph;
-        this.repeat = true;
+        this.looping = true;
     }
     
     public TickedSound(ResourceLocation location, SoundCategory category, float pitch, BlockPos pos, DecimalCurve volumeGraph) {
         super(location, category, (float) volumeGraph.valueAt(0), pitch, pos);
         this.volumeGraph = volumeGraph;
-        this.repeat = true;
+        this.looping = true;
     }
     
     @Override
-    public boolean isDonePlaying() {
+    public boolean isStopped() {
         return volume == 0;
     }
     

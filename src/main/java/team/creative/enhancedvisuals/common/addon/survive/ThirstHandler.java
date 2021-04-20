@@ -34,13 +34,14 @@ public class ThirstHandler extends VisualHandler {
         @Override
         public void changeProperties(float intensity) {
             for (Shader mcShader : shaderGroup.getShaders()) {
-                ShaderDefault shaderuniform = mcShader.getShaderManager().getShaderUniform("Radius");
+                ShaderDefault shaderuniform = mcShader.getEffect().getUniform("Radius");
                 
                 if (shaderuniform != null)
                     shaderuniform.set(intensity);
             }
         }
     };
+    
     public Visual focusVisual;
     
     public double getThirst(PlayerEntity player) {
@@ -50,7 +51,7 @@ public class ThirstHandler extends VisualHandler {
     @Override
     public void tick(@Nullable PlayerEntity player) {
         if (focusVisual == null) {
-            focusVisual = new Visual(focus, 0);
+            focusVisual = new Visual(focus, this, 0);
             VisualManager.add(focusVisual);
         }
         
@@ -63,10 +64,10 @@ public class ThirstHandler extends VisualHandler {
                 aimedSaturation = (1 - (leftFoodInSpan / spanLength)) * maxIntensity;
             }
             
-            if (focusVisual.opacity < aimedSaturation)
-                focusVisual.opacity = (float) Math.min(focusVisual.opacity + fadeFactor, aimedSaturation);
-            else if (focusVisual.opacity > aimedSaturation)
-                focusVisual.opacity = (float) Math.max(focusVisual.opacity - fadeFactor, aimedSaturation);
+            if (focusVisual.getOpacityInternal() < aimedSaturation)
+                focusVisual.setOpacityInternal((float) Math.min(focusVisual.getOpacityInternal() + fadeFactor, aimedSaturation));
+            else if (focusVisual.getOpacityInternal() > aimedSaturation)
+                focusVisual.setOpacityInternal((float) Math.max(focusVisual.getOpacityInternal() - fadeFactor, aimedSaturation));
         }
     }
     

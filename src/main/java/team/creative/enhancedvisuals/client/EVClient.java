@@ -23,7 +23,7 @@ public class EVClient {
     public static void init(FMLClientSetupEvent event) {
         IReloadableResourceManager reloadableResourceManager = (IReloadableResourceManager) event.getMinecraftSupplier().get().getResourceManager();
         
-        reloadableResourceManager.addReloadListener(new ISelectiveResourceReloadListener() {
+        reloadableResourceManager.registerReloadListener(new ISelectiveResourceReloadListener() {
             @Override
             public void onResourceManagerReload(IResourceManager resourceManager, Predicate<IResourceType> resourcePredicate) {
                 VisualManager.clearParticles();

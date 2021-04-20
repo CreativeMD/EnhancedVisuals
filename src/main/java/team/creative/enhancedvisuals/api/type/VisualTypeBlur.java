@@ -18,7 +18,7 @@ public class VisualTypeBlur extends VisualTypeShader {
     @OnlyIn(value = Dist.CLIENT)
     public void changeProperties(float intensity) {
         for (Shader mcShader : shaderGroup.getShaders()) {
-            ShaderUniform shaderuniform = mcShader.getShaderManager().func_216539_a("Radius");
+            ShaderUniform shaderuniform = mcShader.getEffect().getUniform("Radius");
             
             if (shaderuniform != null)
                 shaderuniform.set((float) Math.floor(intensity));

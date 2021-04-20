@@ -43,9 +43,9 @@ public class ExplosionHandler extends VisualHandler {
     
     public void onExploded(PlayerEntity player, Vector3d pos, float size, @Nullable Entity source) {
         float f3 = size * 2.0F;
-        double d12 = MathHelper.sqrt(player.getDistanceSq(pos)) / f3;
+        double d12 = MathHelper.sqrt(player.distanceToSqr(pos)) / f3;
         
-        double d14 = Explosion.getBlockDensity(pos, player);
+        double d14 = Explosion.getSeenPercent(pos, player);
         double d10 = (1.0D - d12) * d14;
         
         float damage = ((int) ((d10 * d10 + d10) / 2.0D * 7.0D * f3 + 1.0D));

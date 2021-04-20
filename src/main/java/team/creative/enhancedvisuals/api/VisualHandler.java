@@ -55,18 +55,18 @@ public class VisualHandler implements ICreativeConfig {
     @OnlyIn(value = Dist.CLIENT)
     public synchronized void playSound(ResourceLocation location, BlockPos pos, float volume) {
         if (pos != null)
-            Minecraft.getInstance().getSoundHandler().play(new PositionedSound(location, SoundCategory.MASTER, volume, 1, pos));
+            Minecraft.getInstance().getSoundManager().play(new PositionedSound(location, SoundCategory.MASTER, volume, 1, pos));
         else
-            Minecraft.getInstance().getSoundHandler().play(new PositionedSound(location, SoundCategory.MASTER, volume, 1));
+            Minecraft.getInstance().getSoundManager().play(new PositionedSound(location, SoundCategory.MASTER, volume, 1));
     }
     
     @OnlyIn(value = Dist.CLIENT)
     public synchronized void playSoundFadeOut(ResourceLocation location, BlockPos pos, DecimalCurve volume) {
         
         if (pos != null)
-            Minecraft.getInstance().getSoundHandler().play(new TickedSound(location, SoundCategory.MASTER, 1, pos, volume));
+            Minecraft.getInstance().getSoundManager().play(new TickedSound(location, SoundCategory.MASTER, 1, pos, volume));
         else
-            Minecraft.getInstance().getSoundHandler().play(new TickedSound(location, SoundCategory.MASTER, 1, volume));
+            Minecraft.getInstance().getSoundManager().play(new TickedSound(location, SoundCategory.MASTER, 1, volume));
     }
     
 }

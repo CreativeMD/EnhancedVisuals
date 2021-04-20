@@ -11,7 +11,7 @@ public class PositionedSound extends LocatableSound {
         super(location, category);
         this.volume = volume;
         this.pitch = pitch;
-        this.attenuationType = AttenuationType.NONE;
+        this.attenuation = AttenuationType.NONE;
     }
     
     public PositionedSound(ResourceLocation location, SoundCategory category, float volume, float pitch, BlockPos pos) {
@@ -19,7 +19,7 @@ public class PositionedSound extends LocatableSound {
         this.x = pos.getX();
         this.y = pos.getY();
         this.z = pos.getZ();
-        this.attenuationType = AttenuationType.LINEAR;
+        this.attenuation = AttenuationType.LINEAR;
     }
     
 }

@@ -23,7 +23,7 @@ public class PotionHandler extends VisualHandler {
     
     public void impact(double distance, ItemStack stack) {
         double modifier = 1 - Math.min(5, distance) / 5;
-        int var11 = PotionUtils.getPotionColor(PotionUtils.getPotionFromItem(stack));
+        int var11 = PotionUtils.getColor(stack);
         float r = (var11 >> 16 & 255) / 255.0F;
         float g = (var11 >> 8 & 255) / 255.0F;
         float b = (var11 & 255) / 255.0F;

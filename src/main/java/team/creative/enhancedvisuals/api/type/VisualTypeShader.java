@@ -36,12 +36,11 @@ public abstract class VisualTypeShader extends VisualType {
             shaderGroup.close();
         
         try {
-            if (mc.isOnExecutionThread()) {
-                shaderGroup = new EnhancedShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), location);
-                shaderGroup.createBindFramebuffers(mc.getMainWindow().getFramebufferWidth(), mc.getMainWindow().getFramebufferHeight());
+            if (mc.isSameThread()) {
+                shaderGroup = new EnhancedShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getMainRenderTarget(), location);
+                shaderGroup.resize(mc.getWindow().getWidth(), mc.getWindow().getHeight());
             }
-        } catch (JsonSyntaxException | IOException e) {
-        }
+        } catch (JsonSyntaxException | IOException e) {}
     }
     
     @Override
@@ -60,16 +59,16 @@ public abstract class VisualTypeShader extends VisualType {
     @OnlyIn(value = Dist.CLIENT)
     public void resize(Framebuffer buffer) {
         if (shaderGroup != null)
-            shaderGroup.createBindFramebuffers(Minecraft.getInstance().getMainWindow().getFramebufferWidth(), Minecraft.getInstance().getMainWindow().getFramebufferHeight());
+            shaderGroup.resize(Minecraft.getInstance().getWindow().getWidth(), Minecraft.getInstance().getWindow().getHeight());
     }
     
     @Override
-    public void render(Visual visual, TextureManager manager, int screenWidth, int screenHeight, float partialTicks) {
+    public void render(VisualHandler handler, Visual visual, TextureManager manager, int screenWidth, int screenHeight, float partialTicks) {
         if (shaderGroup == null)
             loadResources(Minecraft.getInstance().getResourceManager());
         if (shaderGroup != null) {
             changeProperties(visual.getOpacity());
-            shaderGroup.render(partialTicks);
+            shaderGroup.process(partialTicks);
         }
     }
     

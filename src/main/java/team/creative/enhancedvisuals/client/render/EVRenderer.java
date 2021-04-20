@@ -40,16 +40,16 @@ public class EVRenderer {
                 reloadResources = false;
             }
             
-            if (!(mc.currentScreen instanceof DeathScreen)) {
-                if (mc.getFramebuffer().framebufferWidth != framebufferWidth || mc.getFramebuffer().framebufferHeight != framebufferHeight) {
+            if (!(mc.screen instanceof DeathScreen)) {
+                if (mc.getMainRenderTarget().width != framebufferWidth || mc.getMainRenderTarget().height != framebufferHeight) {
                     for (VisualType type : VisualType.getTypes())
-                        type.resize(mc.getFramebuffer());
-                    framebufferWidth = mc.getFramebuffer().framebufferWidth;
-                    framebufferHeight = mc.getFramebuffer().framebufferHeight;
+                        type.resize(mc.getMainRenderTarget());
+                    framebufferWidth = mc.getMainRenderTarget().width;
+                    framebufferHeight = mc.getMainRenderTarget().height;
                 }
                 
-                int screenWidth = mc.getMainWindow().getScaledWidth();
-                int screenHeight = mc.getMainWindow().getScaledHeight();
+                int screenWidth = mc.getWindow().getGuiScaledWidth();
+                int screenHeight = mc.getWindow().getGuiScaledHeight();
                 
                 RenderSystem.pushMatrix();
                 TextureManager manager = mc.getTextureManager();
@@ -60,7 +60,7 @@ public class EVRenderer {
                 RenderSystem.clear(256, false);
                 RenderSystem.matrixMode(5889);
                 RenderSystem.loadIdentity();
-                RenderSystem.ortho(0.0D, mc.getMainWindow().getScaledWidth(), mc.getMainWindow().getScaledHeight(), 0.0D, 1000.0D, 3000.0D);
+                RenderSystem.ortho(0.0D, mc.getWindow().getGuiScaledWidth(), mc.getWindow().getGuiScaledHeight(), 0.0D, 1000.0D, 3000.0D);
                 RenderSystem.matrixMode(5888);
                 RenderSystem.loadIdentity();
                 RenderSystem.translatef(0.0F, 0.0F, -2000.0F);
@@ -92,7 +92,7 @@ public class EVRenderer {
                 RenderSystem.enableBlend();
                 RenderSystem.disableLighting();
                 
-                mc.getFramebuffer().bindFramebuffer(true);
+                mc.getMainRenderTarget().bindWrite(true);
                 RenderSystem.matrixMode(5888);
                 
                 RenderSystem.popMatrix();
@@ -103,8 +103,7 @@ public class EVRenderer {
                         lastRenderedMessage = EnhancedVisuals.MESSAGES.pickRandomDeathMessage();
                     
                     if (lastRenderedMessage != null)
-                        mc.fontRenderer.drawStringWithShadow(new MatrixStack(), "\"" + lastRenderedMessage + "\"", mc.currentScreen.width / 2 - mc.fontRenderer
-                                .getStringWidth(lastRenderedMessage) / 2, 114, 16777215);
+                        mc.font.drawShadow(new MatrixStack(), "\"" + lastRenderedMessage + "\"", mc.screen.width / 2 - mc.font.width(lastRenderedMessage) / 2, 114, 16777215);
                 }
             }
         }

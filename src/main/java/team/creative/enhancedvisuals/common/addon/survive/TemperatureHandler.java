@@ -53,12 +53,12 @@ public class TemperatureHandler extends VisualHandler {
     @Override
     public void tick(@Nullable PlayerEntity player) {
         if (freezeVisual == null) {
-            freezeVisual = new Visual(freeze, 0);
-            freezeVisual.opacity = 0;
+            freezeVisual = new Visual(freeze, this, 0);
+            freezeVisual.setOpacityInternal(0);
             VisualManager.add(freezeVisual);
             
-            heatVisual = new Visual(heat, 0);
-            heatVisual.opacity = 0;
+            heatVisual = new Visual(heat, this, 0);
+            heatVisual.setOpacityInternal(0);
             VisualManager.add(heatVisual);
         }
         
@@ -91,15 +91,15 @@ public class TemperatureHandler extends VisualHandler {
             aimedFreeze = 0;
         }
         
-        if (freezeVisual.opacity < aimedFreeze)
-            freezeVisual.opacity = (float) Math.min(freezeVisual.opacity + fadeFactor, aimedFreeze);
-        else if (freezeVisual.opacity > aimedFreeze)
-            freezeVisual.opacity = (float) Math.max(freezeVisual.opacity - fadeFactor, aimedFreeze);
+        if (freezeVisual.getOpacityInternal() < aimedFreeze)
+            freezeVisual.setOpacityInternal((float) Math.min(freezeVisual.getOpacityInternal() + fadeFactor, aimedFreeze));
+        else if (freezeVisual.getOpacityInternal() > aimedFreeze)
+            freezeVisual.setOpacityInternal((float) Math.max(freezeVisual.getOpacityInternal() - fadeFactor, aimedFreeze));
         
-        if (heatVisual.opacity < aimedHeat)
-            heatVisual.opacity = (float) Math.min(heatVisual.opacity + fadeFactor, aimedHeat);
-        else if (heatVisual.opacity > aimedHeat)
-            heatVisual.opacity = (float) Math.max(heatVisual.opacity - fadeFactor, aimedHeat);
+        if (heatVisual.getOpacityInternal() < aimedHeat)
+            heatVisual.setOpacityInternal((float) Math.min(heatVisual.getOpacityInternal() + fadeFactor, aimedHeat));
+        else if (heatVisual.getOpacityInternal() > aimedHeat)
+            heatVisual.setOpacityInternal((float) Math.max(heatVisual.getOpacityInternal() - fadeFactor, aimedHeat));
     }
     
 }

@@ -53,23 +53,22 @@ public class SlenderHandler extends VisualHandler {
         
         if (player != null) {
             float modifier = 0.0F;
-            double d0 = player.getPosX();
-            double d1 = player.getPosY();
-            double d2 = player.getPosZ();
+            double d0 = player.getX();
+            double d1 = player.getY();
+            double d2 = player.getZ();
             
             AxisAlignedBB box = player.getBoundingBox();
-            box = box.grow(16, 16, 16);
+            box = box.inflate(16, 16, 16);
             
             SelectEndermanEvent event = new SelectEndermanEvent(new EntityPredicate());
             MinecraftForge.EVENT_BUS.post(event);
             if (!event.isCanceled()) {
-                Entity mob = player.world.getClosestEntityWithinAABB(EndermanEntity.class, event.predicate, player, d0, d1, d2, box);
+                Entity mob = player.level.getNearestEntity(EndermanEntity.class, event.predicate, player, d0, d1, d2, box);
                 if (mutantEnderman != null)
-                    mob = player.world.getClosestEntityWithinAABB(mutantEnderman, EntityPredicate.DEFAULT, player, d0, d1, d2, box);
+                    mob = player.level.getNearestEntity(mutantEnderman, EntityPredicate.DEFAULT, player, d0, d1, d2, box);
                 
                 if (mob != null) {
-                    float distModifier = (float) (1.0F / Math
-                            .pow(Math.sqrt(Math.pow(d0 - mob.getPosX(), 2) + Math.pow(d1 - mob.getPosY(), 2) + Math.pow(d2 - mob.getPosZ(), 2)) / 3.0D, 2));
+                    float distModifier = (float) (1.0F / Math.pow(Math.sqrt(Math.pow(d0 - mob.getX(), 2) + Math.pow(d1 - mob.getY(), 2) + Math.pow(d2 - mob.getZ(), 2)) / 3.0D, 2));
                     if (distModifier > modifier) {
                         modifier = distModifier;
                         if (modifier > 3.5F) {

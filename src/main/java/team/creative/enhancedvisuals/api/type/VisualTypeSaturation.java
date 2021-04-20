@@ -18,7 +18,7 @@ public class VisualTypeSaturation extends VisualTypeShader {
     @OnlyIn(value = Dist.CLIENT)
     public void changeProperties(float intensity) {
         for (Shader mcShader : shaderGroup.getShaders()) {
-            ShaderUniform shaderuniform = mcShader.getShaderManager().func_216539_a("Saturation");
+            ShaderUniform shaderuniform = mcShader.getEffect().getUniform("Saturation");
             
             if (shaderuniform != null)
                 shaderuniform.set(intensity);

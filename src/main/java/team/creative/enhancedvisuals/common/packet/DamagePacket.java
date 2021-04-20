@@ -25,13 +25,13 @@ public class DamagePacket extends CreativePacket {
     
     public DamagePacket(LivingDamageEvent event) {
         this.damage = event.getAmount();
-        Entity attacker = event.getSource().getImmediateSource();
+        Entity attacker = event.getSource().getDirectEntity();
         if (attacker instanceof LivingEntity || attacker instanceof ArrowEntity) {
             attackerClass = attacker.getClass().getName().toLowerCase();
             source = EnhancedDamageSource.ATTACKER;
             
-            if (attacker instanceof LivingEntity && ((LivingEntity) attacker).getHeldItemMainhand() != null)
-                stack = ((LivingEntity) attacker).getHeldItemMainhand();
+            if (attacker instanceof LivingEntity && ((LivingEntity) attacker).getMainHandItem() != null)
+                stack = ((LivingEntity) attacker).getMainHandItem();
             
         } else if (event.getSource() == DamageSource.CACTUS)
             this.source = EnhancedDamageSource.CACTUS;
@@ -39,7 +39,7 @@ public class DamagePacket extends CreativePacket {
             this.source = EnhancedDamageSource.FALL;
         else if (event.getSource().equals(DamageSource.DROWN))
             this.source = EnhancedDamageSource.DROWN;
-        else if (event.getSource().isFireDamage() || event.getSource() == DamageSource.ON_FIRE)
+        else if (event.getSource().isFire() || event.getSource() == DamageSource.ON_FIRE)
             this.source = EnhancedDamageSource.FIRE;
         else
             this.source = EnhancedDamageSource.UNKOWN;

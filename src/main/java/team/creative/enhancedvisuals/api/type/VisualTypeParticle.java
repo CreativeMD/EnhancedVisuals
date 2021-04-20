@@ -2,9 +2,8 @@ package team.creative.enhancedvisuals.api.type;
 
 import java.util.Random;
 
-import com.creativemd.creativecore.common.config.api.CreativeConfig;
-import com.creativemd.creativecore.common.config.premade.DecimalMinMax;
-
+import team.creative.creativecore.common.config.api.CreativeConfig;
+import team.creative.creativecore.common.config.premade.DecimalMinMax;
 import team.creative.enhancedvisuals.api.VisualCategory;
 
 public class VisualTypeParticle extends VisualTypeTexture {

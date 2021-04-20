@@ -35,10 +35,10 @@ public class EVEvents {
     
     @SubscribeEvent
     public void explosion(ExplosionEvent.Detonate event) {
-        if (!event.getWorld().isRemote) {
+        if (!event.getWorld().isClientSide) {
             try {
                 ExplosionPacket packet = new ExplosionPacket(event.getExplosion().getPosition(), size
-                        .getFloat(event.getExplosion()), (Entity) exploder.get(event.getExplosion()) != null ? ((Entity) exploder.get(event.getExplosion())).getEntityId() : -1);
+                        .getFloat(event.getExplosion()), (Entity) exploder.get(event.getExplosion()) != null ? ((Entity) exploder.get(event.getExplosion())).getId() : -1);
                 for (Entity entity : event.getAffectedEntities())
                     if (entity instanceof ServerPlayerEntity)
                         EnhancedVisuals.NETWORK.sendToClient(packet, (ServerPlayerEntity) entity);
@@ -51,14 +51,14 @@ public class EVEvents {
     
     @SubscribeEvent
     public void impact(ProjectileImpactEvent.Throwable event) {
-        if (!event.getEntity().world.isRemote && event.getEntity() instanceof PotionEntity && !event.isCanceled()) {
+        if (!event.getEntity().level.isClientSide && event.getEntity() instanceof PotionEntity && !event.isCanceled()) {
             PotionEntity entity = (PotionEntity) event.getEntity();
-            AxisAlignedBB axisalignedbb = entity.getBoundingBox().grow(4.0D, 2.0D, 4.0D);
-            List<LivingEntity> list = entity.world.getEntitiesWithinAABB(LivingEntity.class, axisalignedbb);
+            AxisAlignedBB axisalignedbb = entity.getBoundingBox().inflate(4.0D, 2.0D, 4.0D);
+            List<LivingEntity> list = entity.level.getEntitiesOfClass(LivingEntity.class, axisalignedbb);
             if (!list.isEmpty()) {
                 for (LivingEntity livingentity : list) {
-                    if (livingentity.canBeHitWithPotion() && livingentity instanceof PlayerEntity) {
-                        double d0 = entity.getDistanceSq(livingentity);
+                    if (livingentity.isAffectedByPotions() && livingentity instanceof PlayerEntity) {
+                        double d0 = entity.distanceToSqr(livingentity);
                         if (d0 < 16.0D) {
                             EnhancedVisuals.NETWORK.sendToClient(new PotionPacket(Math.sqrt(d0), entity.getItem()), (ServerPlayerEntity) livingentity);
                         }
