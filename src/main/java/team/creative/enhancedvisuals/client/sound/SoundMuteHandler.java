@@ -1,7 +1,8 @@
 package team.creative.enhancedvisuals.client.sound;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Map;
 
 import net.minecraft.client.Minecraft;
@@ -10,8 +11,6 @@ import net.minecraft.client.audio.ChannelManager.Entry;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.SoundEngine;
 import net.minecraft.client.audio.SoundHandler;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
@@ -20,14 +19,12 @@ import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
 @OnlyIn(value = Dist.CLIENT)
 public class SoundMuteHandler {
     
-    private static Minecraft mc = Minecraft.getInstance();
+    private static Method calculateVolumeMethod = ObfuscationReflectionHelper.findMethod(SoundEngine.class, "func_188770_e", ISound.class);
     
     public static boolean isMuting = false;
     
     public static SoundEngine engine;
     public static SoundHandler handler;
-    
-    public static ArrayList<String> ignoredSounds;
     
     public static DecimalCurve muteGraph;
     public static int timeTick = 0;
@@ -45,8 +42,8 @@ public class SoundMuteHandler {
         }
     }
     
-    public static float getClampedVolume(ISound soundIn) {
-        return getClampedVolume(soundIn, isMuting ? (float) (1 - muteGraph.valueAt(timeTick)) : 1);
+    public static float getClampedVolume(float volume) {
+        return volume * (isMuting ? (float) (1 - muteGraph.valueAt(timeTick)) : 1);
     }
     
     private static Field playingSoundsChannelField = ObfuscationReflectionHelper.findField(SoundEngine.class, "field_217942_m");
@@ -65,20 +62,17 @@ public class SoundMuteHandler {
             return;
         
         getSounds().forEach((p_217926_1_, p_217926_2_) -> {
-            float f = getClampedVolume(p_217926_1_, muteVolume);
-            p_217926_2_.execute((p_217923_1_) -> {
-                p_217923_1_.setVolume(f);
-                
-            });
+            try {
+                float f = (float) calculateVolumeMethod.invoke(engine, p_217926_1_);
+                p_217926_2_.execute((p_217923_1_) -> {
+                    p_217923_1_.setVolume(f);
+                    
+                });
+            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+            
         });
-    }
-    
-    private static float getClampedVolume(ISound soundIn, float muteVolume) {
-        return MathHelper.clamp(soundIn.getVolume() * getVolume(soundIn.getSource()), 0.0F, 1.0F) * muteVolume;
-    }
-    
-    private static float getVolume(SoundCategory category) {
-        return category != null && category != SoundCategory.MASTER ? mc.options.getSoundSourceVolume(category) : 1.0F;
     }
     
     public static boolean startMuting(DecimalCurve muteGraph) {
@@ -95,7 +89,6 @@ public class SoundMuteHandler {
         } else if (!isMuting) {
             SoundMuteHandler.muteGraph = muteGraph;
             SoundMuteHandler.timeTick = 0;
-            ignoredSounds = new ArrayList<>();
             isMuting = true;
             tick();
             return true;
@@ -107,7 +100,6 @@ public class SoundMuteHandler {
     public static void endMuting() {
         setMuteVolume(1F);
         isMuting = false;
-        ignoredSounds = null;
     }
     
 }

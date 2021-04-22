@@ -5,16 +5,22 @@ function initializeCoreMod() {
             'target': {
                 'type': 'METHOD',
 				'class': 'net.minecraft.client.audio.SoundEngine',
-				'methodName': 'func_148611_c',
-				'methodDesc': '(Lnet/minecraft/client/audio/ISound;)V'
+				'methodName': 'func_188770_e',
+				'methodDesc': '(Lnet/minecraft/client/audio/ISound;)F'
             },
             'transformer': function(method) {
 				var asmapi = Java.type('net.minecraftforge.coremod.api.ASMAPI');
-
-				var node = asmapi.findFirstMethodCall(method, asmapi.MethodType.SPECIAL, "net/minecraft/client/audio/SoundEngine", asmapi.mapMethod("func_188770_e"), "(Lnet/minecraft/client/audio/ISound;)F");
-				method.instructions.remove(node.getPrevious().getPrevious());
-				method.instructions.set(node, asmapi.buildMethodCall("team/creative/enhancedvisuals/client/sound/SoundMuteHandler", "getClampedVolume", "(Lnet/minecraft/client/audio/ISound;)F", asmapi.MethodType.STATIC));
-
+				var Opcodes = Java.type('org.objectweb.asm.Opcodes');
+				var next = method.instructions.getFirst();
+				
+				while(next.getNext() !== null) {
+					if(next.getOpcode() == Opcodes.FRETURN) {
+						asmapi.log("INFO", "Found return");
+						method.instructions.insertBefore(next, asmapi.buildMethodCall("team/creative/enhancedvisuals/client/sound/SoundMuteHandler", "getClampedVolume", "(F)F", asmapi.MethodType.STATIC));
+						return method;
+					}
+					next = next.getNext();
+				}
                 return method;
             }
 		}

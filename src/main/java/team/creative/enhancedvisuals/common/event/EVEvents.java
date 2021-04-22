@@ -82,8 +82,8 @@ public class EVEvents {
             PlayerEntity player = Minecraft.getInstance().player;
             VisualManager.onTick(player);
             
-            SoundMuteHandler.tick();
         }
+        SoundMuteHandler.tick();
     }
     
     private static Field eyesInWaterField = ObfuscationReflectionHelper.findField(Entity.class, "field_205013_W");
