@@ -6,6 +6,8 @@ import net.minecraft.client.shader.Shader;
 import net.minecraft.client.shader.ShaderDefault;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.premade.IntMinMax;
 import team.creative.enhancedvisuals.api.Visual;
@@ -32,6 +34,7 @@ public class ThirstHandler extends VisualHandler {
     public VisualType focus = new VisualTypeShader("focus", new ResourceLocation("shaders/post/blobs2.json")) {
         
         @Override
+        @OnlyIn(value = Dist.CLIENT)
         public void changeProperties(float intensity) {
             for (Shader mcShader : shaderGroup.getShaders()) {
                 ShaderDefault shaderuniform = mcShader.getEffect().getUniform("Radius");
