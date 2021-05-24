@@ -41,6 +41,8 @@ public class DamagePacket extends CreativePacket {
             this.source = EnhancedDamageSource.DROWN;
         else if (event.getSource().isFire() || event.getSource() == DamageSource.ON_FIRE)
             this.source = EnhancedDamageSource.FIRE;
+        else if (event.getSource() == DamageSource.OUT_OF_WORLD)
+            this.source = EnhancedDamageSource.VOID;
         else
             this.source = EnhancedDamageSource.UNKOWN;
     }

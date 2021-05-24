@@ -114,7 +114,7 @@ public class DamageHandler extends VisualHandler {
             VisualManager.addParticlesFadeOut(waterDrown, this, drownSplashes, drownDuration, true);
         else if (packet.source == EnhancedDamageSource.FIRE)
             VisualManager.addParticlesFadeOut(fire, this, fireSplashes, new IntMinMax(fireDuration.min, fireDuration.max), true, new Color(0, 0, 0));
-        else
+        else if (packet.source != EnhancedDamageSource.VOID)
             createVisualFromDamageAndDistance(splatter, packet.damage, player, bloodDuration);
         
     }
@@ -126,7 +126,8 @@ public class DamageHandler extends VisualHandler {
         float health = player.getHealth() - damage;
         double rate = Math.max(0, healthScaler.valueAt(health));
         
-        VisualManager.addParticlesFadeOut(type, this, (int) (damageScale * damage * rate), new DecimalCurve(0, 1, duration.next(VisualManager.rand), 0), true, bloodColor);
+        VisualManager.addParticlesFadeOut(type, this, Math
+                .min(5000, (int) (damageScale * damage * rate)), new DecimalCurve(0, 1, duration.next(VisualManager.rand), 0), true, bloodColor);
     }
     
     private static boolean isSharp(ItemStack item) {
@@ -148,6 +149,7 @@ public class DamageHandler extends VisualHandler {
         FALL,
         DROWN,
         FIRE,
+        VOID,
         UNKOWN;
         
     }
