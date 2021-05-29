@@ -49,7 +49,7 @@ public class TemperatureHandler extends VisualHandler {
         double aimedFreeze = defaultIntensity;
         int temp = 12;
         
-        if (player != null)
+        if (player != null && !player.isDead)
             temp = player.getCapability(SDCapabilities.TEMPERATURE, null).getTemperatureLevel();
         
         TemperatureEnum enumRange = TemperatureUtil.getTemperatureEnum(temp);

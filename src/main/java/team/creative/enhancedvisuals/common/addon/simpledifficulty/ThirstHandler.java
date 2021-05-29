@@ -54,18 +54,20 @@ public class ThirstHandler extends VisualHandler {
         }
         
         double aimedSaturation = defaultIntensity;
-        if (player != null) {
+        if (player != null && !player.isDead) {
             if (player.getCapability(SDCapabilities.THIRST, null).getThirstLevel() <= thirstLevel.max) {
                 double leftFoodInSpan = player.getCapability(SDCapabilities.THIRST, null).getThirstLevel() - thirstLevel.min;
                 double spanLength = thirstLevel.spanLength();
                 aimedSaturation = (1 - (leftFoodInSpan / spanLength)) * maxIntensity;
             }
-        }
+            
+            if (focusVisual.getOpacityInternal() < aimedSaturation)
+                focusVisual.setOpacityInternal((float) Math.min(focusVisual.getOpacityInternal() + fadeFactor, aimedSaturation));
+            else if (focusVisual.getOpacityInternal() > aimedSaturation)
+                focusVisual.setOpacityInternal((float) Math.max(focusVisual.getOpacityInternal() - fadeFactor, aimedSaturation));
+        } else
+            focusVisual.setOpacityInternal((float) defaultIntensity);
         
-        if (focusVisual.getOpacityInternal() < aimedSaturation)
-            focusVisual.setOpacityInternal((float) Math.min(focusVisual.getOpacityInternal() + fadeFactor, aimedSaturation));
-        else if (focusVisual.getOpacityInternal() > aimedSaturation)
-            focusVisual.setOpacityInternal((float) Math.max(focusVisual.getOpacityInternal() - fadeFactor, aimedSaturation));
     }
     
 }
