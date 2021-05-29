@@ -65,7 +65,7 @@ public class TemperatureHandler extends VisualHandler {
         double aimedHeat = defaultIntensity;
         double aimedFreeze = defaultIntensity;
         double temp = defaultTemperature;
-        if (player != null)
+        if (player != null && player.isAlive())
             temp = getTemperature(player);
         
         if (temp <= coldestTemperature) {

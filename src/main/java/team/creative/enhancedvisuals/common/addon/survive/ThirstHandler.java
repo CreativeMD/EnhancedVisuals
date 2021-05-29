@@ -59,7 +59,7 @@ public class ThirstHandler extends VisualHandler {
         }
         
         double aimedSaturation = defaultIntensity;
-        if (player != null) {
+        if (player != null && player.isAlive()) {
             double thirst = getThirst(player);
             if (thirst <= thirstLevel.max) {
                 double leftFoodInSpan = thirst - thirstLevel.min;
@@ -71,7 +71,8 @@ public class ThirstHandler extends VisualHandler {
                 focusVisual.setOpacityInternal((float) Math.min(focusVisual.getOpacityInternal() + fadeFactor, aimedSaturation));
             else if (focusVisual.getOpacityInternal() > aimedSaturation)
                 focusVisual.setOpacityInternal((float) Math.max(focusVisual.getOpacityInternal() - fadeFactor, aimedSaturation));
-        }
+        } else
+            focusVisual.setOpacityInternal((float) defaultIntensity);
     }
     
 }

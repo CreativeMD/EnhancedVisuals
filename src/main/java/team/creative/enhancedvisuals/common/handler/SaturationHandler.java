@@ -34,13 +34,15 @@ public class SaturationHandler extends VisualHandler {
         
         double aimedSaturation = saturation.maxValue;
         
-        if (player != null)
+        if (player != null && player.isAlive()) {
             aimedSaturation = saturation.valueAt(player.getFoodData().getFoodLevel());
-        
-        if (saturationVisual.getOpacityInternal() < aimedSaturation)
-            saturationVisual.setOpacityInternal((float) Math.min(saturationVisual.getOpacityInternal() + fadeFactor, aimedSaturation));
-        else if (saturationVisual.getOpacityInternal() > aimedSaturation)
-            saturationVisual.setOpacityInternal((float) Math.max(saturationVisual.getOpacityInternal() - fadeFactor, aimedSaturation));
+            
+            if (saturationVisual.getOpacityInternal() < aimedSaturation)
+                saturationVisual.setOpacityInternal((float) Math.min(saturationVisual.getOpacityInternal() + fadeFactor, aimedSaturation));
+            else if (saturationVisual.getOpacityInternal() > aimedSaturation)
+                saturationVisual.setOpacityInternal((float) Math.max(saturationVisual.getOpacityInternal() - fadeFactor, aimedSaturation));
+        } else
+            saturationVisual.setOpacityInternal((float) saturation.maxValue);
     }
     
 }
