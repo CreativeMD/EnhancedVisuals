@@ -44,6 +44,6 @@ public class EVClient extends EVServer {
     }
     
     public static boolean shouldTick() {
-        return shouldRender();
+        return true;
     }
 }
