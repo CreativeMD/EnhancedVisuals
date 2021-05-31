@@ -82,7 +82,7 @@ public class HeartbeatHandler extends VisualHandler {
     }
     
     private boolean shouldHeartbeatTrigger(@Nullable EntityPlayer player) {
-        if (player != null && !Minecraft.getMinecraft().isGamePaused()) {
+        if (player != null && !Minecraft.getMinecraft().isGamePaused() && !player.isDead) {
             if (useHealthPercentage) {
                 float percentageHealth = player.getHealth() / player.getMaxHealth();
                 return percentageHealth < maxHealthPercentage;
