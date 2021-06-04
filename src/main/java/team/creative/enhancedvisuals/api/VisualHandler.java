@@ -12,6 +12,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.api.ICreativeConfig;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
+import team.creative.enhancedvisuals.client.EVClient;
 import team.creative.enhancedvisuals.client.sound.PositionedSound;
 import team.creative.enhancedvisuals.client.sound.TickedSound;
 
