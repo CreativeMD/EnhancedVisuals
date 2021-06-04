@@ -54,6 +54,8 @@ public class VisualHandler implements ICreativeConfig {
     
     @OnlyIn(value = Dist.CLIENT)
     public synchronized void playSound(ResourceLocation location, BlockPos pos, float volume) {
+        if (!EVClient.shouldRender())
+            return;
         if (pos != null)
             Minecraft.getInstance().getSoundManager().play(new PositionedSound(location, SoundCategory.MASTER, volume, 1, pos));
         else
@@ -62,7 +64,8 @@ public class VisualHandler implements ICreativeConfig {
     
     @OnlyIn(value = Dist.CLIENT)
     public synchronized void playSoundFadeOut(ResourceLocation location, BlockPos pos, DecimalCurve volume) {
-        
+        if (!EVClient.shouldRender())
+            return;
         if (pos != null)
             Minecraft.getInstance().getSoundManager().play(new TickedSound(location, SoundCategory.MASTER, 1, pos, volume));
         else
