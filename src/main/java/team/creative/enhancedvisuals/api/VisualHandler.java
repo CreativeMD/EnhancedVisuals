@@ -13,6 +13,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import team.creative.enhancedvisuals.client.EVClient;
 import team.creative.enhancedvisuals.client.sound.PositionedSound;
 import team.creative.enhancedvisuals.client.sound.TickedSound;
 
@@ -55,6 +56,8 @@ public class VisualHandler implements ICreativeConfig {
     
     @SideOnly(Side.CLIENT)
     public synchronized void playSound(ResourceLocation location, BlockPos pos, float volume) {
+        if (!EVClient.shouldRender())
+            return;
         if (pos != null)
             Minecraft.getMinecraft().getSoundHandler().playSound(new PositionedSound(location, SoundCategory.MASTER, volume, 1, pos));
         else
@@ -63,6 +66,8 @@ public class VisualHandler implements ICreativeConfig {
     
     @SideOnly(Side.CLIENT)
     public synchronized void playSoundFadeOut(ResourceLocation location, BlockPos pos, DecimalCurve volume) {
+        if (!EVClient.shouldRender())
+            return;
         if (pos != null)
             Minecraft.getMinecraft().getSoundHandler().playSound(new TickedSound(location, SoundCategory.MASTER, 1, pos, volume));
         else
