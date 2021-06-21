@@ -11,6 +11,9 @@ public class EnhancedVisualsConfig implements ICreativeConfig {
     @CreativeConfig
     public int waterSubstractFactor = 10;
     
+    @CreativeConfig
+    public boolean enableDamageDebug = false;
+    
     @Override
     public void configured() {
         

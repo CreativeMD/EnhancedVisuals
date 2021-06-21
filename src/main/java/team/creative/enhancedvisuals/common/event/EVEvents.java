@@ -10,6 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.PotionEntity;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.Explosion;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -59,9 +60,8 @@ public class EVEvents {
                 for (LivingEntity livingentity : list) {
                     if (livingentity.isAffectedByPotions() && livingentity instanceof PlayerEntity) {
                         double d0 = entity.distanceToSqr(livingentity);
-                        if (d0 < 16.0D) {
+                        if (d0 < 16.0D)
                             EnhancedVisuals.NETWORK.sendToClient(new PotionPacket(Math.sqrt(d0), entity.getItem()), (ServerPlayerEntity) livingentity);
-                        }
                     }
                 }
             }
@@ -71,8 +71,11 @@ public class EVEvents {
     
     @SubscribeEvent
     public void damage(LivingDamageEvent event) {
-        if (event.getEntity() instanceof PlayerEntity)
+        if (event.getEntity() instanceof PlayerEntity) {
+        	if (EnhancedVisuals.CONFIG.enableDamageDebug)
+                ((EntityPlayerMP) event.getEntity()).sendMessage(new TextComponentString(event.getSource().damageType + "," + event.getSource().getDeathMessage(event.getEntityLiving())
             EnhancedVisuals.NETWORK.sendToClient(new DamagePacket(event), (ServerPlayerEntity) event.getEntity());
+		}
     }
     
     @SubscribeEvent
