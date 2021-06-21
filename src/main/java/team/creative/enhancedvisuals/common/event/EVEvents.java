@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityPotion;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.Explosion;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
@@ -23,6 +24,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.client.EVClient;
 import team.creative.enhancedvisuals.client.VisualManager;
 import team.creative.enhancedvisuals.client.sound.SoundMuteHandler;
@@ -64,9 +66,8 @@ public class EVEvents {
                 for (Entity livingentity : list) {
                     if (livingentity instanceof EntityLivingBase && ((EntityLivingBase) livingentity).canBeHitWithPotion() && livingentity instanceof EntityPlayer) {
                         double d0 = entity.getDistanceSq(livingentity);
-                        if (d0 < 16.0D) {
+                        if (d0 < 16.0D)
                             PacketHandler.sendPacketToPlayer(new PotionPacket(Math.sqrt(d0), entity.getPotion()), (EntityPlayerMP) livingentity);
-                        }
                     }
                 }
             }
@@ -76,8 +77,12 @@ public class EVEvents {
     
     @SubscribeEvent
     public void damage(LivingDamageEvent event) {
-        if (event.getEntity() instanceof EntityPlayerMP)
+        if (event.getEntity() instanceof EntityPlayerMP) {
+            if (EnhancedVisuals.CONFIG.enableDamageDebug)
+                ((EntityPlayerMP) event.getEntity()).sendMessage(new TextComponentString(event.getSource().damageType + "," + event.getSource().getDeathMessage(event.getEntityLiving())
+                    .getUnformattedText() + "," + event.getAmount()));
             PacketHandler.sendPacketToPlayer(new DamagePacket(event), (EntityPlayerMP) event.getEntity());
+        }
     }
     
     @SubscribeEvent
