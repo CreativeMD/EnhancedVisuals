@@ -2,6 +2,7 @@ package team.creative.enhancedvisuals.common.handler;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -79,16 +80,27 @@ public class DamageHandler extends VisualHandler {
     public VisualType waterDrown = new VisualTypeParticle("water");
     
     @CreativeConfig
+    public int temperatureSplashes = 4;
+    @CreativeConfig
+    public IntMinMax temperatureDuration = new IntMinMax(10, 15);
+    @CreativeConfig
+    public VisualType freeze = new VisualTypeParticle("freeze");
+    @CreativeConfig
+    public VisualType heat = new VisualTypeParticle("heat");
+    
+    @CreativeConfig
     public DecimalCurve healthScaler = new DecimalCurve(0, 3, 12, 1.5);
     
     @CreativeConfig
     public float damageScale = 1;
     
+    @CreativeConfig
+    public List<String> damageBlackList = new ArrayList<>();
+    
     public static Color bloodColor = new Color(0.3F, 0.01F, 0.01F, 0.7F);
     
     public void playerDamaged(PlayerEntity player, DamagePacket packet) {
-        
-        if (packet.source == EnhancedDamageSource.ATTACKER) {
+        if (packet.source.equalsIgnoreCase("attacker")) {
             if (packet.attackerClass.contains("arrow"))
                 createVisualFromDamageAndDistance(pierce, packet.damage, player, bloodDuration);
             if (packet.stack != null) {
@@ -106,16 +118,24 @@ public class DamageHandler extends VisualHandler {
                 createVisualFromDamageAndDistance(impact, packet.damage, player, bloodDuration);
             else if (packet.attackerClass.contains("wolf") || packet.attackerClass.contains("spider"))
                 createVisualFromDamageAndDistance(pierce, packet.damage, player, bloodDuration);
-        } else if (packet.source == EnhancedDamageSource.CACTUS)
+            else
+                createVisualFromDamageAndDistance(splatter, Math.min(20, packet.damage), player, bloodDuration);
+        } else if (packet.source.equalsIgnoreCase("cactus"))
             createVisualFromDamageAndDistance(pierce, packet.damage, player, bloodDuration);
-        else if (packet.source == EnhancedDamageSource.FALL)
+        else if (packet.source.equalsIgnoreCase("fall") || packet.source.equalsIgnoreCase("fallingBlock"))
             createVisualFromDamageAndDistance(impact, packet.damage, player, bloodDuration);
-        else if (packet.source == EnhancedDamageSource.DROWN)
+        else if (packet.source.equalsIgnoreCase("drown"))
             VisualManager.addParticlesFadeOut(waterDrown, this, drownSplashes, drownDuration, true);
-        else if (packet.source == EnhancedDamageSource.FIRE)
-            VisualManager.addParticlesFadeOut(fire, this, fireSplashes, new IntMinMax(fireDuration.min, fireDuration.max), true, new Color(0, 0, 0));
-        else if (packet.source != EnhancedDamageSource.VOID)
-            createVisualFromDamageAndDistance(splatter, packet.damage, player, bloodDuration);
+        else if (packet.source.equalsIgnoreCase("hypothermia"))
+            VisualManager.addParticlesFadeOut(freeze, this, temperatureSplashes, temperatureDuration, true);
+        else if (packet.source.equalsIgnoreCase("hyperthermia"))
+            VisualManager.addParticlesFadeOut(heat, this, temperatureSplashes, temperatureDuration, true);
+        else if (packet.fire || packet.source.equalsIgnoreCase("onFire")) {
+            FireParticlesEvent event = new FireParticlesEvent(fireSplashes, fireDuration.min, fireDuration.max);
+            MinecraftForge.EVENT_BUS.post(event);
+            VisualManager.addParticlesFadeOut(fire, this, event.getNewFireSplashes(), new IntMinMax(event.getNewFireDurationMin(), event.getNewFireDurationMax()), true, new Color(0, 0, 0));
+        } else if (!damageBlackList.contains(packet.source))
+            createVisualFromDamageAndDistance(splatter, Math.min(20, packet.damage), player, bloodDuration);
         
     }
     
@@ -140,18 +160,6 @@ public class DamageHandler extends VisualHandler {
     
     private static boolean isPierce(ItemStack item) {
         return pierceList.contains(item.getItem());
-    }
-    
-    public static enum EnhancedDamageSource {
-        
-        ATTACKER,
-        CACTUS,
-        FALL,
-        DROWN,
-        FIRE,
-        VOID,
-        UNKOWN;
-        
     }
     
 }
