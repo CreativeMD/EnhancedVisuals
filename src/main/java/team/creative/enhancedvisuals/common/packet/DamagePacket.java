@@ -8,9 +8,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import team.creative.enhancedvisuals.common.handler.DamageHandler.EnhancedDamageSource;
 import team.creative.enhancedvisuals.common.handler.VisualHandlers;
 
 public class DamagePacket extends CreativeCorePacket {
@@ -20,28 +18,22 @@ public class DamagePacket extends CreativeCorePacket {
     public float damage;
     
     public float distance;
-    public EnhancedDamageSource source;
+    public boolean fire;
+    public String source;
     
     public DamagePacket(LivingDamageEvent event) {
         this.damage = event.getAmount();
         Entity attacker = event.getSource().getImmediateSource();
+        this.fire = event.getSource().isFireDamage();
         if (attacker instanceof EntityLiving || attacker instanceof EntityArrow) {
             attackerClass = attacker.getClass().getName().toLowerCase();
-            source = EnhancedDamageSource.ATTACKER;
+            this.source = "attacker";
             
             if (attacker instanceof EntityLiving && ((EntityLiving) attacker).getHeldItemMainhand() != null)
                 stack = ((EntityLiving) attacker).getHeldItemMainhand();
             
-        } else if (event.getSource() == DamageSource.CACTUS)
-            this.source = EnhancedDamageSource.CACTUS;
-        else if (event.getSource() == DamageSource.FALL || event.getSource() == DamageSource.FALLING_BLOCK)
-            this.source = EnhancedDamageSource.FALL;
-        else if (event.getSource().equals(DamageSource.DROWN))
-            this.source = EnhancedDamageSource.DROWN;
-        else if (event.getSource().isFireDamage() || event.getSource() == DamageSource.ON_FIRE)
-            this.source = EnhancedDamageSource.FIRE;
-        else
-            this.source = EnhancedDamageSource.UNKOWN;
+        } else
+            this.source = event.getSource().damageType;
     }
     
     public DamagePacket() {
@@ -64,7 +56,8 @@ public class DamagePacket extends CreativeCorePacket {
         
         buf.writeFloat(damage);
         buf.writeFloat(distance);
-        buf.writeInt(source.ordinal());
+        writeString(buf, source);
+        buf.writeBoolean(fire);
     }
     
     @Override
@@ -75,7 +68,8 @@ public class DamagePacket extends CreativeCorePacket {
             stack = readItemStack(buf);
         damage = buf.readFloat();
         distance = buf.readFloat();
-        source = EnhancedDamageSource.values()[buf.readInt()];
+        source = readString(buf);
+        fire = buf.readBoolean();
     }
     
     @Override
