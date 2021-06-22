@@ -73,12 +73,6 @@ public abstract class VisualTypeTexture extends VisualType {
     
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean supportsColor() {
-        return true;
-    }
-    
-    @Override
-    @SideOnly(Side.CLIENT)
     public int getVariantAmount() {
         return resources.length;
     }

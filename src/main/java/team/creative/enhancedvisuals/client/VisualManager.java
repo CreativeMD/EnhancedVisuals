@@ -122,7 +122,8 @@ public class VisualManager {
             
             Particle particle = new Particle(vt, handler, curve, generateOffset(rand, screenWidth, width), generateOffset(rand, screenHeight, height), width, height, rotate ? rand
                 .nextFloat() * 360 : 0, rand.nextInt(vt.getVariantAmount()));
-            particle.color = color;
+            if (color != null)
+                particle.color = color;
             add(particle);
         }
     }

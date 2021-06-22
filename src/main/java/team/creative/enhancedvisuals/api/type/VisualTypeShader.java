@@ -54,12 +54,6 @@ public abstract class VisualTypeShader extends VisualType {
     
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean supportsColor() {
-        return false;
-    }
-    
-    @Override
-    @SideOnly(Side.CLIENT)
     public void resize(Framebuffer buffer) {
         if (shaderGroup != null)
             shaderGroup.createBindFramebuffers(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);

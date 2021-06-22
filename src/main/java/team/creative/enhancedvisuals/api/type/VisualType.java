@@ -1,11 +1,10 @@
 package team.creative.enhancedvisuals.api.type;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
-
-import javax.vecmath.Color3b;
 
 import com.creativemd.creativecore.common.config.api.CreativeConfig;
 import com.creativemd.creativecore.common.config.api.ICreativeConfig;
@@ -30,6 +29,8 @@ public abstract class VisualType implements ICreativeConfig {
     @CreativeConfig
     public boolean disabled = false;
     
+    private boolean isEffectedByWater = true;
+    
     @CreativeConfig
     @CreativeConfig.DecimalRange(max = 1, min = 0)
     public float opacity = 1;
@@ -44,8 +45,13 @@ public abstract class VisualType implements ICreativeConfig {
         types.add(this);
     }
     
+    public VisualType setIgnoreWater() {
+        isEffectedByWater = false;
+        return this;
+    }
+    
     public boolean isAffectedByWater() {
-        return cat.isAffectedByWater();
+        return cat.isAffectedByWater() && isEffectedByWater;
     }
     
     @SideOnly(Side.CLIENT)
@@ -64,11 +70,7 @@ public abstract class VisualType implements ICreativeConfig {
         return 1;
     }
     
-    public boolean supportsColor() {
-        return false;
-    }
-    
-    public Color3b getColor() {
+    public Color getColor() {
         return null;
     }
     
