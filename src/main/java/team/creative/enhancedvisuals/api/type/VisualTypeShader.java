@@ -50,13 +50,7 @@ public abstract class VisualTypeShader extends VisualType {
     }
     
     @Override
-    @OnlyIn(value = Dist.CLIENT)
-    public boolean supportsColor() {
-        return false;
-    }
-    
-    @Override
-    @OnlyIn(value = Dist.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void resize(Framebuffer buffer) {
         if (shaderGroup != null)
             shaderGroup.resize(Minecraft.getInstance().getWindow().getWidth(), Minecraft.getInstance().getWindow().getHeight());

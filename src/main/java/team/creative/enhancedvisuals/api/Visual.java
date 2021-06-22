@@ -31,6 +31,7 @@ public class Visual {
         this.animation = animation;
         this.variant = variant;
         this.endless = false;
+        this.color = type.getColor();
     }
     
     public Visual(VisualType type, VisualHandler handler, int variant) {
@@ -39,6 +40,7 @@ public class Visual {
         this.animation = null;
         this.variant = variant;
         this.endless = true;
+        this.color = type.getColor();
     }
     
     public void setOpacityInternal(float opacity) {

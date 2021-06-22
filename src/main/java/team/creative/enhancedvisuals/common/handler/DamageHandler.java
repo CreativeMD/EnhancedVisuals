@@ -14,6 +14,7 @@ import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
 import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.api.type.VisualType;
 import team.creative.enhancedvisuals.api.type.VisualTypeParticle;
+import team.creative.enhancedvisuals.api.type.VisualTypeParticleColored;
 import team.creative.enhancedvisuals.client.VisualManager;
 import team.creative.enhancedvisuals.common.packet.DamagePacket;
 
@@ -77,16 +78,25 @@ public class DamageHandler extends VisualHandler {
     @CreativeConfig
     public IntMinMax drownDuration = new IntMinMax(10, 15);
     @CreativeConfig
-    public VisualType waterDrown = new VisualTypeParticle("water");
+    public VisualType waterDrown = new VisualTypeParticleColored("blob", new Color(0, 0, 255)).setIgnoreWater();
     
     @CreativeConfig
     public int temperatureSplashes = 4;
     @CreativeConfig
     public IntMinMax temperatureDuration = new IntMinMax(10, 15);
     @CreativeConfig
-    public VisualType freeze = new VisualTypeParticle("freeze");
+    public VisualType freeze = new VisualTypeParticleColored("blob", new Color(0, 0, 255));
     @CreativeConfig
-    public VisualType heat = new VisualTypeParticle("heat");
+    public VisualType heat = new VisualTypeParticleColored("blob", new Color(0, 0, 255));
+    
+    @CreativeConfig
+    public int effectSplashes = 4;
+    @CreativeConfig
+    public IntMinMax effectDuration = new IntMinMax(10, 15);
+    @CreativeConfig
+    public VisualType posion = new VisualTypeParticleColored("blob", new Color(0, 126, 0)).setIgnoreWater();
+    @CreativeConfig
+    public VisualType wither = new VisualTypeParticleColored("blob", new Color(0, 0, 0)).setIgnoreWater();
     
     @CreativeConfig
     public DecimalCurve healthScaler = new DecimalCurve(0, 3, 12, 1.5);
@@ -130,6 +140,10 @@ public class DamageHandler extends VisualHandler {
             VisualManager.addParticlesFadeOut(freeze, this, temperatureSplashes, temperatureDuration, true);
         else if (packet.source.equalsIgnoreCase("hyperthermia"))
             VisualManager.addParticlesFadeOut(heat, this, temperatureSplashes, temperatureDuration, true);
+        else if (packet.source.equalsIgnoreCase("wither"))
+            VisualManager.addParticlesFadeOut(wither, this, effectSplashes, effectDuration, true);
+        else if (packet.source.equalsIgnoreCase("magic"))
+            VisualManager.addParticlesFadeOut(posion, this, effectSplashes, effectDuration, true);
         else if (packet.fire || packet.source.equalsIgnoreCase("onFire")) {
             FireParticlesEvent event = new FireParticlesEvent(fireSplashes, fireDuration.min, fireDuration.max);
             MinecraftForge.EVENT_BUS.post(event);

@@ -71,18 +71,12 @@ public abstract class VisualTypeTexture extends VisualType {
     }
     
     @Override
-    @OnlyIn(value = Dist.CLIENT)
-    public boolean supportsColor() {
-        return true;
-    }
-    
-    @Override
-    @OnlyIn(value = Dist.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public int getVariantAmount() {
         return resources.length;
     }
     
-    @OnlyIn(value = Dist.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public ResourceLocation getResource(Visual visual) {
         if (animationSpeed > 0) {
             long time = Math.abs(System.nanoTime() / 3000000 / animationSpeed);

@@ -28,6 +28,8 @@ public abstract class VisualType implements ICreativeConfig {
     @CreativeConfig
     public boolean disabled = false;
     
+    private boolean isEffectedByWater = true;
+    
     @CreativeConfig
     @CreativeConfig.DecimalRange(max = 1, min = 0)
     public float opacity = 1;
@@ -42,14 +44,19 @@ public abstract class VisualType implements ICreativeConfig {
         types.add(this);
     }
     
-    public boolean isAffectedByWater() {
-        return cat.isAffectedByWater();
+    public VisualType setIgnoreWater() {
+        isEffectedByWater = false;
+        return this;
     }
     
-    @OnlyIn(value = Dist.CLIENT)
+    public boolean isAffectedByWater() {
+        return cat.isAffectedByWater() && isEffectedByWater;
+    }
+    
+    @OnlyIn(Dist.CLIENT)
     public abstract void loadResources(IResourceManager manager);
     
-    @OnlyIn(value = Dist.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public abstract void render(VisualHandler handler, Visual visual, TextureManager manager, int screenWidth, int screenHeight, float partialTicks);
     
     @Override
@@ -57,20 +64,16 @@ public abstract class VisualType implements ICreativeConfig {
         
     }
     
-    @OnlyIn(value = Dist.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public int getVariantAmount() {
         return 1;
-    }
-    
-    public boolean supportsColor() {
-        return false;
     }
     
     public Color getColor() {
         return null;
     }
     
-    @OnlyIn(value = Dist.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void resize(Framebuffer buffer) {
         
     }
