@@ -78,6 +78,10 @@ public abstract class VisualType implements ICreativeConfig {
         
     }
     
+    public boolean canRotate() {
+        return true;
+    }
+    
     public boolean isVisible(VisualHandler handler, Visual visual) {
         return visual.getOpacity() > 0;
     }

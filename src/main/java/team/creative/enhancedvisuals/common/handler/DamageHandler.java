@@ -13,6 +13,7 @@ import team.creative.creativecore.common.config.premade.IntMinMax;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
 import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.api.type.VisualType;
+import team.creative.enhancedvisuals.api.type.VisualTypeOverlay;
 import team.creative.enhancedvisuals.api.type.VisualTypeParticle;
 import team.creative.enhancedvisuals.api.type.VisualTypeParticleColored;
 import team.creative.enhancedvisuals.client.VisualManager;
@@ -81,22 +82,53 @@ public class DamageHandler extends VisualHandler {
     public VisualType waterDrown = new VisualTypeParticleColored("blob", new Color(0, 0, 255)).setIgnoreWater();
     
     @CreativeConfig
-    public int temperatureSplashes = 4;
+    public int lightningSplashes = 10;
     @CreativeConfig
-    public IntMinMax temperatureDuration = new IntMinMax(10, 15);
+    public IntMinMax lightningDuration = new IntMinMax(10, 15);
     @CreativeConfig
-    public VisualType freeze = new VisualTypeParticleColored("blob", new Color(0, 0, 255));
+    public VisualType lightning = new VisualTypeParticleColored("shock", new Color(120, 120, 255)).setIgnoreWater();
+    
     @CreativeConfig
-    public VisualType heat = new VisualTypeParticleColored("blob", new Color(0, 0, 255));
+    public int freezeSplashes = 4;
+    @CreativeConfig
+    public IntMinMax freezeDuration = new IntMinMax(10, 15);
+    @CreativeConfig
+    public VisualType freeze = new VisualTypeParticleColored("ice", new Color(200, 255, 255));
+    
+    @CreativeConfig
+    public int flyIntoWallSplashes = 4;
+    @CreativeConfig
+    public IntMinMax flyIntoWallDuration = new IntMinMax(10, 15);
+    @CreativeConfig
+    public VisualType flyIntoWall = new VisualTypeParticleColored("break", new Color(255, 255, 255));
+    
+    @CreativeConfig
+    public int heatSplashes = 4;
+    @CreativeConfig
+    public IntMinMax heatDuration = new IntMinMax(10, 15);
+    @CreativeConfig
+    public VisualType heat = new VisualTypeParticleColored("heat", new Color(255, 255, 255)) {
+        
+        @Override
+        public boolean canRotate() {
+            return false;
+        }
+        
+    };
     
     @CreativeConfig
     public int effectSplashes = 4;
     @CreativeConfig
     public IntMinMax effectDuration = new IntMinMax(10, 15);
     @CreativeConfig
-    public VisualType posion = new VisualTypeParticleColored("blob", new Color(0, 126, 0)).setIgnoreWater();
+    public VisualType parasites = new VisualTypeParticleColored("parasite", new Color(0, 126, 0)).setIgnoreWater();
     @CreativeConfig
-    public VisualType wither = new VisualTypeParticleColored("blob", new Color(0, 0, 0)).setIgnoreWater();
+    public VisualType wither = new VisualTypeParticleColored("wither", 0, new DecimalMinMax(1.5, 2.5), new Color(0, 0, 0)).setIgnoreWater();
+    
+    @CreativeConfig
+    public IntMinMax tunnelDuration = new IntMinMax(10, 15);
+    @CreativeConfig
+    public VisualType tunnel = new VisualTypeOverlay("tunnel", 0).setIgnoreWater();
     
     @CreativeConfig
     public DecimalCurve healthScaler = new DecimalCurve(0, 3, 12, 1.5);
@@ -137,13 +169,19 @@ public class DamageHandler extends VisualHandler {
         else if (packet.source.equalsIgnoreCase("drown"))
             VisualManager.addParticlesFadeOut(waterDrown, this, drownSplashes, drownDuration, true);
         else if (packet.source.equalsIgnoreCase("hypothermia"))
-            VisualManager.addParticlesFadeOut(freeze, this, temperatureSplashes, temperatureDuration, true);
+            VisualManager.addParticlesFadeOut(freeze, this, freezeSplashes, freezeDuration, true);
         else if (packet.source.equalsIgnoreCase("hyperthermia"))
-            VisualManager.addParticlesFadeOut(heat, this, temperatureSplashes, temperatureDuration, true);
+            VisualManager.addParticlesFadeOut(heat, this, heatSplashes, heatDuration, true);
         else if (packet.source.equalsIgnoreCase("wither"))
             VisualManager.addParticlesFadeOut(wither, this, effectSplashes, effectDuration, true);
-        else if (packet.source.equalsIgnoreCase("magic"))
-            VisualManager.addParticlesFadeOut(posion, this, effectSplashes, effectDuration, true);
+        else if (packet.source.equalsIgnoreCase("parasites"))
+            VisualManager.addParticlesFadeOut(parasites, this, effectSplashes, effectDuration, true);
+        else if (packet.source.equalsIgnoreCase("lightningBolt"))
+            VisualManager.addParticlesFadeOut(lightning, this, lightningSplashes, lightningDuration, true);
+        else if (packet.source.equalsIgnoreCase("flyIntoWall"))
+            VisualManager.addParticlesFadeOut(flyIntoWall, this, flyIntoWallSplashes, flyIntoWallDuration, true);
+        else if (packet.source.equalsIgnoreCase("dehydration") || packet.source.equalsIgnoreCase("starve"))
+            VisualManager.addVisualFadeOut(tunnel, this, tunnelDuration);
         else if (packet.fire || packet.source.equalsIgnoreCase("onFire")) {
             FireParticlesEvent event = new FireParticlesEvent(fireSplashes, fireDuration.min, fireDuration.max);
             MinecraftForge.EVENT_BUS.post(event);
