@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -13,7 +14,6 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -22,6 +22,7 @@ import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualCategory;
 import team.creative.enhancedvisuals.api.VisualHandler;
+import team.creative.enhancedvisuals.client.render.TextureCache;
 
 public abstract class VisualTypeTexture extends VisualType {
     
@@ -40,7 +41,7 @@ public abstract class VisualTypeTexture extends VisualType {
     }
     
     @SideOnly(Side.CLIENT)
-    public ResourceLocation[] resources;
+    public TextureCache[] resources;
     @SideOnly(Side.CLIENT)
     public Dimension dimension;
     
@@ -49,26 +50,26 @@ public abstract class VisualTypeTexture extends VisualType {
     public void loadResources(IResourceManager manager) {
         String baseLocation = "visuals/" + cat.name() + "/" + name + "/" + name;
         
-        ArrayList<ResourceLocation> locations = new ArrayList<>();
+        List<TextureCache> caches = new ArrayList<>();
         int i = 0;
-        ResourceLocation location = null;
-        IResource resource = null;
+        TextureCache resource = null;
+        String domain = this.domain == null ? EnhancedVisuals.MODID : this.domain;
         try {
-            while ((resource = manager.getResource((location = new ResourceLocation(domain == null ? EnhancedVisuals.MODID : domain, baseLocation + i + ".png")))) != null) {
+            while ((resource = TextureCache.parse(manager, domain, baseLocation + i)) != null) {
                 if (i == 0) {
-                    BufferedImage image = ImageIO.read(resource.getInputStream());
+                    BufferedImage image = ImageIO.read(manager.getResource(resource.getFirst()).getInputStream());
                     dimension = new Dimension(image.getWidth(), image.getHeight());
                 }
-                locations.add(location);
+                caches.add(resource);
                 i++;
             }
         } catch (IOException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
         }
-        resources = locations.toArray(new ResourceLocation[0]);
-        if (resources.length == 0) {
+        resources = caches.toArray(new TextureCache[0]);
+        if (resources.length == 0)
             EnhancedVisuals.LOGGER.warn("Could not find any resources for '" + name + "'!");
-        }
+        
     }
     
     @Override
@@ -81,9 +82,9 @@ public abstract class VisualTypeTexture extends VisualType {
     public ResourceLocation getResource(Visual visual) {
         if (animationSpeed > 0) {
             long time = Math.abs(System.nanoTime() / 3000000 / animationSpeed);
-            return resources[(int) (time % resources.length)];
+            return resources[(int) (time % resources.length)].getResource();
         }
-        return resources[visual.variant];
+        return resources[visual.variant].getResource();
     }
     
     @Override
