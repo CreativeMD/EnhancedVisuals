@@ -3,10 +3,10 @@ package team.creative.enhancedvisuals.api;
 import javax.annotation.Nullable;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import team.creative.creativecore.common.config.api.CreativeConfig;
@@ -30,11 +30,11 @@ public class VisualHandler implements ICreativeConfig {
         
     }
     
-    public void tick(@Nullable PlayerEntity player) {
+    public void tick(@Nullable Player player) {
         
     }
     
-    public boolean isEnabled(@Nullable PlayerEntity player) {
+    public boolean isEnabled(@Nullable Player player) {
         return enabled && opacity > 0;
     }
     
@@ -58,9 +58,9 @@ public class VisualHandler implements ICreativeConfig {
         if (!EVClient.shouldRender())
             return;
         if (pos != null)
-            Minecraft.getInstance().getSoundManager().play(new PositionedSound(location, SoundCategory.MASTER, volume, 1, pos));
+            Minecraft.getInstance().getSoundManager().play(new PositionedSound(location, SoundSource.MASTER, volume, 1, pos));
         else
-            Minecraft.getInstance().getSoundManager().play(new PositionedSound(location, SoundCategory.MASTER, volume, 1));
+            Minecraft.getInstance().getSoundManager().play(new PositionedSound(location, SoundSource.MASTER, volume, 1));
     }
     
     @OnlyIn(value = Dist.CLIENT)
@@ -68,9 +68,9 @@ public class VisualHandler implements ICreativeConfig {
         if (!EVClient.shouldRender())
             return;
         if (pos != null)
-            Minecraft.getInstance().getSoundManager().play(new TickedSound(location, SoundCategory.MASTER, 1, pos, volume));
+            Minecraft.getInstance().getSoundManager().play(new TickedSound(location, SoundSource.MASTER, 1, pos, volume));
         else
-            Minecraft.getInstance().getSoundManager().play(new TickedSound(location, SoundCategory.MASTER, 1, volume));
+            Minecraft.getInstance().getSoundManager().play(new TickedSound(location, SoundSource.MASTER, 1, volume));
     }
     
 }

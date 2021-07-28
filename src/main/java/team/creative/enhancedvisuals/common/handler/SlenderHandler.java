@@ -2,11 +2,11 @@ package team.creative.enhancedvisuals.common.handler;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityPredicate;
-import net.minecraft.entity.monster.EndermanEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.MinecraftForge;
 import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.enhancedvisuals.api.Visual;
@@ -43,7 +43,7 @@ public class SlenderHandler extends VisualHandler {
     }
     
     @Override
-    public void tick(@Nullable PlayerEntity player) {
+    public void tick(@Nullable Player player) {
         if (slenderVisual == null) {
             slenderVisual = new Visual(slender, this, 0);
             VisualManager.add(slenderVisual);
@@ -57,15 +57,15 @@ public class SlenderHandler extends VisualHandler {
             double d1 = player.getY();
             double d2 = player.getZ();
             
-            AxisAlignedBB box = player.getBoundingBox();
+            AABB box = player.getBoundingBox();
             box = box.inflate(16, 16, 16);
             
-            SelectEndermanEvent event = new SelectEndermanEvent(new EntityPredicate());
+            SelectEndermanEvent event = new SelectEndermanEvent(TargetingConditions.forNonCombat());
             MinecraftForge.EVENT_BUS.post(event);
             if (!event.isCanceled()) {
-                Entity mob = player.level.getNearestEntity(EndermanEntity.class, event.predicate, player, d0, d1, d2, box);
+                Entity mob = player.level.getNearestEntity(EnderMan.class, event.conditions, player, d0, d1, d2, box);
                 if (mutantEnderman != null)
-                    mob = player.level.getNearestEntity(mutantEnderman, EntityPredicate.DEFAULT, player, d0, d1, d2, box);
+                    mob = player.level.getNearestEntity(mutantEnderman, TargetingConditions.forNonCombat(), player, d0, d1, d2, box);
                 
                 if (mob != null) {
                     float distModifier = (float) (1.0F / Math.pow(Math.sqrt(Math.pow(d0 - mob.getX(), 2) + Math.pow(d1 - mob.getY(), 2) + Math.pow(d2 - mob.getZ(), 2)) / 3.0D, 2));

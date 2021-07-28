@@ -2,7 +2,7 @@ package team.creative.enhancedvisuals.common.addon.survive;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualHandler;
@@ -46,12 +46,12 @@ public class TemperatureHandler extends VisualHandler {
     @CreativeConfig
     public double hottestTemperature = 41;
     
-    public double getTemperature(PlayerEntity player) {
+    public double getTemperature(Player player) {
         return player.getPersistentData().getCompound("survive:PlayerData").getCompound("TemperatureStats").getDouble("temperatureLevel");
     }
     
     @Override
-    public void tick(@Nullable PlayerEntity player) {
+    public void tick(@Nullable Player player) {
         if (freezeVisual == null) {
             freezeVisual = new Visual(freeze, this, 0);
             freezeVisual.setOpacityInternal(0);

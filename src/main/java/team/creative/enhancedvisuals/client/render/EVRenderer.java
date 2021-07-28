@@ -2,11 +2,14 @@ package team.creative.enhancedvisuals.client.render;
 
 import java.util.Collection;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Matrix4f;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.DeathScreen;
+import net.minecraft.client.gui.screens.DeathScreen;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.RenderTickEvent;
@@ -51,51 +54,47 @@ public class EVRenderer {
                 int screenWidth = mc.getWindow().getGuiScaledWidth();
                 int screenHeight = mc.getWindow().getGuiScaledHeight();
                 
-                RenderSystem.pushMatrix();
                 TextureManager manager = mc.getTextureManager();
                 float partialTicks = event.renderTickTime;
                 
                 //RenderHelper.enableStandardItemLighting();
-                RenderSystem.disableLighting();
-                RenderSystem.clear(256, false);
-                RenderSystem.matrixMode(5889);
-                RenderSystem.loadIdentity();
-                RenderSystem.ortho(0.0D, mc.getWindow().getGuiScaledWidth(), mc.getWindow().getGuiScaledHeight(), 0.0D, 1000.0D, 3000.0D);
-                RenderSystem.matrixMode(5888);
-                RenderSystem.loadIdentity();
-                RenderSystem.translatef(0.0F, 0.0F, -2000.0F);
+                RenderSystem.clear(256, Minecraft.ON_OSX);
+                RenderSystem.setShader(GameRenderer::getPositionColorShader);
+                Matrix4f matrix4f = Matrix4f.orthographic(0.0F, (float) (mc.getWindow().getWidth() / mc.getWindow().getGuiScale()), 0.0F, (float) (mc.getWindow().getHeight() / mc
+                        .getWindow().getGuiScale()), 1000.0F, 3000.0F);
+                RenderSystem.setProjectionMatrix(matrix4f);
+                PoseStack stack = RenderSystem.getModelViewStack();
+                stack.setIdentity();
+                stack.translate(0.0D, 0.0D, -2000.0D);
+                RenderSystem.applyModelViewMatrix();
+                Lighting.setupFor3DItems();
+                RenderSystem.disableTexture();
                 
                 RenderSystem.enableBlend();
                 RenderSystem.disableDepthTest();
                 RenderSystem.depthMask(false);
                 RenderSystem.blendFuncSeparate(770, 771, 1, 0);
-                RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-                RenderSystem.disableAlphaTest();
+                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+                //RenderSystem.disableAlphaTest();
                 RenderSystem.enableBlend();
                 
-                renderVisuals(VisualManager.visuals(VisualCategory.overlay), manager, screenWidth, screenHeight, partialTicks);
-                renderVisuals(VisualManager.visuals(VisualCategory.particle), manager, screenWidth, screenHeight, partialTicks);
+                renderVisuals(stack, VisualManager.visuals(VisualCategory.overlay), manager, screenWidth, screenHeight, partialTicks);
+                renderVisuals(stack, VisualManager.visuals(VisualCategory.particle), manager, screenWidth, screenHeight, partialTicks);
                 
                 RenderSystem.disableBlend();
                 RenderSystem.disableDepthTest();
-                RenderSystem.disableAlphaTest();
-                RenderSystem.enableTexture();
-                RenderSystem.matrixMode(5890);
-                RenderSystem.pushMatrix();
-                RenderSystem.loadIdentity();
-                renderVisuals(VisualManager.visuals(VisualCategory.shader), manager, screenWidth, screenHeight, partialTicks);
-                RenderSystem.popMatrix();
+                //RenderSystem.disableAlphaTest();
                 
-                RenderSystem.depthMask(true);
-                RenderSystem.enableDepthTest();
-                RenderSystem.enableAlphaTest();
-                RenderSystem.enableBlend();
-                RenderSystem.disableLighting();
+                RenderSystem.disableBlend();
+                RenderSystem.disableDepthTest();
+                RenderSystem.enableTexture();
+                RenderSystem.resetTextureMatrix();
+                renderVisuals(stack, VisualManager.visuals(VisualCategory.shader), manager, screenWidth, screenHeight, partialTicks);
+                
+                RenderSystem.clear(256, Minecraft.ON_OSX);
                 
                 mc.getMainRenderTarget().bindWrite(true);
-                RenderSystem.matrixMode(5888);
                 
-                RenderSystem.popMatrix();
                 lastRenderedMessage = null;
             } else {
                 if (EnhancedVisuals.MESSAGES.enabled) {
@@ -103,22 +102,22 @@ public class EVRenderer {
                         lastRenderedMessage = EnhancedVisuals.MESSAGES.pickRandomDeathMessage();
                     
                     if (lastRenderedMessage != null)
-                        mc.font.drawShadow(new MatrixStack(), "\"" + lastRenderedMessage + "\"", mc.screen.width / 2 - mc.font.width(lastRenderedMessage) / 2, 114, 16777215);
+                        mc.font.drawShadow(new PoseStack(), "\"" + lastRenderedMessage + "\"", mc.screen.width / 2 - mc.font.width(lastRenderedMessage) / 2, 114, 16777215);
                 }
             }
         }
     }
     
-    private static void renderVisuals(Collection<Visual> visuals, TextureManager manager, int screenWidth, int screenHeight, float partialTicks) {
+    private static void renderVisuals(PoseStack stack, Collection<Visual> visuals, TextureManager manager, int screenWidth, int screenHeight, float partialTicks) {
         if (visuals == null || visuals.isEmpty())
             return;
         try {
             
             for (Visual visual : visuals) {
                 if (visual.isVisible()) {
-                    RenderSystem.pushMatrix();
-                    visual.render(manager, screenWidth, screenHeight, partialTicks);
-                    RenderSystem.popMatrix();
+                    stack.pushPose();
+                    visual.render(stack, manager, screenWidth, screenHeight, partialTicks);
+                    stack.popPose();
                 }
             }
         } catch (Exception e) {

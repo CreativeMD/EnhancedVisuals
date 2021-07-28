@@ -8,13 +8,14 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat.Mode;
+
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.resources.IResource;
-import net.minecraft.resources.IResourceManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import team.creative.creativecore.common.config.api.CreativeConfig;
@@ -40,14 +41,14 @@ public abstract class VisualTypeTexture extends VisualType {
         this(category, name, null, animationSpeed);
     }
     
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public TextureCache[] resources;
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Dimension dimension;
     
     @Override
     @OnlyIn(value = Dist.CLIENT)
-    public void loadResources(IResourceManager manager) {
+    public void loadResources(ResourceManager manager) {
         String baseLocation = "visuals/" + cat.name() + "/" + name + "/" + name;
         
         List<TextureCache> caches = new ArrayList<>();
@@ -90,8 +91,8 @@ public abstract class VisualTypeTexture extends VisualType {
     @Override
     @OnlyIn(value = Dist.CLIENT)
     public void render(VisualHandler handler, Visual visual, TextureManager manager, int screenWidth, int screenHeight, float partialTicks) {
-        manager.bind(getResource(visual));
-        Tessellator tessellator = Tessellator.getInstance();
+        manager.bindForSetup(getResource(visual));
+        Tesselator tessellator = Tesselator.getInstance();
         BufferBuilder renderer = tessellator.getBuilder();
         
         int red = visual.color != null ? visual.color.getRed() : 255;
@@ -103,7 +104,7 @@ public abstract class VisualTypeTexture extends VisualType {
         int height = visual.getHeight(screenHeight);
         
         float opacity = visual.getOpacity();
-        renderer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+        renderer.begin(Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
         renderer.vertex(0.0D, height, z).uv(0.0F, 1.0F).color(red, green, blue, (int) (opacity * 255)).endVertex();
         renderer.vertex(width, height, z).uv(1.0F, 1.0F).color(red, green, blue, (int) (opacity * 255)).endVertex();
         renderer.vertex(width, 0.0D, z).uv(1.0F, 0.0F).color(red, green, blue, (int) (opacity * 255)).endVertex();

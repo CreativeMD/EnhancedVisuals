@@ -4,14 +4,17 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraftforge.common.MinecraftForge;
 import team.creative.creativecore.common.config.api.CreativeConfig;
+import team.creative.creativecore.common.config.premade.DecimalMinMax;
 import team.creative.creativecore.common.config.premade.IntMinMax;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
 import team.creative.enhancedvisuals.api.VisualHandler;
+import team.creative.enhancedvisuals.api.event.FireParticlesEvent;
 import team.creative.enhancedvisuals.api.type.VisualType;
 import team.creative.enhancedvisuals.api.type.VisualTypeOverlay;
 import team.creative.enhancedvisuals.api.type.VisualTypeParticle;
@@ -141,7 +144,7 @@ public class DamageHandler extends VisualHandler {
     
     public static Color bloodColor = new Color(0.3F, 0.01F, 0.01F, 0.7F);
     
-    public void playerDamaged(PlayerEntity player, DamagePacket packet) {
+    public void playerDamaged(Player player, DamagePacket packet) {
         if (packet.source.equalsIgnoreCase("attacker")) {
             if (packet.attackerClass.contains("arrow"))
                 createVisualFromDamageAndDistance(pierce, packet.damage, player, bloodDuration);
@@ -185,13 +188,14 @@ public class DamageHandler extends VisualHandler {
         else if (packet.fire || packet.source.equalsIgnoreCase("onFire")) {
             FireParticlesEvent event = new FireParticlesEvent(fireSplashes, fireDuration.min, fireDuration.max);
             MinecraftForge.EVENT_BUS.post(event);
-            VisualManager.addParticlesFadeOut(fire, this, event.getNewFireSplashes(), new IntMinMax(event.getNewFireDurationMin(), event.getNewFireDurationMax()), true, new Color(0, 0, 0));
+            VisualManager.addParticlesFadeOut(fire, this, event
+                    .getNewFireSplashes(), new IntMinMax(event.getNewFireDurationMin(), event.getNewFireDurationMax()), true, new Color(0, 0, 0));
         } else if (!damageBlackList.contains(packet.source))
             createVisualFromDamageAndDistance(splatter, Math.min(20, packet.damage), player, bloodDuration);
         
     }
     
-    public void createVisualFromDamageAndDistance(VisualType type, float damage, PlayerEntity player, IntMinMax duration) {
+    public void createVisualFromDamageAndDistance(VisualType type, float damage, Player player, IntMinMax duration) {
         if (damage <= 0.0F)
             return;
         

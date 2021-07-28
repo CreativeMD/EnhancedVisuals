@@ -4,7 +4,7 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.premade.DecimalMinMax;
 import team.creative.creativecore.common.config.premade.IntMinMax;
@@ -31,7 +31,7 @@ public class SplashHandler extends VisualHandler {
     public Random rand = new Random();
     
     @Override
-    public void tick(@Nullable PlayerEntity player) {
+    public void tick(@Nullable Player player) {
         if (player != null) {
             boolean isInWater = EVEvents.areEyesInWater(player);
             if (isInWater != wasInWater)

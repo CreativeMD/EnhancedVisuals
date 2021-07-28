@@ -6,9 +6,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
+import com.mojang.blaze3d.pipeline.RenderTarget;
+
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.shader.Framebuffer;
-import net.minecraft.resources.IResourceManager;
+import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import team.creative.creativecore.common.config.api.CreativeConfig;
@@ -54,7 +55,7 @@ public abstract class VisualType implements ICreativeConfig {
     }
     
     @OnlyIn(Dist.CLIENT)
-    public abstract void loadResources(IResourceManager manager);
+    public abstract void loadResources(ResourceManager manager);
     
     @OnlyIn(Dist.CLIENT)
     public abstract void render(VisualHandler handler, Visual visual, TextureManager manager, int screenWidth, int screenHeight, float partialTicks);
@@ -74,7 +75,7 @@ public abstract class VisualType implements ICreativeConfig {
     }
     
     @OnlyIn(Dist.CLIENT)
-    public void resize(Framebuffer buffer) {
+    public void resize(RenderTarget buffer) {
         
     }
     

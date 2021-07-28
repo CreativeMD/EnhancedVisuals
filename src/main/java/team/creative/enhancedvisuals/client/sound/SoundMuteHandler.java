@@ -6,25 +6,25 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.ChannelManager;
-import net.minecraft.client.audio.ChannelManager.Entry;
-import net.minecraft.client.audio.ISound;
-import net.minecraft.client.audio.SoundEngine;
-import net.minecraft.client.audio.SoundHandler;
+import net.minecraft.client.resources.sounds.SoundInstance;
+import net.minecraft.client.sounds.ChannelAccess;
+import net.minecraft.client.sounds.ChannelAccess.ChannelHandle;
+import net.minecraft.client.sounds.SoundEngine;
+import net.minecraft.client.sounds.SoundManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
 
 @OnlyIn(value = Dist.CLIENT)
 public class SoundMuteHandler {
     
-    private static Method calculateVolumeMethod = ObfuscationReflectionHelper.findMethod(SoundEngine.class, "func_188770_e", ISound.class);
+    private static Method calculateVolumeMethod = ObfuscationReflectionHelper.findMethod(SoundEngine.class, "m_120327_", SoundInstance.class);
     
     public static boolean isMuting = false;
     
     public static SoundEngine engine;
-    public static SoundHandler handler;
+    public static SoundManager manager;
     
     public static DecimalCurve muteGraph;
     public static int timeTick = 0;
@@ -46,11 +46,11 @@ public class SoundMuteHandler {
         return volume * (isMuting ? (float) (1 - muteGraph.valueAt(timeTick)) : 1);
     }
     
-    private static Field playingSoundsChannelField = ObfuscationReflectionHelper.findField(SoundEngine.class, "field_217942_m");
+    private static Field playingSoundsChannelField = ObfuscationReflectionHelper.findField(SoundEngine.class, "f_120226_");
     
-    public static Map<ISound, ChannelManager.Entry> getSounds() {
+    public static Map<SoundInstance, ChannelAccess.ChannelHandle> getSounds() {
         try {
-            return (Map<ISound, Entry>) playingSoundsChannelField.get(engine);
+            return (Map<SoundInstance, ChannelHandle>) playingSoundsChannelField.get(engine);
         } catch (IllegalArgumentException | IllegalAccessException e) {
             e.printStackTrace();
             return null;
@@ -77,8 +77,8 @@ public class SoundMuteHandler {
     
     public static boolean startMuting(DecimalCurve muteGraph) {
         if (engine == null) {
-            handler = Minecraft.getInstance().getSoundManager();
-            engine = ObfuscationReflectionHelper.getPrivateValue(SoundHandler.class, handler, "field_147694_f");
+            manager = Minecraft.getInstance().getSoundManager();
+            engine = ObfuscationReflectionHelper.getPrivateValue(SoundManager.class, manager, "f_120349_");
         }
         
         if (isMuting && SoundMuteHandler.muteGraph.valueAt(timeTick) > muteGraph.valueAt(0)) {

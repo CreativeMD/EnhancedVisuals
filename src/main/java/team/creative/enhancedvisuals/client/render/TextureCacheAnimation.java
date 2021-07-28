@@ -1,6 +1,6 @@
 package team.creative.enhancedvisuals.client.render;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class TextureCacheAnimation extends TextureCache {
     

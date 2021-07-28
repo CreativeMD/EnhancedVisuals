@@ -4,9 +4,9 @@ function initializeCoreMod() {
         'soundtransformer': {
             'target': {
                 'type': 'METHOD',
-				'class': 'net.minecraft.client.audio.SoundEngine',
-				'methodName': 'func_188770_e',
-				'methodDesc': '(Lnet/minecraft/client/audio/ISound;)F'
+				'class': 'net.minecraft.client.sounds.SoundEngine',
+				'methodName': 'm_120327_',
+				'methodDesc': '(Lnet/minecraft/client/resources/sounds/SoundInstance;)F'
             },
             'transformer': function(method) {
 				var asmapi = Java.type('net.minecraftforge.coremod.api.ASMAPI');

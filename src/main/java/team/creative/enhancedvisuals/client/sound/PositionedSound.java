@@ -1,25 +1,25 @@
 package team.creative.enhancedvisuals.client.sound;
 
-import net.minecraft.client.audio.LocatableSound;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.client.resources.sounds.AbstractSoundInstance;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
 
-public class PositionedSound extends LocatableSound {
+public class PositionedSound extends AbstractSoundInstance {
     
-    public PositionedSound(ResourceLocation location, SoundCategory category, float volume, float pitch) {
+    public PositionedSound(ResourceLocation location, SoundSource category, float volume, float pitch) {
         super(location, category);
         this.volume = volume;
         this.pitch = pitch;
-        this.attenuation = AttenuationType.NONE;
+        this.attenuation = Attenuation.NONE;
     }
     
-    public PositionedSound(ResourceLocation location, SoundCategory category, float volume, float pitch, BlockPos pos) {
+    public PositionedSound(ResourceLocation location, SoundSource category, float volume, float pitch, BlockPos pos) {
         this(location, category, volume, pitch);
         this.x = pos.getX();
         this.y = pos.getY();
         this.z = pos.getZ();
-        this.attenuation = AttenuationType.LINEAR;
+        this.attenuation = Attenuation.LINEAR;
     }
     
 }

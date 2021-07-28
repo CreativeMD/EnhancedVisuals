@@ -2,6 +2,8 @@ package team.creative.enhancedvisuals.api;
 
 import java.awt.Color;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -72,7 +74,7 @@ public class Visual {
     }
     
     @OnlyIn(value = Dist.CLIENT)
-    public void render(TextureManager manager, int screenWidth, int screenHeight, float partialTicks) {
+    public void render(PoseStack stack, TextureManager manager, int screenWidth, int screenHeight, float partialTicks) {
         type.render(handler, this, manager, screenWidth, screenHeight, partialTicks);
     }
     

@@ -1,11 +1,14 @@
 package team.creative.enhancedvisuals.common.packet;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import team.creative.creativecore.common.network.CanBeNull;
+import team.creative.creativecore.common.network.CreativePacket;
 import team.creative.enhancedvisuals.common.handler.VisualHandlers;
 
 public class DamagePacket extends CreativePacket {
@@ -22,20 +25,17 @@ public class DamagePacket extends CreativePacket {
     
     public DamagePacket(LivingDamageEvent event) {
         this.damage = event.getAmount();
-        Entity attacker = event.getSource().getImmediateSource();
-        this.fire = event.getSource().isFireDamage();
-        if (attacker instanceof EntityLiving || attacker instanceof EntityArrow) {
+        Entity attacker = event.getSource().getDirectEntity();
+        this.fire = event.getSource().isFire();
+        if (attacker instanceof LivingEntity || attacker instanceof Arrow) {
             attackerClass = attacker.getClass().getName().toLowerCase();
             this.source = "attacker";
             
             if (attacker instanceof LivingEntity && ((LivingEntity) attacker).getMainHandItem() != null)
                 stack = ((LivingEntity) attacker).getMainHandItem();
             
-            if (attacker instanceof EntityLiving && ((EntityLiving) attacker).getHeldItemMainhand() != null)
-                stack = ((EntityLiving) attacker).getHeldItemMainhand();
-            
         } else
-            this.source = event.getSource().damageType;
+            this.source = event.getSource().msgId;
     }
     
     public DamagePacket() {
@@ -43,13 +43,13 @@ public class DamagePacket extends CreativePacket {
     }
     
     @Override
-    public void executeClient(EntityPlayer player) {
+    public void executeClient(Player player) {
         if (VisualHandlers.DAMAGE.isEnabled(player))
             VisualHandlers.DAMAGE.playerDamaged(player, this);
     }
     
     @Override
-    public void executeServer(PlayerEntity player) {
+    public void executeServer(ServerPlayer player) {
         
     }
     

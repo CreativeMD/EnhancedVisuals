@@ -3,15 +3,16 @@ package team.creative.enhancedvisuals.common.event;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.entity.projectile.PotionEntity;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.world.Explosion;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ThrownPotion;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
@@ -20,7 +21,7 @@ import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.client.EVClient;
 import team.creative.enhancedvisuals.client.VisualManager;
@@ -41,8 +42,8 @@ public class EVEvents {
                 ExplosionPacket packet = new ExplosionPacket(event.getExplosion().getPosition(), size
                         .getFloat(event.getExplosion()), (Entity) exploder.get(event.getExplosion()) != null ? ((Entity) exploder.get(event.getExplosion())).getId() : -1);
                 for (Entity entity : event.getAffectedEntities())
-                    if (entity instanceof ServerPlayerEntity)
-                        EnhancedVisuals.NETWORK.sendToClient(packet, (ServerPlayerEntity) entity);
+                    if (entity instanceof ServerPlayer)
+                        EnhancedVisuals.NETWORK.sendToClient(packet, (ServerPlayer) entity);
             } catch (IllegalArgumentException | IllegalAccessException e) {
                 e.printStackTrace();
             }
@@ -51,17 +52,17 @@ public class EVEvents {
     }
     
     @SubscribeEvent
-    public void impact(ProjectileImpactEvent.Throwable event) {
-        if (!event.getEntity().level.isClientSide && event.getEntity() instanceof PotionEntity && !event.isCanceled()) {
-            PotionEntity entity = (PotionEntity) event.getEntity();
-            AxisAlignedBB axisalignedbb = entity.getBoundingBox().inflate(4.0D, 2.0D, 4.0D);
+    public void impact(ProjectileImpactEvent<ThrownPotion> event) {
+        if (!event.getEntity().level.isClientSide && !event.isCanceled()) {
+            ThrownPotion entity = (ThrownPotion) event.getEntity();
+            AABB axisalignedbb = entity.getBoundingBox().inflate(4.0D, 2.0D, 4.0D);
             List<LivingEntity> list = entity.level.getEntitiesOfClass(LivingEntity.class, axisalignedbb);
             if (!list.isEmpty()) {
                 for (LivingEntity livingentity : list) {
-                    if (livingentity.isAffectedByPotions() && livingentity instanceof PlayerEntity) {
+                    if (livingentity.isAffectedByPotions() && livingentity instanceof ServerPlayer) {
                         double d0 = entity.distanceToSqr(livingentity);
                         if (d0 < 16.0D)
-                            EnhancedVisuals.NETWORK.sendToClient(new PotionPacket(Math.sqrt(d0), entity.getItem()), (ServerPlayerEntity) livingentity);
+                            EnhancedVisuals.NETWORK.sendToClient(new PotionPacket(Math.sqrt(d0), entity.getItem()), (ServerPlayer) livingentity);
                     }
                 }
             }
@@ -71,27 +72,28 @@ public class EVEvents {
     
     @SubscribeEvent
     public void damage(LivingDamageEvent event) {
-        if (event.getEntity() instanceof PlayerEntity) {
-        	if (EnhancedVisuals.CONFIG.enableDamageDebug)
-                ((EntityPlayerMP) event.getEntity()).sendMessage(new TextComponentString(event.getSource().damageType + "," + event.getSource().getDeathMessage(event.getEntityLiving())
-            EnhancedVisuals.NETWORK.sendToClient(new DamagePacket(event), (ServerPlayerEntity) event.getEntity());
-		}
+        if (event.getEntity() instanceof Player) {
+            if (EnhancedVisuals.CONFIG.enableDamageDebug)
+                ((ServerPlayer) event.getEntity()).sendMessage(new TextComponent(event.getSource().msgId + "," + event.getSource().getLocalizedDeathMessage(event.getEntityLiving())
+                        .getString()), Util.NIL_UUID);
+            EnhancedVisuals.NETWORK.sendToClient(new DamagePacket(event), (ServerPlayer) event.getEntity());
+        }
     }
     
     @SubscribeEvent
     @OnlyIn(value = Dist.CLIENT)
     public void clientTick(ClientTickEvent event) {
         if (event.phase == Phase.START && EVClient.shouldTick()) {
-            PlayerEntity player = Minecraft.getInstance().player;
+            Player player = Minecraft.getInstance().player;
             VisualManager.onTick(player);
             
         }
         SoundMuteHandler.tick();
     }
     
-    private static Field eyesInWaterField = ObfuscationReflectionHelper.findField(Entity.class, "field_205013_W");
+    private static Field eyesInWaterField = ObfuscationReflectionHelper.findField(Entity.class, "f_19800_");
     
-    public static boolean areEyesInWater(PlayerEntity player) {
+    public static boolean areEyesInWater(Player player) {
         try {
             return eyesInWaterField.getBoolean(player);
         } catch (IllegalArgumentException | IllegalAccessException e) {

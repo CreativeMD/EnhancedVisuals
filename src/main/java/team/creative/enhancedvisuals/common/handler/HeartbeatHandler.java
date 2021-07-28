@@ -4,8 +4,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
 import team.creative.enhancedvisuals.EnhancedVisuals;
@@ -45,7 +45,7 @@ public class HeartbeatHandler extends VisualHandler {
     public int effectBufferTicks;
     
     @Override
-    public void tick(@Nullable PlayerEntity player) {
+    public void tick(@Nullable Player player) {
         if (shouldHeartbeatTrigger(player)) {
             if (this.effectBufferTicks <= 0) {
                 float intensity = getIntensity(player);
@@ -66,12 +66,12 @@ public class HeartbeatHandler extends VisualHandler {
         this.effectBufferTicks -= 1;
     }
     
-    private void resetBufferTicks(@Nonnull PlayerEntity player) {
+    private void resetBufferTicks(@Nonnull Player player) {
         float percentHealthLeft = (player.getHealth() / player.getMaxHealth());
         this.effectBufferTicks = (int) (percentHealthLeft * heartbeatTimeFactor + minHeartbeatLength);
     }
     
-    private float getIntensity(@Nonnull PlayerEntity player) {
+    private float getIntensity(@Nonnull Player player) {
         float percentHealthLeft = (player.getHealth() / player.getMaxHealth());
         if (useHealthPercentage) {
             return (maxHealthPercentage - percentHealthLeft) * 2.0F;
@@ -80,7 +80,7 @@ public class HeartbeatHandler extends VisualHandler {
         }
     }
     
-    private boolean shouldHeartbeatTrigger(@Nullable PlayerEntity player) {
+    private boolean shouldHeartbeatTrigger(@Nullable Player player) {
         if (player != null && !Minecraft.getInstance().isPaused() && player.isAlive()) {
             if (useHealthPercentage) {
                 float percentageHealth = player.getHealth() / player.getMaxHealth();

@@ -2,12 +2,11 @@ package team.creative.enhancedvisuals.common.handler;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.Explosion;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.phys.Vec3;
 import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.premade.IntMinMax;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
@@ -41,9 +40,9 @@ public class ExplosionHandler extends VisualHandler {
     @CreativeConfig
     public IntCurve explosionBlurTime = new IntCurve(0, 10, 20, 20);
     
-    public void onExploded(PlayerEntity player, Vector3d pos, float size, @Nullable Entity source) {
+    public void onExploded(Player player, Vec3 pos, float size, @Nullable Entity source) {
         float f3 = size * 2.0F;
-        double d12 = MathHelper.sqrt(player.distanceToSqr(pos)) / f3;
+        double d12 = Math.sqrt(player.distanceToSqr(pos)) / f3;
         
         double d14 = Explosion.getSeenPercent(pos, player);
         double d10 = (1.0D - d12) * d14;

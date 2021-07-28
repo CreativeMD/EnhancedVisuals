@@ -1,7 +1,8 @@
 package team.creative.enhancedvisuals.common.packet;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import team.creative.creativecore.common.network.CreativePacket;
 import team.creative.enhancedvisuals.common.handler.VisualHandlers;
 
@@ -20,13 +21,13 @@ public class PotionPacket extends CreativePacket {
     }
     
     @Override
-    public void executeClient(PlayerEntity player) {
+    public void executeClient(Player player) {
         if (VisualHandlers.POTION.isEnabled(player))
             VisualHandlers.POTION.impact(distance, stack);
     }
     
     @Override
-    public void executeServer(PlayerEntity player) {
+    public void executeServer(ServerPlayer player) {
         
     }
 }

@@ -1,6 +1,6 @@
 package team.creative.enhancedvisuals.common.addon.survive;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.common.visual.VisualRegistry;
 

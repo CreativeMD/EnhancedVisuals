@@ -3,18 +3,18 @@ package team.creative.enhancedvisuals.api.type;
 import java.io.IOException;
 
 import com.google.gson.JsonSyntaxException;
+import com.mojang.blaze3d.pipeline.RenderTarget;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.shader.Framebuffer;
-import net.minecraft.resources.IResourceManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualCategory;
 import team.creative.enhancedvisuals.api.VisualHandler;
-import team.creative.enhancedvisuals.client.render.EnhancedShaderGroup;
+import team.creative.enhancedvisuals.client.render.EnhancedPostChain;
 
 public abstract class VisualTypeShader extends VisualType {
     
@@ -26,19 +26,19 @@ public abstract class VisualTypeShader extends VisualType {
     }
     
     @OnlyIn(value = Dist.CLIENT)
-    public EnhancedShaderGroup shaderGroup;
+    public EnhancedPostChain postChain;
     
     @Override
     @OnlyIn(value = Dist.CLIENT)
-    public void loadResources(IResourceManager manager) {
+    public void loadResources(ResourceManager manager) {
         Minecraft mc = Minecraft.getInstance();
-        if (shaderGroup != null)
-            shaderGroup.close();
+        if (postChain != null)
+            postChain.close();
         
         try {
             if (mc.isSameThread()) {
-                shaderGroup = new EnhancedShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getMainRenderTarget(), location);
-                shaderGroup.resize(mc.getWindow().getWidth(), mc.getWindow().getHeight());
+                postChain = new EnhancedPostChain(mc.getTextureManager(), mc.getResourceManager(), mc.getMainRenderTarget(), location);
+                postChain.resize(mc.getWindow().getWidth(), mc.getWindow().getHeight());
             }
         } catch (JsonSyntaxException | IOException e) {}
     }
@@ -51,18 +51,18 @@ public abstract class VisualTypeShader extends VisualType {
     
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void resize(Framebuffer buffer) {
-        if (shaderGroup != null)
-            shaderGroup.resize(Minecraft.getInstance().getWindow().getWidth(), Minecraft.getInstance().getWindow().getHeight());
+    public void resize(RenderTarget buffer) {
+        if (postChain != null)
+            postChain.resize(Minecraft.getInstance().getWindow().getWidth(), Minecraft.getInstance().getWindow().getHeight());
     }
     
     @Override
     public void render(VisualHandler handler, Visual visual, TextureManager manager, int screenWidth, int screenHeight, float partialTicks) {
-        if (shaderGroup == null)
+        if (postChain == null)
             loadResources(Minecraft.getInstance().getResourceManager());
-        if (shaderGroup != null) {
+        if (postChain != null) {
             changeProperties(visual.getOpacity());
-            shaderGroup.process(partialTicks);
+            postChain.process(partialTicks);
         }
     }
     

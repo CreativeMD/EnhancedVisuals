@@ -2,8 +2,8 @@ package team.creative.enhancedvisuals.common.handler;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.Tags.Blocks;
 import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.premade.DecimalMinMax;
@@ -25,7 +25,7 @@ public class SandSplatHandler extends VisualHandler {
     public VisualType sand = new VisualTypeParticle("sand", 0, new DecimalMinMax(0.1, 0.5));
     
     @Override
-    public void tick(@Nullable PlayerEntity player) {
+    public void tick(@Nullable Player player) {
         if (player != null && player.isOnGround() && isOnSand(player)) {
             double modifier = 0;
             if (player.isSprinting())
@@ -34,9 +34,9 @@ public class SandSplatHandler extends VisualHandler {
         }
     }
     
-    private boolean isOnSand(PlayerEntity player) {
+    private boolean isOnSand(Player player) {
         BlockPos pos = player.blockPosition().below();
-        if (player.level.getBlockState(pos).getBlock().is(Blocks.SAND))
+        if (player.level.getBlockState(pos).is(Blocks.SAND))
             return true;
         return false;
     }

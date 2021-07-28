@@ -1,8 +1,9 @@
 package team.creative.enhancedvisuals.api.type;
 
-import net.minecraft.client.shader.Shader;
-import net.minecraft.client.shader.ShaderUniform;
-import net.minecraft.util.ResourceLocation;
+import com.mojang.blaze3d.shaders.Uniform;
+
+import net.minecraft.client.renderer.PostPass;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import team.creative.enhancedvisuals.api.Visual;
@@ -17,8 +18,8 @@ public class VisualTypeSaturation extends VisualTypeShader {
     @Override
     @OnlyIn(value = Dist.CLIENT)
     public void changeProperties(float intensity) {
-        for (Shader mcShader : shaderGroup.getShaders()) {
-            ShaderUniform shaderuniform = mcShader.getEffect().getUniform("Saturation");
+        for (PostPass pass : postChain.getPasses()) {
+            Uniform shaderuniform = pass.getEffect().getUniform("Saturation");
             
             if (shaderuniform != null)
                 shaderuniform.set(intensity);

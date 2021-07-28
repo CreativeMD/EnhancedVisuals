@@ -1,6 +1,7 @@
 package team.creative.enhancedvisuals.api;
 
-import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Quaternion;
 
 import net.minecraft.client.renderer.texture.TextureManager;
 import team.creative.creativecore.common.config.premade.curve.Curve;
@@ -26,10 +27,10 @@ public class Particle extends Visual {
     }
     
     @Override
-    public void render(TextureManager manager, int screenWidth, int screenHeight, float partialTicks) {
-        RenderSystem.translatef(x + width / 2, y + height / 2, 0);
-        RenderSystem.rotatef(rotation, 0, 0, 1);
-        super.render(manager, screenWidth, screenHeight, partialTicks);
+    public void render(PoseStack stack, TextureManager manager, int screenWidth, int screenHeight, float partialTicks) {
+        stack.translate(x + width / 2, y + height / 2, 0);
+        stack.mulPose(new Quaternion(0, 0, 1, rotation)); //RenderSystem.rotatef(rotation, 0, 0, 1);
+        super.render(stack, manager, screenWidth, screenHeight, partialTicks);
     }
     
     @Override

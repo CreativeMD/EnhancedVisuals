@@ -8,7 +8,7 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import team.creative.creativecore.common.config.premade.IntMinMax;
 import team.creative.creativecore.common.config.premade.curve.Curve;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
@@ -28,7 +28,7 @@ public class VisualManager {
     public static Random rand = new Random();
     private static HashMapList<VisualCategory, Visual> visuals = new HashMapList<>();
     
-    public static void onTick(@Nullable PlayerEntity player) {
+    public static void onTick(@Nullable Player player) {
         boolean areEyesInWater = player != null && EVEvents.areEyesInWater(player);
         
         synchronized (visuals) {
@@ -118,8 +118,7 @@ public class VisualManager {
             }
             
             Particle particle = new Particle(vt, handler, curve, generateOffset(rand, screenWidth, width), generateOffset(rand, screenHeight, height), width, height, vt
-                .canRotate() && rotate ? rand
-                    .nextFloat() * 360 : 0, rand.nextInt(vt.getVariantAmount()));
+                    .canRotate() && rotate ? rand.nextFloat() * 360 : 0, rand.nextInt(vt.getVariantAmount()));
             if (color != null)
                 particle.color = color;
             add(particle);

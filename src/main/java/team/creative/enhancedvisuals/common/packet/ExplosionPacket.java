@@ -1,17 +1,18 @@
 package team.creative.enhancedvisuals.common.packet;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 import team.creative.creativecore.common.network.CreativePacket;
 import team.creative.enhancedvisuals.common.handler.VisualHandlers;
 
 public class ExplosionPacket extends CreativePacket {
     
-    public Vector3d pos;
+    public Vec3 pos;
     public float size;
     public int sourceEntity;
     
-    public ExplosionPacket(Vector3d pos, float size, int sourceEntity) {
+    public ExplosionPacket(Vec3 pos, float size, int sourceEntity) {
         this.pos = pos;
         this.size = size;
         this.sourceEntity = sourceEntity;
@@ -22,13 +23,13 @@ public class ExplosionPacket extends CreativePacket {
     }
     
     @Override
-    public void executeClient(PlayerEntity player) {
+    public void executeClient(Player player) {
         if (VisualHandlers.EXPLOSION.isEnabled(player))
             VisualHandlers.EXPLOSION.onExploded(player, pos, size, player.level.getEntity(sourceEntity));
     }
     
     @Override
-    public void executeServer(PlayerEntity player) {
+    public void executeServer(ServerPlayer player) {
         
     }
     

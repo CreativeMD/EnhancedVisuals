@@ -2,10 +2,11 @@ package team.creative.enhancedvisuals.common.addon.survive;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.client.shader.Shader;
-import net.minecraft.client.shader.ShaderDefault;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
+import com.mojang.blaze3d.shaders.Uniform;
+
+import net.minecraft.client.renderer.PostPass;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import team.creative.creativecore.common.config.api.CreativeConfig;
@@ -36,8 +37,8 @@ public class ThirstHandler extends VisualHandler {
         @Override
         @OnlyIn(value = Dist.CLIENT)
         public void changeProperties(float intensity) {
-            for (Shader mcShader : shaderGroup.getShaders()) {
-                ShaderDefault shaderuniform = mcShader.getEffect().getUniform("Radius");
+            for (PostPass pass : postChain.getPasses()) {
+                Uniform shaderuniform = pass.getEffect().getUniform("Radius");
                 
                 if (shaderuniform != null)
                     shaderuniform.set(intensity);
@@ -47,12 +48,12 @@ public class ThirstHandler extends VisualHandler {
     
     public Visual focusVisual;
     
-    public double getThirst(PlayerEntity player) {
+    public double getThirst(Player player) {
         return player.getPersistentData().getCompound("survive:PlayerData").getCompound("WaterStats").getInt("waterLevel");
     }
     
     @Override
-    public void tick(@Nullable PlayerEntity player) {
+    public void tick(@Nullable Player player) {
         if (focusVisual == null) {
             focusVisual = new Visual(focus, this, 0);
             VisualManager.add(focusVisual);

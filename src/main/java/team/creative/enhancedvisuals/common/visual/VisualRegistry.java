@@ -5,7 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import team.creative.enhancedvisuals.api.VisualHandler;
 
 public class VisualRegistry {
