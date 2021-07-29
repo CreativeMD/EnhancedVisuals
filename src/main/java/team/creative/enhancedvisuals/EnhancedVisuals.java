@@ -43,7 +43,7 @@ public class EnhancedVisuals {
     public static EnhancedVisualsConfig CONFIG;
     
     public EnhancedVisuals() {
-        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> FMLJavaModLoadingContext.get().getModEventBus().addListener(this::client));
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> FMLJavaModLoadingContext.get().getModEventBus().addListener(this::client));
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::init);
     }
     

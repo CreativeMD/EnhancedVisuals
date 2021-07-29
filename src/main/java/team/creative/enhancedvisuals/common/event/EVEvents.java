@@ -32,8 +32,8 @@ import team.creative.enhancedvisuals.common.packet.PotionPacket;
 
 public class EVEvents {
     
-    private Field size = ObfuscationReflectionHelper.findField(Explosion.class, "field_77280_f");
-    private Field exploder = ObfuscationReflectionHelper.findField(Explosion.class, "field_77283_e");
+    private Field size = ObfuscationReflectionHelper.findField(Explosion.class, "f_46017_");
+    private Field exploder = ObfuscationReflectionHelper.findField(Explosion.class, "f_46016_");
     
     @SubscribeEvent
     public void explosion(ExplosionEvent.Detonate event) {
