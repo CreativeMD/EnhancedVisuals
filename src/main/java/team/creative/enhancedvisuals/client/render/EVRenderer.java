@@ -59,7 +59,7 @@ public class EVRenderer {
                 
                 //RenderHelper.enableStandardItemLighting();
                 RenderSystem.clear(256, Minecraft.ON_OSX);
-                RenderSystem.setShader(GameRenderer::getPositionColorShader);
+                RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
                 Matrix4f matrix4f = Matrix4f.orthographic(0.0F, (float) (mc.getWindow().getWidth() / mc.getWindow().getGuiScale()), 0.0F, (float) (mc.getWindow().getHeight() / mc
                         .getWindow().getGuiScale()), 1000.0F, 3000.0F);
                 RenderSystem.setProjectionMatrix(matrix4f);
@@ -94,7 +94,7 @@ public class EVRenderer {
                 RenderSystem.clear(256, Minecraft.ON_OSX);
                 
                 mc.getMainRenderTarget().bindWrite(true);
-                
+                RenderSystem.applyModelViewMatrix();
                 lastRenderedMessage = null;
             } else {
                 if (EnhancedVisuals.MESSAGES.enabled) {
@@ -116,6 +116,7 @@ public class EVRenderer {
             for (Visual visual : visuals) {
                 if (visual.isVisible()) {
                     stack.pushPose();
+                    RenderSystem.applyModelViewMatrix();
                     visual.render(stack, manager, screenWidth, screenHeight, partialTicks);
                     stack.popPose();
                 }

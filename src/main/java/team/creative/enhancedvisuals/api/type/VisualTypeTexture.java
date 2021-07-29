@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
@@ -91,7 +92,7 @@ public abstract class VisualTypeTexture extends VisualType {
     @Override
     @OnlyIn(value = Dist.CLIENT)
     public void render(VisualHandler handler, Visual visual, TextureManager manager, int screenWidth, int screenHeight, float partialTicks) {
-        manager.bindForSetup(getResource(visual));
+        RenderSystem.setShaderTexture(0, getResource(visual));
         Tesselator tessellator = Tesselator.getInstance();
         BufferBuilder renderer = tessellator.getBuilder();
         
