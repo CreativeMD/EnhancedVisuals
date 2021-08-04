@@ -52,8 +52,8 @@ public class EVEvents {
     }
     
     @SubscribeEvent
-    public void impact(ProjectileImpactEvent<ThrownPotion> event) {
-        if (!event.getEntity().level.isClientSide && !event.isCanceled()) {
+    public void impact(ProjectileImpactEvent event) {
+        if (event.getEntity() instanceof ThrownPotion && !event.getEntity().level.isClientSide && !event.isCanceled()) {
             ThrownPotion entity = (ThrownPotion) event.getEntity();
             AABB axisalignedbb = entity.getBoundingBox().inflate(4.0D, 2.0D, 4.0D);
             List<LivingEntity> list = entity.level.getEntitiesOfClass(LivingEntity.class, axisalignedbb);
@@ -67,7 +67,6 @@ public class EVEvents {
                 }
             }
         }
-        
     }
     
     @SubscribeEvent
