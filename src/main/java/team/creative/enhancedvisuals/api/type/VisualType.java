@@ -53,7 +53,7 @@ public abstract class VisualType implements ICreativeConfig {
     public abstract void render(VisualHandler handler, Visual visual, TextureManager manager, int screenWidth, int screenHeight, float partialTicks);
     
     @Override
-    public void configured() {
+    public void configured(Dist side) {
         
     }
     
