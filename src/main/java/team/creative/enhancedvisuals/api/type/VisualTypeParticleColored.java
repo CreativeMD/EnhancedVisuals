@@ -2,6 +2,7 @@ package team.creative.enhancedvisuals.api.type;
 
 import java.awt.Color;
 
+import net.minecraftforge.api.distmarker.Dist;
 import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.api.CreativeConfig.IntRange;
 import team.creative.creativecore.common.config.premade.DecimalMinMax;
@@ -40,7 +41,7 @@ public class VisualTypeParticleColored extends VisualTypeParticle {
     }
     
     @Override
-    public void configured() {
+    public void configured(Dist side) {
         this.cached = new Color(red, green, blue, alpha);
     }
     

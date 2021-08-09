@@ -26,7 +26,7 @@ public class VisualHandler implements ICreativeConfig {
     public float opacity = 1;
     
     @Override
-    public void configured() {
+    public void configured(Dist side) {
         
     }
     

@@ -1,5 +1,6 @@
 package team.creative.enhancedvisuals;
 
+import net.minecraftforge.api.distmarker.Dist;
 import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.api.ICreativeConfig;
 
@@ -15,7 +16,7 @@ public class EnhancedVisualsConfig implements ICreativeConfig {
     public boolean enableDamageDebug = false;
     
     @Override
-    public void configured() {
+    public void configured(Dist side) {
         
     }
     
