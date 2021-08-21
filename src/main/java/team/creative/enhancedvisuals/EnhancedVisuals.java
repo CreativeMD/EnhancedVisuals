@@ -54,9 +54,9 @@ public class EnhancedVisuals {
     }
     
     private void init(final FMLCommonSetupEvent event) {
-        NETWORK.registerType(ExplosionPacket.class);
-        NETWORK.registerType(DamagePacket.class);
-        NETWORK.registerType(PotionPacket.class);
+        NETWORK.registerType(ExplosionPacket.class, ExplosionPacket::new);
+        NETWORK.registerType(DamagePacket.class, DamagePacket::new);
+        NETWORK.registerType(PotionPacket.class, PotionPacket::new);
         
         MinecraftForge.EVENT_BUS.register(EVENTS = new EVEvents());
         
