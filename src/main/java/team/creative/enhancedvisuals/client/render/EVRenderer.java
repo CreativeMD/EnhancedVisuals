@@ -20,6 +20,7 @@ import team.creative.enhancedvisuals.api.VisualCategory;
 import team.creative.enhancedvisuals.api.type.VisualType;
 import team.creative.enhancedvisuals.client.EVClient;
 import team.creative.enhancedvisuals.client.VisualManager;
+import team.creative.enhancedvisuals.common.handler.VisualHandlers;
 
 public class EVRenderer {
     
@@ -44,6 +45,10 @@ public class EVRenderer {
             }
             
             if (!(mc.screen instanceof DeathScreen)) {
+                
+                if (mc.player != null && mc.player.hurtDuration > 0 && mc.player.hurtTime == mc.player.hurtDuration)
+                    VisualHandlers.DAMAGE.clientHurt();
+                
                 if (mc.getMainRenderTarget().width != framebufferWidth || mc.getMainRenderTarget().height != framebufferHeight) {
                     for (VisualType type : VisualType.getTypes())
                         type.resize(mc.getMainRenderTarget());

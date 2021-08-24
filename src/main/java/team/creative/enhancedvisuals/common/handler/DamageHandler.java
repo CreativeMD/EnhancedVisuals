@@ -10,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.MinecraftForge;
 import team.creative.creativecore.common.config.api.CreativeConfig;
+import team.creative.creativecore.common.config.api.CreativeConfig.DecimalRange;
 import team.creative.creativecore.common.config.premade.DecimalMinMax;
 import team.creative.creativecore.common.config.premade.IntMinMax;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
@@ -58,6 +59,14 @@ public class DamageHandler extends VisualHandler {
         pierceList.add(Items.GOLDEN_HOE);
         pierceList.add(Items.ARROW);
     }
+    
+    @CreativeConfig
+    public VisualType damaged = new VisualTypeOverlay("damaged");
+    @CreativeConfig
+    @DecimalRange(min = 0, max = 1)
+    public float hitEffectIntensity = 0F;
+    @CreativeConfig
+    public IntMinMax hitDuration = new IntMinMax(1, 10);
     
     @CreativeConfig
     public VisualType splatter = new VisualTypeParticle("splatter");
@@ -143,6 +152,11 @@ public class DamageHandler extends VisualHandler {
     public List<String> damageBlackList = new ArrayList<>();
     
     public static Color bloodColor = new Color(0.3F, 0.01F, 0.01F, 0.7F);
+    
+    public void clientHurt() {
+        if (hitEffectIntensity > 0)
+            VisualManager.addVisualFadeOut(damaged, this, new DecimalCurve(VisualManager.rand, hitDuration, hitEffectIntensity * 0.2));
+    }
     
     public void playerDamaged(Player player, DamagePacket packet) {
         if (packet.source.equalsIgnoreCase("attacker")) {
