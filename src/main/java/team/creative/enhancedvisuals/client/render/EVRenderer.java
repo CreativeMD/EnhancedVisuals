@@ -17,6 +17,7 @@ import team.creative.enhancedvisuals.api.VisualCategory;
 import team.creative.enhancedvisuals.api.type.VisualType;
 import team.creative.enhancedvisuals.client.EVClient;
 import team.creative.enhancedvisuals.client.VisualManager;
+import team.creative.enhancedvisuals.common.handler.VisualHandlers;
 
 public class EVRenderer {
     
@@ -32,6 +33,10 @@ public class EVRenderer {
         if (event.phase == Phase.END && EVClient.shouldRender()) {
             
             if (!(mc.currentScreen instanceof GuiGameOver)) {
+                
+                if (mc.player != null && mc.player.maxHurtTime > 0 && mc.player.hurtTime == mc.player.maxHurtTime)
+                    VisualHandlers.DAMAGE.clientHurt();
+                
                 if (mc.getFramebuffer().framebufferWidth != framebufferWidth || mc.getFramebuffer().framebufferHeight != framebufferHeight) {
                     for (VisualType type : VisualType.getTypes())
                         type.resize(mc.getFramebuffer());
