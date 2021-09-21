@@ -1,8 +1,14 @@
 package team.creative.enhancedvisuals.client.render;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+
+import com.creativemd.creativecore.client.mods.optifine.OptifineHelper;
+import com.mojang.realmsclient.gui.ChatFormatting;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGameOver;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -31,6 +37,24 @@ public class EVRenderer {
     @SubscribeEvent
     public static void render(RenderTickEvent event) {
         if (event.phase == Phase.END && EVClient.shouldRender()) {
+            List<String> warnings = new ArrayList<>();
+            if (OptifineHelper.isActive() && OptifineHelper.isFastRender())
+                warnings.add(ChatFormatting.RED + "(LittleTiles) Optifine detected - Disable Fast Render");
+            if (OptifineHelper.isActive() && OptifineHelper.isAnisotropicFiltering())
+                warnings.add(ChatFormatting.RED + "(LittleTiles) Optifine detected - Disable Anisotropic Filtering");
+            if (OptifineHelper.isActive() && OptifineHelper.isAntialiasing())
+                warnings.add(ChatFormatting.RED + "(LittleTiles) Optifine detected - Disable Antialiasing");
+            if (!warnings.isEmpty()) {
+                GlStateManager.pushMatrix();
+                for (int i = 0; i < warnings.size(); i++) {
+                    String warning = warnings.get(i);
+                    int k = mc.fontRenderer.getStringWidth(warning);
+                    int i1 = 2 + mc.fontRenderer.FONT_HEIGHT * i;
+                    Gui.drawRect(1, i1 - 1, 2 + k + 1, i1 + mc.fontRenderer.FONT_HEIGHT - 1, -1873784752);
+                    mc.fontRenderer.drawString(warning, 2, i1, 14737632);
+                }
+                GlStateManager.popMatrix();
+            }
             
             if (!(mc.currentScreen instanceof GuiGameOver)) {
                 
