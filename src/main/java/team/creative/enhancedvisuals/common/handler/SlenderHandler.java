@@ -34,9 +34,19 @@ public class SlenderHandler extends VisualHandler {
     
     public Class mutantEnderman = loadMutantEnderman();
     
+    public Class infectedEnderman = loadInfectedEnderman();
+    
     private Class loadMutantEnderman() {
         try {
             return Class.forName("chumbanotz.mutantbeasts.entity.mutant.MutantEndermanEntity");
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    
+    private Class loadInfectedEnderman() {
+        try {
+            return Class.forName("com.dhanantry.scapeandrunparasites.entity.monster.infected.EntityInfEnderman");
         } catch (Exception e) {
             return null;
         }
@@ -76,6 +86,14 @@ public class SlenderHandler extends VisualHandler {
                         
                 if (mutantEnderman != null)
                     for (Entity mob : player.world.getEntitiesWithinAABB((Class<? extends Entity>) mutantEnderman, box, null))
+                        if (mob != null)
+                            if (distance == null)
+                                distance = Math.sqrt(Math.pow(d0 - mob.posX, 2) + Math.pow(d1 - mob.posY, 2) + Math.pow(d2 - mob.posZ, 2));
+                            else
+                                distance = Math.min(distance, Math.sqrt(Math.pow(d0 - mob.posX, 2) + Math.pow(d1 - mob.posY, 2) + Math.pow(d2 - mob.posZ, 2)));
+                            
+                if (infectedEnderman != null)
+                    for (Entity mob : player.world.getEntitiesWithinAABB((Class<? extends Entity>) infectedEnderman, box, null))
                         if (mob != null)
                             if (distance == null)
                                 distance = Math.sqrt(Math.pow(d0 - mob.posX, 2) + Math.pow(d1 - mob.posY, 2) + Math.pow(d2 - mob.posZ, 2));
