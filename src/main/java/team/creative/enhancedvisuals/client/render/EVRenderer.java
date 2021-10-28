@@ -39,11 +39,11 @@ public class EVRenderer {
         if (event.phase == Phase.END && EVClient.shouldRender()) {
             List<String> warnings = new ArrayList<>();
             if (OptifineHelper.isActive() && OptifineHelper.isFastRender())
-                warnings.add(ChatFormatting.RED + "(LittleTiles) Optifine detected - Disable Fast Render");
+                warnings.add(ChatFormatting.RED + "(EnhancedVisuals) Optifine detected - Disable Fast Render");
             if (OptifineHelper.isActive() && OptifineHelper.isAnisotropicFiltering())
-                warnings.add(ChatFormatting.RED + "(LittleTiles) Optifine detected - Disable Anisotropic Filtering");
+                warnings.add(ChatFormatting.RED + "(EnhancedVisuals) Optifine detected - Disable Anisotropic Filtering");
             if (OptifineHelper.isActive() && OptifineHelper.isAntialiasing())
-                warnings.add(ChatFormatting.RED + "(LittleTiles) Optifine detected - Disable Antialiasing");
+                warnings.add(ChatFormatting.RED + "(EnhancedVisuals) Optifine detected - Disable Antialiasing");
             if (!warnings.isEmpty()) {
                 GlStateManager.pushMatrix();
                 for (int i = 0; i < warnings.size(); i++) {
