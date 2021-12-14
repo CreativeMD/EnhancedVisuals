@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import team.creative.creativecore.common.config.premade.IntMinMax;
 import team.creative.creativecore.common.config.premade.curve.Curve;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
-import team.creative.creativecore.common.util.type.HashMapList;
+import team.creative.creativecore.common.util.type.map.HashMapList;
 import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.api.Particle;
 import team.creative.enhancedvisuals.api.Visual;
