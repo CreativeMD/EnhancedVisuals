@@ -23,6 +23,7 @@ import team.creative.creativecore.common.network.CreativeNetwork;
 import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.client.EVClient;
 import team.creative.enhancedvisuals.common.addon.survive.SurviveAddon;
+import team.creative.enhancedvisuals.common.addon.toughasnails.TANAddon;
 import team.creative.enhancedvisuals.common.death.DeathMessages;
 import team.creative.enhancedvisuals.common.event.EVEvents;
 import team.creative.enhancedvisuals.common.handler.VisualHandlers;
@@ -64,6 +65,9 @@ public class EnhancedVisuals {
         MESSAGES = new DeathMessages();
         if (ModList.get().isLoaded("survive"))
             SurviveAddon.load();
+        
+        if (ModList.get().isLoaded("toughasnails"))
+            TANAddon.load();
         
         ConfigHolderDynamic root = CreativeConfigRegistry.ROOT.registerFolder(MODID);
         root.registerValue("general", CONFIG = new EnhancedVisualsConfig(), ConfigSynchronization.CLIENT, false);
