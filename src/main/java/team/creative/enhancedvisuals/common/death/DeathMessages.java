@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraftforge.api.distmarker.Dist;
+import team.creative.creativecore.Side;
 import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.api.ICreativeConfig;
 
@@ -28,8 +28,6 @@ public class DeathMessages implements ICreativeConfig {
     }
     
     @Override
-    public void configured(Dist side) {
-        
-    }
+    public void configured(Side side) {}
     
 }

@@ -9,6 +9,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import team.creative.creativecore.Side;
 import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.api.ICreativeConfig;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
@@ -26,13 +27,9 @@ public class VisualHandler implements ICreativeConfig {
     public float opacity = 1;
     
     @Override
-    public void configured(Dist side) {
-        
-    }
+    public void configured(Side side) {}
     
-    public void tick(@Nullable Player player) {
-        
-    }
+    public void tick(@Nullable Player player) {}
     
     public boolean isEnabled(@Nullable Player player) {
         return enabled && opacity > 0;

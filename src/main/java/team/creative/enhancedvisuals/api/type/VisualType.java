@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import team.creative.creativecore.Side;
 import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.api.ICreativeConfig;
 import team.creative.enhancedvisuals.api.Visual;
@@ -61,7 +62,7 @@ public abstract class VisualType implements ICreativeConfig {
     public abstract void render(VisualHandler handler, Visual visual, TextureManager manager, int screenWidth, int screenHeight, float partialTicks);
     
     @Override
-    public void configured(Dist side) {
+    public void configured(Side side) {
         
     }
     
