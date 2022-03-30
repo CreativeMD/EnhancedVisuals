@@ -1,12 +1,9 @@
 package team.creative.enhancedvisuals.client;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
-
 import net.minecraft.client.Minecraft;
-import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -24,14 +21,17 @@ public class EVClient {
     public static void init(FMLClientSetupEvent event) {
         ReloadableResourceManager reloadableResourceManager = (ReloadableResourceManager) Minecraft.getInstance().getResourceManager();
         
-        reloadableResourceManager.registerReloadListener(new PreparableReloadListener() {
+        reloadableResourceManager.registerReloadListener(new SimplePreparableReloadListener() {
             
             @Override
-            public CompletableFuture<Void> reload(PreparationBarrier p_10638_, ResourceManager p_10639_, ProfilerFiller p_10640_, ProfilerFiller p_10641_, Executor p_10642_, Executor p_10643_) {
-                return CompletableFuture.runAsync(() -> {
-                    VisualManager.clearParticles();
-                    EVRenderer.reloadResources = true;
-                }, p_10643_);
+            protected Object prepare(ResourceManager p_10796_, ProfilerFiller p_10797_) {
+                return null;
+            }
+            
+            @Override
+            protected void apply(Object p_10793_, ResourceManager p_10794_, ProfilerFiller p_10795_) {
+                VisualManager.clearParticles();
+                EVRenderer.reloadResources = true;
             }
         });
         
