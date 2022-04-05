@@ -2,6 +2,8 @@ package team.creative.enhancedvisuals.api;
 
 import javax.annotation.Nullable;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -35,22 +37,26 @@ public class VisualHandler implements ICreativeConfig {
         return enabled && opacity > 0;
     }
     
-    @OnlyIn(value = Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public synchronized void playSound(ResourceLocation location) {
         playSound(location, null, 1.0F);
     }
     
-    @OnlyIn(value = Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public synchronized void playSound(ResourceLocation location, BlockPos pos) {
         playSound(location, pos, 1.0F);
     }
     
-    @OnlyIn(value = Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public synchronized void playSound(ResourceLocation location, float volume) {
         playSound(location, null, volume);
     }
     
-    @OnlyIn(value = Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public synchronized void playSound(ResourceLocation location, BlockPos pos, float volume) {
         if (!EVClient.shouldRender())
             return;
@@ -60,7 +66,8 @@ public class VisualHandler implements ICreativeConfig {
             Minecraft.getInstance().getSoundManager().play(new PositionedSound(location, SoundSource.MASTER, volume, 1));
     }
     
-    @OnlyIn(value = Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public synchronized void playSoundFadeOut(ResourceLocation location, BlockPos pos, DecimalCurve volume) {
         if (!EVClient.shouldRender())
             return;

@@ -3,6 +3,10 @@ package team.creative.enhancedvisuals.common.event;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import org.spongepowered.asm.mixin.MixinEnvironment.Phase;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.TextComponent;
@@ -16,7 +20,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
-import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
@@ -80,7 +83,8 @@ public class EVEvents {
     }
     
     @SubscribeEvent
-    @OnlyIn(value = Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void clientTick(ClientTickEvent event) {
         if (event.phase == Phase.START && EVClient.shouldTick()) {
             Player player = Minecraft.getInstance().player;

@@ -5,6 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.ChannelAccess;
@@ -16,7 +18,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
 
-@OnlyIn(value = Dist.CLIENT)
+@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class SoundMuteHandler {
     
     private static Method calculateVolumeMethod = ObfuscationReflectionHelper.findMethod(SoundEngine.class, "m_120327_", SoundInstance.class);

@@ -5,6 +5,8 @@ import java.util.Map.Entry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -48,7 +50,8 @@ public class EnhancedVisuals {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::init);
     }
     
-    @OnlyIn(value = Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     private void client(final FMLClientSetupEvent event) {
         EVClient.init(event);
         CreativeCoreClient.registerClientConfig(MODID);

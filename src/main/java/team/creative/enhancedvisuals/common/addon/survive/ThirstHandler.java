@@ -4,6 +4,8 @@ import javax.annotation.Nullable;
 
 import com.mojang.blaze3d.shaders.Uniform;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.PostPass;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -35,7 +37,8 @@ public class ThirstHandler extends VisualHandler {
     public VisualType focus = new VisualTypeShader("focus", new ResourceLocation("shaders/post/blobs2.json")) {
         
         @Override
-        @OnlyIn(value = Dist.CLIENT)
+        @Environment(EnvType.CLIENT)
+        @OnlyIn(Dist.CLIENT)
         public void changeProperties(float intensity) {
             for (PostPass pass : postChain.getPasses()) {
                 Uniform shaderuniform = pass.getEffect().getUniform("Radius");
