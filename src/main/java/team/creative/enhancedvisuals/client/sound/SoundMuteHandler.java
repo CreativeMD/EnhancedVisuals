@@ -9,6 +9,8 @@ import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.ChannelAccess;
 import net.minecraft.client.sounds.SoundEngine;
 import net.minecraft.client.sounds.SoundManager;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
 import team.creative.enhancedvisuals.mixin.SoundEngineAccessor;
 import team.creative.enhancedvisuals.mixin.SoundManagerAccessor;
@@ -50,7 +52,7 @@ public class SoundMuteHandler {
             return;
         
         getSounds().forEach((p_217926_1_, p_217926_2_) -> {
-            float f = (float) ((SoundEngineAccessor) engine).invokeCalculateVolume(p_217926_1_);
+            float f = ((SoundEngineAccessor) engine).invokeCalculateVolume(p_217926_1_);
             p_217926_2_.execute((p_217923_1_) -> {
                 p_217923_1_.setVolume(f);
                 
