@@ -7,7 +7,7 @@ import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.common.MinecraftForge;
+import team.creative.creativecore.CreativeCore;
 import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualHandler;
@@ -61,7 +61,7 @@ public class SlenderHandler extends VisualHandler {
             box = box.inflate(16, 16, 16);
             
             SelectEndermanEvent event = new SelectEndermanEvent(TargetingConditions.forNonCombat());
-            MinecraftForge.EVENT_BUS.post(event);
+            CreativeCore.loader().postForge(event);
             if (!event.isCanceled()) {
                 Entity mob = player.level.getNearestEntity(EnderMan.class, event.conditions, player, d0, d1, d2, box);
                 if (mutantEnderman != null)

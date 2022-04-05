@@ -3,8 +3,8 @@ package team.creative.enhancedvisuals.common.handler;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.common.Tags.Blocks;
 import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.premade.DecimalMinMax;
 import team.creative.creativecore.common.config.premade.IntMinMax;
@@ -36,7 +36,7 @@ public class SandSplatHandler extends VisualHandler {
     
     private boolean isOnSand(Player player) {
         BlockPos pos = player.blockPosition().below();
-        if (player.level.getBlockState(pos).is(Blocks.SAND))
+        if (player.level.getBlockState(pos).is(BlockTags.SAND))
             return true;
         return false;
     }

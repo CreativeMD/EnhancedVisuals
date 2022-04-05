@@ -11,9 +11,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.DeathScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.TickEvent.RenderTickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualCategory;
@@ -33,10 +30,8 @@ public class EVRenderer {
     
     public static boolean reloadResources = false;
     
-    @SubscribeEvent
-    public static void render(RenderTickEvent event) {
-        if (event.phase == Phase.END && EVClient.shouldRender()) {
-            
+    public static void render(PoseStack matrixStack, float partialTicks) {
+        if (EVClient.shouldRender()) {
             if (reloadResources) {
                 for (VisualType type : VisualType.getTypes()) {
                     type.loadResources(mc.getResourceManager());
@@ -60,7 +55,6 @@ public class EVRenderer {
                 int screenHeight = mc.getWindow().getGuiScaledHeight();
                 
                 TextureManager manager = mc.getTextureManager();
-                float partialTicks = event.renderTickTime;
                 
                 //RenderHelper.enableStandardItemLighting();
                 RenderSystem.clear(256, Minecraft.ON_OSX);

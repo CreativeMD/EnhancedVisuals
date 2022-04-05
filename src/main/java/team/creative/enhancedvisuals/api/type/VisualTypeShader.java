@@ -8,6 +8,7 @@ import com.mojang.blaze3d.pipeline.RenderTarget;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.PostChain;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -16,7 +17,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualCategory;
 import team.creative.enhancedvisuals.api.VisualHandler;
-import team.creative.enhancedvisuals.client.render.EnhancedPostChain;
 
 public abstract class VisualTypeShader extends VisualType {
     
@@ -29,7 +29,7 @@ public abstract class VisualTypeShader extends VisualType {
     
     @Environment(EnvType.CLIENT)
     @OnlyIn(value = Dist.CLIENT)
-    public EnhancedPostChain postChain;
+    public PostChain postChain;
     
     @Override
     @Environment(EnvType.CLIENT)
@@ -41,7 +41,7 @@ public abstract class VisualTypeShader extends VisualType {
         
         try {
             if (mc.isSameThread()) {
-                postChain = new EnhancedPostChain(mc.getTextureManager(), mc.getResourceManager(), mc.getMainRenderTarget(), location);
+                postChain = new PostChain(mc.getTextureManager(), mc.getResourceManager(), mc.getMainRenderTarget(), location);
                 postChain.resize(mc.getWindow().getWidth(), mc.getWindow().getHeight());
             }
         } catch (JsonSyntaxException | IOException e) {}

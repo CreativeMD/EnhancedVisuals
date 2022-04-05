@@ -1,0 +1,22 @@
+{
+  "required": true,
+  "package": "team.creative.enhancedvisuals.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "enhancedvisuals.mixin-refmap.json",
+  "server": [
+  ],
+  "mixins": [
+    "EntityAccessor",
+    "ExplosionAccessor",
+    "MixinExplosion",
+    "MixinServerPlayer",
+    "PostChainAccessor",
+    "ProjectileMixin"
+  ],
+  "client": [
+    "SoundEngineAccessor",
+    "SoundManagerAccessor",
+    "MinecraftMixin"
+  ],
+  "minVersion": "0.8"
+}

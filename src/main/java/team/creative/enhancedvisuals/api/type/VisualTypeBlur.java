@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.PostPass;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import team.creative.enhancedvisuals.mixin.PostChainAccessor;
 
 public class VisualTypeBlur extends VisualTypeShader {
     
@@ -21,7 +22,7 @@ public class VisualTypeBlur extends VisualTypeShader {
     @Environment(EnvType.CLIENT)
     @OnlyIn(Dist.CLIENT)
     public void changeProperties(float intensity) {
-        for (PostPass pass : postChain.getPasses()) {
+        for (PostPass pass : ((PostChainAccessor) postChain).getPasses()) {
             Uniform shaderuniform = pass.getEffect().getUniform("Radius");
             
             if (shaderuniform != null)

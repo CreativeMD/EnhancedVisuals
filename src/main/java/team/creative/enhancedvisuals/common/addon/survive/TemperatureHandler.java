@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.world.entity.player.Player;
 import team.creative.creativecore.common.config.api.CreativeConfig;
+import team.creative.creativecore.common.util.mc.PlayerUtils;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.api.type.VisualType;
@@ -47,7 +48,7 @@ public class TemperatureHandler extends VisualHandler {
     public double hottestTemperature = 41;
     
     public double getTemperature(Player player) {
-        return player.getPersistentData().getCompound("survive:PlayerData").getCompound("TemperatureStats").getDouble("temperatureLevel");
+        return PlayerUtils.getPersistentData(player).getCompound("survive:PlayerData").getCompound("TemperatureStats").getDouble("temperatureLevel");
     }
     
     @Override

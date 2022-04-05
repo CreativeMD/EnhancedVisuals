@@ -13,11 +13,13 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.premade.IntMinMax;
+import team.creative.creativecore.common.util.mc.PlayerUtils;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.api.type.VisualType;
 import team.creative.enhancedvisuals.api.type.VisualTypeShader;
 import team.creative.enhancedvisuals.client.VisualManager;
+import team.creative.enhancedvisuals.mixin.PostChainAccessor;
 
 public class ThirstHandler extends VisualHandler {
     
@@ -40,7 +42,7 @@ public class ThirstHandler extends VisualHandler {
         @Environment(EnvType.CLIENT)
         @OnlyIn(Dist.CLIENT)
         public void changeProperties(float intensity) {
-            for (PostPass pass : postChain.getPasses()) {
+            for (PostPass pass : ((PostChainAccessor) postChain).getPasses()) {
                 Uniform shaderuniform = pass.getEffect().getUniform("Radius");
                 
                 if (shaderuniform != null)
@@ -52,7 +54,7 @@ public class ThirstHandler extends VisualHandler {
     public Visual focusVisual;
     
     public double getThirst(Player player) {
-        return player.getPersistentData().getCompound("survive:PlayerData").getCompound("WaterStats").getInt("waterLevel");
+        return PlayerUtils.getPersistentData(player).getCompound("survive:PlayerData").getCompound("WaterStats").getInt("waterLevel");
     }
     
     @Override

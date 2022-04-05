@@ -8,7 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.common.MinecraftForge;
+import team.creative.creativecore.CreativeCore;
 import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.api.CreativeConfig.DecimalRange;
 import team.creative.creativecore.common.config.premade.DecimalMinMax;
@@ -201,7 +201,7 @@ public class DamageHandler extends VisualHandler {
             VisualManager.addVisualFadeOut(tunnel, this, tunnelDuration);
         else if (packet.fire || packet.source.equalsIgnoreCase("onFire")) {
             FireParticlesEvent event = new FireParticlesEvent(fireSplashes, fireDuration.min, fireDuration.max);
-            MinecraftForge.EVENT_BUS.post(event);
+            CreativeCore.loader().postForge(event);
             VisualManager.addParticlesFadeOut(fire, this, event
                     .getNewFireSplashes(), new IntMinMax(event.getNewFireDurationMin(), event.getNewFireDurationMax()), true, new Color(0, 0, 0));
         } else if (!damageBlackList.contains(packet.source))
