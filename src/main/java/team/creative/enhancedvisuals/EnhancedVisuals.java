@@ -54,6 +54,7 @@ public class EnhancedVisuals implements CommonLoader, ClientLoader {
     @OnlyIn(Dist.CLIENT)
     public void onInitializeClient() {
         CreativeCore.loader().registerClientStarted(EVClient::init);
+        CreativeCore.loader().registerClientTick(() -> EVENTS.clientTick());
         CreativeCoreClient.registerClientConfig(MODID);
     }
     
