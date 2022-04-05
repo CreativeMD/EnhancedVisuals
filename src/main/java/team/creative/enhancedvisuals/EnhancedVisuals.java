@@ -7,7 +7,6 @@ import org.apache.logging.log4j.Logger;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -54,7 +53,7 @@ public class EnhancedVisuals implements CommonLoader, ClientLoader {
     @Environment(EnvType.CLIENT)
     @OnlyIn(Dist.CLIENT)
     public void onInitializeClient() {
-        EVClient.init(Minecraft.getInstance());
+        CreativeCore.loader().registerClientStarted(EVClient::init);
         CreativeCoreClient.registerClientConfig(MODID);
     }
     
@@ -65,6 +64,8 @@ public class EnhancedVisuals implements CommonLoader, ClientLoader {
         NETWORK.registerType(PotionPacket.class, PotionPacket::new);
         
         ICreativeLoader loader = CreativeCore.loader();
+        
+        EVENTS = new EVEvents();
         
         VisualHandlers.init();
         MESSAGES = new DeathMessages();

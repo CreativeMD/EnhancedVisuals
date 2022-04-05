@@ -19,7 +19,7 @@ public class EVClient {
     
     private static Minecraft mc = Minecraft.getInstance();
     
-    public static void init(Minecraft client) {
+    public static void init() {
         ReloadableResourceManager reloadableResourceManager = (ReloadableResourceManager) Minecraft.getInstance().getResourceManager();
         
         reloadableResourceManager.registerReloadListener(new SimplePreparableReloadListener() {
