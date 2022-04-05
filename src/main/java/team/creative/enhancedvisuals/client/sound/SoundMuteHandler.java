@@ -14,6 +14,7 @@ import team.creative.enhancedvisuals.mixin.SoundEngineAccessor;
 import team.creative.enhancedvisuals.mixin.SoundManagerAccessor;
 
 @Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class SoundMuteHandler {
     public static boolean isMuting = false;
     
