@@ -28,7 +28,7 @@ public abstract class VisualTypeShader extends VisualType {
     }
     
     @Environment(EnvType.CLIENT)
-    @OnlyIn(value = Dist.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public PostChain postChain;
     
     @Override
@@ -63,6 +63,8 @@ public abstract class VisualTypeShader extends VisualType {
     }
     
     @Override
+    @Environment(EnvType.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void render(VisualHandler handler, Visual visual, TextureManager manager, int screenWidth, int screenHeight, float partialTicks) {
         if (postChain == null)
             loadResources(Minecraft.getInstance().getResourceManager());
