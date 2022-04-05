@@ -2,7 +2,7 @@
 	"required": true,
 	"package": "team.creative.enhancedvisuals.mixin",
 	"compatibilityLevel": "JAVA_17",
-	"refmap": "enhancedvisuals.mixin-refmap.json",
+	"refmap": "enhancedvisuals.mixin.refmap.json",
 	"server": [
 	],
 	"mixins": [

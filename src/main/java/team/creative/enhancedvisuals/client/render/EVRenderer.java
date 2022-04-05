@@ -30,7 +30,7 @@ public class EVRenderer {
     
     public static boolean reloadResources = false;
     
-    public static void render(PoseStack matrixStack, float partialTicks) {
+    public static void render() {
         if (EVClient.shouldRender()) {
             if (reloadResources) {
                 for (VisualType type : VisualType.getTypes()) {
@@ -40,6 +40,8 @@ public class EVRenderer {
             }
             
             if (!(mc.screen instanceof DeathScreen)) {
+                
+                float partialTicks = Minecraft.getInstance().getFrameTime();
                 
                 if (mc.player != null && mc.player.hurtDuration > 0 && mc.player.hurtTime == mc.player.hurtDuration)
                     VisualHandlers.DAMAGE.clientHurt();

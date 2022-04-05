@@ -52,7 +52,7 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 loom.mixin {
-    defaultRefmapName = "enhancedvisuals.mixin-refmap.json"
+    defaultRefmapName = "enhancedvisuals.mixin.refmap.json"
 }
 
 java {
