@@ -3,6 +3,8 @@ package team.creative.enhancedvisuals.common.event;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.TextComponent;
@@ -80,7 +82,8 @@ public class EVEvents {
     }
     
     @SubscribeEvent
-    @OnlyIn(value = Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void clientTick(ClientTickEvent event) {
         if (event.phase == Phase.START && EVClient.shouldTick()) {
             Player player = Minecraft.getInstance().player;

@@ -8,6 +8,8 @@ import java.util.Random;
 
 import com.mojang.blaze3d.pipeline.RenderTarget;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraftforge.api.distmarker.Dist;
@@ -55,9 +57,11 @@ public abstract class VisualType implements ICreativeConfig {
         return cat.isAffectedByWater() && isEffectedByWater;
     }
     
+    @Environment(EnvType.CLIENT)
     @OnlyIn(Dist.CLIENT)
     public abstract void loadResources(ResourceManager manager);
     
+    @Environment(EnvType.CLIENT)
     @OnlyIn(Dist.CLIENT)
     public abstract void render(VisualHandler handler, Visual visual, TextureManager manager, int screenWidth, int screenHeight, float partialTicks);
     
@@ -66,6 +70,7 @@ public abstract class VisualType implements ICreativeConfig {
         
     }
     
+    @Environment(EnvType.CLIENT)
     @OnlyIn(Dist.CLIENT)
     public int getVariantAmount() {
         return 1;
@@ -75,10 +80,9 @@ public abstract class VisualType implements ICreativeConfig {
         return null;
     }
     
+    @Environment(EnvType.CLIENT)
     @OnlyIn(Dist.CLIENT)
-    public void resize(RenderTarget buffer) {
-        
-    }
+    public void resize(RenderTarget buffer) {}
     
     public boolean canRotate() {
         return true;

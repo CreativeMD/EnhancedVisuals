@@ -5,6 +5,8 @@ import java.io.IOException;
 import com.google.gson.JsonSyntaxException;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
@@ -25,11 +27,13 @@ public abstract class VisualTypeShader extends VisualType {
         this.location = location;
     }
     
+    @Environment(EnvType.CLIENT)
     @OnlyIn(value = Dist.CLIENT)
     public EnhancedPostChain postChain;
     
     @Override
-    @OnlyIn(value = Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void loadResources(ResourceManager manager) {
         Minecraft mc = Minecraft.getInstance();
         if (postChain != null)
@@ -44,12 +48,14 @@ public abstract class VisualTypeShader extends VisualType {
     }
     
     @Override
-    @OnlyIn(value = Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public int getVariantAmount() {
         return 0;
     }
     
     @Override
+    @Environment(EnvType.CLIENT)
     @OnlyIn(Dist.CLIENT)
     public void resize(RenderTarget buffer) {
         if (postChain != null)
@@ -66,7 +72,8 @@ public abstract class VisualTypeShader extends VisualType {
         }
     }
     
-    @OnlyIn(value = Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public abstract void changeProperties(float intensity);
     
 }

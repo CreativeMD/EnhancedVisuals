@@ -1,5 +1,7 @@
 package team.creative.enhancedvisuals.client;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -13,7 +15,8 @@ import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.api.type.VisualType;
 import team.creative.enhancedvisuals.client.render.EVRenderer;
 
-@OnlyIn(value = Dist.CLIENT)
+@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class EVClient {
     
     private static Minecraft mc = Minecraft.getInstance();

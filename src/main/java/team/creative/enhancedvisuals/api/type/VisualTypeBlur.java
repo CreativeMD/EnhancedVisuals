@@ -2,6 +2,8 @@ package team.creative.enhancedvisuals.api.type;
 
 import com.mojang.blaze3d.shaders.Uniform;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.PostPass;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -16,7 +18,8 @@ public class VisualTypeBlur extends VisualTypeShader {
     }
     
     @Override
-    @OnlyIn(value = Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void changeProperties(float intensity) {
         for (PostPass pass : postChain.getPasses()) {
             Uniform shaderuniform = pass.getEffect().getUniform("Radius");
