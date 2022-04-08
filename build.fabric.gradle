@@ -28,6 +28,18 @@ dependencies {
     implementation project(path: ':CreativeCoreFabric', configuration: 'namedElements')
 }
 
+java.sourceSets.create("api") {
+    
+    java {
+        srcDir("src/api/java")
+    }
+    compileClasspath += sourceSets.main.compileClasspath
+    runtimeClasspath += sourceSets.main.runtimeClasspath
+}
+
+sourceSets.main.compileClasspath += sourceSets.api.output
+sourceSets.main.runtimeClasspath += sourceSets.api.output
+
 processResources {
     inputs.property "version", project.version
     filteringCharset "UTF-8"

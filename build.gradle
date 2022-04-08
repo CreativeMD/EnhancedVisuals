@@ -38,6 +38,18 @@ archivesBaseName = "enhancedvisuals"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
+java.sourceSets.create("api") {
+    
+    java {
+        srcDir("src/api/java")
+    }
+    compileClasspath += sourceSets.main.compileClasspath
+    runtimeClasspath += sourceSets.main.runtimeClasspath
+}
+
+sourceSets.main.compileClasspath += sourceSets.api.output
+sourceSets.main.runtimeClasspath += sourceSets.api.output
+
 minecraft {
     mappings channel: 'parchment', version: "2022.03.13-1.18.2"
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
@@ -130,13 +142,13 @@ dependencies {
 }
 
 jar {
-  duplicatesStrategy = DuplicatesStrategy.INCLUDE
-  archiveFileName.set(project.modname + "_FORGE_v" + project.version + "_mc" + project.minecraft_version + ".jar")
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    archiveFileName.set(project.modname + "_FORGE_v" + project.version + "_mc" + project.minecraft_version + ".jar")
 }
 
 mixin {
     // MixinGradle Settings
-    add sourceSets.main, 'enhancedvisuals.mixin-refmap.json'
+    add sourceSets.main, 'enhancedvisuals.mixin.refmap.json'
      
     config 'enhancedvisuals.mixins.json'
 }
