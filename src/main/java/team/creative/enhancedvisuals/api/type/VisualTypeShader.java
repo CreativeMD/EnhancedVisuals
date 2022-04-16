@@ -27,9 +27,10 @@ public abstract class VisualTypeShader extends VisualType {
         this.location = location;
     }
     
+    // TODO: Figure out how to avoid casting here, preferrably remove this field in Server environment
     @Environment(EnvType.CLIENT)
     @OnlyIn(Dist.CLIENT)
-    public PostChain postChain;
+    public Object postChain;
     
     @Override
     @Environment(EnvType.CLIENT)
@@ -37,12 +38,12 @@ public abstract class VisualTypeShader extends VisualType {
     public void loadResources(ResourceManager manager) {
         Minecraft mc = Minecraft.getInstance();
         if (postChain != null)
-            postChain.close();
+            ((PostChain) postChain).close();
         
         try {
             if (mc.isSameThread()) {
                 postChain = new PostChain(mc.getTextureManager(), mc.getResourceManager(), mc.getMainRenderTarget(), location);
-                postChain.resize(mc.getWindow().getWidth(), mc.getWindow().getHeight());
+                ((PostChain) postChain).resize(mc.getWindow().getWidth(), mc.getWindow().getHeight());
             }
         } catch (JsonSyntaxException | IOException e) {}
     }
@@ -59,7 +60,7 @@ public abstract class VisualTypeShader extends VisualType {
     @OnlyIn(Dist.CLIENT)
     public void resize(RenderTarget buffer) {
         if (postChain != null)
-            postChain.resize(Minecraft.getInstance().getWindow().getWidth(), Minecraft.getInstance().getWindow().getHeight());
+            ((PostChain) postChain).resize(Minecraft.getInstance().getWindow().getWidth(), Minecraft.getInstance().getWindow().getHeight());
     }
     
     @Override
@@ -70,12 +71,11 @@ public abstract class VisualTypeShader extends VisualType {
             loadResources(Minecraft.getInstance().getResourceManager());
         if (postChain != null) {
             changeProperties(visual.getOpacity());
-            postChain.process(partialTicks);
+            ((PostChain) postChain).process(partialTicks);
         }
     }
     
     @Environment(EnvType.CLIENT)
     @OnlyIn(Dist.CLIENT)
     public abstract void changeProperties(float intensity);
-    
 }
