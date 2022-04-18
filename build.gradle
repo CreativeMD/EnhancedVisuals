@@ -143,8 +143,8 @@ dependencies {
     implementation fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}") {
         transitive = false
     }
-	
-	implementation project(':CreativeCore')
+    
+    implementation project(':CreativeCore')
 }
 
 jar {
