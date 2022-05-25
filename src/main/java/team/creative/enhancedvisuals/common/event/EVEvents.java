@@ -57,6 +57,8 @@ public class EVEvents {
     }
     
     public void damage(Player target, DamageSource source, float damage) {
+        if (target.level.isClientSide)
+            return;
         if (EnhancedVisuals.CONFIG.enableDamageDebug)
             target.sendMessage(new TextComponent(source.msgId + "," + source.getLocalizedDeathMessage(target).getString()), Util.NIL_UUID);
         EnhancedVisuals.NETWORK.sendToClient(new DamagePacket(target, source, damage), (ServerPlayer) target);
