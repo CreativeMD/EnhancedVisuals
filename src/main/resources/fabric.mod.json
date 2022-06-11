@@ -1,33 +1,33 @@
 {
-	"schemaVersion": 1,
-	"id": "enhancedvisuals",
-	"version": "${version}",
-	"name": "Enhanced Visuals (Fabric)",
-	"description": "",
-	"authors": [
-		"CreativeMD",
-		"AriaFreeze"
-	],
-	"contact": {
-	},
-	"license": "GNU LGPL v2.1",
-	"icon": "enhancedvisuals.png",
-	"environment": "*",
-	"entrypoints": {
-		"main": [
-			"team.creative.enhancedvisuals.EnhancedVisuals"
-		],
-		"client": [
-			"team.creative.enhancedvisuals.EnhancedVisuals"
-		]
-	},
-	"mixins": [
-		"enhancedvisuals.mixins.json"
-	],
-	"depends": {
-		"fabricloader": ">=0.7.4",
-		"fabric": "*",
-		"creativecore": ">=2.6.5",
-		"minecraft": "1.18.2"
-	}
+    "schemaVersion": 1,
+    "id": "enhancedvisuals",
+    "version": "${version}",
+    "name": "Enhanced Visuals (Fabric)",
+    "description": "",
+    "authors": [
+        "CreativeMD",
+        "AriaFreeze"
+    ],
+    "contact": {
+    },
+    "license": "GNU LGPL v2.1",
+    "icon": "enhancedvisuals.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "team.creative.enhancedvisuals.EnhancedVisuals"
+        ],
+        "client": [
+            "team.creative.enhancedvisuals.EnhancedVisuals"
+        ]
+    },
+    "mixins": [
+        "enhancedvisuals.mixins.json"
+    ],
+    "depends": {
+        "fabricloader": ">=0.14.0",
+        "fabric": "*",
+        "minecraft": "1.19",
+        "creativecore": ">=2.6.5"
+    }
 }
