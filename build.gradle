@@ -31,14 +31,15 @@ minecraft {
             taskName "ev_client"
             workingDirectory project.file('run')
 
-            // Recommended logging level for the console
-            // You can set various levels here.
-            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             property 'forge.logging.console.level', 'debug'
+            arg '--mixin.config'
+            arg 'creativecore.mixins.json'
+            arg '--mixin.config'
+            arg 'creativecore.forge.mixins.json'
 
             mods {
                 creativecore {
-                    source project(':CreativeCore').sourceSets.main
+                    source project(':CreativeLoaderForge').sourceSets.main
                 }
                 enhancedvisuals {
                     source sourceSets.main
@@ -50,14 +51,15 @@ minecraft {
             taskName "ev_server"
             workingDirectory project.file('run')
 
-            // Recommended logging level for the console
-            // You can set various levels here.
-            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             property 'forge.logging.console.level', 'debug'
+            arg '--mixin.config'
+            arg 'creativecore.mixins.json'
+            arg '--mixin.config'
+            arg 'creativecore.forge.mixins.json'
 
             mods {
                 creativecore {
-                    source project(':CreativeCore').sourceSets.main
+                    source project(':CreativeLoaderForge').sourceSets.main
                 }
                 enhancedvisuals {
                     source sourceSets.main
