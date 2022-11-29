@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.imageio.ImageIO;
 
@@ -67,9 +66,9 @@ public abstract class VisualTypeTexture extends VisualType {
         try {
             while ((resource = TextureCache.parse(manager, domain, baseLocation + i)) != null) {
                 if (i == 0) {
-                    Optional<Resource> re = manager.getResource(resource.getFirst());
-                    if (re.isPresent()) {
-                        InputStream input = re.orElseThrow().open();
+                    Resource re = manager.getResource(resource.getFirst());
+                    if (re != null) {
+                        InputStream input = re.getInputStream();
                         try {
                             BufferedImage image = ImageIO.read(input);
                             dimension = new Dimension(image.getWidth(), image.getHeight());

@@ -4,8 +4,9 @@ import java.util.List;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -59,7 +60,7 @@ public class EVEvents {
         if (target.level.isClientSide)
             return;
         if (EnhancedVisuals.CONFIG.enableDamageDebug)
-            target.sendSystemMessage(Component.literal(source.msgId + "," + source.getLocalizedDeathMessage(target).getString()));
+            target.sendMessage(new TextComponent(source.msgId + "," + source.getLocalizedDeathMessage(target).getString()), Util.NIL_UUID);
         EnhancedVisuals.NETWORK.sendToClient(new DamagePacket(target, source, damage), (ServerPlayer) target);
     }
     

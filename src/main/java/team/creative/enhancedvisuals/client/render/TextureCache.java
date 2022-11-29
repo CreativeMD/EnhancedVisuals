@@ -19,12 +19,12 @@ public abstract class TextureCache {
     
     public abstract ResourceLocation getResource();
     
-    public static TextureCache parse(ResourceManager manager, String domain, String baseLocation) {
+    public static TextureCache parse(ResourceManager manager, String domain, String baseLocation) throws IOException {
         ResourceLocation location = null;
         int i = 0;
         Resource resource = null;
         List<ResourceLocation> locations = null;
-        while ((resource = manager.getResource(location = new ResourceLocation(domain, baseLocation + "-" + i + ".png")).orElse(null)) != null) {
+        while ((resource = manager.getResource(location = new ResourceLocation(domain, baseLocation + "-" + i + ".png"))) != null) {
             if (locations == null)
                 locations = new ArrayList<>();
             locations.add(location);
@@ -34,10 +34,10 @@ public abstract class TextureCache {
         if (locations != null) {
             int animationSpeed = 1;
             try {
-                resource = manager.getResource(new ResourceLocation(domain, baseLocation + ".ani")).orElse(null);
+                resource = manager.getResource(new ResourceLocation(domain, baseLocation + ".ani"));
                 if (resource != null) {
                     try {
-                        InputStream input = resource.open();
+                        InputStream input = resource.getInputStream();
                         try {
                             animationSpeed = Integer.parseInt(new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n")));
                         } finally {
@@ -51,7 +51,7 @@ public abstract class TextureCache {
             return new TextureCacheAnimation(locations.toArray(new ResourceLocation[locations.size()]), animationSpeed);
         }
         
-        if (manager.getResource(location = new ResourceLocation(domain, baseLocation + ".png")).orElse(null) != null)
+        if (manager.getResource(location = new ResourceLocation(domain, baseLocation + ".png")) != null)
             return new TextureCacheSimple(location);
         return null;
     }
