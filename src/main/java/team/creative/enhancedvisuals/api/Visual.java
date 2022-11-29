@@ -1,7 +1,5 @@
 package team.creative.enhancedvisuals.api;
 
-import java.awt.Color;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.fabricmc.api.EnvType;
@@ -10,6 +8,7 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import team.creative.creativecore.common.config.premade.curve.Curve;
+import team.creative.creativecore.common.util.type.Color;
 import team.creative.enhancedvisuals.api.type.VisualType;
 
 public class Visual {

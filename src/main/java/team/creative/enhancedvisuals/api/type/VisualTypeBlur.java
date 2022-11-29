@@ -26,7 +26,7 @@ public class VisualTypeBlur extends VisualTypeShader {
             Uniform shaderuniform = pass.getEffect().getUniform("Radius");
             
             if (shaderuniform != null)
-                shaderuniform.set((float) Math.floor(intensity));
+                shaderuniform.set(Math.max(1, (float) Math.floor(intensity)));
         }
     }
     

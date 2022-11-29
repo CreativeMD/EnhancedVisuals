@@ -1,6 +1,5 @@
 package team.creative.enhancedvisuals.client;
 
-import java.awt.Color;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Random;
@@ -12,6 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import team.creative.creativecore.common.config.premade.IntMinMax;
 import team.creative.creativecore.common.config.premade.curve.Curve;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
+import team.creative.creativecore.common.util.type.Color;
 import team.creative.creativecore.common.util.type.map.HashMapList;
 import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.api.Particle;

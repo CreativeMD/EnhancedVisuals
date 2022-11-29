@@ -3,8 +3,10 @@ package team.creative.enhancedvisuals.api.type;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.imageio.ImageIO;
 
@@ -18,6 +20,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -64,8 +67,16 @@ public abstract class VisualTypeTexture extends VisualType {
         try {
             while ((resource = TextureCache.parse(manager, domain, baseLocation + i)) != null) {
                 if (i == 0) {
-                    BufferedImage image = ImageIO.read(manager.getResource(resource.getFirst()).getInputStream());
-                    dimension = new Dimension(image.getWidth(), image.getHeight());
+                    Optional<Resource> re = manager.getResource(resource.getFirst());
+                    if (re.isPresent()) {
+                        InputStream input = re.orElseThrow().open();
+                        try {
+                            BufferedImage image = ImageIO.read(input);
+                            dimension = new Dimension(image.getWidth(), image.getHeight());
+                        } finally {
+                            input.close();
+                        }
+                    }
                 }
                 caches.add(resource);
                 i++;

@@ -1,24 +1,22 @@
 package team.creative.enhancedvisuals.mixin;
 
-import java.util.List;
-import java.util.Set;
-
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-
-import net.minecraft.world.level.Explosion;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import team.creative.enhancedvisuals.EnhancedVisuals;
+
+import java.util.List;
 
 @Mixin(Explosion.class)
 public class MixinExplosion {
-	@Inject(at = @At(value = "INVOKE",
-	                 target = "Lnet/minecraft/world/phys/Vec3;<init>(DDD)V"),
-	        method = "Lnet/minecraft/world/level/Explosion;explode()V",
-	        locals = LocalCapture.CAPTURE_FAILHARD)
-	private void onDetonate(CallbackInfo ci, Set set, int i, float q, int k, int l, int r, int s, int t, int u, List list) {
-		EnhancedVisuals.EVENTS.explosion((Explosion)(Object) this, list);
-	}
+    @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;getEntities(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/AABB;)Ljava/util/List;"), method = "Lnet/minecraft/world/level/Explosion;explode()V", require = 1)
+    private List<Entity> onDetonate(Level world, Entity causer, AABB box) {
+        List<Entity> list = world.getEntities(causer, box);
+        EnhancedVisuals.EVENTS.explosion((Explosion) (Object) this, list);
+        return list;
+    }
 }

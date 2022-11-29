@@ -2,6 +2,8 @@ package team.creative.enhancedvisuals.client.render;
 
 import java.util.Collection;
 
+import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
+import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -71,12 +73,10 @@ public class EVRenderer {
                 Lighting.setupFor3DItems();
                 RenderSystem.disableTexture();
                 
-                RenderSystem.enableBlend();
                 RenderSystem.disableDepthTest();
                 RenderSystem.depthMask(false);
-                RenderSystem.blendFuncSeparate(770, 771, 1, 0);
+                RenderSystem.defaultBlendFunc();
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-                //RenderSystem.disableAlphaTest();
                 RenderSystem.enableBlend();
                 
                 renderVisuals(stack, VisualManager.visuals(VisualCategory.overlay), manager, screenWidth, screenHeight, partialTicks);
@@ -90,6 +90,7 @@ public class EVRenderer {
                 RenderSystem.disableDepthTest();
                 RenderSystem.enableTexture();
                 RenderSystem.resetTextureMatrix();
+                RenderSystem.blendFuncSeparate(SourceFactor.ONE, DestFactor.ONE, SourceFactor.ZERO, DestFactor.ZERO);
                 renderVisuals(stack, VisualManager.visuals(VisualCategory.shader), manager, screenWidth, screenHeight, partialTicks);
                 
                 RenderSystem.clear(256, Minecraft.ON_OSX);
