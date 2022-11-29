@@ -1,6 +1,5 @@
 package team.creative.enhancedvisuals.common.handler;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +13,7 @@ import team.creative.creativecore.common.config.api.CreativeConfig.DecimalRange;
 import team.creative.creativecore.common.config.premade.DecimalMinMax;
 import team.creative.creativecore.common.config.premade.IntMinMax;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
+import team.creative.creativecore.common.util.type.Color;
 import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.api.event.FireParticlesEvent;
 import team.creative.enhancedvisuals.api.type.VisualType;

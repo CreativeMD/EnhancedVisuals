@@ -1,11 +1,10 @@
 package team.creative.enhancedvisuals.api.type;
 
-import java.awt.Color;
-
 import team.creative.creativecore.Side;
 import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.api.CreativeConfig.IntRange;
 import team.creative.creativecore.common.config.premade.DecimalMinMax;
+import team.creative.creativecore.common.util.type.Color;
 
 public class VisualTypeParticleColored extends VisualTypeParticle {
     
