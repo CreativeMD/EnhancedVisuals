@@ -19,17 +19,19 @@ public abstract class TextureCache {
     
     public abstract ResourceLocation getResource();
     
-    public static TextureCache parse(ResourceManager manager, String domain, String baseLocation) throws IOException {
+    public static TextureCache parse(ResourceManager manager, String domain, String baseLocation) {
         ResourceLocation location = null;
         int i = 0;
         Resource resource = null;
         List<ResourceLocation> locations = null;
-        while ((resource = manager.getResource(location = new ResourceLocation(domain, baseLocation + "-" + i + ".png"))) != null) {
-            if (locations == null)
-                locations = new ArrayList<>();
-            locations.add(location);
-            i++;
-        }
+        try {
+            while ((resource = manager.getResource(location = new ResourceLocation(domain, baseLocation + "-" + i + ".png"))) != null) {
+                if (locations == null)
+                    locations = new ArrayList<>();
+                locations.add(location);
+                i++;
+            }
+        } catch (IOException e) {}
         
         if (locations != null) {
             int animationSpeed = 1;
@@ -51,8 +53,10 @@ public abstract class TextureCache {
             return new TextureCacheAnimation(locations.toArray(new ResourceLocation[locations.size()]), animationSpeed);
         }
         
-        if (manager.getResource(location = new ResourceLocation(domain, baseLocation + ".png")) != null)
-            return new TextureCacheSimple(location);
+        try {
+            if (manager.getResource(location = new ResourceLocation(domain, baseLocation + ".png")) != null)
+                return new TextureCacheSimple(location);
+        } catch (IOException e) {}
         return null;
     }
     

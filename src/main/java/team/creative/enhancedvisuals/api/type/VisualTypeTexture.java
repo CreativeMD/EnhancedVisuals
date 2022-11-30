@@ -63,9 +63,9 @@ public abstract class VisualTypeTexture extends VisualType {
         int i = 0;
         TextureCache resource = null;
         String domain = this.domain == null ? EnhancedVisuals.MODID : this.domain;
-        try {
-            while ((resource = TextureCache.parse(manager, domain, baseLocation + i)) != null) {
-                if (i == 0) {
+        while ((resource = TextureCache.parse(manager, domain, baseLocation + i)) != null) {
+            if (i == 0) {
+                try {
                     Resource re = manager.getResource(resource.getFirst());
                     if (re != null) {
                         InputStream input = re.getInputStream();
@@ -76,12 +76,10 @@ public abstract class VisualTypeTexture extends VisualType {
                             input.close();
                         }
                     }
-                }
-                caches.add(resource);
-                i++;
+                } catch (IOException e) {}
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            caches.add(resource);
+            i++;
         }
         resources = caches.toArray(new TextureCache[0]);
         if (resources.length == 0)
