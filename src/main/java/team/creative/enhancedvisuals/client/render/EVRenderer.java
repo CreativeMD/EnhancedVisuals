@@ -2,12 +2,13 @@ package team.creative.enhancedvisuals.client.render;
 
 import java.util.Collection;
 
+import org.joml.Matrix4f;
+
 import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
 import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Matrix4f;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.DeathScreen;
@@ -63,7 +64,7 @@ public class EVRenderer {
                 //RenderHelper.enableStandardItemLighting();
                 RenderSystem.clear(256, Minecraft.ON_OSX);
                 RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
-                Matrix4f matrix4f = Matrix4f.orthographic(0.0F, (float) (mc.getWindow().getWidth() / mc.getWindow().getGuiScale()), 0.0F, (float) (mc.getWindow().getHeight() / mc
+                Matrix4f matrix4f = new Matrix4f().setOrtho(0.0F, (float) (mc.getWindow().getWidth() / mc.getWindow().getGuiScale()), 0.0F, (float) (mc.getWindow().getHeight() / mc
                         .getWindow().getGuiScale()), 1000.0F, 3000.0F);
                 RenderSystem.setProjectionMatrix(matrix4f);
                 PoseStack stack = RenderSystem.getModelViewStack();
