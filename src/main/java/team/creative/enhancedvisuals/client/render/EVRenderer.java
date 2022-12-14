@@ -4,8 +4,6 @@ import java.util.Collection;
 
 import org.joml.Matrix4f;
 
-import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
-import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -91,7 +89,6 @@ public class EVRenderer {
                 RenderSystem.disableDepthTest();
                 RenderSystem.enableTexture();
                 RenderSystem.resetTextureMatrix();
-                RenderSystem.blendFuncSeparate(SourceFactor.ONE, DestFactor.ONE, SourceFactor.ZERO, DestFactor.ZERO);
                 renderVisuals(stack, VisualManager.visuals(VisualCategory.shader), manager, screenWidth, screenHeight, partialTicks);
                 
                 RenderSystem.clear(256, Minecraft.ON_OSX);
