@@ -100,11 +100,11 @@ public abstract class VisualType implements ICreativeConfig {
         return 1;
     }
     
-    public int getWidth(int screenWidth) {
+    public int getWidth(int screenWidth, int screenHeight) {
         return screenWidth;
     }
     
-    public int getHeight(int screenHeight) {
+    public int getHeight(int screenWidth, int screenHeight) {
         return screenHeight;
     }
     

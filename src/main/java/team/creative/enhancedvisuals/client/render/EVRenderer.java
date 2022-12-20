@@ -2,8 +2,6 @@ package team.creative.enhancedvisuals.client.render;
 
 import java.util.Collection;
 
-import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
-import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -13,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.DeathScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraftforge.client.ForgeHooksClient;
 import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualCategory;
@@ -55,46 +54,39 @@ public class EVRenderer {
                     framebufferHeight = mc.getMainRenderTarget().height;
                 }
                 
-                int screenWidth = mc.getWindow().getGuiScaledWidth();
-                int screenHeight = mc.getWindow().getGuiScaledHeight();
+                int screenWidth = mc.getWindow().getWidth();
+                int screenHeight = mc.getWindow().getHeight();
                 
                 TextureManager manager = mc.getTextureManager();
                 
-                //RenderHelper.enableStandardItemLighting();
                 RenderSystem.clear(256, Minecraft.ON_OSX);
-                RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
                 Matrix4f matrix4f = Matrix4f.orthographic(0.0F, (float) (mc.getWindow().getWidth() / mc.getWindow().getGuiScale()), 0.0F, (float) (mc.getWindow().getHeight() / mc
-                        .getWindow().getGuiScale()), 1000.0F, 3000.0F);
+                        .getWindow().getGuiScale()), 1000.0F, ForgeHooksClient.getGuiFarPlane());
                 RenderSystem.setProjectionMatrix(matrix4f);
                 PoseStack stack = RenderSystem.getModelViewStack();
                 stack.setIdentity();
                 stack.translate(0.0D, 0.0D, -2000.0D);
                 RenderSystem.applyModelViewMatrix();
                 Lighting.setupFor3DItems();
-                RenderSystem.disableTexture();
                 
+                RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+                RenderSystem.enableTexture();
                 RenderSystem.disableDepthTest();
                 RenderSystem.depthMask(false);
+                RenderSystem.enableBlend();
                 RenderSystem.defaultBlendFunc();
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-                RenderSystem.enableBlend();
                 
                 renderVisuals(stack, VisualManager.visuals(VisualCategory.overlay), manager, screenWidth, screenHeight, partialTicks);
                 renderVisuals(stack, VisualManager.visuals(VisualCategory.particle), manager, screenWidth, screenHeight, partialTicks);
                 
                 RenderSystem.disableBlend();
-                RenderSystem.disableDepthTest();
-                //RenderSystem.disableAlphaTest();
-                
-                RenderSystem.disableBlend();
-                RenderSystem.disableDepthTest();
-                RenderSystem.enableTexture();
+                RenderSystem.disableTexture();
                 RenderSystem.resetTextureMatrix();
                 renderVisuals(stack, VisualManager.visuals(VisualCategory.shader), manager, screenWidth, screenHeight, partialTicks);
                 
                 RenderSystem.clear(256, Minecraft.ON_OSX);
                 
-                mc.getMainRenderTarget().bindWrite(true);
                 RenderSystem.applyModelViewMatrix();
                 lastRenderedMessage = null;
             } else {
