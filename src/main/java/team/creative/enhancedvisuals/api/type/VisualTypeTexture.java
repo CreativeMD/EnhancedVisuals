@@ -33,6 +33,8 @@ import team.creative.enhancedvisuals.client.render.TextureCache;
 
 public abstract class VisualTypeTexture extends VisualType {
     
+    private static final float DEFAULT_PARTICLE_SIZE = 0.15F;
+    
     @CreativeConfig
     public int animationSpeed;
     public String domain;
@@ -53,6 +55,8 @@ public abstract class VisualTypeTexture extends VisualType {
     @Environment(EnvType.CLIENT)
     @OnlyIn(Dist.CLIENT)
     public Dimension dimension;
+    @OnlyIn(Dist.CLIENT)
+    public float ratio;
     
     @Override
     @Environment(EnvType.CLIENT)
@@ -73,6 +77,7 @@ public abstract class VisualTypeTexture extends VisualType {
                         try {
                             BufferedImage image = ImageIO.read(input);
                             dimension = new Dimension(image.getWidth(), image.getHeight());
+                            ratio = dimension.width / (float) dimension.height;
                         } finally {
                             input.close();
                         }
@@ -125,20 +130,20 @@ public abstract class VisualTypeTexture extends VisualType {
         
         float opacity = visual.getOpacity();
         renderer.begin(Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-        renderer.vertex(0.0D, height, z).uv(0.0F, 1.0F).color(red, green, blue, (int) (opacity * 255)).endVertex();
-        renderer.vertex(width, height, z).uv(1.0F, 1.0F).color(red, green, blue, (int) (opacity * 255)).endVertex();
-        renderer.vertex(width, 0.0D, z).uv(1.0F, 0.0F).color(red, green, blue, (int) (opacity * 255)).endVertex();
-        renderer.vertex(0.0D, 0.0D, z).uv(0.0F, 0.0F).color(red, green, blue, (int) (opacity * 255)).endVertex();
+        renderer.vertex(0.0D, height, z).uv(0.0F, 1.0F).color(red, green, blue, (int) (opacity * 255F)).endVertex();
+        renderer.vertex(width, height, z).uv(1.0F, 1.0F).color(red, green, blue, (int) (opacity * 255F)).endVertex();
+        renderer.vertex(width, 0.0D, z).uv(1.0F, 0.0F).color(red, green, blue, (int) (opacity * 255F)).endVertex();
+        renderer.vertex(0.0D, 0.0D, z).uv(0.0F, 0.0F).color(red, green, blue, (int) (opacity * 255F)).endVertex();
         tessellator.end();
     }
     
     @Override
-    public int getWidth(int screenWidth) {
-        return (dimension.width);
+    public int getWidth(int screenWidth, int screenHeight) {
+        return (int) (screenHeight * DEFAULT_PARTICLE_SIZE * ratio);
     }
     
     @Override
-    public int getHeight(int screenHeight) {
-        return (dimension.height);
+    public int getHeight(int screenWidth, int screenHeight) {
+        return (int) (screenHeight * DEFAULT_PARTICLE_SIZE);
     }
 }

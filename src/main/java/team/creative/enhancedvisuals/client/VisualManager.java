@@ -108,8 +108,8 @@ public class VisualManager {
             int screenWidth = mc.getWindow().getGuiScaledWidth();
             int screenHeight = mc.getWindow().getGuiScaledHeight();
             
-            int width = vt.getWidth(screenWidth);
-            int height = vt.getHeight(screenHeight);
+            int width = vt.getWidth(screenWidth, screenHeight);
+            int height = vt.getHeight(screenWidth, screenHeight);
             
             if (vt.scaleVariants()) {
                 double scale = vt.randomScale(rand);
