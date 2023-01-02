@@ -28,7 +28,7 @@ public class PotionHandler extends VisualHandler {
         float b = (var11 & 255) / 255.0F;
         if (modifier <= 0)
             return;
-        Visual v = VisualManager.addVisualFadeOut(potion, this, new DecimalCurve(0, Math.min(1, modifier * 2), duration.next(VisualManager.rand), 0));
+        Visual v = VisualManager.addVisualFadeOut(potion, this, new DecimalCurve(0, Math.min(1, modifier * 2), duration.next(VisualManager.RANDOM), 0));
         v.color = new Color(r, g, b);
     }
     

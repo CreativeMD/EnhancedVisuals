@@ -60,12 +60,11 @@ public class EVRenderer {
                 TextureManager manager = mc.getTextureManager();
                 
                 RenderSystem.clear(256, Minecraft.ON_OSX);
-                Matrix4f matrix4f = Matrix4f.orthographic(0.0F, (float) (mc.getWindow().getWidth() / mc.getWindow().getGuiScale()), 0.0F, (float) (mc.getWindow().getHeight() / mc
-                        .getWindow().getGuiScale()), 1000.0F, ForgeHooksClient.getGuiFarPlane());
+                Matrix4f matrix4f = Matrix4f.orthographic(0.0F, screenWidth, 0.0F, screenHeight, 1000.0F, ForgeHooksClient.getGuiFarPlane());
                 RenderSystem.setProjectionMatrix(matrix4f);
                 PoseStack stack = RenderSystem.getModelViewStack();
                 stack.setIdentity();
-                stack.translate(0.0D, 0.0D, -2000.0D);
+                stack.translate(0.0D, 0.0D, 1000F - ForgeHooksClient.getGuiFarPlane());
                 RenderSystem.applyModelViewMatrix();
                 Lighting.setupFor3DItems();
                 
@@ -106,14 +105,9 @@ public class EVRenderer {
             return;
         try {
             
-            for (Visual visual : visuals) {
-                if (visual.isVisible()) {
-                    stack.pushPose();
-                    RenderSystem.applyModelViewMatrix();
+            for (Visual visual : visuals)
+                if (visual.isVisible())
                     visual.render(stack, manager, screenWidth, screenHeight, partialTicks);
-                    stack.popPose();
-                }
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }

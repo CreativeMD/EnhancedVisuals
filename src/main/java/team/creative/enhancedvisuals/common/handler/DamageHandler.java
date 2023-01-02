@@ -155,7 +155,7 @@ public class DamageHandler extends VisualHandler {
     
     public void clientHurt() {
         if (hitEffectIntensity > 0)
-            VisualManager.addVisualFadeOut(damaged, this, new DecimalCurve(VisualManager.rand, hitDuration, hitEffectIntensity * 0.2));
+            VisualManager.addVisualFadeOut(damaged, this, new DecimalCurve(VisualManager.RANDOM, hitDuration, hitEffectIntensity * 0.2));
     }
     
     public void playerDamaged(Player player, DamagePacket packet) {
@@ -217,7 +217,7 @@ public class DamageHandler extends VisualHandler {
         double rate = Math.max(0, healthScaler.valueAt(health));
         
         VisualManager.addParticlesFadeOut(type, this, Math
-                .min(5000, (int) (damageScale * damage * rate)), new DecimalCurve(0, 1, duration.next(VisualManager.rand), 0), true, bloodColor);
+                .min(5000, (int) (damageScale * damage * rate)), new DecimalCurve(0, 1, duration.next(VisualManager.RANDOM), 0), true, bloodColor);
     }
     
     private static boolean isSharp(ItemStack item) {
