@@ -90,7 +90,8 @@ public class EVRenderer {
                 
                 Window window = mc.getWindow();
                 RenderSystem.clear(256, Minecraft.ON_OSX);
-                RenderSystem.setProjectionMatrix(Matrix4f.orthographic(0.0F, (float) (window.getWidth() / window.getGuiScale()), (float) (window.getHeight() / window.getGuiScale()), 0.0F, 1000.0F, ForgeHooksClient
+                RenderSystem.setProjectionMatrix(Matrix4f
+                        .orthographic(0.0F, (float) (window.getWidth() / window.getGuiScale()), 0.0F, (float) (window.getHeight() / window.getGuiScale()), 1000.0F, ForgeHooksClient
                                 .getGuiFarPlane()));
                 PoseStack posestack = RenderSystem.getModelViewStack();
                 posestack.setIdentity();
