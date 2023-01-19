@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.joml.Matrix4f;
 
 import com.mojang.blaze3d.platform.Lighting;
+import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -12,6 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.DeathScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraftforge.client.ForgeHooksClient;
 import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualCategory;
@@ -60,7 +62,7 @@ public class EVRenderer {
                 TextureManager manager = mc.getTextureManager();
                 
                 RenderSystem.clear(256, Minecraft.ON_OSX);
-                Matrix4f matrix4f = (new Matrix4f()).setOrtho(0.0F, screenWidth, screenHeight, 0.0F, 1000.0F, 3000F);
+                Matrix4f matrix4f = new Matrix4f().setOrtho(0.0F, screenWidth, screenHeight, 0.0F, 1000.0F, 3000F);
                 RenderSystem.setProjectionMatrix(matrix4f);
                 PoseStack stack = RenderSystem.getModelViewStack();
                 stack.setIdentity();
@@ -84,10 +86,19 @@ public class EVRenderer {
                 RenderSystem.resetTextureMatrix();
                 renderVisuals(stack, VisualManager.visuals(VisualCategory.shader), manager, screenWidth, screenHeight, partialTicks);
                 
-                RenderSystem.clear(256, Minecraft.ON_OSX);
-                
                 RenderSystem.applyModelViewMatrix();
                 lastRenderedMessage = null;
+                
+                Window window = mc.getWindow();
+                RenderSystem.clear(256, Minecraft.ON_OSX);
+                RenderSystem.setProjectionMatrix(new Matrix4f()
+                        .setOrtho(0.0F, (float) (window.getWidth() / window.getGuiScale()), (float) (window.getHeight() / window.getGuiScale()), 0.0F, 1000.0F, ForgeHooksClient
+                                .getGuiFarPlane()));
+                PoseStack posestack = RenderSystem.getModelViewStack();
+                posestack.setIdentity();
+                posestack.translate(0.0D, 0.0D, 1000F - ForgeHooksClient.getGuiFarPlane());
+                RenderSystem.applyModelViewMatrix();
+                Lighting.setupFor3DItems();
             } else {
                 if (EnhancedVisuals.MESSAGES.enabled) {
                     if (lastRenderedMessage == null)
