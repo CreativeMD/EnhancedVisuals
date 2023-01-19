@@ -13,7 +13,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.DeathScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraftforge.client.ForgeHooksClient;
 import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualCategory;
@@ -92,11 +91,10 @@ public class EVRenderer {
                 Window window = mc.getWindow();
                 RenderSystem.clear(256, Minecraft.ON_OSX);
                 RenderSystem.setProjectionMatrix(new Matrix4f()
-                        .setOrtho(0.0F, (float) (window.getWidth() / window.getGuiScale()), (float) (window.getHeight() / window.getGuiScale()), 0.0F, 1000.0F, ForgeHooksClient
-                                .getGuiFarPlane()));
+                        .setOrtho(0.0F, (float) (window.getWidth() / window.getGuiScale()), (float) (window.getHeight() / window.getGuiScale()), 0.0F, 1000.0F, 3000F));
                 PoseStack posestack = RenderSystem.getModelViewStack();
                 posestack.setIdentity();
-                posestack.translate(0.0D, 0.0D, 1000F - ForgeHooksClient.getGuiFarPlane());
+                stack.translate(0.0D, 0.0D, 1000F - 3000F);
                 RenderSystem.applyModelViewMatrix();
                 Lighting.setupFor3DItems();
             } else {
