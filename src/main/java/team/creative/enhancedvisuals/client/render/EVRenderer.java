@@ -3,6 +3,7 @@ package team.creative.enhancedvisuals.client.render;
 import java.util.Collection;
 
 import com.mojang.blaze3d.platform.Lighting;
+import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
@@ -84,10 +85,18 @@ public class EVRenderer {
                 RenderSystem.resetTextureMatrix();
                 renderVisuals(stack, VisualManager.visuals(VisualCategory.shader), manager, screenWidth, screenHeight, partialTicks);
                 
-                RenderSystem.clear(256, Minecraft.ON_OSX);
-                
                 RenderSystem.applyModelViewMatrix();
                 lastRenderedMessage = null;
+                
+                Window window = mc.getWindow();
+                RenderSystem.clear(256, Minecraft.ON_OSX);
+                RenderSystem.setProjectionMatrix(Matrix4f.orthographic(0.0F, (float) (window.getWidth() / window.getGuiScale()), (float) (window.getHeight() / window.getGuiScale()), 0.0F, 1000.0F, ForgeHooksClient
+                                .getGuiFarPlane()));
+                PoseStack posestack = RenderSystem.getModelViewStack();
+                posestack.setIdentity();
+                posestack.translate(0.0D, 0.0D, 1000F - ForgeHooksClient.getGuiFarPlane());
+                RenderSystem.applyModelViewMatrix();
+                Lighting.setupFor3DItems();
             } else {
                 if (EnhancedVisuals.MESSAGES.enabled) {
                     if (lastRenderedMessage == null)
