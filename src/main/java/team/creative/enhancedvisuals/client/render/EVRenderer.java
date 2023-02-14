@@ -64,6 +64,7 @@ public class EVRenderer {
                 Matrix4f matrix4f = new Matrix4f().setOrtho(0.0F, screenWidth, screenHeight, 0.0F, 1000.0F, 3000F);
                 RenderSystem.setProjectionMatrix(matrix4f);
                 PoseStack stack = RenderSystem.getModelViewStack();
+                stack.pushPose();
                 stack.setIdentity();
                 stack.translate(0.0D, 0.0D, 1000F - 3000F);
                 RenderSystem.applyModelViewMatrix();
@@ -92,11 +93,11 @@ public class EVRenderer {
                 RenderSystem.clear(256, Minecraft.ON_OSX);
                 RenderSystem.setProjectionMatrix(new Matrix4f()
                         .setOrtho(0.0F, (float) (window.getWidth() / window.getGuiScale()), (float) (window.getHeight() / window.getGuiScale()), 0.0F, 1000.0F, 3000F));
-                PoseStack posestack = RenderSystem.getModelViewStack();
-                posestack.setIdentity();
-                stack.translate(0.0D, 0.0D, 1000F - 3000F);
+                stack.popPose();
                 RenderSystem.applyModelViewMatrix();
                 Lighting.setupFor3DItems();
+                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+                mc.getMainRenderTarget().bindWrite(true);
             } else {
                 if (EnhancedVisuals.MESSAGES.enabled) {
                     if (lastRenderedMessage == null)
