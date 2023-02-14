@@ -64,6 +64,7 @@ public class EVRenderer {
                 Matrix4f matrix4f = Matrix4f.orthographic(0.0F, screenWidth, 0.0F, screenHeight, 1000.0F, ForgeHooksClient.getGuiFarPlane());
                 RenderSystem.setProjectionMatrix(matrix4f);
                 PoseStack stack = RenderSystem.getModelViewStack();
+                stack.pushPose();
                 stack.setIdentity();
                 stack.translate(0.0D, 0.0D, 1000F - ForgeHooksClient.getGuiFarPlane());
                 RenderSystem.applyModelViewMatrix();
@@ -93,11 +94,11 @@ public class EVRenderer {
                 RenderSystem.setProjectionMatrix(Matrix4f
                         .orthographic(0.0F, (float) (window.getWidth() / window.getGuiScale()), 0.0F, (float) (window.getHeight() / window.getGuiScale()), 1000.0F, ForgeHooksClient
                                 .getGuiFarPlane()));
-                PoseStack posestack = RenderSystem.getModelViewStack();
-                posestack.setIdentity();
-                posestack.translate(0.0D, 0.0D, 1000F - ForgeHooksClient.getGuiFarPlane());
+                stack.popPose();
                 RenderSystem.applyModelViewMatrix();
                 Lighting.setupFor3DItems();
+                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+                mc.getMainRenderTarget().bindWrite(true);
             } else {
                 if (EnhancedVisuals.MESSAGES.enabled) {
                     if (lastRenderedMessage == null)
