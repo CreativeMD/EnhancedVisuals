@@ -71,7 +71,6 @@ public class EVRenderer {
                 Lighting.setupFor3DItems();
                 
                 RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
-                RenderSystem.enableTexture();
                 RenderSystem.disableDepthTest();
                 RenderSystem.depthMask(false);
                 RenderSystem.enableBlend();
@@ -82,7 +81,6 @@ public class EVRenderer {
                 renderVisuals(stack, VisualManager.visuals(VisualCategory.particle), manager, screenWidth, screenHeight, partialTicks);
                 
                 RenderSystem.disableBlend();
-                RenderSystem.disableTexture();
                 RenderSystem.resetTextureMatrix();
                 renderVisuals(stack, VisualManager.visuals(VisualCategory.shader), manager, screenWidth, screenHeight, partialTicks);
                 
