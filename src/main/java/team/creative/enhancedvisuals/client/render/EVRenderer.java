@@ -11,7 +11,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.DeathScreen;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
 import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.api.Visual;
@@ -70,7 +69,6 @@ public class EVRenderer {
                 RenderSystem.applyModelViewMatrix();
                 Lighting.setupFor3DItems();
                 
-                RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
                 RenderSystem.disableDepthTest();
                 RenderSystem.depthMask(false);
                 RenderSystem.enableBlend();

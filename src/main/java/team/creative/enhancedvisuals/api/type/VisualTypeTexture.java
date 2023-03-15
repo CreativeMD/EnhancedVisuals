@@ -18,6 +18,7 @@ import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
@@ -119,6 +120,8 @@ public abstract class VisualTypeTexture extends VisualType {
         RenderSystem.setShaderTexture(0, getResource(visual));
         Tesselator tessellator = Tesselator.getInstance();
         BufferBuilder renderer = tessellator.getBuilder();
+        
+        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         
         int red = visual.color != null ? visual.color.getRed() : 255;
         int green = visual.color != null ? visual.color.getGreen() : 255;
