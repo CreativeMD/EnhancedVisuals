@@ -1,6 +1,6 @@
 package team.creative.enhancedvisuals.common.addon.survive;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.entity.player.Player;
 import team.creative.creativecore.common.config.api.CreativeConfig;

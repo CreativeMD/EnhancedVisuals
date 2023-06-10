@@ -1,6 +1,6 @@
 package team.creative.enhancedvisuals.common.addon.survive;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.shaders.Uniform;
 

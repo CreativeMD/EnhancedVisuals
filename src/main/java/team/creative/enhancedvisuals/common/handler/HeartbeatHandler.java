@@ -1,7 +1,7 @@
 package team.creative.enhancedvisuals.common.handler;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
@@ -70,12 +70,12 @@ public class HeartbeatHandler extends VisualHandler {
         this.effectBufferTicks -= 1;
     }
     
-    private void resetBufferTicks(@Nonnull Player player) {
+    private void resetBufferTicks(@NotNull Player player) {
         float percentHealthLeft = (player.getHealth() / player.getMaxHealth());
         this.effectBufferTicks = (int) (percentHealthLeft * heartbeatTimeFactor + minHeartbeatLength);
     }
     
-    private float getIntensity(@Nonnull Player player) {
+    private float getIntensity(@NotNull Player player) {
         if (useHealthPercentage)
             return (maxHealthPercentage - (player.getHealth() / player.getMaxHealth()));
         return player.getHealth() / maxHealth;

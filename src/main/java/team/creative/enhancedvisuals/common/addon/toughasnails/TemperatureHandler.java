@@ -1,6 +1,6 @@
 package team.creative.enhancedvisuals.common.addon.toughasnails;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.entity.player.Player;
 import team.creative.creativecore.common.config.api.CreativeConfig;
@@ -55,26 +55,26 @@ public class TemperatureHandler extends VisualHandler {
             temp = TemperatureHelper.getTemperatureForPlayer(player);
         
         switch (temp) {
-        case ICY:
-            aimedHeat = neutralIntensity;
-            aimedFreeze = icyIntensity;
-            break;
-        case COLD:
-            aimedHeat = neutralIntensity;
-            aimedFreeze = coldIntensity;
-            break;
-        case NEUTRAL:
-            aimedHeat = neutralIntensity;
-            aimedFreeze = neutralIntensity;
-            break;
-        case WARM:
-            aimedHeat = warmIntensity;
-            aimedFreeze = neutralIntensity;
-            break;
-        case HOT:
-            aimedHeat = hotIntensity;
-            aimedFreeze = neutralIntensity;
-            break;
+            case ICY:
+                aimedHeat = neutralIntensity;
+                aimedFreeze = icyIntensity;
+                break;
+            case COLD:
+                aimedHeat = neutralIntensity;
+                aimedFreeze = coldIntensity;
+                break;
+            case NEUTRAL:
+                aimedHeat = neutralIntensity;
+                aimedFreeze = neutralIntensity;
+                break;
+            case WARM:
+                aimedHeat = warmIntensity;
+                aimedFreeze = neutralIntensity;
+                break;
+            case HOT:
+                aimedHeat = hotIntensity;
+                aimedFreeze = neutralIntensity;
+                break;
         }
         
         if (freezeVisual.getOpacityInternal() < aimedFreeze)
