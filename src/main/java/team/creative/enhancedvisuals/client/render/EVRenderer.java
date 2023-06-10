@@ -8,8 +8,10 @@ import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexSorting;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.DeathScreen;
 import net.minecraft.client.renderer.texture.TextureManager;
 import team.creative.enhancedvisuals.EnhancedVisuals;
@@ -31,7 +33,8 @@ public class EVRenderer {
     
     public static boolean reloadResources = false;
     
-    public static void render() {
+    public static void render(Object object) {
+        GuiGraphics graphics = (GuiGraphics) object;
         if (EVClient.shouldRender()) {
             if (reloadResources) {
                 for (VisualType type : VisualType.getTypes()) {
@@ -61,7 +64,7 @@ public class EVRenderer {
                 
                 RenderSystem.clear(256, Minecraft.ON_OSX);
                 Matrix4f matrix4f = new Matrix4f().setOrtho(0.0F, screenWidth, screenHeight, 0.0F, 1000.0F, 3000F);
-                RenderSystem.setProjectionMatrix(matrix4f);
+                RenderSystem.setProjectionMatrix(matrix4f, VertexSorting.ORTHOGRAPHIC_Z);
                 PoseStack stack = RenderSystem.getModelViewStack();
                 stack.pushPose();
                 stack.setIdentity();
@@ -87,8 +90,8 @@ public class EVRenderer {
                 
                 Window window = mc.getWindow();
                 RenderSystem.clear(256, Minecraft.ON_OSX);
-                RenderSystem.setProjectionMatrix(new Matrix4f()
-                        .setOrtho(0.0F, (float) (window.getWidth() / window.getGuiScale()), (float) (window.getHeight() / window.getGuiScale()), 0.0F, 1000.0F, 3000F));
+                RenderSystem.setProjectionMatrix(new Matrix4f().setOrtho(0.0F, (float) (window.getWidth() / window.getGuiScale()), (float) (window.getHeight() / window
+                        .getGuiScale()), 0.0F, 1000.0F, 11000F), VertexSorting.ORTHOGRAPHIC_Z);
                 stack.popPose();
                 RenderSystem.applyModelViewMatrix();
                 Lighting.setupFor3DItems();
@@ -100,7 +103,7 @@ public class EVRenderer {
                         lastRenderedMessage = EnhancedVisuals.MESSAGES.pickRandomDeathMessage();
                     
                     if (lastRenderedMessage != null)
-                        mc.font.drawShadow(new PoseStack(), "\"" + lastRenderedMessage + "\"", mc.screen.width / 2 - mc.font.width(lastRenderedMessage) / 2, 114, 16777215);
+                        graphics.drawString(mc.font, "\"" + lastRenderedMessage + "\"", mc.screen.width / 2 - mc.font.width(lastRenderedMessage) / 2, 114, 16777215);
                 }
             }
         }

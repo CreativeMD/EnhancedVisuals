@@ -22,6 +22,7 @@ import team.creative.creativecore.common.config.sync.ConfigSynchronization;
 import team.creative.creativecore.common.network.CreativeNetwork;
 import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.client.EVClient;
+import team.creative.enhancedvisuals.client.render.EVRenderer;
 import team.creative.enhancedvisuals.common.addon.survive.SurviveAddon;
 import team.creative.enhancedvisuals.common.addon.toughasnails.TANAddon;
 import team.creative.enhancedvisuals.common.death.DeathMessages;
@@ -55,6 +56,7 @@ public class EnhancedVisuals implements CommonLoader, ClientLoader {
     public void onInitializeClient() {
         CreativeCore.loader().registerClientStarted(EVClient::init);
         CreativeCore.loader().registerClientTick(() -> EVENTS.clientTick());
+        CreativeCore.loader().registerClientRenderGui(EVRenderer::render);
         CreativeCoreClient.registerClientConfig(MODID);
     }
     

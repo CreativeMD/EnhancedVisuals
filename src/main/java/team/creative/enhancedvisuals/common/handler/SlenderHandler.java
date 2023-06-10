@@ -63,9 +63,9 @@ public class SlenderHandler extends VisualHandler {
             SelectEndermanEvent event = new SelectEndermanEvent(TargetingConditions.forNonCombat());
             CreativeCore.loader().postForge(event);
             if (!event.isCanceled()) {
-                Entity mob = player.level.getNearestEntity(EnderMan.class, event.conditions, player, d0, d1, d2, box);
+                Entity mob = player.level().getNearestEntity(EnderMan.class, event.conditions, player, d0, d1, d2, box);
                 if (mutantEnderman != null)
-                    mob = player.level.getNearestEntity(mutantEnderman, TargetingConditions.forNonCombat(), player, d0, d1, d2, box);
+                    mob = player.level().getNearestEntity(mutantEnderman, TargetingConditions.forNonCombat(), player, d0, d1, d2, box);
                 
                 if (mob != null) {
                     float distModifier = (float) (1.0F / Math.pow(Math.sqrt(Math.pow(d0 - mob.getX(), 2) + Math.pow(d1 - mob.getY(), 2) + Math.pow(d2 - mob.getZ(), 2)) / 3.0D, 2));

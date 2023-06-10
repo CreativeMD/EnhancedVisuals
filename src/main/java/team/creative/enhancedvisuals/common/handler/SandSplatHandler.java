@@ -26,7 +26,7 @@ public class SandSplatHandler extends VisualHandler {
     
     @Override
     public void tick(@Nullable Player player) {
-        if (player != null && player.isOnGround() && isOnSand(player)) {
+        if (player != null && player.onGround() && isOnSand(player)) {
             double modifier = 0;
             if (player.isSprinting())
                 modifier = sprintModifier;
@@ -36,7 +36,7 @@ public class SandSplatHandler extends VisualHandler {
     
     private boolean isOnSand(Player player) {
         BlockPos pos = player.blockPosition().below();
-        if (player.level.getBlockState(pos).is(BlockTags.SAND))
+        if (player.level().getBlockState(pos).is(BlockTags.SAND))
             return true;
         return false;
     }
