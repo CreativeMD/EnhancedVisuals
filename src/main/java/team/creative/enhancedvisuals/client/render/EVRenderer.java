@@ -37,9 +37,8 @@ public class EVRenderer {
         GuiGraphics graphics = (GuiGraphics) object;
         if (EVClient.shouldRender()) {
             if (reloadResources) {
-                for (VisualType type : VisualType.getTypes()) {
+                for (VisualType type : VisualType.getTypes())
                     type.loadResources(mc.getResourceManager());
-                }
                 reloadResources = false;
             }
             
@@ -97,6 +96,7 @@ public class EVRenderer {
                 Lighting.setupFor3DItems();
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
                 mc.getMainRenderTarget().bindWrite(true);
+                RenderSystem.enableDepthTest();
             } else {
                 if (EnhancedVisuals.MESSAGES.enabled) {
                     if (lastRenderedMessage == null)
