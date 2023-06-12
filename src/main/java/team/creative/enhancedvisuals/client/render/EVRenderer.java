@@ -43,7 +43,7 @@ public class EVRenderer {
             }
             
             if (!(mc.screen instanceof DeathScreen)) {
-                graphics.flush();
+                //graphics.flush();
                 float partialTicks = Minecraft.getInstance().getFrameTime();
                 
                 if (mc.player != null && mc.player.hurtDuration > 0 && mc.player.hurtTime == mc.player.hurtDuration)
@@ -99,9 +99,8 @@ public class EVRenderer {
                 RenderSystem.applyModelViewMatrix();
                 Lighting.setupFor3DItems();
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-                stack.translate(0.0f, 0.0f, -11000.0f);
+                //stack.translate(0.0f, 0.0f, -11000.0f);
                 mc.getMainRenderTarget().bindWrite(true);
-                
                 RenderSystem.depthMask(true);
             } else {
                 if (EnhancedVisuals.MESSAGES.enabled) {
