@@ -39,11 +39,11 @@ sourceSets.main.compileClasspath += sourceSets.api.output
 sourceSets.main.runtimeClasspath += sourceSets.api.output
 
 processResources {
-    inputs.property "version", project.version
+    inputs.property "version", project.mod_version
     filteringCharset "UTF-8"
 
     filesMatching("fabric.mod.json") {
-        expand "version": project.version
+        expand "version": project.mod_version
     }
 }
 
