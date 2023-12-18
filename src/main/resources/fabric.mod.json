@@ -1,31 +1,31 @@
 {
-	"schemaVersion": 1,
-	"id": "${mod_id}",
-	"version": "${mod_version}",
-	"name": "${mod_name}",
-	"description": "${mod_description}",
-	"authors": [
-		"CreativeMD",
-		"AriaFreeze"
-	],
-	"license": "${mod_license}",
-	"icon": "${mod_id}.png",
-	"environment": "*",
-	"entrypoints": {
-		"main": [
-			"team.creative.enhancedvisuals.EnhancedVisuals"
-		],
-		"client": [
-			"team.creative.enhancedvisuals.EnhancedVisuals"
-		]
-	},
-	"mixins": [
-		"enhancedvisuals.mixins.json"
-	],
-	"depends": {
-		"fabricloader": "${loader_version_range}",
-		"fabric-api": "*",
-		"minecraft": "${minecraft_version_range}",
-		"creativecore": ">=${creativecore_version}"
-	}
+    "schemaVersion": 1,
+    "id": "enhancedvisuals",
+    "version": "1.6.9",
+    "name": "EnhancedVisuals",
+    "description": "Experience realism and extra video effects for your in-game experience.",
+    "authors": [
+        "CreativeMD",
+        "AriaFreeze"
+    ],
+    "license": "LGPL-3.0-only",
+    "icon": "enhancedvisuals.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "team.creative.enhancedvisuals.EnhancedVisuals"
+        ],
+        "client": [
+            "team.creative.enhancedvisuals.EnhancedVisuals"
+        ]
+    },
+    "mixins": [
+        "enhancedvisuals.mixins.json"
+    ],
+    "depends": {
+        "fabricloader": ">=0.14.0",
+        "fabric-api": "*",
+        "minecraft": ">=1.20",
+        "creativecore": ">=2.11.5"
+    }
 }

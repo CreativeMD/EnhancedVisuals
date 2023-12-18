@@ -1,34 +1,35 @@
 modLoader="javafml"
-loaderVersion="${loader_version_range}"
-issueTrackerURL="https://github.com/${github_project}/issues"
-license="${mod_license}"
+loaderVersion="[46,)"
+issueTrackerURL="https://github.com/CreativeMD/EnhancedVisuals/issues"
+license="LGPL-3.0-only"
 
 [[mods]]
-    modId="${mod_id}"
-    logoFile="${mod_id}.png"
-    version="${mod_version}"
-    displayName="${mod_name}"
-    displayURL="${mod_display_url}"
-    authors="${mod_authors}"
-    description='''${mod_description}'''
-    
-[[dependencies.${mod_id}]]
+    modId="enhancedvisuals"
+    logoFile="enhancedvisuals.png"
+    version="1.6.9"
+    displayName="EnhancedVisuals"
+    displayURL="https://modrinth.com/mod/enhancedvisuals"
+    authors="CreativeMD, Sonicjumper"
+    description='''Experience realism and extra video effects for your in-game experience.'''
+
+[[dependencies.enhancedvisuals]]
     modId="forge"
     mandatory=true
-    versionRange="${forge_version_range}"
+    versionRange="[46,)"
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.${mod_id}]]
+[[dependencies.enhancedvisuals]]
     modId="minecraft"
     mandatory=true
-    versionRange="${minecraft_version_range}"
+    versionRange="[1.20,1.21)"
     ordering="NONE"
     side="BOTH"
-    
-[[dependencies.${mod_id}]]
-    modId="creativecore"
-    mandatory=true
-    ordering="NONE"
-    side="BOTH"
-    versionRange="${creativecore_version}"
+
+[[dependencies.enhancedvisuals]]
+   modId="creativecore"
+   mandatory=true
+   ordering="NONE"
+   side="BOTH"
+   versionRange="2.11.5"
+
