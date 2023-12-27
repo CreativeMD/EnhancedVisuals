@@ -1,6 +1,6 @@
 package team.creative.enhancedvisuals.api.event;
 
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.bus.api.Event;
 
 public class FireParticlesEvent extends Event {
     

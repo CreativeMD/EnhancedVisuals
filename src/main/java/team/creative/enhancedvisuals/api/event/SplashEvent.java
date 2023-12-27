@@ -1,11 +1,10 @@
 package team.creative.enhancedvisuals.api.event;
 
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.eventbus.api.Cancelable;
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.bus.api.Event;
+import net.neoforged.bus.api.ICancellableEvent;
 
-@Cancelable
-public class SplashEvent extends Event {
+public class SplashEvent extends Event implements ICancellableEvent {
     
     public final Player player;
     

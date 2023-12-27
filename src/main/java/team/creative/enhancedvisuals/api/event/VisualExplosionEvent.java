@@ -1,10 +1,9 @@
 package team.creative.enhancedvisuals.api.event;
 
-import net.minecraftforge.eventbus.api.Cancelable;
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.bus.api.Event;
+import net.neoforged.bus.api.ICancellableEvent;
 
-@Cancelable
-public class VisualExplosionEvent extends Event {
+public class VisualExplosionEvent extends Event implements ICancellableEvent {
     
     public final float damage;
     
