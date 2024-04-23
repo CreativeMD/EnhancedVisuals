@@ -25,13 +25,13 @@ public class EVClient {
         reloadableResourceManager.registerReloadListener(new SimplePreparableReloadListener() {
             
             @Override
-            protected Object prepare(ResourceManager p_10796_, ProfilerFiller p_10797_) {
+            protected Object prepare(ResourceManager manager, ProfilerFiller profiler) {
                 return null;
             }
             
             @Override
-            protected void apply(Object p_10793_, ResourceManager p_10794_, ProfilerFiller p_10795_) {
-                VisualManager.clearParticles();
+            protected void apply(Object object, ResourceManager manager, ProfilerFiller profiler) {
+                VisualManager.clearEverything();
                 EVRenderer.reloadResources = true;
             }
         });

@@ -13,6 +13,7 @@
         "ProjectileMixin"
     ],
     "client": [
+        "ClientPacketListenerMixin",
         "SoundEngineAccessor",
         "SoundManagerAccessor",
         "PostChainAccessor"

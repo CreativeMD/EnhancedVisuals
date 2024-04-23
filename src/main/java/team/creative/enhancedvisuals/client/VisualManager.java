@@ -1,12 +1,17 @@
 package team.creative.enhancedvisuals.client;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import team.creative.creativecore.common.config.premade.IntMinMax;
 import team.creative.creativecore.common.config.premade.curve.Curve;
@@ -19,6 +24,8 @@ import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualCategory;
 import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.api.type.VisualType;
+import team.creative.enhancedvisuals.client.sound.SoundMuteHandler;
+import team.creative.enhancedvisuals.client.sound.TickedSound;
 import team.creative.enhancedvisuals.common.event.EVEvents;
 import team.creative.enhancedvisuals.common.visual.VisualRegistry;
 
@@ -27,6 +34,7 @@ public class VisualManager {
     private static Minecraft mc = Minecraft.getInstance();
     public static final Random RANDOM = new Random();
     private static HashMapList<VisualCategory, Visual> visuals = new HashMapList<>();
+    private static List<TickedSound> playing = new ArrayList<>();
     
     public static void onTick(@Nullable Player player) {
         boolean areEyesInWater = player != null && EVEvents.areEyesInWater(player);
@@ -55,16 +63,25 @@ public class VisualManager {
         }
         
         if (player != null && !player.isAlive())
-            VisualManager.clearParticles();
+            VisualManager.clearEverything();
+        
+        if (!playing.isEmpty())
+            playing.removeIf(x -> x.isStopped());
     }
     
     public static Collection<Visual> visuals(VisualCategory category) {
         return visuals.get(category);
     }
     
-    public static void clearParticles() {
+    public static void clearEverything() {
         synchronized (visuals) {
             visuals.removeKey(VisualCategory.particle);
+        }
+        if (!playing.isEmpty()) {
+            for (TickedSound sound : playing)
+                sound.stop();
+            playing.clear();
+            SoundMuteHandler.endMuting();
         }
     }
     
@@ -73,6 +90,16 @@ public class VisualManager {
             visual.addToDisplay();
             visuals.add(visual.getCategory(), visual);
         }
+    }
+    
+    public static void playTicking(ResourceLocation location, BlockPos pos, DecimalCurve volume) {
+        TickedSound sound;
+        if (pos != null)
+            sound = new TickedSound(location, SoundSource.MASTER, 1, pos, volume);
+        else
+            sound = new TickedSound(location, SoundSource.MASTER, 1, volume);
+        playing.add(sound);
+        Minecraft.getInstance().getSoundManager().play(sound);
     }
     
     public static Visual addVisualFadeOut(VisualType vt, VisualHandler handler, IntMinMax time) {

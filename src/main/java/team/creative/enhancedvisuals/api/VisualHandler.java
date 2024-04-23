@@ -16,8 +16,8 @@ import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.api.ICreativeConfig;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
 import team.creative.enhancedvisuals.client.EVClient;
+import team.creative.enhancedvisuals.client.VisualManager;
 import team.creative.enhancedvisuals.client.sound.PositionedSound;
-import team.creative.enhancedvisuals.client.sound.TickedSound;
 
 public class VisualHandler implements ICreativeConfig {
     
@@ -71,10 +71,7 @@ public class VisualHandler implements ICreativeConfig {
     public synchronized void playSoundFadeOut(ResourceLocation location, BlockPos pos, DecimalCurve volume) {
         if (!EVClient.shouldRender())
             return;
-        if (pos != null)
-            Minecraft.getInstance().getSoundManager().play(new TickedSound(location, SoundSource.MASTER, 1, pos, volume));
-        else
-            Minecraft.getInstance().getSoundManager().play(new TickedSound(location, SoundSource.MASTER, 1, volume));
+        VisualManager.playTicking(location, pos, volume);
     }
     
 }
