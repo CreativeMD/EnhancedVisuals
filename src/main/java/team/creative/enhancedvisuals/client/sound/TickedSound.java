@@ -28,6 +28,11 @@ public class TickedSound extends PositionedSound implements TickableSoundInstanc
         return volume == 0;
     }
     
+    public void stop() {
+        volume = 0;
+        tick = (int) Math.ceil(volumeGraph.max);
+    }
+    
     @Override
     public void tick() {
         tick++;

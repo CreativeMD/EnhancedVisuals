@@ -32,8 +32,8 @@ public class EVEvents {
     
     public void explosion(Explosion explosion, List<Entity> affected) {
         Vec3 position = new Vec3(((ExplosionAccessor) explosion).getX(), ((ExplosionAccessor) explosion).getY(), ((ExplosionAccessor) explosion).getZ());
-        ExplosionPacket packet = new ExplosionPacket(position, ((ExplosionAccessor) explosion)
-                .getRadius(), ((ExplosionAccessor) explosion).getSource() != null ? (((ExplosionAccessor) explosion).getSource()).getId() : -1);
+        ExplosionPacket packet = new ExplosionPacket(position, ((ExplosionAccessor) explosion).getRadius(), ((ExplosionAccessor) explosion)
+                .getSource() != null ? (((ExplosionAccessor) explosion).getSource()).getId() : -1);
         for (Entity entity : affected)
             if (entity instanceof ServerPlayer)
                 EnhancedVisuals.NETWORK.sendToClient(packet, (ServerPlayer) entity);
@@ -61,6 +61,12 @@ public class EVEvents {
         if (EnhancedVisuals.CONFIG.enableDamageDebug)
             target.sendSystemMessage(Component.literal(source.getMsgId() + "," + source.getLocalizedDeathMessage(target).getString()));
         EnhancedVisuals.NETWORK.sendToClient(new DamagePacket(target, source, damage), (ServerPlayer) target);
+    }
+    
+    @Environment(EnvType.CLIENT)
+    @OnlyIn(Dist.CLIENT)
+    public void respawn() {
+        VisualManager.clearEverything();
     }
     
     @Environment(EnvType.CLIENT)
