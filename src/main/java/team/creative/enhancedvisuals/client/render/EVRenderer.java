@@ -4,16 +4,25 @@ import java.util.Collection;
 
 import org.joml.Matrix4f;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.BufferUploader;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexSorting;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.DeathScreen;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.resources.ResourceLocation;
+import team.creative.creativecore.common.util.mc.ColorUtils;
 import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualCategory;
@@ -23,6 +32,8 @@ import team.creative.enhancedvisuals.client.VisualManager;
 import team.creative.enhancedvisuals.common.handler.VisualHandlers;
 
 public class EVRenderer {
+    
+    protected static final ResourceLocation VIGNETTE_LOCATION = new ResourceLocation("textures/misc/vignette.png");
     
     private static Minecraft mc = Minecraft.getInstance();
     
@@ -71,6 +82,25 @@ public class EVRenderer {
                 RenderSystem.applyModelViewMatrix();
                 Lighting.setupFor3DItems();
                 
+                RenderSystem.disableDepthTest();
+                RenderSystem.depthMask(false);
+                RenderSystem.enableBlend();
+                RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE,
+                    GlStateManager.DestFactor.ZERO);
+                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1F);
+                RenderSystem.setShader(GameRenderer::getPositionColorShader);
+                Matrix4f pose = new PoseStack().last().pose();
+                BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
+                bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+                int color = ColorUtils.BLACK;
+                int z = -90;
+                
+                bufferbuilder.vertex(pose, screenWidth, screenHeight, z).color(color).endVertex();
+                bufferbuilder.vertex(pose, screenWidth, 0, z).color(color).endVertex();
+                bufferbuilder.vertex(pose, 0, 0, z).color(color).endVertex();
+                bufferbuilder.vertex(pose, 0, screenHeight, z).color(color).endVertex();
+                BufferUploader.drawWithShader(bufferbuilder.end());
+                
                 RenderSystem.enableBlend();
                 RenderSystem.disableDepthTest();
                 RenderSystem.depthMask(false);
@@ -90,6 +120,8 @@ public class EVRenderer {
                 lastRenderedMessage = null;
                 
                 graphics.flush();
+                
+                //shader.clear();
                 
                 Window window = mc.getWindow();
                 RenderSystem.clear(256, Minecraft.ON_OSX);
