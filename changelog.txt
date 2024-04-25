@@ -1,0 +1,5 @@
+1.7.0
+Added rain particles
+Fixed weird edge around textures
+Fixed shaders causing issues in certain cases (if there is not vignette, not fancy rendering, etc.)
+Fixed gamerule doImmediateRespawn caused effects to stay even after death
