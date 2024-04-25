@@ -1,6 +1,11 @@
 package team.creative.enhancedvisuals.client.render;
 
+import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
+import java.util.function.Consumer;
+
+import javax.annotation.Nullable;
 
 import org.joml.Matrix4f;
 
@@ -15,13 +20,16 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexSorting;
+import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.DeathScreen;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.ResourceProvider;
 import team.creative.creativecore.common.util.mc.ColorUtils;
 import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.api.Visual;
@@ -33,7 +41,8 @@ import team.creative.enhancedvisuals.common.handler.VisualHandlers;
 
 public class EVRenderer {
     
-    protected static final ResourceLocation VIGNETTE_LOCATION = new ResourceLocation("textures/misc/vignette.png");
+    @Nullable
+    private static ShaderInstance positionTexColorSmoothShader;
     
     private static Minecraft mc = Minecraft.getInstance();
     
@@ -43,6 +52,16 @@ public class EVRenderer {
     private static int framebufferHeight;
     
     public static boolean reloadResources = false;
+    
+    public static void loadShaders(ResourceProvider provier, List<Pair<ShaderInstance, Consumer<ShaderInstance>>> shaders) throws IOException {
+        shaders.add(Pair.of(new ShaderInstance(provier, new ResourceLocation(EnhancedVisuals.MODID, "position_tex_col_smooth"), DefaultVertexFormat.POSITION_TEX_COLOR),
+            x -> positionTexColorSmoothShader = x));
+    }
+    
+    @Nullable
+    public static ShaderInstance getPositionTexColorSmoothShader() {
+        return positionTexColorSmoothShader;
+    }
     
     public static void render(Object object) {
         GuiGraphics graphics = (GuiGraphics) object;
