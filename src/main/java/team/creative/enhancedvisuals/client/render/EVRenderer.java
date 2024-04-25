@@ -5,8 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 
-import javax.annotation.Nullable;
-
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -28,7 +27,6 @@ import net.minecraft.client.gui.screens.DeathScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceProvider;
 import team.creative.creativecore.common.util.mc.ColorUtils;
 import team.creative.enhancedvisuals.EnhancedVisuals;
@@ -41,7 +39,6 @@ import team.creative.enhancedvisuals.common.handler.VisualHandlers;
 
 public class EVRenderer {
     
-    @Nullable
     private static ShaderInstance positionTexColorSmoothShader;
     
     private static Minecraft mc = Minecraft.getInstance();
@@ -54,8 +51,8 @@ public class EVRenderer {
     public static boolean reloadResources = false;
     
     public static void loadShaders(ResourceProvider provier, List<Pair<ShaderInstance, Consumer<ShaderInstance>>> shaders) throws IOException {
-        shaders.add(Pair.of(new ShaderInstance(provier, new ResourceLocation(EnhancedVisuals.MODID, "position_tex_col_smooth"), DefaultVertexFormat.POSITION_TEX_COLOR),
-            x -> positionTexColorSmoothShader = x));
+        shaders.add(Pair
+                .of(new ShaderInstance(provier, EnhancedVisuals.MODID + ":position_tex_col_smooth", DefaultVertexFormat.POSITION_TEX_COLOR), x -> positionTexColorSmoothShader = x));
     }
     
     @Nullable
@@ -104,8 +101,8 @@ public class EVRenderer {
                 RenderSystem.disableDepthTest();
                 RenderSystem.depthMask(false);
                 RenderSystem.enableBlend();
-                RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE,
-                    GlStateManager.DestFactor.ZERO);
+                RenderSystem
+                        .blendFuncSeparate(GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1F);
                 RenderSystem.setShader(GameRenderer::getPositionColorShader);
                 Matrix4f pose = new PoseStack().last().pose();
