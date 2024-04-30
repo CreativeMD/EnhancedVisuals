@@ -1,3 +1,6 @@
+1.7.1
+Fixed particles causing weird black shadows
+
 1.7.0
 Added rain particles
 Fixed weird edge around textures
