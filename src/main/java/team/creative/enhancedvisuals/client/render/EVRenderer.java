@@ -51,8 +51,8 @@ public class EVRenderer {
     public static boolean reloadResources = false;
     
     public static void loadShaders(ResourceProvider provier, List<Pair<ShaderInstance, Consumer<ShaderInstance>>> shaders) throws IOException {
-        shaders.add(Pair
-                .of(new ShaderInstance(provier, EnhancedVisuals.MODID + ":position_tex_col_smooth", DefaultVertexFormat.POSITION_TEX_COLOR), x -> positionTexColorSmoothShader = x));
+        shaders.add(Pair.of(new ShaderInstance(provier, EnhancedVisuals.MODID + ":position_tex_col_smooth", DefaultVertexFormat.POSITION_TEX_COLOR),
+            x -> positionTexColorSmoothShader = x));
     }
     
     @Nullable
@@ -101,8 +101,8 @@ public class EVRenderer {
                 RenderSystem.disableDepthTest();
                 RenderSystem.depthMask(false);
                 RenderSystem.enableBlend();
-                RenderSystem
-                        .blendFuncSeparate(GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+                RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE,
+                    GlStateManager.DestFactor.ZERO);
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1F);
                 RenderSystem.setShader(GameRenderer::getPositionColorShader);
                 Matrix4f pose = new PoseStack().last().pose();
@@ -117,6 +117,14 @@ public class EVRenderer {
                 bufferbuilder.vertex(pose, 0, screenHeight, z).color(color).endVertex();
                 BufferUploader.drawWithShader(bufferbuilder.end());
                 
+                RenderSystem.disableBlend();
+                RenderSystem.resetTextureMatrix();
+                RenderSystem.disableDepthTest();
+                renderVisuals(stack, VisualManager.visuals(VisualCategory.shader), manager, screenWidth, screenHeight, partialTicks);
+                
+                mc.getMainRenderTarget().bindWrite(true);
+                
+                RenderSystem.clear(256, Minecraft.ON_OSX);
                 RenderSystem.enableBlend();
                 RenderSystem.disableDepthTest();
                 RenderSystem.depthMask(false);
@@ -127,17 +135,10 @@ public class EVRenderer {
                 renderVisuals(stack, VisualManager.visuals(VisualCategory.overlay), manager, screenWidth, screenHeight, partialTicks);
                 renderVisuals(stack, VisualManager.visuals(VisualCategory.particle), manager, screenWidth, screenHeight, partialTicks);
                 
-                RenderSystem.disableBlend();
-                RenderSystem.resetTextureMatrix();
-                RenderSystem.disableDepthTest();
-                renderVisuals(stack, VisualManager.visuals(VisualCategory.shader), manager, screenWidth, screenHeight, partialTicks);
-                
                 RenderSystem.applyModelViewMatrix();
                 lastRenderedMessage = null;
                 
                 graphics.flush();
-                
-                //shader.clear();
                 
                 Window window = mc.getWindow();
                 RenderSystem.clear(256, Minecraft.ON_OSX);
@@ -147,8 +148,7 @@ public class EVRenderer {
                 RenderSystem.applyModelViewMatrix();
                 Lighting.setupFor3DItems();
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-                //stack.translate(0.0f, 0.0f, -11000.0f);
-                mc.getMainRenderTarget().bindWrite(true);
+                
                 RenderSystem.depthMask(true);
             } else {
                 if (EnhancedVisuals.MESSAGES.enabled) {
