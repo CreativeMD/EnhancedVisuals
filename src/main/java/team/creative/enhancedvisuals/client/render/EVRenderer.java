@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
+import org.joml.Matrix4fStack;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
@@ -91,12 +92,17 @@ public class EVRenderer {
                 RenderSystem.clear(256, Minecraft.ON_OSX);
                 Matrix4f matrix4f = new Matrix4f().setOrtho(0.0F, screenWidth, screenHeight, 0.0F, 1000.0F, 21000F);
                 RenderSystem.setProjectionMatrix(matrix4f, VertexSorting.ORTHOGRAPHIC_Z);
-                PoseStack stack = RenderSystem.getModelViewStack();
-                stack.pushPose();
-                stack.setIdentity();
-                stack.translate(0.0D, 0.0D, -11000);
+                Matrix4fStack stack = RenderSystem.getModelViewStack();
+                stack.pushMatrix();
+                stack.identity();
+                stack.translation(0.0F, 0.0F, -11000F);
                 RenderSystem.applyModelViewMatrix();
+                
+                PoseStack poseStack = new PoseStack();
+                Matrix4f pose = poseStack.last().pose();
                 Lighting.setupFor3DItems();
+                
+                poseStack.translate(100, 100, 0);
                 
                 RenderSystem.disableDepthTest();
                 RenderSystem.depthMask(false);
@@ -105,7 +111,7 @@ public class EVRenderer {
                     GlStateManager.DestFactor.ZERO);
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1F);
                 RenderSystem.setShader(GameRenderer::getPositionColorShader);
-                Matrix4f pose = new PoseStack().last().pose();
+                
                 BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
                 bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
                 int color = ColorUtils.BLACK;
@@ -120,7 +126,7 @@ public class EVRenderer {
                 RenderSystem.disableBlend();
                 RenderSystem.resetTextureMatrix();
                 RenderSystem.disableDepthTest();
-                renderVisuals(stack, VisualManager.visuals(VisualCategory.shader), manager, screenWidth, screenHeight, partialTicks);
+                renderVisuals(poseStack, VisualManager.visuals(VisualCategory.shader), manager, screenWidth, screenHeight, partialTicks);
                 
                 mc.getMainRenderTarget().bindWrite(true);
                 
@@ -132,10 +138,9 @@ public class EVRenderer {
                 RenderSystem.defaultBlendFunc();
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
                 
-                renderVisuals(stack, VisualManager.visuals(VisualCategory.overlay), manager, screenWidth, screenHeight, partialTicks);
-                renderVisuals(stack, VisualManager.visuals(VisualCategory.particle), manager, screenWidth, screenHeight, partialTicks);
+                renderVisuals(poseStack, VisualManager.visuals(VisualCategory.overlay), manager, screenWidth, screenHeight, partialTicks);
+                renderVisuals(poseStack, VisualManager.visuals(VisualCategory.particle), manager, screenWidth, screenHeight, partialTicks);
                 
-                RenderSystem.applyModelViewMatrix();
                 lastRenderedMessage = null;
                 
                 graphics.flush();
@@ -144,7 +149,7 @@ public class EVRenderer {
                 RenderSystem.clear(256, Minecraft.ON_OSX);
                 RenderSystem.setProjectionMatrix(new Matrix4f().setOrtho(0.0F, (float) (window.getWidth() / window.getGuiScale()), (float) (window.getHeight() / window
                         .getGuiScale()), 0.0F, 1000.0F, 21000F), VertexSorting.ORTHOGRAPHIC_Z);
-                stack.popPose();
+                stack.popMatrix();
                 RenderSystem.applyModelViewMatrix();
                 Lighting.setupFor3DItems();
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);

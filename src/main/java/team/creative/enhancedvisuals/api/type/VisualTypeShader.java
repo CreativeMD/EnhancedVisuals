@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.google.gson.JsonSyntaxException;
 import com.mojang.blaze3d.pipeline.RenderTarget;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -63,7 +64,7 @@ public abstract class VisualTypeShader extends VisualType {
     @Override
     @Environment(EnvType.CLIENT)
     @OnlyIn(Dist.CLIENT)
-    public void render(VisualHandler handler, Visual visual, TextureManager manager, int screenWidth, int screenHeight, float partialTicks) {
+    public void render(PoseStack pose, VisualHandler handler, Visual visual, TextureManager manager, int screenWidth, int screenHeight, float partialTicks) {
         if (postChain == null)
             loadResources(Minecraft.getInstance().getResourceManager());
         if (postChain != null) {

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.mojang.blaze3d.pipeline.RenderTarget;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -63,7 +64,7 @@ public abstract class VisualType implements ICreativeConfig {
     
     @Environment(EnvType.CLIENT)
     @OnlyIn(Dist.CLIENT)
-    public abstract void render(VisualHandler handler, Visual visual, TextureManager manager, int screenWidth, int screenHeight, float partialTicks);
+    public abstract void render(PoseStack pose, VisualHandler handler, Visual visual, TextureManager manager, int screenWidth, int screenHeight, float partialTicks);
     
     @Override
     public void configured(Side side) {}

@@ -1,7 +1,7 @@
 package team.creative.enhancedvisuals.common.handler;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.alchemy.PotionUtils;
 import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.premade.IntMinMax;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
@@ -22,7 +22,7 @@ public class PotionHandler extends VisualHandler {
     
     public void impact(double distance, ItemStack stack) {
         double modifier = 1 - Math.min(5, distance) / 5;
-        int var11 = PotionUtils.getColor(stack);
+        int var11 = stack.getComponents().get(DataComponents.POTION_CONTENTS).getColor();
         float r = (var11 >> 16 & 255) / 255.0F;
         float g = (var11 >> 8 & 255) / 255.0F;
         float b = (var11 & 255) / 255.0F;

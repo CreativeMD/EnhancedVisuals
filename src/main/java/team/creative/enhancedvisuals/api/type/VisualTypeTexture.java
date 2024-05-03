@@ -10,9 +10,12 @@ import java.util.Optional;
 
 import javax.imageio.ImageIO;
 
+import org.joml.Matrix4f;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
@@ -116,28 +119,28 @@ public abstract class VisualTypeTexture extends VisualType {
     @Override
     @Environment(EnvType.CLIENT)
     @OnlyIn(Dist.CLIENT)
-    public void render(VisualHandler handler, Visual visual, TextureManager manager, int screenWidth, int screenHeight, float partialTicks) {
+    public void render(PoseStack pose, VisualHandler handler, Visual visual, TextureManager manager, int screenWidth, int screenHeight, float partialTicks) {
         RenderSystem.setShaderTexture(0, getResource(visual));
         Tesselator tessellator = Tesselator.getInstance();
         BufferBuilder renderer = tessellator.getBuilder();
         
         RenderSystem.setShader(EVRenderer::getPositionTexColorSmoothShader);
-        //RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+        Matrix4f last = pose.last().pose();
         
         int red = visual.color != null ? visual.color.getRed() : 255;
         int green = visual.color != null ? visual.color.getGreen() : 255;
         int blue = visual.color != null ? visual.color.getBlue() : 255;
-        double z = -90;
+        float z = -90;
         
         int width = visual.getWidth(screenWidth);
         int height = visual.getHeight(screenHeight);
         
         float opacity = visual.getOpacity();
         renderer.begin(Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-        renderer.vertex(0.0D, height, z).uv(0.0F, 1.0F).color(red, green, blue, (int) (opacity * 255F)).endVertex();
-        renderer.vertex(width, height, z).uv(1.0F, 1.0F).color(red, green, blue, (int) (opacity * 255F)).endVertex();
-        renderer.vertex(width, 0.0D, z).uv(1.0F, 0.0F).color(red, green, blue, (int) (opacity * 255F)).endVertex();
-        renderer.vertex(0.0D, 0.0D, z).uv(0.0F, 0.0F).color(red, green, blue, (int) (opacity * 255F)).endVertex();
+        renderer.vertex(last, 0.0f, height, z).uv(0.0F, 1.0F).color(red, green, blue, (int) (opacity * 255F)).endVertex();
+        renderer.vertex(last, width, height, z).uv(1.0F, 1.0F).color(red, green, blue, (int) (opacity * 255F)).endVertex();
+        renderer.vertex(last, width, 0.0f, z).uv(1.0F, 0.0F).color(red, green, blue, (int) (opacity * 255F)).endVertex();
+        renderer.vertex(last, 0.0f, 0.0f, z).uv(0.0F, 0.0F).color(red, green, blue, (int) (opacity * 255F)).endVertex();
         tessellator.end();
     }
     

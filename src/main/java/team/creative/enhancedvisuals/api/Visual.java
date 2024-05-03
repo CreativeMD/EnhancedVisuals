@@ -77,7 +77,7 @@ public class Visual {
     @Environment(EnvType.CLIENT)
     @OnlyIn(Dist.CLIENT)
     public void render(PoseStack stack, TextureManager manager, int screenWidth, int screenHeight, float partialTicks) {
-        type.render(handler, this, manager, screenWidth, screenHeight, partialTicks);
+        type.render(stack, handler, this, manager, screenWidth, screenHeight, partialTicks);
     }
     
     public boolean isVisible() {
