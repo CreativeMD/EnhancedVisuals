@@ -17,7 +17,7 @@ import team.creative.enhancedvisuals.client.render.EVRenderer;
 @OnlyIn(Dist.CLIENT)
 public class EVClient {
     
-    private static Minecraft mc = Minecraft.getInstance();
+    private static final Minecraft mc = Minecraft.getInstance();
     
     public static void init() {
         ReloadableResourceManager reloadableResourceManager = (ReloadableResourceManager) Minecraft.getInstance().getResourceManager();
@@ -42,7 +42,7 @@ public class EVClient {
     }
     
     public static boolean shouldRender() {
-        return mc.player != null ? (!mc.player.isSpectator() && (!mc.player.isCreative() || EnhancedVisuals.CONFIG.doEffectsInCreative)) : true;
+        return mc.player == null || (!mc.player.isSpectator() && (!mc.player.isCreative() || EnhancedVisuals.CONFIG.doEffectsInCreative));
     }
     
     public static boolean shouldTick() {
