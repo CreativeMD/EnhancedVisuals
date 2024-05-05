@@ -9,6 +9,7 @@ license="LGPL-3.0-only"
     version="1.6.1"
     displayName="EnhancedVisuals"
     displayURL="https://modrinth.com/mod/enhancedvisuals"
+    displayTest="MATCH_VERSION"
     authors="CreativeMD, Sonicjumper"
     description='''Experience realism and extra video effects for your in-game experience.'''
 
