@@ -38,7 +38,7 @@ public class EnhancedVisuals implements CommonLoader, ClientLoader {
     public static final String MODID = "enhancedvisuals";
     
     public static final Logger LOGGER = LogManager.getLogger(EnhancedVisuals.MODID);
-    public static final CreativeNetwork NETWORK = new CreativeNetwork("1.0", LOGGER, new ResourceLocation(EnhancedVisuals.MODID, "main"));
+    public static final CreativeNetwork NETWORK = new CreativeNetwork(2, LOGGER, new ResourceLocation(EnhancedVisuals.MODID, "main"));
     public static EVEvents EVENTS;
     public static DeathMessages MESSAGES;
     public static EnhancedVisualsConfig CONFIG;

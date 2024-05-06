@@ -1,20 +1,36 @@
 modLoader="javafml"
-loaderVersion="[24,)"
+loaderVersion="[40,)"
 issueTrackerURL="https://github.com/CreativeMD/EnhancedVisuals/issues"
-logoFile="enhancedvisuals.png"
-license="GNU General Public License v3.0"
+license="LGPL-3.0-only"
 
 [[mods]]
-	modId="enhancedvisuals"
-	version="${file.jarVersion}"
-	displayName="EnhancedVisuals"
-	displayURL="https://www.curseforge.com/minecraft/mc-mods/enhancedvisuals"
-	authors=["CreativeMD", "Sonicjumper"]
-	description='''Experience realism and extra video effects for your in-game experience.'''
-	
+    modId="enhancedvisuals"
+    logoFile="enhancedvisuals.png"
+    version="1.6.1"
+    displayName="EnhancedVisuals"
+    displayURL="https://modrinth.com/mod/enhancedvisuals"
+    displayTest="MATCH_VERSION"
+    authors="CreativeMD, Sonicjumper"
+    description='''Experience realism and extra video effects for your in-game experience.'''
+
 [[dependencies.enhancedvisuals]]
-	modId="creativecore"
-	mandatory=true
-	ordering="NONE"
-	side="BOTH"
-	versionRange="[2.6.0,)"
+    modId="forge"
+    mandatory=true
+    versionRange="[40.2.14,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.enhancedvisuals]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.18,1.19)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.enhancedvisuals]]
+   modId="creativecore"
+   mandatory=true
+   ordering="NONE"
+   side="BOTH"
+   versionRange="2.11.5"
+

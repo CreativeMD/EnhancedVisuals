@@ -1,15 +1,16 @@
 package team.creative.enhancedvisuals.mixin;
 
+import java.util.List;
+
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
+
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import team.creative.enhancedvisuals.EnhancedVisuals;
-
-import java.util.List;
 
 @Mixin(Explosion.class)
 public class MixinExplosion {
