@@ -44,7 +44,7 @@ public class RainHandler extends VisualHandler {
                 if (nextDelay == -1)
                     nextDelay = delay.next(rand);
                 if (timer >= nextDelay) {
-                    VisualManager.addParticlesFadeOut(drop, this, amount.next(rand), duration, false);
+                    VisualManager.addParticlesFadeOut(drop, this, amount.next(rand), duration, true);
                     timer = 0;
                     nextDelay = delay.next(rand);
                 }
