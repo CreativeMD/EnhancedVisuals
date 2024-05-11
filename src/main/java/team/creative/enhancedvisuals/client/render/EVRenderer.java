@@ -102,8 +102,6 @@ public class EVRenderer {
                 Matrix4f pose = poseStack.last().pose();
                 Lighting.setupFor3DItems();
                 
-                poseStack.translate(100, 100, 0);
-                
                 RenderSystem.disableDepthTest();
                 RenderSystem.depthMask(false);
                 RenderSystem.enableBlend();
