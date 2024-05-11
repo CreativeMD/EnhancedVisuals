@@ -1,0 +1,2 @@
+1.6.4
+Fixed causing weird rendering issues for other mods which render an overlay
