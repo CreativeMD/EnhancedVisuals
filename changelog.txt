@@ -1,3 +1,6 @@
+1.7.2
+Made rain drops rotate
+
 1.7.1
 Fixed particles causing weird black shadows
 
