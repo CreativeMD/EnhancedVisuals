@@ -23,6 +23,7 @@ import team.creative.creativecore.common.network.CreativeNetwork;
 import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.client.EVClient;
 import team.creative.enhancedvisuals.client.render.EVRenderer;
+import team.creative.enhancedvisuals.common.addon.coldsweat.ColdSweatAddon;
 import team.creative.enhancedvisuals.common.addon.survive.SurviveAddon;
 import team.creative.enhancedvisuals.common.addon.toughasnails.TANAddon;
 import team.creative.enhancedvisuals.common.death.DeathMessages;
@@ -77,6 +78,9 @@ public class EnhancedVisuals implements CommonLoader, ClientLoader {
         
         if (loader.isModLoaded("toughasnails"))
             TANAddon.load();
+        
+        if (loader.isModLoaded("cold_sweat"))
+            ColdSweatAddon.load();
         
         ConfigHolderDynamic root = CreativeConfigRegistry.ROOT.registerFolder(MODID);
         root.registerValue("general", CONFIG = new EnhancedVisualsConfig(), ConfigSynchronization.CLIENT, false);
