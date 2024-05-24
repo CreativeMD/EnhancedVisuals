@@ -29,6 +29,8 @@ public class DamageHandler extends VisualHandler {
     public static final ArrayList<Item> bluntList = new ArrayList<>();
     public static final ArrayList<Item> pierceList = new ArrayList<>();
     
+    public static final Color BLOOD_COLOR = new Color(0.3F, 0.01F, 0.01F, 0.7F);
+    
     static {
         sharpList.add(Items.IRON_SWORD);
         sharpList.add(Items.WOODEN_SWORD);
@@ -151,8 +153,6 @@ public class DamageHandler extends VisualHandler {
     @CreativeConfig
     public List<String> damageBlackList = new ArrayList<>();
     
-    public static Color bloodColor = new Color(0.3F, 0.01F, 0.01F, 0.7F);
-    
     public void clientHurt() {
         if (hitEffectIntensity > 0)
             VisualManager.addVisualFadeOut(damaged, this, new DecimalCurve(VisualManager.RANDOM, hitDuration, hitEffectIntensity * 0.2));
@@ -202,8 +202,8 @@ public class DamageHandler extends VisualHandler {
         else if (packet.fire || packet.source.equalsIgnoreCase("onFire")) {
             FireParticlesEvent event = new FireParticlesEvent(fireSplashes, fireDuration.min, fireDuration.max);
             CreativeCore.loader().postForge(event);
-            VisualManager.addParticlesFadeOut(fire, this, event
-                    .getNewFireSplashes(), new IntMinMax(event.getNewFireDurationMin(), event.getNewFireDurationMax()), true, new Color(0, 0, 0));
+            VisualManager.addParticlesFadeOut(fire, this, event.getNewFireSplashes(), new IntMinMax(event.getNewFireDurationMin(), event.getNewFireDurationMax()), true,
+                new Color(0, 0, 0));
         } else if (!damageBlackList.contains(packet.source))
             createVisualFromDamageAndDistance(splatter, Math.min(20, packet.damage), player, bloodDuration);
         
@@ -216,8 +216,8 @@ public class DamageHandler extends VisualHandler {
         float health = player.getHealth() - damage;
         double rate = Math.max(0, healthScaler.valueAt(health));
         
-        VisualManager.addParticlesFadeOut(type, this, Math
-                .min(5000, (int) (damageScale * damage * rate)), new DecimalCurve(0, 1, duration.next(VisualManager.RANDOM), 0), true, bloodColor);
+        VisualManager.addParticlesFadeOut(type, this, Math.min(5000, (int) (damageScale * damage * rate)), new DecimalCurve(0, 1, duration.next(VisualManager.RANDOM), 0), true,
+            BLOOD_COLOR);
     }
     
     private static boolean isSharp(ItemStack item) {

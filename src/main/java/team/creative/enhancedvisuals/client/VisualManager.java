@@ -92,6 +92,14 @@ public class VisualManager {
         }
     }
     
+    public static boolean remove(Visual visual) {
+        if (visuals.removeValue(visual.getCategory(), visual)) {
+            visual.removeFromDisplay();
+            return true;
+        }
+        return false;
+    }
+    
     public static void playTicking(ResourceLocation location, BlockPos pos, DecimalCurve volume) {
         TickedSound sound;
         if (pos != null)
@@ -120,7 +128,7 @@ public class VisualManager {
         addParticlesFadeOut(vt, handler, count, new DecimalCurve(0, 1, time.next(RANDOM), 0), rotate, null);
     }
     
-    public static void addParticlesFadeOut(VisualType vt, VisualHandler handler, int count, IntMinMax time, boolean rotate, Color color) {
+    public static void addParticlesFadeOut(VisualType vt, VisualHandler handler, int count, IntMinMax time, boolean rotate, @Nullable Color color) {
         addParticlesFadeOut(vt, handler, count, new DecimalCurve(0, 1, time.next(RANDOM), 0), rotate, color);
     }
     
@@ -128,7 +136,7 @@ public class VisualManager {
         addParticlesFadeOut(vt, handler, count, new DecimalCurve(0, 1, time, 0), rotate, null);
     }
     
-    public static void addParticlesFadeOut(VisualType vt, VisualHandler handler, int count, Curve curve, boolean rotate, Color color) {
+    public static void addParticlesFadeOut(VisualType vt, VisualHandler handler, int count, Curve curve, boolean rotate, @Nullable Color color) {
         if (vt.disabled)
             return;
         for (int i = 0; i < count; i++) {
@@ -150,6 +158,28 @@ public class VisualManager {
                 particle.color = color;
             add(particle);
         }
+    }
+    
+    public static Particle addParticle(VisualType vt, VisualHandler handler, boolean rotate, @Nullable Color color) {
+        int screenWidth = mc.getWindow().getWidth();
+        int screenHeight = mc.getWindow().getHeight();
+        
+        int width = vt.getWidth(screenWidth, screenHeight);
+        int height = vt.getHeight(screenWidth, screenHeight);
+        
+        if (vt.scaleVariants()) {
+            double scale = vt.randomScale(RANDOM);
+            width *= scale;
+            height *= scale;
+        }
+        
+        Particle particle = new Particle(vt, handler, generateOffset(RANDOM, screenWidth, width), generateOffset(RANDOM, screenHeight, height), width, height, vt
+                .canRotate() && rotate ? RANDOM.nextFloat() * 360 : 0, RANDOM.nextInt(vt.getVariantAmount()));
+        particle.setOpacityInternal(1);
+        if (color != null)
+            particle.color = color;
+        add(particle);
+        return particle;
     }
     
     public static int generateOffset(Random rand, int dimensionLength, int spacingBuffer) {

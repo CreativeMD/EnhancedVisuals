@@ -27,6 +27,15 @@ public class Particle extends Visual {
         this.rotation = rotation;
     }
     
+    public Particle(VisualType type, VisualHandler handler, int x, int y, int width, int height, float rotation, int variant) {
+        super(type, handler, variant);
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.rotation = rotation;
+    }
+    
     @Override
     public void render(PoseStack stack, TextureManager manager, int screenWidth, int screenHeight, float partialTicks) {
         stack.pushPose();
