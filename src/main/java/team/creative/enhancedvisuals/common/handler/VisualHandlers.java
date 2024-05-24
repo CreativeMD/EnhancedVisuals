@@ -20,6 +20,8 @@ public class VisualHandlers {
     public static UnderwaterHandler UNDERWATER;
     public static RainHandler RAIN;
     
+    public static HealthHandler HEALTH;
+    
     public static void init() {
         VisualRegistry.registerHandler(ResourceLocation.tryBuild(EnhancedVisuals.MODID, "explosion"), EXPLOSION = new ExplosionHandler());
         VisualRegistry.registerHandler(ResourceLocation.tryBuild(EnhancedVisuals.MODID, "potion"), POTION = new PotionHandler());
@@ -34,6 +36,8 @@ public class VisualHandlers {
         
         VisualRegistry.registerHandler(ResourceLocation.tryBuild(EnhancedVisuals.MODID, "underwater"), UNDERWATER = new UnderwaterHandler());
         VisualRegistry.registerHandler(ResourceLocation.tryBuild(EnhancedVisuals.MODID, "rain"), RAIN = new RainHandler());
+        
+        VisualRegistry.registerHandler(ResourceLocation.tryBuild(EnhancedVisuals.MODID, "health"), HEALTH = new HealthHandler());
     }
     
 }
