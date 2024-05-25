@@ -4,7 +4,6 @@ import org.jetbrains.annotations.Nullable;
 
 import com.momosoftworks.coldsweat.api.util.Temperature;
 import com.momosoftworks.coldsweat.api.util.Temperature.Trait;
-import com.momosoftworks.coldsweat.api.util.Temperature.Units;
 
 import net.minecraft.world.entity.player.Player;
 import team.creative.creativecore.common.config.api.CreativeConfig;
@@ -34,24 +33,24 @@ public class TemperatureHandler extends VisualHandler {
     public Visual heatVisual;
     
     @CreativeConfig
-    public double coldestTemperature = 33;
+    public double coldestTemperature = -100;
     @CreativeConfig
-    public double hypotheremiaTemperature = 35;
+    public double hypotheremiaTemperature = -75;
     @CreativeConfig
-    public double coldTemperature = 36;
+    public double coldTemperature = -50;
     
     @CreativeConfig
-    public double defaultTemperature = 37;
+    public double defaultTemperature = 0;
     
     @CreativeConfig
-    public double warmTemperature = 38;
+    public double warmTemperature = 50;
     @CreativeConfig
-    public double hyperthermiaTemperature = 39;
+    public double hyperthermiaTemperature = 75;
     @CreativeConfig
-    public double hottestTemperature = 41;
+    public double hottestTemperature = 100;
     
     public double getTemperature(Player player) {
-        return Temperature.convert(Temperature.get(player, Trait.BODY), Units.MC, Units.C, true);
+        return Temperature.get(player, Trait.BODY);
     }
     
     @Override
