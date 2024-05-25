@@ -1,3 +1,6 @@
+1.8.1
+Adjusted ColdSweat support (reset your config)
+
 1.8.0
 Added support for ColdSweat
 Added health handler, which adds blood particles depending on the amount of health the player has
