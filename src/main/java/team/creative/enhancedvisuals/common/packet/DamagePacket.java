@@ -1,7 +1,6 @@
 package team.creative.enhancedvisuals.common.packet;
 
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -27,8 +26,7 @@ public class DamagePacket extends CreativePacket {
     public DamagePacket(Player target, DamageSource source, float damage) {
         this.damage = damage;
         Entity attacker = source.getDirectEntity();
-        
-        this.fire = source.is(DamageTypeTags.IS_FIRE);
+        this.fire = source.isFire();
         if (attacker instanceof LivingEntity || attacker instanceof Arrow) {
             attackerClass = attacker.getClass().getName().toLowerCase();
             this.source = "attacker";
@@ -37,7 +35,7 @@ public class DamagePacket extends CreativePacket {
                 stack = ((LivingEntity) attacker).getMainHandItem();
             
         } else
-            this.source = source.getMsgId();
+            this.source = source.msgId;
     }
     
     public DamagePacket() {}

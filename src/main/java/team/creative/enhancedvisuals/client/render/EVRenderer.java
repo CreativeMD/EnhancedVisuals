@@ -2,15 +2,16 @@ package team.creative.enhancedvisuals.client.render;
 
 import java.util.Collection;
 
-import org.joml.Matrix4f;
-
+import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
+import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
 import com.mojang.blaze3d.platform.Lighting;
-import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Matrix4f;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.DeathScreen;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
 import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.api.Visual;
@@ -54,46 +55,49 @@ public class EVRenderer {
                     framebufferHeight = mc.getMainRenderTarget().height;
                 }
                 
-                int screenWidth = mc.getWindow().getWidth();
-                int screenHeight = mc.getWindow().getHeight();
+                int screenWidth = mc.getWindow().getGuiScaledWidth();
+                int screenHeight = mc.getWindow().getGuiScaledHeight();
                 
                 TextureManager manager = mc.getTextureManager();
                 
+                //RenderHelper.enableStandardItemLighting();
                 RenderSystem.clear(256, Minecraft.ON_OSX);
-                Matrix4f matrix4f = new Matrix4f().setOrtho(0.0F, screenWidth, screenHeight, 0.0F, 1000.0F, 3000F);
+                RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+                Matrix4f matrix4f = Matrix4f.orthographic(0.0F, (float) (mc.getWindow().getWidth() / mc.getWindow().getGuiScale()), 0.0F, (float) (mc.getWindow().getHeight() / mc
+                        .getWindow().getGuiScale()), 1000.0F, 3000.0F);
                 RenderSystem.setProjectionMatrix(matrix4f);
                 PoseStack stack = RenderSystem.getModelViewStack();
-                stack.pushPose();
                 stack.setIdentity();
-                stack.translate(0.0D, 0.0D, 1000F - 3000F);
+                stack.translate(0.0D, 0.0D, -2000.0D);
                 RenderSystem.applyModelViewMatrix();
                 Lighting.setupFor3DItems();
+                RenderSystem.disableTexture();
                 
                 RenderSystem.disableDepthTest();
                 RenderSystem.depthMask(false);
-                RenderSystem.enableBlend();
                 RenderSystem.defaultBlendFunc();
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+                RenderSystem.enableBlend();
                 
                 renderVisuals(stack, VisualManager.visuals(VisualCategory.overlay), manager, screenWidth, screenHeight, partialTicks);
                 renderVisuals(stack, VisualManager.visuals(VisualCategory.particle), manager, screenWidth, screenHeight, partialTicks);
                 
                 RenderSystem.disableBlend();
+                RenderSystem.disableDepthTest();
+                //RenderSystem.disableAlphaTest();
+                
+                RenderSystem.disableBlend();
+                RenderSystem.disableDepthTest();
+                RenderSystem.enableTexture();
                 RenderSystem.resetTextureMatrix();
+                RenderSystem.blendFuncSeparate(SourceFactor.ONE, DestFactor.ONE, SourceFactor.ZERO, DestFactor.ZERO);
                 renderVisuals(stack, VisualManager.visuals(VisualCategory.shader), manager, screenWidth, screenHeight, partialTicks);
                 
+                RenderSystem.clear(256, Minecraft.ON_OSX);
+                
+                mc.getMainRenderTarget().bindWrite(true);
                 RenderSystem.applyModelViewMatrix();
                 lastRenderedMessage = null;
-                
-                Window window = mc.getWindow();
-                RenderSystem.clear(256, Minecraft.ON_OSX);
-                RenderSystem.setProjectionMatrix(new Matrix4f()
-                        .setOrtho(0.0F, (float) (window.getWidth() / window.getGuiScale()), (float) (window.getHeight() / window.getGuiScale()), 0.0F, 1000.0F, 3000F));
-                stack.popPose();
-                RenderSystem.applyModelViewMatrix();
-                Lighting.setupFor3DItems();
-                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-                mc.getMainRenderTarget().bindWrite(true);
             } else {
                 if (EnhancedVisuals.MESSAGES.enabled) {
                     if (lastRenderedMessage == null)
@@ -111,9 +115,14 @@ public class EVRenderer {
             return;
         try {
             
-            for (Visual visual : visuals)
-                if (visual.isVisible())
+            for (Visual visual : visuals) {
+                if (visual.isVisible()) {
+                    stack.pushPose();
+                    RenderSystem.applyModelViewMatrix();
                     visual.render(stack, manager, screenWidth, screenHeight, partialTicks);
+                    stack.popPose();
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

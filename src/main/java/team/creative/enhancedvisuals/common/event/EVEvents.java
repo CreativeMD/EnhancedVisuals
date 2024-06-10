@@ -59,7 +59,7 @@ public class EVEvents {
         if (target.level.isClientSide)
             return;
         if (EnhancedVisuals.CONFIG.enableDamageDebug)
-            target.sendSystemMessage(Component.literal(source.getMsgId() + "," + source.getLocalizedDeathMessage(target).getString()));
+            target.sendSystemMessage(Component.literal(source.msgId + "," + source.getLocalizedDeathMessage(target).getString()));
         EnhancedVisuals.NETWORK.sendToClient(new DamagePacket(target, source, damage), (ServerPlayer) target);
     }
     

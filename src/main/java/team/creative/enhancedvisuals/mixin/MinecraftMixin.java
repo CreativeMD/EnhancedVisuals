@@ -10,8 +10,8 @@ import team.creative.enhancedvisuals.client.render.EVRenderer;
 
 @Mixin(Minecraft.class)
 public class MinecraftMixin {
-    @Inject(method = "Lnet/minecraft/client/Minecraft;runTick(Z)V",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GameRenderer;render(FJZ)V", shift = At.Shift.AFTER), require = 1)
+    @Inject(method = "Lnet/minecraft/client/Minecraft;runTick(Z)V", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/client/gui/components/toasts/ToastComponent;render(Lcom/mojang/blaze3d/vertex/PoseStack;)V", shift = At.Shift.AFTER))
     private void afterRenderGui(CallbackInfo ci) {
         EVRenderer.render();
     }

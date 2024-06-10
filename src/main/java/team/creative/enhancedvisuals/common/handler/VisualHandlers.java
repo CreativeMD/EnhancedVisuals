@@ -17,8 +17,6 @@ public class VisualHandlers {
     public static SaturationHandler SATURATION;
     public static HeartbeatHandler HEARTBEAT;
     
-    public static UnderwaterHandler UNDERWATER;
-    
     public static void init() {
         VisualRegistry.registerHandler(new ResourceLocation(EnhancedVisuals.MODID, "explosion"), EXPLOSION = new ExplosionHandler());
         VisualRegistry.registerHandler(new ResourceLocation(EnhancedVisuals.MODID, "potion"), POTION = new PotionHandler());
@@ -30,8 +28,6 @@ public class VisualHandlers {
         VisualRegistry.registerHandler(new ResourceLocation(EnhancedVisuals.MODID, "slender"), SLENDER = new SlenderHandler());
         VisualRegistry.registerHandler(new ResourceLocation(EnhancedVisuals.MODID, "saturation"), SATURATION = new SaturationHandler());
         VisualRegistry.registerHandler(new ResourceLocation(EnhancedVisuals.MODID, "heartbeat"), HEARTBEAT = new HeartbeatHandler());
-        
-        VisualRegistry.registerHandler(new ResourceLocation(EnhancedVisuals.MODID, "underwater"), UNDERWATER = new UnderwaterHandler());
     }
     
 }

@@ -1,5 +1,7 @@
 package team.creative.enhancedvisuals.common.handler;
 
+import java.util.Random;
+
 import javax.annotation.Nullable;
 
 import net.minecraft.world.entity.player.Player;
@@ -26,12 +28,14 @@ public class SplashHandler extends VisualHandler {
     
     public boolean wasInWater = false;
     
+    public Random rand = new Random();
+    
     @Override
     public void tick(@Nullable Player player) {
         if (player != null) {
             boolean isInWater = EVEvents.areEyesInWater(player);
             if (isInWater != wasInWater)
-                VisualManager.addVisualFadeOut(blur, this, new DecimalCurve(VisualManager.RANDOM, duration, intensity));
+                VisualManager.addVisualFadeOut(blur, this, new DecimalCurve(rand, duration, intensity));
             wasInWater = isInWater;
             
         }
