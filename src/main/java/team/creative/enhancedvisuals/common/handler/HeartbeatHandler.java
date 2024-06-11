@@ -25,16 +25,12 @@ public class HeartbeatHandler extends VisualHandler {
     public float maxHealthPercentage = 0.3F;
     
     @CreativeConfig
-    public float heartbeatOverlayIntensity = 0.5F;
+    public float heartbeatIntensity = 50.0F;
     @CreativeConfig
-    public int heartbeatOverlayDuration = 20;
-    @CreativeConfig
-    public float heartbeatBlurIntensity = 50.0F;
-    @CreativeConfig
-    public int heartbeatBlurDuration = 5;
-    
+    public int heartbeatDuration = 5;
     @CreativeConfig
     public int minHeartbeatLength = 15;
+    
     @CreativeConfig
     public float heartbeatTimeFactor = 100;
     
@@ -56,15 +52,15 @@ public class HeartbeatHandler extends VisualHandler {
                 
                 resetBufferTicks(player);
                 
-                VisualManager.addVisualFadeOut(lowhealth, this, new DecimalCurve(0, Math.min(0.7F, intensity) * heartbeatOverlayIntensity, heartbeatOverlayDuration, 0));
-                VisualManager.addVisualFadeOut(blur, this, new DecimalCurve(0, Math.min(0.7F, intensity) * heartbeatBlurIntensity, heartbeatBlurDuration, 0));
+                VisualManager.addVisualFadeOut(lowhealth, this, new DecimalCurve(0, Math.min(0.7F, intensity), effectBufferTicks, 0));
+                VisualManager.addVisualFadeOut(blur, this, new DecimalCurve(0, Math.min(0.7F, intensity) * heartbeatIntensity, heartbeatDuration, 0));
                 playSound(new ResourceLocation(EnhancedVisuals.MODID, "heartbeatout"), heartbeatVolume);
                 
             } else if (this.effectBufferTicks == 5) {
                 float intensity = getIntensity(player);
                 
                 playSound(new ResourceLocation(EnhancedVisuals.MODID, "heartbeatin"), heartbeatVolume);
-                VisualManager.addVisualFadeOut(blur, this, new DecimalCurve(0, Math.min(0.7F, intensity) * heartbeatBlurIntensity, heartbeatBlurDuration, 0));
+                VisualManager.addVisualFadeOut(blur, this, new DecimalCurve(0, Math.min(0.7F, intensity) * heartbeatIntensity, heartbeatDuration, 0));
             }
         }
         this.effectBufferTicks -= 1;
@@ -76,9 +72,12 @@ public class HeartbeatHandler extends VisualHandler {
     }
     
     private float getIntensity(@Nonnull Player player) {
-        if (useHealthPercentage)
-            return (maxHealthPercentage - (player.getHealth() / player.getMaxHealth()));
-        return player.getHealth() / maxHealth;
+        float percentHealthLeft = (player.getHealth() / player.getMaxHealth());
+        if (useHealthPercentage) {
+            return (maxHealthPercentage - percentHealthLeft) * 2.0F;
+        } else {
+            return ((maxHealth - player.getHealth()) / player.getMaxHealth()) * 2.0F;
+        }
     }
     
     private boolean shouldHeartbeatTrigger(@Nullable Player player) {

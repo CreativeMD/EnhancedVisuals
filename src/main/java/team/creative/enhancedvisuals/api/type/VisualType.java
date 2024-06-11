@@ -66,7 +66,9 @@ public abstract class VisualType implements ICreativeConfig {
     public abstract void render(VisualHandler handler, Visual visual, TextureManager manager, int screenWidth, int screenHeight, float partialTicks);
     
     @Override
-    public void configured(Side side) {}
+    public void configured(Side side) {
+        
+    }
     
     @Environment(EnvType.CLIENT)
     @OnlyIn(Dist.CLIENT)
@@ -98,11 +100,11 @@ public abstract class VisualType implements ICreativeConfig {
         return 1;
     }
     
-    public int getWidth(int screenWidth, int screenHeight) {
+    public int getWidth(int screenWidth) {
         return screenWidth;
     }
     
-    public int getHeight(int screenWidth, int screenHeight) {
+    public int getHeight(int screenHeight) {
         return screenHeight;
     }
     

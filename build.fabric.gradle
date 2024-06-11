@@ -6,12 +6,14 @@ plugins {
 group = "team.creative"
 
 repositories {
-	maven {
-		url = "https://api.modrinth.com/maven"
-	}
-	maven {
-		url = "https://maven.minecraftforge.net/"
-	}
+    maven {
+        url = "https://api.modrinth.com/maven"
+    }
+    // Add repositories to retrieve artifacts from in here.
+    // You should only use this when depending on other mods because
+    // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
+    // See https://docs.gradle.org/current/userguide/declaring_repositories.html
+    // for more information about repositories.
 }
 
 dependencies {

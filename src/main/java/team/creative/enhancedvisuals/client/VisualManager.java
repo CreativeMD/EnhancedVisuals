@@ -25,7 +25,7 @@ import team.creative.enhancedvisuals.common.visual.VisualRegistry;
 public class VisualManager {
     
     private static Minecraft mc = Minecraft.getInstance();
-    public static final Random RANDOM = new Random();
+    public static Random rand = new Random();
     private static HashMapList<VisualCategory, Visual> visuals = new HashMapList<>();
     
     public static void onTick(@Nullable Player player) {
@@ -76,7 +76,7 @@ public class VisualManager {
     }
     
     public static Visual addVisualFadeOut(VisualType vt, VisualHandler handler, IntMinMax time) {
-        return addVisualFadeOut(vt, handler, new DecimalCurve(0, 1, time.next(RANDOM), 0));
+        return addVisualFadeOut(vt, handler, new DecimalCurve(0, 1, time.next(rand), 0));
     }
     
     public static Visual addVisualFadeOut(VisualType vt, VisualHandler handler, int time) {
@@ -84,17 +84,17 @@ public class VisualManager {
     }
     
     public static Visual addVisualFadeOut(VisualType vt, VisualHandler handler, Curve curve) {
-        Visual v = new Visual(vt, handler, curve, vt.getVariantAmount() > 1 ? RANDOM.nextInt(vt.getVariantAmount()) : 0);
+        Visual v = new Visual(vt, handler, curve, vt.getVariantAmount() > 1 ? rand.nextInt(vt.getVariantAmount()) : 0);
         add(v);
         return v;
     }
     
     public static void addParticlesFadeOut(VisualType vt, VisualHandler handler, int count, IntMinMax time, boolean rotate) {
-        addParticlesFadeOut(vt, handler, count, new DecimalCurve(0, 1, time.next(RANDOM), 0), rotate, null);
+        addParticlesFadeOut(vt, handler, count, new DecimalCurve(0, 1, time.next(rand), 0), rotate, null);
     }
     
     public static void addParticlesFadeOut(VisualType vt, VisualHandler handler, int count, IntMinMax time, boolean rotate, Color color) {
-        addParticlesFadeOut(vt, handler, count, new DecimalCurve(0, 1, time.next(RANDOM), 0), rotate, color);
+        addParticlesFadeOut(vt, handler, count, new DecimalCurve(0, 1, time.next(rand), 0), rotate, color);
     }
     
     public static void addParticlesFadeOut(VisualType vt, VisualHandler handler, int count, int time, boolean rotate) {
@@ -105,20 +105,20 @@ public class VisualManager {
         if (vt.disabled)
             return;
         for (int i = 0; i < count; i++) {
-            int screenWidth = mc.getWindow().getWidth();
-            int screenHeight = mc.getWindow().getHeight();
+            int screenWidth = mc.getWindow().getGuiScaledWidth();
+            int screenHeight = mc.getWindow().getGuiScaledHeight();
             
-            int width = vt.getWidth(screenWidth, screenHeight);
-            int height = vt.getHeight(screenWidth, screenHeight);
+            int width = vt.getWidth(screenWidth);
+            int height = vt.getHeight(screenHeight);
             
             if (vt.scaleVariants()) {
-                double scale = vt.randomScale(RANDOM);
+                double scale = vt.randomScale(rand);
                 width *= scale;
                 height *= scale;
             }
             
-            Particle particle = new Particle(vt, handler, curve, generateOffset(RANDOM, screenWidth, width), generateOffset(RANDOM, screenHeight, height), width, height, vt
-                    .canRotate() && rotate ? RANDOM.nextFloat() * 360 : 0, RANDOM.nextInt(vt.getVariantAmount()));
+            Particle particle = new Particle(vt, handler, curve, generateOffset(rand, screenWidth, width), generateOffset(rand, screenHeight, height), width, height, vt
+                    .canRotate() && rotate ? rand.nextFloat() * 360 : 0, rand.nextInt(vt.getVariantAmount()));
             if (color != null)
                 particle.color = color;
             add(particle);
