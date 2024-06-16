@@ -21,19 +21,19 @@ public class VisualHandlers {
     public static RainHandler RAIN;
     
     public static void init() {
-        VisualRegistry.registerHandler(new ResourceLocation(EnhancedVisuals.MODID, "explosion"), EXPLOSION = new ExplosionHandler());
-        VisualRegistry.registerHandler(new ResourceLocation(EnhancedVisuals.MODID, "potion"), POTION = new PotionHandler());
+        VisualRegistry.registerHandler(ResourceLocation.tryBuild(EnhancedVisuals.MODID, "explosion"), EXPLOSION = new ExplosionHandler());
+        VisualRegistry.registerHandler(ResourceLocation.tryBuild(EnhancedVisuals.MODID, "potion"), POTION = new PotionHandler());
         
-        VisualRegistry.registerHandler(new ResourceLocation(EnhancedVisuals.MODID, "sand"), SAND = new SandSplatHandler());
-        VisualRegistry.registerHandler(new ResourceLocation(EnhancedVisuals.MODID, "splash"), SPLASH = new SplashHandler());
-        VisualRegistry.registerHandler(new ResourceLocation(EnhancedVisuals.MODID, "damage"), DAMAGE = new DamageHandler());
+        VisualRegistry.registerHandler(ResourceLocation.tryBuild(EnhancedVisuals.MODID, "sand"), SAND = new SandSplatHandler());
+        VisualRegistry.registerHandler(ResourceLocation.tryBuild(EnhancedVisuals.MODID, "splash"), SPLASH = new SplashHandler());
+        VisualRegistry.registerHandler(ResourceLocation.tryBuild(EnhancedVisuals.MODID, "damage"), DAMAGE = new DamageHandler());
         
-        VisualRegistry.registerHandler(new ResourceLocation(EnhancedVisuals.MODID, "slender"), SLENDER = new SlenderHandler());
-        VisualRegistry.registerHandler(new ResourceLocation(EnhancedVisuals.MODID, "saturation"), SATURATION = new SaturationHandler());
-        VisualRegistry.registerHandler(new ResourceLocation(EnhancedVisuals.MODID, "heartbeat"), HEARTBEAT = new HeartbeatHandler());
+        VisualRegistry.registerHandler(ResourceLocation.tryBuild(EnhancedVisuals.MODID, "slender"), SLENDER = new SlenderHandler());
+        VisualRegistry.registerHandler(ResourceLocation.tryBuild(EnhancedVisuals.MODID, "saturation"), SATURATION = new SaturationHandler());
+        VisualRegistry.registerHandler(ResourceLocation.tryBuild(EnhancedVisuals.MODID, "heartbeat"), HEARTBEAT = new HeartbeatHandler());
         
-        VisualRegistry.registerHandler(new ResourceLocation(EnhancedVisuals.MODID, "underwater"), UNDERWATER = new UnderwaterHandler());
-        VisualRegistry.registerHandler(new ResourceLocation(EnhancedVisuals.MODID, "rain"), RAIN = new RainHandler());
+        VisualRegistry.registerHandler(ResourceLocation.tryBuild(EnhancedVisuals.MODID, "underwater"), UNDERWATER = new UnderwaterHandler());
+        VisualRegistry.registerHandler(ResourceLocation.tryBuild(EnhancedVisuals.MODID, "rain"), RAIN = new RainHandler());
     }
     
 }

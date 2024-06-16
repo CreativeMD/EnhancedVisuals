@@ -12,7 +12,7 @@ import team.creative.enhancedvisuals.mixin.PostChainAccessor;
 
 public class VisualTypeBlur extends VisualTypeShader {
     
-    public static final ResourceLocation BLUR_SHADER = new ResourceLocation("shaders/post/blur.json");
+    public static final ResourceLocation BLUR_SHADER = ResourceLocation.withDefaultNamespace("shaders/post/blur.json");
     
     public VisualTypeBlur(String name) {
         super(name, BLUR_SHADER);

@@ -24,7 +24,7 @@ public abstract class TextureCache {
         int i = 0;
         Resource resource = null;
         List<ResourceLocation> locations = null;
-        while ((resource = manager.getResource(location = new ResourceLocation(domain, baseLocation + "-" + i + ".png")).orElse(null)) != null) {
+        while ((resource = manager.getResource(location = ResourceLocation.tryBuild(domain, baseLocation + "-" + i + ".png")).orElse(null)) != null) {
             if (locations == null)
                 locations = new ArrayList<>();
             locations.add(location);
@@ -34,7 +34,7 @@ public abstract class TextureCache {
         if (locations != null) {
             int animationSpeed = 1;
             try {
-                resource = manager.getResource(new ResourceLocation(domain, baseLocation + ".ani")).orElse(null);
+                resource = manager.getResource(ResourceLocation.tryBuild(domain, baseLocation + ".ani")).orElse(null);
                 if (resource != null) {
                     try {
                         InputStream input = resource.open();
@@ -51,7 +51,7 @@ public abstract class TextureCache {
             return new TextureCacheAnimation(locations.toArray(new ResourceLocation[locations.size()]), animationSpeed);
         }
         
-        if (manager.getResource(location = new ResourceLocation(domain, baseLocation + ".png")).orElse(null) != null)
+        if (manager.getResource(location = ResourceLocation.tryBuild(domain, baseLocation + ".png")).orElse(null) != null)
             return new TextureCacheSimple(location);
         return null;
     }

@@ -54,7 +54,7 @@ public class ExplosionHandler extends VisualHandler {
             DecimalCurve explosionSoundVolume = new DecimalCurve(0, maxExplosionVolume, explosionSoundTime.valueAt(damage), 0);
             DecimalCurve explosionSoundMuteVolume = new DecimalCurve(0, 1, explosionSoundTime.valueAt(damage), 0);
             if (SoundMuteHandler.startMuting(explosionSoundMuteVolume))
-                playSoundFadeOut(new ResourceLocation(EnhancedVisuals.MODID, "ringing"), null, explosionSoundVolume);
+                playSoundFadeOut(ResourceLocation.tryBuild(EnhancedVisuals.MODID, "ringing"), null, explosionSoundVolume);
             
             VisualManager.addVisualFadeOut(blur, this, new DecimalCurve(0, maxBlur.valueAt(damage), (int) (explosionBlurTime.valueAt(damage)), 0));
         }

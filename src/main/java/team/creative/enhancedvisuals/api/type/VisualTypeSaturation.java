@@ -15,7 +15,7 @@ import team.creative.enhancedvisuals.mixin.PostChainAccessor;
 public class VisualTypeSaturation extends VisualTypeShader {
     
     public VisualTypeSaturation(String name) {
-        super(name, new ResourceLocation("shaders/post/desaturate.json"));
+        super(name, ResourceLocation.withDefaultNamespace("shaders/post/desaturate.json"));
     }
     
     @Override

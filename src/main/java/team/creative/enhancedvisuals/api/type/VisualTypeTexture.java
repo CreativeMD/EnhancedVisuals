@@ -14,6 +14,7 @@ import org.joml.Matrix4f;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
@@ -121,8 +122,6 @@ public abstract class VisualTypeTexture extends VisualType {
     @OnlyIn(Dist.CLIENT)
     public void render(PoseStack pose, VisualHandler handler, Visual visual, TextureManager manager, int screenWidth, int screenHeight, float partialTicks) {
         RenderSystem.setShaderTexture(0, getResource(visual));
-        Tesselator tessellator = Tesselator.getInstance();
-        BufferBuilder renderer = tessellator.getBuilder();
         
         RenderSystem.setShader(EVRenderer::getPositionTexColorSmoothShader);
         Matrix4f last = pose.last().pose();
@@ -136,12 +135,12 @@ public abstract class VisualTypeTexture extends VisualType {
         int height = visual.getHeight(screenHeight);
         
         float opacity = visual.getOpacity();
-        renderer.begin(Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-        renderer.vertex(last, 0.0f, height, z).uv(0.0F, 1.0F).color(red, green, blue, (int) (opacity * 255F)).endVertex();
-        renderer.vertex(last, width, height, z).uv(1.0F, 1.0F).color(red, green, blue, (int) (opacity * 255F)).endVertex();
-        renderer.vertex(last, width, 0.0f, z).uv(1.0F, 0.0F).color(red, green, blue, (int) (opacity * 255F)).endVertex();
-        renderer.vertex(last, 0.0f, 0.0f, z).uv(0.0F, 0.0F).color(red, green, blue, (int) (opacity * 255F)).endVertex();
-        tessellator.end();
+        BufferBuilder renderer = Tesselator.getInstance().begin(Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+        renderer.addVertex(last, 0.0f, height, z).setUv(0.0F, 1.0F).setColor(red, green, blue, (int) (opacity * 255F));
+        renderer.addVertex(last, width, height, z).setUv(1.0F, 1.0F).setColor(red, green, blue, (int) (opacity * 255F));
+        renderer.addVertex(last, width, 0.0f, z).setUv(1.0F, 0.0F).setColor(red, green, blue, (int) (opacity * 255F));
+        renderer.addVertex(last, 0.0f, 0.0f, z).setUv(0.0F, 0.0F).setColor(red, green, blue, (int) (opacity * 255F));
+        BufferUploader.drawWithShader(renderer.buildOrThrow());
     }
     
     @Override

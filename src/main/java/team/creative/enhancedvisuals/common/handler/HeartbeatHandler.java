@@ -58,12 +58,12 @@ public class HeartbeatHandler extends VisualHandler {
                 
                 VisualManager.addVisualFadeOut(lowhealth, this, new DecimalCurve(0, Math.min(0.7F, intensity) * heartbeatOverlayIntensity, heartbeatOverlayDuration, 0));
                 VisualManager.addVisualFadeOut(blur, this, new DecimalCurve(0, Math.min(0.7F, intensity) * heartbeatBlurIntensity, heartbeatBlurDuration, 0));
-                playSound(new ResourceLocation(EnhancedVisuals.MODID, "heartbeatout"), heartbeatVolume);
+                playSound(ResourceLocation.tryBuild(EnhancedVisuals.MODID, "heartbeatout"), heartbeatVolume);
                 
             } else if (this.effectBufferTicks == 5) {
                 float intensity = getIntensity(player);
                 
-                playSound(new ResourceLocation(EnhancedVisuals.MODID, "heartbeatin"), heartbeatVolume);
+                playSound(ResourceLocation.tryBuild(EnhancedVisuals.MODID, "heartbeatin"), heartbeatVolume);
                 VisualManager.addVisualFadeOut(blur, this, new DecimalCurve(0, Math.min(0.7F, intensity) * heartbeatBlurIntensity, heartbeatBlurDuration, 0));
             }
         }

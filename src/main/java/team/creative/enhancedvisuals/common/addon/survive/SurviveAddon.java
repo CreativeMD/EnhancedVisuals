@@ -10,8 +10,8 @@ public class SurviveAddon {
     public static TemperatureHandler temperature;
     
     public static void load() {
-        VisualRegistry.registerHandler(new ResourceLocation(EnhancedVisuals.MODID, "thirst"), thirst = new ThirstHandler());
-        VisualRegistry.registerHandler(new ResourceLocation(EnhancedVisuals.MODID, "temperature"), temperature = new TemperatureHandler());
+        VisualRegistry.registerHandler(ResourceLocation.tryBuild(EnhancedVisuals.MODID, "thirst"), thirst = new ThirstHandler());
+        VisualRegistry.registerHandler(ResourceLocation.tryBuild(EnhancedVisuals.MODID, "temperature"), temperature = new TemperatureHandler());
     }
     
 }

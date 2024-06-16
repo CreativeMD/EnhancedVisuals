@@ -72,7 +72,7 @@ public class EVRenderer {
             
             if (!(mc.screen instanceof DeathScreen)) {
                 //graphics.flush();
-                float partialTicks = Minecraft.getInstance().getFrameTime();
+                float partialTicks = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
                 
                 if (mc.player != null && mc.player.hurtDuration > 0 && mc.player.hurtTime == mc.player.hurtDuration)
                     VisualHandlers.DAMAGE.clientHurt();
@@ -110,16 +110,15 @@ public class EVRenderer {
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1F);
                 RenderSystem.setShader(GameRenderer::getPositionColorShader);
                 
-                BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
-                bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+                BufferBuilder bufferbuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
                 int color = ColorUtils.BLACK;
                 int z = -90;
                 
-                bufferbuilder.vertex(pose, screenWidth, screenHeight, z).color(color).endVertex();
-                bufferbuilder.vertex(pose, screenWidth, 0, z).color(color).endVertex();
-                bufferbuilder.vertex(pose, 0, 0, z).color(color).endVertex();
-                bufferbuilder.vertex(pose, 0, screenHeight, z).color(color).endVertex();
-                BufferUploader.drawWithShader(bufferbuilder.end());
+                bufferbuilder.addVertex(pose, screenWidth, screenHeight, z).setColor(color);
+                bufferbuilder.addVertex(pose, screenWidth, 0, z).setColor(color);
+                bufferbuilder.addVertex(pose, 0, 0, z).setColor(color);
+                bufferbuilder.addVertex(pose, 0, screenHeight, z).setColor(color);
+                BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
                 
                 RenderSystem.disableBlend();
                 RenderSystem.resetTextureMatrix();

@@ -36,7 +36,7 @@ public class ThirstHandler extends VisualHandler {
     public IntMinMax thirstLevel = new IntMinMax(2, 8);
     
     @CreativeConfig
-    public VisualType focus = new VisualTypeShader("focus", new ResourceLocation("shaders/post/blobs2.json")) {
+    public VisualType focus = new VisualTypeShader("focus", ResourceLocation.withDefaultNamespace("shaders/post/blobs2.json")) {
         
         @Override
         @Environment(EnvType.CLIENT)
