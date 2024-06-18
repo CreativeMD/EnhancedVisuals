@@ -9,7 +9,7 @@ public class ColdSweatAddon {
     public static TemperatureHandler temperature;
     
     public static void load() {
-        VisualRegistry.registerHandler(new ResourceLocation(EnhancedVisuals.MODID, "temperature"), temperature = new TemperatureHandler());
+        VisualRegistry.registerHandler(ResourceLocation.tryBuild(EnhancedVisuals.MODID, "temperature"), temperature = new TemperatureHandler());
     }
     
 }
