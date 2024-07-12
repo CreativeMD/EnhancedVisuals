@@ -6,7 +6,7 @@ license="LGPL-3.0-only"
 [[mods]]
     modId="enhancedvisuals"
     logoFile="enhancedvisuals.png"
-    version="1.8.2"
+    version="1.8.3"
     displayName="EnhancedVisuals"
     displayURL="https://modrinth.com/mod/enhancedvisuals"
     authors="CreativeMD, Sonicjumper"
