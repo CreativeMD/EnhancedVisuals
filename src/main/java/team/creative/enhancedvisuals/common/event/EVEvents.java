@@ -32,7 +32,7 @@ public class EVEvents {
     
     public void explosion(Explosion explosion, List<Entity> affected) {
         Vec3 position = new Vec3(((ExplosionAccessor) explosion).getX(), ((ExplosionAccessor) explosion).getY(), ((ExplosionAccessor) explosion).getZ());
-        ExplosionPacket packet = new ExplosionPacket(position, ((ExplosionAccessor) explosion).getRadius(), ((ExplosionAccessor) explosion)
+        ExplosionPacket packet = new ExplosionPacket(position, ((ExplosionAccessor) explosion).getRadius(), explosion.getBlockInteraction(), ((ExplosionAccessor) explosion)
                 .getSource() != null ? (((ExplosionAccessor) explosion).getSource()).getId() : -1);
         for (Entity entity : affected)
             if (entity instanceof ServerPlayer)

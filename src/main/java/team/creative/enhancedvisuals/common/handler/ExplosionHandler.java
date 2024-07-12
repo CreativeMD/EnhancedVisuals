@@ -2,10 +2,19 @@ package team.creative.enhancedvisuals.common.handler;
 
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.core.Holder;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.windcharge.BreezeWindCharge;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Explosion.BlockInteraction;
 import net.minecraft.world.phys.Vec3;
 import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.premade.IntMinMax;
@@ -40,7 +49,28 @@ public class ExplosionHandler extends VisualHandler {
     @CreativeConfig
     public IntCurve explosionBlurTime = new IntCurve(0, 10, 20, 20);
     
-    public void onExploded(Player player, Vec3 pos, float size, @Nullable Entity source) {
+    @CreativeConfig
+    public boolean ignoreBreeze = true;
+    
+    @CreativeConfig
+    public boolean ignoreMace = true;
+    
+    private Holder<Enchantment> windBurst;
+    
+    private boolean isMace(RegistryAccess access, ItemStack stack) {
+        if (windBurst == null)
+            windBurst = access.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.WIND_BURST);
+        return stack.getItem() == Items.MACE && stack.getEnchantments().getLevel(windBurst) > 0;
+    }
+    
+    public void onExploded(Player player, Vec3 pos, float size, Explosion.BlockInteraction blockInteraction, @Nullable Entity source) {
+        if (ignoreBreeze && source instanceof BreezeWindCharge)
+            return;
+        
+        if (ignoreMace && source == null && blockInteraction == BlockInteraction.TRIGGER_BLOCK && (isMace(player.registryAccess(), player.getMainHandItem()) || isMace(player
+                .registryAccess(), player.getOffhandItem())))
+            return;
+        
         float f3 = size * 2.0F;
         double d12 = Math.sqrt(player.distanceToSqr(pos)) / f3;
         
