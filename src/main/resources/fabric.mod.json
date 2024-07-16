@@ -1,7 +1,7 @@
 {
     "schemaVersion": 1,
     "id": "enhancedvisuals",
-    "version": "1.8.3",
+    "version": "1.8.4",
     "name": "EnhancedVisuals",
     "description": "Experience realism and extra video effects for your in-game experience.",
     "authors": [
@@ -27,6 +27,6 @@
         "fabricloader": ">=0.15.11",
         "fabric-api": "*",
         "minecraft": ">=1.21",
-        "creativecore": ">=2.12.0"
+        "creativecore": ">=2.12.2"
     }
 }
