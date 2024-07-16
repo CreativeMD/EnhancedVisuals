@@ -31,12 +31,13 @@ import team.creative.enhancedvisuals.mixin.ExplosionAccessor;
 public class EVEvents {
     
     public void explosion(Explosion explosion, List<Entity> affected) {
-        Vec3 position = new Vec3(((ExplosionAccessor) explosion).getX(), ((ExplosionAccessor) explosion).getY(), ((ExplosionAccessor) explosion).getZ());
-        ExplosionPacket packet = new ExplosionPacket(position, ((ExplosionAccessor) explosion).getRadius(), explosion.getBlockInteraction(), ((ExplosionAccessor) explosion)
-                .getSource() != null ? (((ExplosionAccessor) explosion).getSource()).getId() : -1);
+        ExplosionAccessor e = (ExplosionAccessor) explosion;
+        Vec3 position = new Vec3(e.getX(), e.getY(), e.getZ());
+        ExplosionPacket packet = new ExplosionPacket(position, e.getRadius(), explosion.getBlockInteraction(), e.getSource() != null ? (e.getSource()).getId() : -1, e
+                .getSource() != null ? e.getSource().getClass() : null);
         for (Entity entity : affected)
-            if (entity instanceof ServerPlayer)
-                EnhancedVisuals.NETWORK.sendToClient(packet, (ServerPlayer) entity);
+            if (entity instanceof ServerPlayer s)
+                EnhancedVisuals.NETWORK.sendToClient(packet, s);
     }
     
     public void impact(Projectile projectile) {
@@ -45,10 +46,10 @@ public class EVEvents {
             List<LivingEntity> list = entity.level().getEntitiesOfClass(LivingEntity.class, axisalignedbb);
             if (!list.isEmpty()) {
                 for (LivingEntity livingentity : list) {
-                    if (livingentity.isAffectedByPotions() && livingentity instanceof ServerPlayer) {
+                    if (livingentity.isAffectedByPotions() && livingentity instanceof ServerPlayer s) {
                         double d0 = entity.distanceToSqr(livingentity);
                         if (d0 < 16.0D)
-                            EnhancedVisuals.NETWORK.sendToClient(new PotionPacket(Math.sqrt(d0), entity.getItem()), (ServerPlayer) livingentity);
+                            EnhancedVisuals.NETWORK.sendToClient(new PotionPacket(Math.sqrt(d0), entity.getItem()), s);
                     }
                 }
             }

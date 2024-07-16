@@ -63,8 +63,8 @@ public class ExplosionHandler extends VisualHandler {
         return stack.getItem() == Items.MACE && stack.getEnchantments().getLevel(windBurst) > 0;
     }
     
-    public void onExploded(Player player, Vec3 pos, float size, Explosion.BlockInteraction blockInteraction, @Nullable Entity source) {
-        if (ignoreBreeze && source instanceof BreezeWindCharge)
+    public void onExploded(Player player, Vec3 pos, float size, Explosion.BlockInteraction blockInteraction, @Nullable Entity source, @Nullable Class sourceClass) {
+        if (ignoreBreeze && sourceClass != null && BreezeWindCharge.class.isAssignableFrom(sourceClass))
             return;
         
         if (ignoreMace && source == null && blockInteraction == BlockInteraction.TRIGGER_BLOCK && (isMace(player.registryAccess(), player.getMainHandItem()) || isMace(player
