@@ -2,8 +2,12 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'com.modrinth.minotaur' version '2.+'
-    id 'com.matthewprenger.cursegradle' version '1.4+'
+    id 'net.darkhax.curseforgegradle' version '1.1.+'
     id 'net.neoforged.gradle.userdev' version '7.0.+'
+}
+
+repositories {
+    maven { url = 'https://maven.fabricmc.net' }
 }
 
 group= "team.creative" + project.mod_id
@@ -29,7 +33,7 @@ runs {
         workingDirectory project.file('run')
         systemProperty 'forge.logging.console.level', 'debug'
         
-        modSource project(":CreativeCore").sourceSets.main
+        //modSource project(":CreativeCore").sourceSets.main
         modSource project.sourceSets.main
     }
     
@@ -44,6 +48,8 @@ dependencies {
     implementation "net.neoforged:neoforge:${forge_version}"
     
     implementation project(':CreativeCore')
+    
+    compileOnly "net.fabricmc:fabric-loader:${fabric_version}"
 }
 
 modDependencies = [

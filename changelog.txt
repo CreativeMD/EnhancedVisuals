@@ -1,3 +1,8 @@
+1.8.5
+Added ignoreSelfWindCharge to disable explosion effect when using a wind charge
+Fixed hit effect not working consistently
+Made DeathMessages translatable
+
 1.8.4
 Fixed still visuals fading away when game is paused
 Fixed ignoreBreeze not working properly on fabric
