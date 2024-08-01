@@ -5,12 +5,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import team.creative.enhancedvisuals.EnhancedVisuals;
+import team.creative.enhancedvisuals.common.handler.VisualHandlers;
 
 @Mixin(Player.class)
 public abstract class MixinPlayer extends LivingEntity {
@@ -23,5 +25,11 @@ public abstract class MixinPlayer extends LivingEntity {
             method = "Lnet/minecraft/world/entity/player/Player;actuallyHurt(Lnet/minecraft/world/damagesource/DamageSource;F)V")
     private void actuallyHurt(DamageSource damageSource, float f, CallbackInfo info) {
         EnhancedVisuals.EVENTS.damage((Player) (Object) this, damageSource, f);
+    }
+    
+    @Inject(at = @At("HEAD"), require = 1, method = "animateHurt(F)V")
+    public void animateHurt(float yaw, CallbackInfo info) {
+        if ((Player) (Object) this instanceof LocalPlayer)
+            VisualHandlers.DAMAGE.clientHurt();
     }
 }

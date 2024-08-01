@@ -29,13 +29,13 @@ import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.server.packs.resources.ResourceProvider;
 import team.creative.creativecore.common.util.mc.ColorUtils;
+import team.creative.creativecore.common.util.mc.LanguageUtils;
 import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualCategory;
 import team.creative.enhancedvisuals.api.type.VisualType;
 import team.creative.enhancedvisuals.client.EVClient;
 import team.creative.enhancedvisuals.client.VisualManager;
-import team.creative.enhancedvisuals.common.handler.VisualHandlers;
 
 public class EVRenderer {
     
@@ -72,9 +72,6 @@ public class EVRenderer {
             if (!(mc.screen instanceof DeathScreen)) {
                 graphics.flush();
                 float partialTicks = Minecraft.getInstance().getFrameTime();
-                
-                if (mc.player != null && mc.player.hurtDuration > 0 && mc.player.hurtTime == mc.player.hurtDuration)
-                    VisualHandlers.DAMAGE.clientHurt();
                 
                 if (mc.getMainRenderTarget().width != framebufferWidth || mc.getMainRenderTarget().height != framebufferHeight) {
                     for (VisualType type : VisualType.getTypes())
@@ -153,7 +150,7 @@ public class EVRenderer {
             } else {
                 if (EnhancedVisuals.MESSAGES.enabled) {
                     if (lastRenderedMessage == null)
-                        lastRenderedMessage = EnhancedVisuals.MESSAGES.pickRandomDeathMessage();
+                        lastRenderedMessage = LanguageUtils.translate(EnhancedVisuals.MESSAGES.pickRandomDeathMessage());
                     
                     if (lastRenderedMessage != null)
                         graphics.drawString(mc.font, "\"" + lastRenderedMessage + "\"", mc.screen.width / 2 - mc.font.width(lastRenderedMessage) / 2, 114, 16777215);
