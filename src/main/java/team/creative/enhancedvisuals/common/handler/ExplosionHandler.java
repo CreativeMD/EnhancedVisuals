@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.windcharge.BreezeWindCharge;
+import net.minecraft.world.entity.projectile.windcharge.WindCharge;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -55,6 +56,9 @@ public class ExplosionHandler extends VisualHandler {
     @CreativeConfig
     public boolean ignoreMace = true;
     
+    @CreativeConfig
+    public boolean ignoreSelfWindCharge = true;
+    
     private Holder<Enchantment> windBurst;
     
     private boolean isMace(RegistryAccess access, ItemStack stack) {
@@ -65,6 +69,9 @@ public class ExplosionHandler extends VisualHandler {
     
     public void onExploded(Player player, Vec3 pos, float size, Explosion.BlockInteraction blockInteraction, @Nullable Entity source, @Nullable Class sourceClass) {
         if (ignoreBreeze && sourceClass != null && BreezeWindCharge.class.isAssignableFrom(sourceClass))
+            return;
+        
+        if (ignoreSelfWindCharge && source instanceof WindCharge w && w.getOwner() == player)
             return;
         
         if (ignoreMace && source == null && blockInteraction == BlockInteraction.TRIGGER_BLOCK && (isMace(player.registryAccess(), player.getMainHandItem()) || isMace(player
