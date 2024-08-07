@@ -1,3 +1,6 @@
+1.8.6
+Fixed crash on server side
+
 1.8.5
 Added ignoreSelfWindCharge to disable explosion effect when using a wind charge
 Fixed hit effect not working consistently
