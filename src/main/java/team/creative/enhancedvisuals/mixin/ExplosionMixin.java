@@ -13,7 +13,7 @@ import net.minecraft.world.phys.AABB;
 import team.creative.enhancedvisuals.EnhancedVisuals;
 
 @Mixin(Explosion.class)
-public class MixinExplosion {
+public class ExplosionMixin {
     @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;getEntities(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/AABB;)Ljava/util/List;"), method = "Lnet/minecraft/world/level/Explosion;explode()V", require = 1)
     private List<Entity> onDetonate(Level world, Entity causer, AABB box) {
         List<Entity> list = world.getEntities(causer, box);

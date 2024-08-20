@@ -8,8 +8,8 @@
     "mixins": [
         "EntityAccessor",
         "ExplosionAccessor",
-        "MixinExplosion",
-        "MixinPlayer",
+        "ExplosionMixin",
+        "PlayerMixin",
         "ProjectileMixin"
     ],
     "client": [
@@ -17,6 +17,7 @@
         "GameRendererMixin",
         "SoundEngineAccessor",
         "SoundManagerAccessor",
+        "PlayerMixinClient",
         "PostChainAccessor"
     ],
     "minVersion": "0.8"
