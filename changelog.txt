@@ -1,3 +1,6 @@
+1.8.8
+Fixed vanilla menu blur rendering causes black artifacts
+
 1.8.7
 Fixed crash when using enhancedvisuals server side on fabric
 
