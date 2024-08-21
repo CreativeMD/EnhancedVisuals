@@ -12,17 +12,17 @@
 hs_err_pid*
 
 # Gradlew #
-build/
+.gradle/
+/build/
 *.launch
 *.classpath
 *.project
 *.factorypath
-bin/
-run/
+/bin/
+/run/
 .settings/
 /.apt_generated/
 /.apt_generated_tests/
 /Users/
 
 !/gradle/wrapper/gradle-wrapper.jar
-/.gradle/
