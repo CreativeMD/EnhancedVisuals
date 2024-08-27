@@ -26,12 +26,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.server.packs.resources.ResourceProvider;
+import net.neoforged.neoforge.client.GlStateBackup;
 import team.creative.creativecore.common.util.mc.ColorUtils;
 import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.client.render.EVRenderer;
 
 @Mixin(GameRenderer.class)
 public class GameRendererMixin {
+    
+    private static final GlStateBackup stateBackup = new GlStateBackup();
     
     @Inject(method = "reloadShaders(Lnet/minecraft/server/packs/resources/ResourceProvider;)V", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/renderer/GameRenderer;shutdownShaders()V"), locals = LocalCapture.CAPTURE_FAILHARD, require = 1)
@@ -45,6 +48,8 @@ public class GameRendererMixin {
     
     @Inject(method = "processBlurEffect(F)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/PostChain;process(F)V"), require = 1)
     public void processBlurEffect(float partialTicks, CallbackInfo info) {
+        RenderSystem.backupGlState(stateBackup);
+        
         Minecraft mc = Minecraft.getInstance();
         
         int screenWidth = mc.getWindow().getWidth();
@@ -74,9 +79,11 @@ public class GameRendererMixin {
         BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
         
         RenderSystem.disableBlend();
-        RenderSystem.disableDepthTest();
+        RenderSystem.enableDepthTest();
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShader(() -> shader);
+        
+        RenderSystem.restoreGlState(stateBackup);
     }
     
 }
