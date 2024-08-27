@@ -1,3 +1,6 @@
+1.8.9
+Fixed blur fix causing issues with other mods
+
 1.8.8
 Fixed vanilla menu blur rendering causes black artifacts
 
