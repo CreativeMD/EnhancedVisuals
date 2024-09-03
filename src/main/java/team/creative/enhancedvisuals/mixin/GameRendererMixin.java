@@ -17,7 +17,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.datafixers.util.Pair;
@@ -53,13 +52,10 @@ public class GameRendererMixin {
         int screenWidth = mc.getWindow().getWidth();
         int screenHeight = mc.getWindow().getHeight();
         
-        PoseStack poseStack = new PoseStack();
-        Matrix4f pose = poseStack.last().pose();
-        
+        Matrix4f pose = new Matrix4f();
         var shader = RenderSystem.getShader();
         
         RenderSystem.disableDepthTest();
-        RenderSystem.depthMask(false);
         RenderSystem.enableBlend();
         RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE,
             GlStateManager.DestFactor.ZERO);
