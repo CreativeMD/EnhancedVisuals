@@ -45,6 +45,8 @@ public class GameRendererMixin {
     
     @Inject(method = "processBlurEffect(F)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/PostChain;process(F)V"), require = 1)
     public void processBlurEffect(float partialTicks, CallbackInfo info) {
+        if (!EnhancedVisuals.CONFIG.fixBlurShader)
+            return;
         CreativePlatformHooks.backupRenderState();
         
         Minecraft mc = Minecraft.getInstance();

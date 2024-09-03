@@ -15,9 +15,10 @@ public class EnhancedVisualsConfig implements ICreativeConfig {
     @CreativeConfig
     public boolean enableDamageDebug = false;
     
+    @CreativeConfig
+    public boolean fixBlurShader = true;
+    
     @Override
-    public void configured(Side side) {
-        
-    }
+    public void configured(Side side) {}
     
 }

@@ -99,23 +99,26 @@ public class EVRenderer {
                 Matrix4f pose = poseStack.last().pose();
                 Lighting.setupFor3DItems();
                 
-                RenderSystem.disableDepthTest();
                 RenderSystem.depthMask(false);
-                RenderSystem.enableBlend();
-                RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE,
-                    GlStateManager.DestFactor.ZERO);
-                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1F);
-                RenderSystem.setShader(GameRenderer::getPositionColorShader);
                 
-                BufferBuilder bufferbuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-                int color = ColorUtils.BLACK;
-                int z = -90;
-                
-                bufferbuilder.addVertex(pose, screenWidth, screenHeight, z).setColor(color);
-                bufferbuilder.addVertex(pose, screenWidth, 0, z).setColor(color);
-                bufferbuilder.addVertex(pose, 0, 0, z).setColor(color);
-                bufferbuilder.addVertex(pose, 0, screenHeight, z).setColor(color);
-                BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
+                if (EnhancedVisuals.CONFIG.fixBlurShader) {
+                    RenderSystem.disableDepthTest();
+                    RenderSystem.enableBlend();
+                    RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE,
+                        GlStateManager.DestFactor.ZERO);
+                    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1F);
+                    RenderSystem.setShader(GameRenderer::getPositionColorShader);
+                    
+                    BufferBuilder bufferbuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+                    int color = ColorUtils.BLACK;
+                    int z = -90;
+                    
+                    bufferbuilder.addVertex(pose, screenWidth, screenHeight, z).setColor(color);
+                    bufferbuilder.addVertex(pose, screenWidth, 0, z).setColor(color);
+                    bufferbuilder.addVertex(pose, 0, 0, z).setColor(color);
+                    bufferbuilder.addVertex(pose, 0, screenHeight, z).setColor(color);
+                    BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
+                }
                 
                 RenderSystem.disableBlend();
                 RenderSystem.resetTextureMatrix();
