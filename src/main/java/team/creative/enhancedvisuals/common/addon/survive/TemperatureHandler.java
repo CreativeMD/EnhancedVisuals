@@ -2,6 +2,8 @@ package team.creative.enhancedvisuals.common.addon.survive;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.stereowalker.survive.api.needs.PlayerNeeds;
+
 import net.minecraft.world.entity.player.Player;
 import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.util.mc.PlayerUtils;
@@ -31,24 +33,24 @@ public class TemperatureHandler extends VisualHandler {
     public Visual heatVisual;
     
     @CreativeConfig
-    public double coldestTemperature = 33;
+    public double coldestTemperature = -1.4;
     @CreativeConfig
-    public double hypotheremiaTemperature = 35;
+    public double hypotheremiaTemperature = -1;
     @CreativeConfig
-    public double coldTemperature = 36;
+    public double coldTemperature = -0.5;
     
     @CreativeConfig
-    public double defaultTemperature = 37;
+    public double defaultTemperature = 0;
     
     @CreativeConfig
-    public double warmTemperature = 38;
+    public double warmTemperature = 0.5;
     @CreativeConfig
-    public double hyperthermiaTemperature = 39;
+    public double hyperthermiaTemperature = 1;
     @CreativeConfig
-    public double hottestTemperature = 41;
+    public double hottestTemperature = 1.4;
     
     public double getTemperature(Player player) {
-        return PlayerUtils.getPersistentData(player).getCompound("survive:PlayerData").getCompound("TemperatureStats").getDouble("temperatureLevel");
+        return PlayerNeeds.needsApi.getTemperature(player).getDisplayTemperature();
     }
     
     @Override
