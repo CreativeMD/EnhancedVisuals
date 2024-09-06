@@ -55,7 +55,7 @@ public class ThirstHandler extends VisualHandler {
     public Visual focusVisual;
     
     public double getThirst(Player player) {
-        return PlayerNeeds.needsApi.getWater(player).getWaterLevel();
+        return PlayerNeeds.api().getWater(player).getWaterLevel();
     }
     
     @Override

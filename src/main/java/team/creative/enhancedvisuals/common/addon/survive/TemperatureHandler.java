@@ -50,7 +50,7 @@ public class TemperatureHandler extends VisualHandler {
     public double hottestTemperature = 1.4;
     
     public double getTemperature(Player player) {
-        return PlayerNeeds.needsApi.getTemperature(player).getDisplayTemperature();
+        return PlayerNeeds.api().getTemperature(player).getDisplayTemperature();
     }
     
     @Override
