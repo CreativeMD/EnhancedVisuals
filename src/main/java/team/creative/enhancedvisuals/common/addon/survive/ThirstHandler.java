@@ -3,6 +3,7 @@ package team.creative.enhancedvisuals.common.addon.survive;
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.shaders.Uniform;
+import com.stereowalker.survive.api.needs.PlayerNeeds;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -54,7 +55,7 @@ public class ThirstHandler extends VisualHandler {
     public Visual focusVisual;
     
     public double getThirst(Player player) {
-        return PlayerUtils.getPersistentData(player).getCompound("survive:PlayerData").getCompound("WaterStats").getInt("waterLevel");
+        return PlayerNeeds.api().getWater(player).getWaterLevel();
     }
     
     @Override
