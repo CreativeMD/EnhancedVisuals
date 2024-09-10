@@ -1,3 +1,8 @@
+1.8.12
+Readded support for Survive (Thanks to Stereowalker)
+Added fixBlurShader configuration
+Fixed blur+ incompatibility
+
 1.8.9
 Fixed blur fix causing issues with other mods
 
