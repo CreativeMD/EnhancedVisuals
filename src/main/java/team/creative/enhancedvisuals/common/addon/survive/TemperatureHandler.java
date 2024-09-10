@@ -6,7 +6,6 @@ import com.stereowalker.survive.api.needs.PlayerNeeds;
 
 import net.minecraft.world.entity.player.Player;
 import team.creative.creativecore.common.config.api.CreativeConfig;
-import team.creative.creativecore.common.util.mc.PlayerUtils;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.api.type.VisualType;
