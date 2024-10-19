@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.PostPass;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.mixin.PostChainAccessor;
@@ -15,7 +16,7 @@ import team.creative.enhancedvisuals.mixin.PostChainAccessor;
 public class VisualTypeSaturation extends VisualTypeShader {
     
     public VisualTypeSaturation(String name) {
-        super(name, ResourceLocation.withDefaultNamespace("shaders/post/desaturate.json"));
+        super(name, ResourceLocation.tryBuild(EnhancedVisuals.MODID, "shaders/post/desaturate.json"));
     }
     
     @Override
