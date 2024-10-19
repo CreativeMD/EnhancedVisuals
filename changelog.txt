@@ -1,3 +1,6 @@
+1.8.13
+Fixed desaturation hunger effect not working
+
 1.8.12
 Readded support for Survive (Thanks to Stereowalker)
 Added fixBlurShader configuration
