@@ -87,7 +87,7 @@ public abstract class VisualType implements ICreativeConfig {
     }
     
     public boolean isVisible(VisualHandler handler, Visual visual) {
-        return visual.getOpacity() > 0;
+        return visual.getOpacity() > 0 && !disabled;
     }
     
     public boolean scaleVariants() {
