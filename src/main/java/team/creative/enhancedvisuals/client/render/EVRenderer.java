@@ -1,14 +1,11 @@
 package team.creative.enhancedvisuals.client.render;
 
-import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
-import java.util.function.Consumer;
 
-import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fStack;
 
+import com.mojang.blaze3d.ProjectionType;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.platform.Window;
@@ -19,16 +16,12 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.blaze3d.vertex.VertexSorting;
-import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.DeathScreen;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.client.renderer.CoreShaders;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.server.packs.resources.ResourceProvider;
 import team.creative.creativecore.common.util.mc.ColorUtils;
 import team.creative.creativecore.common.util.mc.LanguageUtils;
 import team.creative.enhancedvisuals.EnhancedVisuals;
@@ -40,8 +33,6 @@ import team.creative.enhancedvisuals.client.VisualManager;
 
 public class EVRenderer {
     
-    private static ShaderInstance positionTexColorSmoothShader;
-    
     private static Minecraft mc = Minecraft.getInstance();
     
     private static String lastRenderedMessage;
@@ -51,15 +42,7 @@ public class EVRenderer {
     
     public static boolean reloadResources = false;
     
-    public static void loadShaders(ResourceProvider provier, List<Pair<ShaderInstance, Consumer<ShaderInstance>>> shaders) throws IOException {
-        shaders.add(Pair.of(new ShaderInstance(provier, EnhancedVisuals.MODID + ":position_tex_col_smooth", DefaultVertexFormat.POSITION_TEX_COLOR),
-            x -> positionTexColorSmoothShader = x));
-    }
-    
-    @Nullable
-    public static ShaderInstance getPositionTexColorSmoothShader() {
-        return positionTexColorSmoothShader;
-    }
+    public static void init() {}
     
     public static void render(Object object) {
         GuiGraphics graphics = (GuiGraphics) object;
@@ -71,8 +54,8 @@ public class EVRenderer {
             }
             
             if (!(mc.screen instanceof DeathScreen)) {
-                //graphics.flush();
-                float partialTicks = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
+                graphics.flush();
+                float partialTicks = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
                 
                 if (mc.getMainRenderTarget().width != framebufferWidth || mc.getMainRenderTarget().height != framebufferHeight) {
                     for (VisualType type : VisualType.getTypes())
@@ -86,14 +69,13 @@ public class EVRenderer {
                 
                 TextureManager manager = mc.getTextureManager();
                 
-                RenderSystem.clear(256, Minecraft.ON_OSX);
+                RenderSystem.clear(256);
                 Matrix4f matrix4f = new Matrix4f().setOrtho(0.0F, screenWidth, screenHeight, 0.0F, 1000.0F, 21000F);
-                RenderSystem.setProjectionMatrix(matrix4f, VertexSorting.ORTHOGRAPHIC_Z);
+                RenderSystem.setProjectionMatrix(matrix4f, ProjectionType.ORTHOGRAPHIC);
                 Matrix4fStack stack = RenderSystem.getModelViewStack();
                 stack.pushMatrix();
                 stack.identity();
                 stack.translation(0.0F, 0.0F, -11000F);
-                RenderSystem.applyModelViewMatrix();
                 
                 PoseStack poseStack = new PoseStack();
                 Matrix4f pose = poseStack.last().pose();
@@ -107,7 +89,7 @@ public class EVRenderer {
                     RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE,
                         GlStateManager.DestFactor.ZERO);
                     RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1F);
-                    RenderSystem.setShader(GameRenderer::getPositionColorShader);
+                    RenderSystem.setShader(CoreShaders.POSITION_COLOR);
                     
                     BufferBuilder bufferbuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
                     int color = ColorUtils.BLACK;
@@ -127,7 +109,7 @@ public class EVRenderer {
                 
                 mc.getMainRenderTarget().bindWrite(true);
                 
-                RenderSystem.clear(256, Minecraft.ON_OSX);
+                RenderSystem.clear(256);
                 RenderSystem.enableBlend();
                 RenderSystem.disableDepthTest();
                 RenderSystem.depthMask(false);
@@ -140,14 +122,11 @@ public class EVRenderer {
                 
                 lastRenderedMessage = null;
                 
-                graphics.flush();
-                
                 Window window = mc.getWindow();
-                RenderSystem.clear(256, Minecraft.ON_OSX);
+                RenderSystem.clear(256);
                 RenderSystem.setProjectionMatrix(new Matrix4f().setOrtho(0.0F, (float) (window.getWidth() / window.getGuiScale()), (float) (window.getHeight() / window
-                        .getGuiScale()), 0.0F, 1000.0F, 21000F), VertexSorting.ORTHOGRAPHIC_Z);
+                        .getGuiScale()), 0.0F, 1000.0F, 21000F), ProjectionType.ORTHOGRAPHIC);
                 stack.popMatrix();
-                RenderSystem.applyModelViewMatrix();
                 Lighting.setupFor3DItems();
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
                 

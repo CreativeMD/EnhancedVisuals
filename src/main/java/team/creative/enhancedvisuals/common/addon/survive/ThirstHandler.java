@@ -43,7 +43,7 @@ public class ThirstHandler extends VisualHandler {
         @OnlyIn(Dist.CLIENT)
         public void changeProperties(float intensity) {
             for (PostPass pass : ((PostChainAccessor) postChain).getPasses()) {
-                Uniform shaderuniform = pass.getEffect().getUniform("Radius");
+                Uniform shaderuniform = pass.getShader().getUniform("Radius");
                 
                 if (shaderuniform != null)
                     shaderuniform.set(intensity);

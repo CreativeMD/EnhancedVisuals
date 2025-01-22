@@ -1,6 +1,5 @@
 package team.creative.enhancedvisuals.api;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
@@ -41,7 +40,6 @@ public class Particle extends Visual {
         stack.pushPose();
         stack.translate(x + width / 2, y + height / 2, 0);
         stack.mulPose(Axis.ZP.rotationDegrees(rotation));
-        RenderSystem.applyModelViewMatrix();
         super.render(stack, manager, screenWidth, screenHeight, partialTicks);
         stack.popPose();
     }

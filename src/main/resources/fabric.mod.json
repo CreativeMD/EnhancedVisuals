@@ -20,8 +20,7 @@
         ]
     },
     "mixins": [
-        "enhancedvisuals.mixins.json",
-        "enhancedvisuals.fabric.mixins.json"
+        "enhancedvisuals.mixins.json"
     ],
     "depends": {
         "fabricloader": ">=0.15.11",

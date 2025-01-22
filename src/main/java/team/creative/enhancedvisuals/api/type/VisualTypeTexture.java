@@ -22,6 +22,7 @@ import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.renderer.CoreShaders;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
@@ -33,7 +34,6 @@ import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualCategory;
 import team.creative.enhancedvisuals.api.VisualHandler;
-import team.creative.enhancedvisuals.client.render.EVRenderer;
 import team.creative.enhancedvisuals.client.render.TextureCache;
 
 public abstract class VisualTypeTexture extends VisualType {
@@ -123,7 +123,7 @@ public abstract class VisualTypeTexture extends VisualType {
     public void render(PoseStack pose, VisualHandler handler, Visual visual, TextureManager manager, int screenWidth, int screenHeight, float partialTicks) {
         RenderSystem.setShaderTexture(0, getResource(visual));
         
-        RenderSystem.setShader(EVRenderer::getPositionTexColorSmoothShader);
+        RenderSystem.setShader(CoreShaders.POSITION_TEX_COLOR);
         Matrix4f last = pose.last().pose();
         
         int red = visual.color != null ? visual.color.getRed() : 255;

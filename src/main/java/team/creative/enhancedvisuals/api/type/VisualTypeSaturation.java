@@ -16,7 +16,7 @@ import team.creative.enhancedvisuals.mixin.PostChainAccessor;
 public class VisualTypeSaturation extends VisualTypeShader {
     
     public VisualTypeSaturation(String name) {
-        super(name, ResourceLocation.tryBuild(EnhancedVisuals.MODID, "shaders/post/desaturate.json"));
+        super(name, ResourceLocation.tryBuild(EnhancedVisuals.MODID, "desaturate"));
     }
     
     @Override
@@ -24,7 +24,7 @@ public class VisualTypeSaturation extends VisualTypeShader {
     @OnlyIn(Dist.CLIENT)
     public void changeProperties(float intensity) {
         for (PostPass pass : ((PostChainAccessor) postChain).getPasses()) {
-            Uniform shaderuniform = pass.getEffect().getUniform("Saturation");
+            Uniform shaderuniform = pass.getShader().getUniform("Saturation");
             
             if (shaderuniform != null)
                 shaderuniform.set(intensity);

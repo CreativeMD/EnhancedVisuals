@@ -12,7 +12,7 @@ import team.creative.enhancedvisuals.mixin.PostChainAccessor;
 
 public class VisualTypeBlur extends VisualTypeShader {
     
-    public static final ResourceLocation BLUR_SHADER = ResourceLocation.withDefaultNamespace("shaders/post/blur.json");
+    public static final ResourceLocation BLUR_SHADER = ResourceLocation.withDefaultNamespace("blur");
     
     public VisualTypeBlur(String name) {
         super(name, BLUR_SHADER);
@@ -23,7 +23,7 @@ public class VisualTypeBlur extends VisualTypeShader {
     @OnlyIn(Dist.CLIENT)
     public void changeProperties(float intensity) {
         for (PostPass pass : ((PostChainAccessor) postChain).getPasses()) {
-            Uniform shaderuniform = pass.getEffect().getUniform("Radius");
+            Uniform shaderuniform = pass.getShader().getUniform("Radius");
             
             if (shaderuniform != null)
                 shaderuniform.set(Math.max(1, (float) Math.floor(intensity)));

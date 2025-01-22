@@ -16,6 +16,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Explosion.BlockInteraction;
+import net.minecraft.world.level.ServerExplosion;
 import net.minecraft.world.phys.Vec3;
 import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.premade.IntMinMax;
@@ -31,6 +32,8 @@ import team.creative.enhancedvisuals.client.sound.SoundMuteHandler;
 
 public class ExplosionHandler extends VisualHandler {
     
+    @CreativeConfig
+    public ResourceLocation beepSound = ResourceLocation.tryBuild(EnhancedVisuals.MODID, "ringing");
     @CreativeConfig
     public VisualType dust = new VisualTypeParticle("dust");
     @CreativeConfig
@@ -81,7 +84,7 @@ public class ExplosionHandler extends VisualHandler {
         float f3 = size * 2.0F;
         double d12 = Math.sqrt(player.distanceToSqr(pos)) / f3;
         
-        double d14 = Explosion.getSeenPercent(pos, player);
+        double d14 = ServerExplosion.getSeenPercent(pos, player);
         double d10 = (1.0D - d12) * d14;
         
         float damage = ((int) ((d10 * d10 + d10) / 2.0D * 7.0D * f3 + 1.0D));
@@ -91,7 +94,7 @@ public class ExplosionHandler extends VisualHandler {
             DecimalCurve explosionSoundVolume = new DecimalCurve(0, maxExplosionVolume, explosionSoundTime.valueAt(damage), 0);
             DecimalCurve explosionSoundMuteVolume = new DecimalCurve(0, 1, explosionSoundTime.valueAt(damage), 0);
             if (SoundMuteHandler.startMuting(explosionSoundMuteVolume))
-                playSoundFadeOut(ResourceLocation.tryBuild(EnhancedVisuals.MODID, "ringing"), null, explosionSoundVolume);
+                playSoundFadeOut(beepSound, null, explosionSoundVolume);
             
             VisualManager.addVisualFadeOut(blur, this, new DecimalCurve(0, maxBlur.valueAt(damage), (int) (explosionBlurTime.valueAt(damage)), 0));
         }

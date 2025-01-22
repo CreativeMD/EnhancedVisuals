@@ -15,7 +15,6 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ThrownPotion;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import team.creative.enhancedvisuals.EnhancedVisuals;
@@ -26,15 +25,12 @@ import team.creative.enhancedvisuals.common.packet.DamagePacket;
 import team.creative.enhancedvisuals.common.packet.ExplosionPacket;
 import team.creative.enhancedvisuals.common.packet.PotionPacket;
 import team.creative.enhancedvisuals.mixin.EntityAccessor;
-import team.creative.enhancedvisuals.mixin.ExplosionAccessor;
 
 public class EVEvents {
     
     public void explosion(Explosion explosion, List<Entity> affected) {
-        ExplosionAccessor e = (ExplosionAccessor) explosion;
-        Vec3 position = new Vec3(e.getX(), e.getY(), e.getZ());
-        ExplosionPacket packet = new ExplosionPacket(position, e.getRadius(), explosion.getBlockInteraction(), e.getSource() != null ? (e.getSource()).getId() : -1, e
-                .getSource() != null ? e.getSource().getClass() : null);
+        ExplosionPacket packet = new ExplosionPacket(explosion.center(), explosion.radius(), explosion.getBlockInteraction(), explosion.getDirectSourceEntity() != null ? (explosion
+                .getDirectSourceEntity()).getId() : -1, explosion.getDirectSourceEntity() != null ? explosion.getDirectSourceEntity().getClass() : null);
         for (Entity entity : affected)
             if (entity instanceof ServerPlayer s)
                 EnhancedVisuals.NETWORK.sendToClient(packet, s);
@@ -60,7 +56,7 @@ public class EVEvents {
         if (target.level().isClientSide)
             return;
         if (EnhancedVisuals.CONFIG.enableDamageDebug)
-            target.sendSystemMessage(Component.literal(source.getMsgId() + "," + source.getLocalizedDeathMessage(target).getString()));
+            target.displayClientMessage(Component.literal(source.getMsgId() + "," + source.getLocalizedDeathMessage(target).getString()), false);
         EnhancedVisuals.NETWORK.sendToClient(new DamagePacket(target, source, damage), (ServerPlayer) target);
     }
     

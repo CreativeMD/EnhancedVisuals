@@ -4,20 +4,26 @@ import java.util.List;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Explosion;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerExplosion;
 import net.minecraft.world.phys.AABB;
 import team.creative.enhancedvisuals.EnhancedVisuals;
 
-@Mixin(Explosion.class)
-public class ExplosionMixin {
-    @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;getEntities(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/AABB;)Ljava/util/List;"), method = "Lnet/minecraft/world/level/Explosion;explode()V", require = 1)
-    private List<Entity> onDetonate(Level world, Entity causer, AABB box) {
-        List<Entity> list = world.getEntities(causer, box);
-        EnhancedVisuals.EVENTS.explosion((Explosion) (Object) this, list);
+@Mixin(ServerExplosion.class)
+public abstract class ExplosionMixin {
+    
+    @WrapOperation(at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/server/level/ServerLevel;getEntities(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/AABB;)Ljava/util/List;"),
+            method = "hurtEntities(Ljava/util/List;)V", require = 1)
+    private List<Entity> onDetonate(ServerLevel level, Entity causer, AABB box, Operation<List<Entity>> entity) {
+        List<Entity> list = entity.call(level, causer, box);
+        EnhancedVisuals.EVENTS.explosion((Explosion) this, list);
         return list;
     }
 }
