@@ -18,6 +18,8 @@ import team.creative.enhancedvisuals.client.VisualManager;
 
 public class SlenderHandler extends VisualHandler {
     
+    private static final AABB INFINITE = new AABB(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+    
     @CreativeConfig
     public double defaultIntensity = 0;
     
@@ -66,8 +68,7 @@ public class SlenderHandler extends VisualHandler {
                 Entity closest = null;
                 double distance = Double.POSITIVE_INFINITY;
                 double tempDistance = 0;
-                for (Entity mob : player.level().getEntities((Entity) null, AABB.INFINITE, x -> x instanceof EnderMan || (mutantEnderman != null && mutantEnderman.isInstance(
-                    x)))) {
+                for (Entity mob : player.level().getEntities((Entity) null, INFINITE, x -> x instanceof EnderMan || (mutantEnderman != null && mutantEnderman.isInstance(x)))) {
                     if (closest == null || distance > (tempDistance = mob.distanceToSqr(player))) {
                         closest = mob;
                         distance = tempDistance;
