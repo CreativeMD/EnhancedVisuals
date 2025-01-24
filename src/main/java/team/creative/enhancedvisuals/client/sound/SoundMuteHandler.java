@@ -12,6 +12,7 @@ import net.minecraft.client.sounds.SoundManager;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
+import team.creative.enhancedvisuals.common.handler.VisualHandlers;
 import team.creative.enhancedvisuals.mixin.SoundEngineAccessor;
 import team.creative.enhancedvisuals.mixin.SoundManagerAccessor;
 
@@ -51,12 +52,11 @@ public class SoundMuteHandler {
         if (!isMuting)
             return;
         
-        getSounds().forEach((p_217926_1_, p_217926_2_) -> {
-            float f = ((SoundEngineAccessor) engine).invokeCalculateVolume(p_217926_1_);
-            p_217926_2_.execute((p_217923_1_) -> {
-                p_217923_1_.setVolume(f);
-                
-            });
+        getSounds().forEach((soundinstance, channelHandler) -> {
+            if (soundinstance.getLocation().equals(VisualHandlers.EXPLOSION.beepSound))
+                return;
+            float f = ((SoundEngineAccessor) engine).invokeCalculateVolume(soundinstance);
+            channelHandler.execute((channel) -> channel.setVolume(f * muteVolume));
         });
     }
     
