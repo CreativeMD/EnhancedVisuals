@@ -22,6 +22,8 @@ import team.creative.enhancedvisuals.client.sound.SoundMuteHandler;
 public class ExplosionHandler extends VisualHandler {
     
     @CreativeConfig
+    public ResourceLocation beepSound = ResourceLocation.tryBuild(EnhancedVisuals.MODID, "ringing");
+    @CreativeConfig
     public VisualType dust = new VisualTypeParticle("dust");
     @CreativeConfig
     public IntMinMax dustDuration = new IntMinMax(500, 1000);
