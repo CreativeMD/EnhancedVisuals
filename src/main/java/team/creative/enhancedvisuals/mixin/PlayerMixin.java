@@ -5,23 +5,18 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 import team.creative.enhancedvisuals.EnhancedVisuals;
 
 @Mixin(Player.class)
-public abstract class PlayerMixin extends LivingEntity {
-    
-    protected PlayerMixin(EntityType<? extends LivingEntity> p_20966_, Level p_20967_) {
-        super(p_20966_, p_20967_);
-    }
+public abstract class PlayerMixin {
     
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;getHealth()F"),
-            method = "Lnet/minecraft/world/entity/player/Player;actuallyHurt(Lnet/minecraft/world/damagesource/DamageSource;F)V")
-    private void actuallyHurt(DamageSource damageSource, float f, CallbackInfo info) {
+            method = "Lnet/minecraft/world/entity/player/Player;actuallyHurt(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;F)V",
+            require = 1)
+    private void actuallyHurt(ServerLevel serverLevel, DamageSource damageSource, float f, CallbackInfo info) {
         EnhancedVisuals.EVENTS.damage((Player) (Object) this, damageSource, f);
     }
 }
