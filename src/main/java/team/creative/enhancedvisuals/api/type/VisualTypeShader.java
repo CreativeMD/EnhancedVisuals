@@ -32,18 +32,7 @@ public abstract class VisualTypeShader extends VisualType {
     @Override
     @Environment(EnvType.CLIENT)
     @OnlyIn(Dist.CLIENT)
-    public void loadResources(ResourceManager manager) {
-        Minecraft mc = Minecraft.getInstance();
-        //if (postChain != null)
-        //    ((PostChain) postChain).close();
-        
-        //try {
-        if (mc.isSameThread()) {
-            postChain = mc.getShaderManager().getPostChain(location, LevelTargetBundle.MAIN_TARGETS);
-            //((PostChain) postChain).resize(mc.getWindow().getWidth(), mc.getWindow().getHeight());
-        }
-        //} catch (JsonSyntaxException | IOException e) {}
-    }
+    public void loadResources(ResourceManager manager) {}
     
     @Override
     @Environment(EnvType.CLIENT)
@@ -55,10 +44,7 @@ public abstract class VisualTypeShader extends VisualType {
     @Override
     @Environment(EnvType.CLIENT)
     @OnlyIn(Dist.CLIENT)
-    public void resize(RenderTarget buffer) {
-        //if (postChain != null)
-        //     ((PostChain) postChain).resize(Minecraft.getInstance().getWindow().getWidth(), Minecraft.getInstance().getWindow().getHeight());
-    }
+    public void resize(RenderTarget buffer) {}
     
     @Override
     @Environment(EnvType.CLIENT)
@@ -66,7 +52,7 @@ public abstract class VisualTypeShader extends VisualType {
     public void render(PoseStack pose, VisualHandler handler, Visual visual, TextureManager manager, int screenWidth, int screenHeight, float partialTicks) {
         var mc = Minecraft.getInstance();
         if (postChain == null)
-            loadResources(mc.getResourceManager());
+            postChain = mc.getShaderManager().getPostChain(location, LevelTargetBundle.MAIN_TARGETS);
         if (postChain != null) {
             changeProperties(visual.getOpacity());
             ((PostChain) postChain).process(mc.getMainRenderTarget(), ((GameRendererExtender) mc.gameRenderer).getResourcePool());
