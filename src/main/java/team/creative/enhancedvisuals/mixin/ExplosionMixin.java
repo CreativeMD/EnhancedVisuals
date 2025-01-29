@@ -20,8 +20,17 @@ public abstract class ExplosionMixin {
     
     @WrapOperation(at = @At(value = "INVOKE",
             target = "Lnet/minecraft/server/level/ServerLevel;getEntities(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/AABB;)Ljava/util/List;"),
-            method = "hurtEntities(Ljava/util/List;)V", require = 1)
+            method = "hurtEntities(Ljava/util/List;)V")
     private List<Entity> onDetonate(ServerLevel level, Entity causer, AABB box, Operation<List<Entity>> entity) {
+        List<Entity> list = entity.call(level, causer, box);
+        EnhancedVisuals.EVENTS.explosion((Explosion) this, list);
+        return list;
+    }
+    
+    @WrapOperation(at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/server/level/ServerLevel;getEntities(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/AABB;)Ljava/util/List;"),
+            method = "hurtEntities()V")
+    private List<Entity> onDetonateFabric(ServerLevel level, Entity causer, AABB box, Operation<List<Entity>> entity) {
         List<Entity> list = entity.call(level, causer, box);
         EnhancedVisuals.EVENTS.explosion((Explosion) this, list);
         return list;
