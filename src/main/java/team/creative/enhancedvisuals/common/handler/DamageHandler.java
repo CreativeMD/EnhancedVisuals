@@ -3,7 +3,18 @@ package team.creative.enhancedvisuals.common.handler;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.AbstractGolem;
+import net.minecraft.world.entity.animal.Ocelot;
+import net.minecraft.world.entity.animal.Wolf;
+import net.minecraft.world.entity.monster.Skeleton;
+import net.minecraft.world.entity.monster.Spider;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -21,7 +32,6 @@ import team.creative.enhancedvisuals.api.type.VisualTypeOverlay;
 import team.creative.enhancedvisuals.api.type.VisualTypeParticle;
 import team.creative.enhancedvisuals.api.type.VisualTypeParticleColored;
 import team.creative.enhancedvisuals.client.VisualManager;
-import team.creative.enhancedvisuals.common.packet.DamagePacket;
 
 public class DamageHandler extends VisualHandler {
     
@@ -158,55 +168,58 @@ public class DamageHandler extends VisualHandler {
             VisualManager.addVisualFadeOut(damaged, this, new DecimalCurve(VisualManager.RANDOM, hitDuration, hitEffectIntensity * 0.2));
     }
     
-    public void playerDamaged(Player player, DamagePacket packet) {
-        if (packet.source.equalsIgnoreCase("attacker")) {
-            if (packet.attackerClass.contains("arrow"))
-                createVisualFromDamageAndDistance(pierce, packet.damage, player, bloodDuration);
-            if (packet.stack != null) {
-                if (isSharp(packet.stack))
-                    createVisualFromDamageAndDistance(slash, packet.damage, player, bloodDuration);
-                else if (isBlunt(packet.stack))
-                    createVisualFromDamageAndDistance(impact, packet.damage, player, bloodDuration);
-                else if (isPierce(packet.stack))
-                    createVisualFromDamageAndDistance(pierce, packet.damage, player, bloodDuration);
+    public void playerDamaged(Player player, DamageSource source, float damage) {
+        if (source.getDirectEntity() instanceof Arrow)
+            createVisualFromDamageAndDistance(pierce, damage, player, bloodDuration);
+        else if (source.getDirectEntity() instanceof LivingEntity l) {
+            if (!l.getMainHandItem().isEmpty()) {
+                if (isSharp(l.getMainHandItem()))
+                    createVisualFromDamageAndDistance(slash, damage, player, bloodDuration);
+                else if (isBlunt(l.getMainHandItem()))
+                    createVisualFromDamageAndDistance(impact, damage, player, bloodDuration);
+                else if (isPierce(l.getMainHandItem()))
+                    createVisualFromDamageAndDistance(pierce, damage, player, bloodDuration);
                 else
-                    createVisualFromDamageAndDistance(splatter, packet.damage, player, bloodDuration);
-            } else if (packet.attackerClass.contains("zombie") || packet.attackerClass.contains("skeleton") || packet.attackerClass.contains("ocelot"))
-                createVisualFromDamageAndDistance(slash, packet.damage, player, bloodDuration);
-            else if (packet.attackerClass.contains("golem") || packet.attackerClass.contains("player"))
-                createVisualFromDamageAndDistance(impact, packet.damage, player, bloodDuration);
-            else if (packet.attackerClass.contains("wolf") || packet.attackerClass.contains("spider"))
-                createVisualFromDamageAndDistance(pierce, packet.damage, player, bloodDuration);
+                    createVisualFromDamageAndDistance(splatter, damage, player, bloodDuration);
+            } else if (l instanceof Zombie || l instanceof Skeleton || l instanceof Ocelot)
+                createVisualFromDamageAndDistance(slash, damage, player, bloodDuration);
+            else if (l instanceof AbstractGolem || l instanceof Player)
+                createVisualFromDamageAndDistance(impact, damage, player, bloodDuration);
+            else if (l instanceof Wolf || l instanceof Spider)
+                createVisualFromDamageAndDistance(pierce, damage, player, bloodDuration);
             else
-                createVisualFromDamageAndDistance(splatter, Math.min(20, packet.damage), player, bloodDuration);
-        } else if (packet.source.equalsIgnoreCase("cactus"))
-            createVisualFromDamageAndDistance(pierce, packet.damage, player, bloodDuration);
-        else if (packet.source.equalsIgnoreCase("fall") || packet.source.equalsIgnoreCase("fallingBlock"))
-            createVisualFromDamageAndDistance(impact, packet.damage, player, bloodDuration);
-        else if (packet.source.equalsIgnoreCase("drown"))
+                createVisualFromDamageAndDistance(splatter, Math.min(20, damage), player, bloodDuration);
+        } else if (source.is(DamageTypes.CACTUS))
+            createVisualFromDamageAndDistance(pierce, damage, player, bloodDuration);
+        else if (source.is(DamageTypeTags.IS_FALL))
+            createVisualFromDamageAndDistance(impact, damage, player, bloodDuration);
+        else if (source.is(DamageTypeTags.IS_DROWNING))
             VisualManager.addParticlesFadeOut(waterDrown, this, drownSplashes, drownDuration, true);
-        else if (packet.source.equalsIgnoreCase("hypothermia"))
+        else if (source.is(DamageTypeTags.IS_FREEZING))
             VisualManager.addParticlesFadeOut(freeze, this, freezeSplashes, freezeDuration, true);
-        else if (packet.source.equalsIgnoreCase("hyperthermia"))
-            VisualManager.addParticlesFadeOut(heat, this, heatSplashes, heatDuration, true);
-        else if (packet.source.equalsIgnoreCase("wither"))
+        else if (source.is(DamageTypes.WITHER) || source.is(DamageTypes.WITHER_SKULL))
             VisualManager.addParticlesFadeOut(wither, this, effectSplashes, effectDuration, true);
-        else if (packet.source.equalsIgnoreCase("parasites"))
-            VisualManager.addParticlesFadeOut(parasites, this, effectSplashes, effectDuration, true);
-        else if (packet.source.equalsIgnoreCase("lightningBolt"))
+        else if (source.is(DamageTypeTags.IS_LIGHTNING))
             VisualManager.addParticlesFadeOut(lightning, this, lightningSplashes, lightningDuration, true);
-        else if (packet.source.equalsIgnoreCase("flyIntoWall"))
+        else if (source.is(DamageTypes.FLY_INTO_WALL))
             VisualManager.addParticlesFadeOut(flyIntoWall, this, flyIntoWallSplashes, flyIntoWallDuration, true);
-        else if (packet.source.equalsIgnoreCase("dehydration") || packet.source.equalsIgnoreCase("starve"))
-            VisualManager.addVisualFadeOut(tunnel, this, tunnelDuration);
-        else if (packet.fire || packet.source.equalsIgnoreCase("onFire")) {
+        
+        else if (source.is(DamageTypeTags.IS_FIRE) || source.is(DamageTypes.ON_FIRE)) {
             FireParticlesEvent event = new FireParticlesEvent(fireSplashes, fireDuration.min, fireDuration.max);
             CreativeCore.loader().postForge(event);
             VisualManager.addParticlesFadeOut(fire, this, event.getNewFireSplashes(), new IntMinMax(event.getNewFireDurationMin(), event.getNewFireDurationMax()), true,
                 new Color(0, 0, 0));
-        } else if (!damageBlackList.contains(packet.source))
-            createVisualFromDamageAndDistance(splatter, Math.min(20, packet.damage), player, bloodDuration);
-        
+        } else {
+            String registeredName = source.typeHolder().unwrapKey().map(x -> x.location().getPath()).orElse("[unregistered]");
+            if (registeredName.contains("hyperthermia"))
+                VisualManager.addParticlesFadeOut(heat, this, heatSplashes, heatDuration, true);
+            else if (registeredName.contains("parasites"))
+                VisualManager.addParticlesFadeOut(parasites, this, effectSplashes, effectDuration, true);
+            else if (registeredName.contains("dehydration") || source.is(DamageTypes.STARVE))
+                VisualManager.addVisualFadeOut(tunnel, this, tunnelDuration);
+            else if (!damageBlackList.contains(registeredName))
+                createVisualFromDamageAndDistance(splatter, Math.min(20, damage), player, bloodDuration);
+        }
     }
     
     public void createVisualFromDamageAndDistance(VisualType type, float damage, Player player, IntMinMax duration) {
