@@ -1,3 +1,7 @@
+1.8.16
+Reworked how damage source is send to client
+Fixed spawning blood particles when freezing
+
 1.8.15
 Fixed explosion mute sound effect not working properly
 
