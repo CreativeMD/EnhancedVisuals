@@ -17,7 +17,6 @@
         "GameRendererMixin",
         "SoundEngineAccessor",
         "SoundManagerAccessor",
-        "PlayerMixinClient",
         "PostChainAccessor"
     ],
     "minVersion": "0.8"
