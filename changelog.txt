@@ -1,3 +1,6 @@
+1.8.17
+Fixed hit damage effect not working
+
 1.8.16
 Fixed explosion not working on fabric causing a crash
 
