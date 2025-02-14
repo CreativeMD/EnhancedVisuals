@@ -163,12 +163,10 @@ public class DamageHandler extends VisualHandler {
     @CreativeConfig
     public List<String> damageBlackList = new ArrayList<>();
     
-    public void clientHurt() {
+    public void playerDamaged(Player player, DamageSource source, float damage) {
         if (hitEffectIntensity > 0)
             VisualManager.addVisualFadeOut(damaged, this, new DecimalCurve(VisualManager.RANDOM, hitDuration, hitEffectIntensity * 0.2));
-    }
-    
-    public void playerDamaged(Player player, DamageSource source, float damage) {
+        
         if (source.getDirectEntity() instanceof Arrow)
             createVisualFromDamageAndDistance(pierce, damage, player, bloodDuration);
         else if (source.getDirectEntity() instanceof LivingEntity l) {
