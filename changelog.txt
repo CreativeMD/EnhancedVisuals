@@ -1,3 +1,6 @@
+1.8.18
+Fixed rendering issues with other mods
+
 1.8.17
 Fixed hit damage effect not working
 
