@@ -71,7 +71,7 @@ public class EVRenderer {
             }
             
             if (!(mc.screen instanceof DeathScreen)) {
-                //graphics.flush();
+                graphics.flush();
                 float partialTicks = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
                 
                 if (mc.getMainRenderTarget().width != framebufferWidth || mc.getMainRenderTarget().height != framebufferHeight) {
