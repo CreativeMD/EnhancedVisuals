@@ -1,3 +1,6 @@
+1.8.2
+Fixed rendering issues with other mods
+
 1.8.1
 Adjusted ColdSweat support (reset your config)
 
