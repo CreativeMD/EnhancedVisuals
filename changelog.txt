@@ -1,3 +1,6 @@
+1.8.19
+Adapted to CreativeCore 2.13.0
+
 1.8.18
 Fixed rendering issues with other mods
 
