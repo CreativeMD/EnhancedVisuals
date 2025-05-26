@@ -37,7 +37,7 @@ public class SlenderHandler extends VisualHandler {
     
     private Class loadMutantEnderman() {
         try {
-            return Class.forName("chumbanotz.mutantbeasts.entity.mutant.MutantEndermanEntity");
+            return Class.forName("fuzs.mutantmonsters.world.entity.mutant.MutantEnderman");
         } catch (Exception e) {
             return null;
         }
