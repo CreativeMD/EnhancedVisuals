@@ -1,3 +1,6 @@
+1.8.20
+Fixed suppport for mutant monsters not working for enderman
+
 1.8.19
 Adapted to CreativeCore 2.13.0
 
