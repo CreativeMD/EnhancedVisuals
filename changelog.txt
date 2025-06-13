@@ -1,3 +1,6 @@
+1.8.21
+Fixed survive files being shipped with the jar
+
 1.8.20
 Fixed suppport for mutant monsters not working for enderman
 
