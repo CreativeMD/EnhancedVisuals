@@ -13,6 +13,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.premade.IntMinMax;
+import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.api.type.VisualType;
@@ -36,7 +37,7 @@ public class ThirstHandler extends VisualHandler {
     public IntMinMax thirstLevel = new IntMinMax(2, 8);
     
     @CreativeConfig
-    public VisualType focus = new VisualTypeShader("focus", ResourceLocation.withDefaultNamespace("shaders/post/blobs2.json")) {
+    public VisualType focus = new VisualTypeShader("focus", ResourceLocation.tryBuild(EnhancedVisuals.MODID, "shaders/post/blobs2.json")) {
         
         @Override
         @Environment(EnvType.CLIENT)
