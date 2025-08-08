@@ -15,6 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualCategory;
 import team.creative.enhancedvisuals.api.VisualHandler;
@@ -22,13 +23,12 @@ import team.creative.enhancedvisuals.api.VisualHandler;
 public abstract class VisualTypeShader extends VisualType {
     
     public ResourceLocation location;
+    public Object postChain;
     
     public VisualTypeShader(String name, ResourceLocation location) {
         super(name, VisualCategory.shader);
         this.location = location;
     }
-    
-    public Object postChain;
     
     @Override
     @Environment(EnvType.CLIENT)
@@ -43,7 +43,9 @@ public abstract class VisualTypeShader extends VisualType {
                 postChain = new PostChain(mc.getTextureManager(), mc.getResourceManager(), mc.getMainRenderTarget(), location);
                 ((PostChain) postChain).resize(mc.getWindow().getWidth(), mc.getWindow().getHeight());
             }
-        } catch (JsonSyntaxException | IOException e) {}
+        } catch (JsonSyntaxException | IOException e) {
+            EnhancedVisuals.LOGGER.throwing(e);
+        }
     }
     
     @Override
