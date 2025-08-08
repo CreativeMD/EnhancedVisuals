@@ -1,3 +1,6 @@
+1.8.23
+Fixed not loading correct shader for thirsthandler of toughasnails and survive addon
+
 1.8.22
 Added blobs and blobs2 shaders
 Added proper logging of an error during loading shaders
