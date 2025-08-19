@@ -2,9 +2,6 @@ package team.creative.enhancedvisuals.common.event;
 
 import java.util.List;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -12,15 +9,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.entity.projectile.ThrownPotion;
+import net.minecraft.world.entity.projectile.ThrownSplashPotion;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import team.creative.enhancedvisuals.EnhancedVisuals;
-import team.creative.enhancedvisuals.client.EVClient;
-import team.creative.enhancedvisuals.client.VisualManager;
-import team.creative.enhancedvisuals.client.sound.SoundMuteHandler;
 import team.creative.enhancedvisuals.common.packet.DamagePacket;
 import team.creative.enhancedvisuals.common.packet.ExplosionPacket;
 import team.creative.enhancedvisuals.common.packet.PotionPacket;
@@ -37,7 +29,7 @@ public class EVEvents {
     }
     
     public void impact(Projectile projectile) {
-        if (projectile instanceof ThrownPotion entity && !projectile.level().isClientSide) {
+        if (projectile instanceof ThrownSplashPotion entity && !projectile.level().isClientSide) {
             AABB axisalignedbb = entity.getBoundingBox().inflate(4.0D, 2.0D, 4.0D);
             List<LivingEntity> list = entity.level().getEntitiesOfClass(LivingEntity.class, axisalignedbb);
             if (!list.isEmpty()) {
@@ -58,22 +50,6 @@ public class EVEvents {
         if (EnhancedVisuals.CONFIG.enableDamageDebug)
             target.displayClientMessage(Component.literal(source.getMsgId() + "," + source.getLocalizedDeathMessage(target).getString()), false);
         EnhancedVisuals.NETWORK.sendToClient(new DamagePacket(target, source, damage), (ServerPlayer) target);
-    }
-    
-    @Environment(EnvType.CLIENT)
-    @OnlyIn(Dist.CLIENT)
-    public void respawn() {
-        VisualManager.clearEverything();
-    }
-    
-    @Environment(EnvType.CLIENT)
-    @OnlyIn(Dist.CLIENT)
-    public void clientTick() {
-        if (EVClient.shouldTick()) {
-            Player player = Minecraft.getInstance().player;
-            VisualManager.onTick(player);
-        }
-        SoundMuteHandler.tick();
     }
     
     public static boolean areEyesInWater(Player player) {

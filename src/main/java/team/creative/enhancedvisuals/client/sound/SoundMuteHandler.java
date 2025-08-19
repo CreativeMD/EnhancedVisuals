@@ -2,22 +2,16 @@ package team.creative.enhancedvisuals.client.sound;
 
 import java.util.Map;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.ChannelAccess;
 import net.minecraft.client.sounds.SoundEngine;
 import net.minecraft.client.sounds.SoundManager;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
 import team.creative.enhancedvisuals.common.handler.VisualHandlers;
 import team.creative.enhancedvisuals.mixin.SoundEngineAccessor;
 import team.creative.enhancedvisuals.mixin.SoundManagerAccessor;
 
-@Environment(EnvType.CLIENT)
-@OnlyIn(Dist.CLIENT)
 public class SoundMuteHandler {
     public static boolean isMuting = false;
     

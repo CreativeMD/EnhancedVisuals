@@ -8,7 +8,6 @@ import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.api.type.VisualType;
 import team.creative.enhancedvisuals.api.type.VisualTypeBlur;
-import team.creative.enhancedvisuals.client.VisualManager;
 import team.creative.enhancedvisuals.common.event.EVEvents;
 
 public class UnderwaterHandler extends VisualHandler {
@@ -33,7 +32,7 @@ public class UnderwaterHandler extends VisualHandler {
         if (blurVisual == null) {
             blurVisual = new Visual(blur, this, 0);
             blurVisual.setOpacityInternal(0);
-            VisualManager.add(blurVisual);
+            add(blurVisual);
         }
         
         if (player != null) {

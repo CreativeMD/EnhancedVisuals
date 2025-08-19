@@ -11,7 +11,6 @@ import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.api.type.VisualType;
 import team.creative.enhancedvisuals.api.type.VisualTypeOverlay;
-import team.creative.enhancedvisuals.client.VisualManager;
 
 public class TemperatureHandler extends VisualHandler {
     
@@ -58,11 +57,11 @@ public class TemperatureHandler extends VisualHandler {
         if (freezeVisual == null) {
             freezeVisual = new Visual(freeze, this, 0);
             freezeVisual.setOpacityInternal(0);
-            VisualManager.add(freezeVisual);
+            add(freezeVisual);
             
             heatVisual = new Visual(heat, this, 0);
             heatVisual.setOpacityInternal(0);
-            VisualManager.add(heatVisual);
+            add(heatVisual);
         }
         
         double aimedHeat = defaultIntensity;

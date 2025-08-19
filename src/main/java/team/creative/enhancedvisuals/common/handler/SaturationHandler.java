@@ -9,7 +9,6 @@ import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.api.type.VisualType;
 import team.creative.enhancedvisuals.api.type.VisualTypeSaturation;
-import team.creative.enhancedvisuals.client.VisualManager;
 
 public class SaturationHandler extends VisualHandler {
     
@@ -29,7 +28,7 @@ public class SaturationHandler extends VisualHandler {
         if (saturationVisual == null) {
             saturationVisual = new Visual(desaturate, this, 0);
             saturationVisual.setOpacityInternal(1);
-            VisualManager.add(saturationVisual);
+            add(saturationVisual);
         }
         
         double aimedSaturation = saturation.maxValue;

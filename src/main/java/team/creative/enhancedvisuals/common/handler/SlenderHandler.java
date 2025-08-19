@@ -14,7 +14,6 @@ import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.api.event.SelectEndermanEvent;
 import team.creative.enhancedvisuals.api.type.VisualType;
 import team.creative.enhancedvisuals.api.type.VisualTypeOverlay;
-import team.creative.enhancedvisuals.client.VisualManager;
 
 public class SlenderHandler extends VisualHandler {
     
@@ -48,7 +47,7 @@ public class SlenderHandler extends VisualHandler {
     public void tick(@Nullable Player player) {
         if (slenderVisual == null) {
             slenderVisual = new Visual(slender, this, 0);
-            VisualManager.add(slenderVisual);
+            add(slenderVisual);
         }
         
         float intensity = (float) defaultIntensity;

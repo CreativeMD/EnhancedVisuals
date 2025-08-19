@@ -8,13 +8,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.protocol.game.ClientboundRespawnPacket;
 import team.creative.enhancedvisuals.EnhancedVisuals;
+import team.creative.enhancedvisuals.client.EVManagerClient;
 
 @Mixin(ClientPacketListener.class)
 public class ClientPacketListenerMixin {
     
     @Inject(method = "handleRespawn(Lnet/minecraft/network/protocol/game/ClientboundRespawnPacket;)V", at = @At("TAIL"))
     public void handleRespawn(ClientboundRespawnPacket packet, CallbackInfo info) {
-        EnhancedVisuals.EVENTS.respawn();
+        ((EVManagerClient) EnhancedVisuals.MANAGER).respawn();
     }
     
 }

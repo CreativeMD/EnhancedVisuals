@@ -18,25 +18,43 @@ import team.creative.creativecore.common.config.premade.curve.Curve;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
 import team.creative.creativecore.common.util.type.Color;
 import team.creative.creativecore.common.util.type.map.HashMapList;
+import team.creative.enhancedvisuals.EVManager;
 import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.api.Particle;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualCategory;
 import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.api.type.VisualType;
+import team.creative.enhancedvisuals.client.sound.PositionedSound;
 import team.creative.enhancedvisuals.client.sound.SoundMuteHandler;
 import team.creative.enhancedvisuals.client.sound.TickedSound;
 import team.creative.enhancedvisuals.common.event.EVEvents;
 import team.creative.enhancedvisuals.common.visual.VisualRegistry;
 
-public class VisualManager {
+public class EVManagerClient implements EVManager {
     
-    private static Minecraft mc = Minecraft.getInstance();
-    public static final Random RANDOM = new Random();
-    private static HashMapList<VisualCategory, Visual> visuals = new HashMapList<>();
-    private static List<TickedSound> playing = new ArrayList<>();
+    private final Random random = new Random();
+    private HashMapList<VisualCategory, Visual> visuals = new HashMapList<>();
+    private List<TickedSound> playing = new ArrayList<>();
     
-    public static void onTick(@Nullable Player player) {
+    public void respawn() {
+        clearEverything();
+    }
+    
+    public void clientTick() {
+        if (EVClient.shouldTick()) {
+            Player player = Minecraft.getInstance().player;
+            onTick(player);
+        }
+        SoundMuteHandler.tick();
+    }
+    
+    @Override
+    public Random random() {
+        return random;
+    }
+    
+    public void onTick(@Nullable Player player) {
         boolean areEyesInWater = player != null && EVEvents.areEyesInWater(player);
         
         synchronized (visuals) {
@@ -63,17 +81,51 @@ public class VisualManager {
         }
         
         if (player != null && !player.isAlive())
-            VisualManager.clearEverything();
+            clearEverything();
         
         if (!playing.isEmpty())
             playing.removeIf(x -> x.isStopped());
     }
     
-    public static Collection<Visual> visuals(VisualCategory category) {
+    @Override
+    public void playSound(ResourceLocation location) {
+        playSound(location, null, 1.0F);
+    }
+    
+    @Override
+    public void playSound(ResourceLocation location, BlockPos pos) {
+        playSound(location, pos, 1.0F);
+    }
+    
+    @Override
+    public void playSound(ResourceLocation location, float volume) {
+        playSound(location, null, volume);
+    }
+    
+    @Override
+    public void playSound(ResourceLocation location, BlockPos pos, float volume) {
+        if (!EVClient.shouldRender())
+            return;
+        if (pos != null)
+            Minecraft.getInstance().getSoundManager().play(new PositionedSound(location, SoundSource.MASTER, volume, 1, pos));
+        else
+            Minecraft.getInstance().getSoundManager().play(new PositionedSound(location, SoundSource.MASTER, volume, 1));
+    }
+    
+    @Override
+    public void playSoundFadeOut(ResourceLocation location, BlockPos pos, DecimalCurve volume) {
+        if (!EVClient.shouldRender())
+            return;
+        playTicking(location, pos, volume);
+    }
+    
+    @Override
+    public Collection<Visual> visuals(VisualCategory category) {
         return visuals.get(category);
     }
     
-    public static void clearEverything() {
+    @Override
+    public void clearEverything() {
         synchronized (visuals) {
             visuals.removeKey(VisualCategory.particle);
         }
@@ -85,14 +137,16 @@ public class VisualManager {
         }
     }
     
-    public static void add(Visual visual) {
+    @Override
+    public void add(Visual visual) {
         if (!visual.type.disabled) {
             visual.addToDisplay();
             visuals.add(visual.getCategory(), visual);
         }
     }
     
-    public static boolean remove(Visual visual) {
+    @Override
+    public boolean remove(Visual visual) {
         if (visuals.removeValue(visual.getCategory(), visual)) {
             visual.removeFromDisplay();
             return true;
@@ -100,7 +154,8 @@ public class VisualManager {
         return false;
     }
     
-    public static void playTicking(ResourceLocation location, BlockPos pos, DecimalCurve volume) {
+    @Override
+    public void playTicking(ResourceLocation location, BlockPos pos, DecimalCurve volume) {
         TickedSound sound;
         if (pos != null)
             sound = new TickedSound(location, SoundSource.MASTER, 1, pos, volume);
@@ -110,71 +165,85 @@ public class VisualManager {
         Minecraft.getInstance().getSoundManager().play(sound);
     }
     
-    public static Visual addVisualFadeOut(VisualType vt, VisualHandler handler, IntMinMax time) {
-        return addVisualFadeOut(vt, handler, new DecimalCurve(0, 1, time.next(RANDOM), 0));
+    @Override
+    public Visual addVisualFadeOut(VisualType vt, VisualHandler handler, IntMinMax time) {
+        return addVisualFadeOut(vt, handler, new DecimalCurve(0, 1, time.next(random), 0));
     }
     
-    public static Visual addVisualFadeOut(VisualType vt, VisualHandler handler, int time) {
+    @Override
+    public Visual addVisualFadeOut(VisualType vt, VisualHandler handler, int time) {
         return addVisualFadeOut(vt, handler, new DecimalCurve(0, 1, time, 0));
     }
     
-    public static Visual addVisualFadeOut(VisualType vt, VisualHandler handler, Curve curve) {
-        Visual v = new Visual(vt, handler, curve, vt.getVariantAmount() > 1 ? RANDOM.nextInt(vt.getVariantAmount()) : 0);
+    @Override
+    public Visual addVisualFadeOut(VisualType vt, VisualHandler handler, Curve curve) {
+        var ct = EVClient.get(vt);
+        Visual v = new Visual(vt, handler, curve, ct.getVariantAmount() > 1 ? random.nextInt(ct.getVariantAmount()) : 0);
         add(v);
         return v;
     }
     
-    public static void addParticlesFadeOut(VisualType vt, VisualHandler handler, int count, IntMinMax time, boolean rotate) {
-        addParticlesFadeOut(vt, handler, count, new DecimalCurve(0, 1, time.next(RANDOM), 0), rotate, null);
+    @Override
+    public void addParticlesFadeOut(VisualType vt, VisualHandler handler, int count, IntMinMax time, boolean rotate) {
+        addParticlesFadeOut(vt, handler, count, new DecimalCurve(0, 1, time.next(random), 0), rotate, null);
     }
     
-    public static void addParticlesFadeOut(VisualType vt, VisualHandler handler, int count, IntMinMax time, boolean rotate, @Nullable Color color) {
-        addParticlesFadeOut(vt, handler, count, new DecimalCurve(0, 1, time.next(RANDOM), 0), rotate, color);
+    @Override
+    public void addParticlesFadeOut(VisualType vt, VisualHandler handler, int count, IntMinMax time, boolean rotate, @Nullable Color color) {
+        addParticlesFadeOut(vt, handler, count, new DecimalCurve(0, 1, time.next(random), 0), rotate, color);
     }
     
-    public static void addParticlesFadeOut(VisualType vt, VisualHandler handler, int count, int time, boolean rotate) {
+    @Override
+    public void addParticlesFadeOut(VisualType vt, VisualHandler handler, int count, int time, boolean rotate) {
         addParticlesFadeOut(vt, handler, count, new DecimalCurve(0, 1, time, 0), rotate, null);
     }
     
-    public static void addParticlesFadeOut(VisualType vt, VisualHandler handler, int count, Curve curve, boolean rotate, @Nullable Color color) {
+    @Override
+    public void addParticlesFadeOut(VisualType vt, VisualHandler handler, int count, Curve curve, boolean rotate, @Nullable Color color) {
         if (vt.disabled)
             return;
+        var ct = EVClient.get(vt);
+        var mc = Minecraft.getInstance();
         for (int i = 0; i < count; i++) {
             int screenWidth = mc.getWindow().getWidth();
             int screenHeight = mc.getWindow().getHeight();
             
-            int width = vt.getWidth(screenWidth, screenHeight);
-            int height = vt.getHeight(screenWidth, screenHeight);
+            int width = ct.getWidth(screenWidth, screenHeight);
+            int height = ct.getHeight(screenWidth, screenHeight);
             
             if (vt.scaleVariants()) {
-                double scale = vt.randomScale(RANDOM);
+                double scale = vt.randomScale(random);
                 width *= scale;
                 height *= scale;
             }
             
-            Particle particle = new Particle(vt, handler, curve, generateOffset(RANDOM, screenWidth, width), generateOffset(RANDOM, screenHeight, height), width, height, vt
-                    .canRotate() && rotate ? RANDOM.nextFloat() * 360 : 0, RANDOM.nextInt(vt.getVariantAmount()));
+            Particle particle = new Particle(vt, handler, curve, generateOffset(random, screenWidth, width), generateOffset(random, screenHeight, height), width, height, vt
+                    .canRotate() && rotate ? random.nextFloat() * 360 : 0, random.nextInt(ct.getVariantAmount()));
             if (color != null)
                 particle.color = color;
             add(particle);
         }
     }
     
-    public static Particle addParticle(VisualType vt, VisualHandler handler, boolean rotate, @Nullable Color color) {
+    @Override
+    public Particle addParticle(VisualType vt, VisualHandler handler, boolean rotate, @Nullable Color color) {
+        var mc = Minecraft.getInstance();
         int screenWidth = mc.getWindow().getWidth();
         int screenHeight = mc.getWindow().getHeight();
         
-        int width = vt.getWidth(screenWidth, screenHeight);
-        int height = vt.getHeight(screenWidth, screenHeight);
+        var ct = EVClient.get(vt);
+        
+        int width = ct.getWidth(screenWidth, screenHeight);
+        int height = ct.getHeight(screenWidth, screenHeight);
         
         if (vt.scaleVariants()) {
-            double scale = vt.randomScale(RANDOM);
+            double scale = vt.randomScale(random);
             width *= scale;
             height *= scale;
         }
         
-        Particle particle = new Particle(vt, handler, generateOffset(RANDOM, screenWidth, width), generateOffset(RANDOM, screenHeight, height), width, height, vt
-                .canRotate() && rotate ? RANDOM.nextFloat() * 360 : 0, RANDOM.nextInt(vt.getVariantAmount()));
+        Particle particle = new Particle(vt, handler, generateOffset(random, screenWidth, width), generateOffset(random, screenHeight, height), width, height, vt
+                .canRotate() && rotate ? random.nextFloat() * 360 : 0, random.nextInt(ct.getVariantAmount()));
         particle.setOpacityInternal(1);
         if (color != null)
             particle.color = color;
@@ -182,7 +251,8 @@ public class VisualManager {
         return particle;
     }
     
-    public static int generateOffset(Random rand, int dimensionLength, int spacingBuffer) {
+    @Override
+    public int generateOffset(Random rand, int dimensionLength, int spacingBuffer) {
         int half = dimensionLength / 2;
         float multiplier = (float) (1 - Math.pow(rand.nextDouble(), 2));
         float textureCenterPosition = rand.nextInt(2) == 0 ? half + half * multiplier : half - half * multiplier;

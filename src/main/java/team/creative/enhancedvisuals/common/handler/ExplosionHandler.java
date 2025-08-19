@@ -27,7 +27,6 @@ import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.api.type.VisualType;
 import team.creative.enhancedvisuals.api.type.VisualTypeBlur;
 import team.creative.enhancedvisuals.api.type.VisualTypeParticle;
-import team.creative.enhancedvisuals.client.VisualManager;
 import team.creative.enhancedvisuals.client.sound.SoundMuteHandler;
 
 public class ExplosionHandler extends VisualHandler {
@@ -89,14 +88,14 @@ public class ExplosionHandler extends VisualHandler {
         
         float damage = ((int) ((d10 * d10 + d10) / 2.0D * 7.0D * f3 + 1.0D));
         if (damage > 0) {
-            VisualManager.addParticlesFadeOut(dust, this, (int) dustAmount.valueAt(damage), dustDuration, true);
+            addParticlesFadeOut(dust, this, (int) dustAmount.valueAt(damage), dustDuration, true);
             
             DecimalCurve explosionSoundVolume = new DecimalCurve(0, maxExplosionVolume, explosionSoundTime.valueAt(damage), 0);
             DecimalCurve explosionSoundMuteVolume = new DecimalCurve(0, 1, explosionSoundTime.valueAt(damage), 0);
             if (SoundMuteHandler.startMuting(explosionSoundMuteVolume))
                 playSoundFadeOut(beepSound, null, explosionSoundVolume);
             
-            VisualManager.addVisualFadeOut(blur, this, new DecimalCurve(0, maxBlur.valueAt(damage), (int) (explosionBlurTime.valueAt(damage)), 0));
+            addVisualFadeOut(blur, this, new DecimalCurve(0, maxBlur.valueAt(damage), (int) (explosionBlurTime.valueAt(damage)), 0));
         }
     }
 }

@@ -2,23 +2,13 @@ package team.creative.enhancedvisuals.common.addon.toughasnails;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.mojang.blaze3d.shaders.Uniform;
-
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.PostPass;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.premade.IntMinMax;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.api.type.VisualType;
-import team.creative.enhancedvisuals.api.type.VisualTypeShader;
-import team.creative.enhancedvisuals.client.VisualManager;
-import team.creative.enhancedvisuals.mixin.PostChainAccessor;
+import team.creative.enhancedvisuals.api.type.VisualTypeFocus;
 import toughasnails.api.thirst.ThirstHelper;
 
 public class ThirstHandler extends VisualHandler {
@@ -36,20 +26,7 @@ public class ThirstHandler extends VisualHandler {
     public IntMinMax thirstLevel = new IntMinMax(2, 8);
     
     @CreativeConfig
-    public VisualType focus = new VisualTypeShader("focus", ResourceLocation.withDefaultNamespace("shaders/post/blobs2.json")) {
-        
-        @Override
-        @Environment(EnvType.CLIENT)
-        @OnlyIn(Dist.CLIENT)
-        public void changeProperties(float intensity) {
-            for (PostPass pass : ((PostChainAccessor) postChain).getPasses()) {
-                Uniform shaderuniform = pass.getShader().getUniform("Radius");
-                
-                if (shaderuniform != null)
-                    shaderuniform.set(intensity);
-            }
-        }
-    };
+    public VisualType focus = new VisualTypeFocus("focus");
     
     public Visual focusVisual;
     
@@ -57,7 +34,7 @@ public class ThirstHandler extends VisualHandler {
     public void tick(@Nullable Player player) {
         if (focusVisual == null) {
             focusVisual = new Visual(focus, this, 0);
-            VisualManager.add(focusVisual);
+            add(focusVisual);
         }
         
         double aimedSaturation = defaultIntensity;

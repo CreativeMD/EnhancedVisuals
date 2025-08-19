@@ -11,7 +11,6 @@ import team.creative.creativecore.common.config.premade.IntMinMax;
 import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.api.type.VisualType;
 import team.creative.enhancedvisuals.api.type.VisualTypeParticle;
-import team.creative.enhancedvisuals.client.VisualManager;
 
 public class SandSplatHandler extends VisualHandler {
     
@@ -30,7 +29,8 @@ public class SandSplatHandler extends VisualHandler {
             double modifier = 0;
             if (player.isSprinting())
                 modifier = sprintModifier;
-            VisualManager.addParticlesFadeOut(sand, this, (int) (Math.random() * modifier), duration, true);
+            
+            addParticlesFadeOut(sand, this, (int) (Math.random() * modifier), duration, true);
         }
     }
     

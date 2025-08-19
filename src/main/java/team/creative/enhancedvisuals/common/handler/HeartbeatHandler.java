@@ -13,7 +13,6 @@ import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.api.type.VisualType;
 import team.creative.enhancedvisuals.api.type.VisualTypeBlur;
 import team.creative.enhancedvisuals.api.type.VisualTypeOverlay;
-import team.creative.enhancedvisuals.client.VisualManager;
 
 public class HeartbeatHandler extends VisualHandler {
     
@@ -56,15 +55,15 @@ public class HeartbeatHandler extends VisualHandler {
                 
                 resetBufferTicks(player);
                 
-                VisualManager.addVisualFadeOut(lowhealth, this, new DecimalCurve(0, Math.min(0.7F, intensity) * heartbeatOverlayIntensity, heartbeatOverlayDuration, 0));
-                VisualManager.addVisualFadeOut(blur, this, new DecimalCurve(0, Math.min(0.7F, intensity) * heartbeatBlurIntensity, heartbeatBlurDuration, 0));
+                addVisualFadeOut(lowhealth, this, new DecimalCurve(0, Math.min(0.7F, intensity) * heartbeatOverlayIntensity, heartbeatOverlayDuration, 0));
+                addVisualFadeOut(blur, this, new DecimalCurve(0, Math.min(0.7F, intensity) * heartbeatBlurIntensity, heartbeatBlurDuration, 0));
                 playSound(ResourceLocation.tryBuild(EnhancedVisuals.MODID, "heartbeatout"), heartbeatVolume);
                 
             } else if (this.effectBufferTicks == 5) {
                 float intensity = getIntensity(player);
                 
                 playSound(ResourceLocation.tryBuild(EnhancedVisuals.MODID, "heartbeatin"), heartbeatVolume);
-                VisualManager.addVisualFadeOut(blur, this, new DecimalCurve(0, Math.min(0.7F, intensity) * heartbeatBlurIntensity, heartbeatBlurDuration, 0));
+                addVisualFadeOut(blur, this, new DecimalCurve(0, Math.min(0.7F, intensity) * heartbeatBlurIntensity, heartbeatBlurDuration, 0));
             }
         }
         this.effectBufferTicks -= 1;

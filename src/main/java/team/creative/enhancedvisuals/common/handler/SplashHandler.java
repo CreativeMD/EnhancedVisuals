@@ -10,7 +10,6 @@ import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
 import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.api.type.VisualType;
 import team.creative.enhancedvisuals.api.type.VisualTypeBlur;
-import team.creative.enhancedvisuals.client.VisualManager;
 import team.creative.enhancedvisuals.common.event.EVEvents;
 
 public class SplashHandler extends VisualHandler {
@@ -31,7 +30,7 @@ public class SplashHandler extends VisualHandler {
         if (player != null) {
             boolean isInWater = EVEvents.areEyesInWater(player);
             if (isInWater != wasInWater)
-                VisualManager.addVisualFadeOut(blur, this, new DecimalCurve(VisualManager.RANDOM, duration, intensity));
+                addVisualFadeOut(blur, this, new DecimalCurve(random(), duration, intensity));
             wasInWater = isInWater;
             
         }

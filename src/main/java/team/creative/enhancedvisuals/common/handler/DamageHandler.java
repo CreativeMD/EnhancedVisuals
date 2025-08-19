@@ -9,7 +9,7 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.entity.animal.Ocelot;
-import net.minecraft.world.entity.animal.Wolf;
+import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.monster.Zombie;
@@ -31,7 +31,6 @@ import team.creative.enhancedvisuals.api.type.VisualType;
 import team.creative.enhancedvisuals.api.type.VisualTypeOverlay;
 import team.creative.enhancedvisuals.api.type.VisualTypeParticle;
 import team.creative.enhancedvisuals.api.type.VisualTypeParticleColored;
-import team.creative.enhancedvisuals.client.VisualManager;
 
 public class DamageHandler extends VisualHandler {
     
@@ -165,7 +164,7 @@ public class DamageHandler extends VisualHandler {
     
     public void playerDamaged(Player player, DamageSource source, float damage) {
         if (hitEffectIntensity > 0)
-            VisualManager.addVisualFadeOut(damaged, this, new DecimalCurve(VisualManager.RANDOM, hitDuration, hitEffectIntensity * 0.2));
+            addVisualFadeOut(damaged, this, new DecimalCurve(random(), hitDuration, hitEffectIntensity * 0.2));
         
         if (source.getDirectEntity() instanceof Arrow)
             createVisualFromDamageAndDistance(pierce, damage, player, bloodDuration);
@@ -192,29 +191,28 @@ public class DamageHandler extends VisualHandler {
         else if (source.is(DamageTypeTags.IS_FALL))
             createVisualFromDamageAndDistance(impact, damage, player, bloodDuration);
         else if (source.is(DamageTypeTags.IS_DROWNING))
-            VisualManager.addParticlesFadeOut(waterDrown, this, drownSplashes, drownDuration, true);
+            addParticlesFadeOut(waterDrown, this, drownSplashes, drownDuration, true);
         else if (source.is(DamageTypeTags.IS_FREEZING))
-            VisualManager.addParticlesFadeOut(freeze, this, freezeSplashes, freezeDuration, true);
+            addParticlesFadeOut(freeze, this, freezeSplashes, freezeDuration, true);
         else if (source.is(DamageTypes.WITHER) || source.is(DamageTypes.WITHER_SKULL))
-            VisualManager.addParticlesFadeOut(wither, this, effectSplashes, effectDuration, true);
+            addParticlesFadeOut(wither, this, effectSplashes, effectDuration, true);
         else if (source.is(DamageTypeTags.IS_LIGHTNING))
-            VisualManager.addParticlesFadeOut(lightning, this, lightningSplashes, lightningDuration, true);
+            addParticlesFadeOut(lightning, this, lightningSplashes, lightningDuration, true);
         else if (source.is(DamageTypes.FLY_INTO_WALL))
-            VisualManager.addParticlesFadeOut(flyIntoWall, this, flyIntoWallSplashes, flyIntoWallDuration, true);
+            addParticlesFadeOut(flyIntoWall, this, flyIntoWallSplashes, flyIntoWallDuration, true);
         
         else if (source.is(DamageTypeTags.IS_FIRE) || source.is(DamageTypes.ON_FIRE)) {
             FireParticlesEvent event = new FireParticlesEvent(fireSplashes, fireDuration.min, fireDuration.max);
             CreativeCore.loader().postForge(event);
-            VisualManager.addParticlesFadeOut(fire, this, event.getNewFireSplashes(), new IntMinMax(event.getNewFireDurationMin(), event.getNewFireDurationMax()), true,
-                new Color(0, 0, 0));
+            addParticlesFadeOut(fire, this, event.getNewFireSplashes(), new IntMinMax(event.getNewFireDurationMin(), event.getNewFireDurationMax()), true, new Color(0, 0, 0));
         } else {
             String registeredName = source.typeHolder().unwrapKey().map(x -> x.location().getPath()).orElse("[unregistered]");
             if (registeredName.contains("hyperthermia"))
-                VisualManager.addParticlesFadeOut(heat, this, heatSplashes, heatDuration, true);
+                addParticlesFadeOut(heat, this, heatSplashes, heatDuration, true);
             else if (registeredName.contains("parasites"))
-                VisualManager.addParticlesFadeOut(parasites, this, effectSplashes, effectDuration, true);
+                addParticlesFadeOut(parasites, this, effectSplashes, effectDuration, true);
             else if (registeredName.contains("dehydration") || source.is(DamageTypes.STARVE))
-                VisualManager.addVisualFadeOut(tunnel, this, tunnelDuration);
+                addVisualFadeOut(tunnel, this, tunnelDuration);
             else if (!damageBlackList.contains(registeredName))
                 createVisualFromDamageAndDistance(splatter, Math.min(20, damage), player, bloodDuration);
         }
@@ -227,8 +225,7 @@ public class DamageHandler extends VisualHandler {
         float health = player.getHealth() - damage;
         double rate = Math.max(0, healthScaler.valueAt(health));
         
-        VisualManager.addParticlesFadeOut(type, this, Math.min(5000, (int) (damageScale * damage * rate)), new DecimalCurve(0, 1, duration.next(VisualManager.RANDOM), 0), true,
-            BLOOD_COLOR);
+        addParticlesFadeOut(type, this, Math.min(5000, (int) (damageScale * damage * rate)), new DecimalCurve(0, 1, duration.next(random()), 0), true, BLOOD_COLOR);
     }
     
     private static boolean isSharp(ItemStack item) {

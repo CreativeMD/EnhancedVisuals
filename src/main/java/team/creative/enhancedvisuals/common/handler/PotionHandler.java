@@ -10,7 +10,6 @@ import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.api.type.VisualType;
 import team.creative.enhancedvisuals.api.type.VisualTypeOverlay;
-import team.creative.enhancedvisuals.client.VisualManager;
 
 public class PotionHandler extends VisualHandler {
     
@@ -28,7 +27,7 @@ public class PotionHandler extends VisualHandler {
         float b = (var11 & 255) / 255.0F;
         if (modifier <= 0)
             return;
-        Visual v = VisualManager.addVisualFadeOut(potion, this, new DecimalCurve(0, Math.min(1, modifier * 2), duration.next(VisualManager.RANDOM), 0));
+        Visual v = addVisualFadeOut(potion, this, new DecimalCurve(0, Math.min(1, modifier * 2), duration.next(random()), 0));
         v.color = new Color(r, g, b);
     }
     

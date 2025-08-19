@@ -14,7 +14,6 @@ import team.creative.creativecore.common.util.type.Color;
 import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.api.type.VisualType;
 import team.creative.enhancedvisuals.api.type.VisualTypeParticleColored;
-import team.creative.enhancedvisuals.client.VisualManager;
 
 public class RainHandler extends VisualHandler {
     
@@ -44,7 +43,7 @@ public class RainHandler extends VisualHandler {
                 if (nextDelay == -1)
                     nextDelay = delay.next(rand);
                 if (timer >= nextDelay) {
-                    VisualManager.addParticlesFadeOut(drop, this, amount.next(rand), duration, true);
+                    addParticlesFadeOut(drop, this, amount.next(rand), duration, true);
                     timer = 0;
                     nextDelay = delay.next(rand);
                 }

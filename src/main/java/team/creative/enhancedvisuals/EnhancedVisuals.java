@@ -5,16 +5,11 @@ import java.util.Map.Entry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.fml.common.Mod;
 import team.creative.creativecore.CreativeCore;
 import team.creative.creativecore.ICreativeLoader;
 import team.creative.creativecore.client.ClientLoader;
-import team.creative.creativecore.client.CreativeCoreClient;
 import team.creative.creativecore.common.CommonLoader;
 import team.creative.creativecore.common.config.holder.ConfigHolderDynamic;
 import team.creative.creativecore.common.config.holder.CreativeConfigRegistry;
@@ -22,7 +17,6 @@ import team.creative.creativecore.common.config.sync.ConfigSynchronization;
 import team.creative.creativecore.common.network.CreativeNetwork;
 import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.client.EVClient;
-import team.creative.enhancedvisuals.client.render.EVRenderer;
 import team.creative.enhancedvisuals.common.addon.coldsweat.ColdSweatAddon;
 import team.creative.enhancedvisuals.common.addon.survive.SurviveAddon;
 import team.creative.enhancedvisuals.common.addon.toughasnails.TANAddon;
@@ -33,6 +27,7 @@ import team.creative.enhancedvisuals.common.packet.DamagePacket;
 import team.creative.enhancedvisuals.common.packet.ExplosionPacket;
 import team.creative.enhancedvisuals.common.packet.PotionPacket;
 import team.creative.enhancedvisuals.common.visual.VisualRegistry;
+import team.creative.enhancedvisuals.server.EVManagerServer;
 
 @Mod(value = EnhancedVisuals.MODID)
 public class EnhancedVisuals implements CommonLoader, ClientLoader {
@@ -45,6 +40,8 @@ public class EnhancedVisuals implements CommonLoader, ClientLoader {
     public static DeathMessages MESSAGES;
     public static EnhancedVisualsConfig CONFIG;
     
+    public static EVManager MANAGER = new EVManagerServer();
+    
     public EnhancedVisuals() {
         ICreativeLoader loader = CreativeCore.loader();
         loader.register(this);
@@ -52,13 +49,8 @@ public class EnhancedVisuals implements CommonLoader, ClientLoader {
     }
     
     @Override
-    @Environment(EnvType.CLIENT)
-    @OnlyIn(Dist.CLIENT)
     public void onInitializeClient() {
         CreativeCore.loader().registerClientStarted(EVClient::init);
-        CreativeCore.loader().registerClientTick(() -> EVENTS.clientTick());
-        CreativeCore.loader().registerClientRenderGui(EVRenderer::render);
-        CreativeCoreClient.registerClientConfig(MODID);
     }
     
     @Override

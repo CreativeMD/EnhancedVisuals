@@ -13,7 +13,6 @@
     ],
     "client": [
         "ClientPacketListenerMixin",
-        "CoreShadersMixin",
         "GameRendererMixin",
         "SoundEngineAccessor",
         "SoundManagerAccessor",

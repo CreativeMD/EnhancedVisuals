@@ -1,6 +1,5 @@
 package team.creative.enhancedvisuals.mixin;
 
-import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -8,22 +7,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.resource.CrossFrameResourcePool;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.BufferUploader;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.CoreShaders;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.renderer.GameRenderer;
-import team.creative.creativecore.client.render.CreativePlatformHooks;
-import team.creative.creativecore.common.util.mc.ColorUtils;
-import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.client.mc.GameRendererExtender;
+import team.creative.enhancedvisuals.client.render.EVRenderer;
 
 @Mixin(GameRenderer.class)
 public class GameRendererMixin implements GameRendererExtender {
@@ -32,7 +21,13 @@ public class GameRendererMixin implements GameRendererExtender {
     @Final
     private CrossFrameResourcePool resourcePool;
     
-    @Inject(method = "processBlurEffect()V", at = @At(value = "INVOKE",
+    @Inject(method = "render(Lnet/minecraft/client/DeltaTracker;Z)V", require = 1, at = @At(value = "INVOKE",
+            target = "Lcom/mojang/blaze3d/resource/CrossFrameResourcePool;endFrame()V"))
+    public void renderEnd(DeltaTracker deltaTracker, boolean bl, CallbackInfo info) {
+        EVRenderer.renderShaders(deltaTracker);
+    }
+    
+    /*@Inject(method = "processBlurEffect()V", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/renderer/PostChain;process(Lcom/mojang/blaze3d/pipeline/RenderTarget;Lcom/mojang/blaze3d/resource/GraphicsResourceAllocator;)V"),
             require = 1)
     public void processBlurEffect(CallbackInfo info) {
@@ -71,7 +66,7 @@ public class GameRendererMixin implements GameRendererExtender {
         RenderSystem.setShader(shader);
         
         CreativePlatformHooks.restoreRenderState();
-    }
+    }*/
     
     @Override
     public CrossFrameResourcePool getResourcePool() {

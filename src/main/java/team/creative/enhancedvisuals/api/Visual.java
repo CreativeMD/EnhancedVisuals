@@ -1,12 +1,5 @@
 package team.creative.enhancedvisuals.api;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import team.creative.creativecore.common.config.premade.curve.Curve;
 import team.creative.creativecore.common.util.type.Color;
 import team.creative.enhancedvisuals.api.type.VisualType;
@@ -72,12 +65,6 @@ public class Visual {
     
     public VisualCategory getCategory() {
         return type.cat;
-    }
-    
-    @Environment(EnvType.CLIENT)
-    @OnlyIn(Dist.CLIENT)
-    public void render(PoseStack stack, TextureManager manager, int screenWidth, int screenHeight, float partialTicks) {
-        type.render(stack, handler, this, manager, screenWidth, screenHeight, partialTicks);
     }
     
     public boolean isVisible() {

@@ -2,38 +2,22 @@ package team.creative.enhancedvisuals.client.render;
 
 import java.util.Collection;
 
-import org.joml.Matrix4f;
-import org.joml.Matrix4fStack;
-
-import com.mojang.blaze3d.ProjectionType;
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.platform.Lighting;
-import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.BufferUploader;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
 
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.DeathScreen;
-import net.minecraft.client.renderer.CoreShaders;
-import net.minecraft.client.renderer.texture.TextureManager;
-import team.creative.creativecore.common.util.mc.ColorUtils;
 import team.creative.creativecore.common.util.mc.LanguageUtils;
 import team.creative.enhancedvisuals.EnhancedVisuals;
+import team.creative.enhancedvisuals.api.Particle;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualCategory;
 import team.creative.enhancedvisuals.api.type.VisualType;
 import team.creative.enhancedvisuals.client.EVClient;
-import team.creative.enhancedvisuals.client.VisualManager;
+import team.creative.enhancedvisuals.client.type.VisualTypeClient;
 
 public class EVRenderer {
-    
-    private static Minecraft mc = Minecraft.getInstance();
     
     private static String lastRenderedMessage;
     
@@ -44,22 +28,34 @@ public class EVRenderer {
     
     public static void init() {}
     
+    public static void renderShaders(DeltaTracker tracker) {
+        float partialTicks = tracker.getGameTimeDeltaPartialTick(false);
+        var mc = Minecraft.getInstance();
+        int screenWidth = mc.getWindow().getWidth();
+        int screenHeight = mc.getWindow().getHeight();
+        var renderTarget = mc.getMainRenderTarget();
+        
+        RenderSystem.getDevice().createCommandEncoder().clearDepthTexture(renderTarget.getDepthTexture(), 1.0);
+        renderVisuals(null, EnhancedVisuals.MANAGER.visuals(VisualCategory.shader), screenWidth, screenHeight, partialTicks);
+    }
+    
     public static void render(Object object) {
         GuiGraphics graphics = (GuiGraphics) object;
         if (EVClient.shouldRender()) {
+            var mc = Minecraft.getInstance();
+            
             if (reloadResources) {
-                for (VisualType type : VisualType.getTypes())
-                    type.loadResources(mc.getResourceManager());
+                for (VisualType type : VisualType.types())
+                    ((VisualTypeClient) type.clientSideType).loadResources(mc.getResourceManager());
                 reloadResources = false;
             }
             
             if (!(mc.screen instanceof DeathScreen)) {
-                graphics.flush();
                 float partialTicks = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
                 
                 if (mc.getMainRenderTarget().width != framebufferWidth || mc.getMainRenderTarget().height != framebufferHeight) {
-                    for (VisualType type : VisualType.getTypes())
-                        type.resize(mc.getMainRenderTarget());
+                    for (VisualType type : VisualType.types())
+                        ((VisualTypeClient) type.clientSideType).resize(mc.getMainRenderTarget());
                     framebufferWidth = mc.getMainRenderTarget().width;
                     framebufferHeight = mc.getMainRenderTarget().height;
                 }
@@ -67,70 +63,9 @@ public class EVRenderer {
                 int screenWidth = mc.getWindow().getWidth();
                 int screenHeight = mc.getWindow().getHeight();
                 
-                TextureManager manager = mc.getTextureManager();
+                renderVisuals(graphics, EnhancedVisuals.MANAGER.visuals(VisualCategory.overlay), screenWidth, screenHeight, partialTicks);
+                renderVisuals(graphics, EnhancedVisuals.MANAGER.visuals(VisualCategory.particle), screenWidth, screenHeight, partialTicks);
                 
-                RenderSystem.clear(256);
-                Matrix4f matrix4f = new Matrix4f().setOrtho(0.0F, screenWidth, screenHeight, 0.0F, 1000.0F, 21000F);
-                RenderSystem.setProjectionMatrix(matrix4f, ProjectionType.ORTHOGRAPHIC);
-                Matrix4fStack stack = RenderSystem.getModelViewStack();
-                stack.pushMatrix();
-                stack.identity();
-                stack.translation(0.0F, 0.0F, -11000F);
-                
-                PoseStack poseStack = new PoseStack();
-                Matrix4f pose = poseStack.last().pose();
-                Lighting.setupFor3DItems();
-                
-                RenderSystem.depthMask(false);
-                
-                if (EnhancedVisuals.CONFIG.fixBlurShader) {
-                    RenderSystem.disableDepthTest();
-                    RenderSystem.enableBlend();
-                    RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE,
-                        GlStateManager.DestFactor.ZERO);
-                    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1F);
-                    RenderSystem.setShader(CoreShaders.POSITION_COLOR);
-                    
-                    BufferBuilder bufferbuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-                    int color = ColorUtils.BLACK;
-                    int z = -90;
-                    
-                    bufferbuilder.addVertex(pose, screenWidth, screenHeight, z).setColor(color);
-                    bufferbuilder.addVertex(pose, screenWidth, 0, z).setColor(color);
-                    bufferbuilder.addVertex(pose, 0, 0, z).setColor(color);
-                    bufferbuilder.addVertex(pose, 0, screenHeight, z).setColor(color);
-                    BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
-                }
-                
-                RenderSystem.disableBlend();
-                RenderSystem.resetTextureMatrix();
-                RenderSystem.disableDepthTest();
-                renderVisuals(poseStack, VisualManager.visuals(VisualCategory.shader), manager, screenWidth, screenHeight, partialTicks);
-                
-                mc.getMainRenderTarget().bindWrite(true);
-                
-                RenderSystem.clear(256);
-                RenderSystem.enableBlend();
-                RenderSystem.disableDepthTest();
-                RenderSystem.depthMask(false);
-                RenderSystem.enableBlend();
-                RenderSystem.defaultBlendFunc();
-                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-                
-                renderVisuals(poseStack, VisualManager.visuals(VisualCategory.overlay), manager, screenWidth, screenHeight, partialTicks);
-                renderVisuals(poseStack, VisualManager.visuals(VisualCategory.particle), manager, screenWidth, screenHeight, partialTicks);
-                
-                lastRenderedMessage = null;
-                
-                Window window = mc.getWindow();
-                RenderSystem.clear(256);
-                RenderSystem.setProjectionMatrix(new Matrix4f().setOrtho(0.0F, (float) (window.getWidth() / window.getGuiScale()), (float) (window.getHeight() / window
-                        .getGuiScale()), 0.0F, 1000.0F, 21000F), ProjectionType.ORTHOGRAPHIC);
-                stack.popMatrix();
-                Lighting.setupFor3DItems();
-                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-                
-                RenderSystem.depthMask(true);
             } else {
                 if (EnhancedVisuals.MESSAGES.enabled) {
                     if (lastRenderedMessage == null)
@@ -143,14 +78,27 @@ public class EVRenderer {
         }
     }
     
-    private static void renderVisuals(PoseStack stack, Collection<Visual> visuals, TextureManager manager, int screenWidth, int screenHeight, float partialTicks) {
+    public static void render(Visual visual, GuiGraphics graphics, int screenWidth, int screenHeight, float partialTicks) {
+        var ct = EVClient.get(visual.type);
+        if (visual instanceof Particle p) {
+            var stack = graphics.pose();
+            stack.pushMatrix();
+            stack.translate(p.x + p.width / 2, p.y + p.height / 2);
+            stack.rotate((float) Math.toRadians(p.rotation));
+            ct.render(graphics, visual.handler, visual, screenWidth, screenHeight, partialTicks);
+            stack.popMatrix();
+        } else
+            ct.render(graphics, visual.handler, visual, screenWidth, screenHeight, partialTicks);
+    }
+    
+    private static void renderVisuals(GuiGraphics graphics, Collection<Visual> visuals, int screenWidth, int screenHeight, float partialTicks) {
         if (visuals == null || visuals.isEmpty())
             return;
         try {
             
             for (Visual visual : visuals)
                 if (visual.isVisible())
-                    visual.render(stack, manager, screenWidth, screenHeight, partialTicks);
+                    render(visual, graphics, screenWidth, screenHeight, partialTicks);
         } catch (Exception e) {
             e.printStackTrace();
         }

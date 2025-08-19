@@ -11,7 +11,6 @@ import team.creative.enhancedvisuals.api.Particle;
 import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.api.type.VisualType;
 import team.creative.enhancedvisuals.api.type.VisualTypeParticle;
-import team.creative.enhancedvisuals.client.VisualManager;
 
 public class HealthHandler extends VisualHandler {
     
@@ -34,9 +33,9 @@ public class HealthHandler extends VisualHandler {
         if (amount == particles.size())
             return;
         while (particles.size() < amount)
-            particles.add(VisualManager.addParticle(impact, this, true, DamageHandler.BLOOD_COLOR));
+            particles.add(addParticle(impact, this, true, DamageHandler.BLOOD_COLOR));
         while (particles.size() > amount) {
-            VisualManager.remove(particles.remove(particles.size() > 1 ? VisualManager.RANDOM.nextInt(particles.size() - 1) : 0));
+            remove(particles.remove(particles.size() > 1 ? random().nextInt(particles.size() - 1) : 0));
         }
     }
     
