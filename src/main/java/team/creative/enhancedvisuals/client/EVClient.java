@@ -3,7 +3,7 @@ package team.creative.enhancedvisuals.client;
 import java.util.function.Function;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.server.packs.resources.ReloadableResourceManager;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -58,17 +58,14 @@ public class EVClient {
         register(VisualTypeFocus.class, VisualTypeFocusClient::new);
         register(VisualTypeSaturation.class, VisualTypeSaturationClient::new);
         
-        ReloadableResourceManager reloadableResourceManager = (ReloadableResourceManager) Minecraft.getInstance().getResourceManager();
-        
-        reloadableResourceManager.registerReloadListener(new SimplePreparableReloadListener() {
-            
+        CreativeCore.loader().registerReloadListener(ResourceLocation.tryBuild(EnhancedVisuals.MODID, "resources"), new SimplePreparableReloadListener<Void>() {
             @Override
-            protected Object prepare(ResourceManager manager, ProfilerFiller profiler) {
+            protected Void prepare(ResourceManager manager, ProfilerFiller profiler) {
                 return null;
             }
             
             @Override
-            protected void apply(Object object, ResourceManager manager, ProfilerFiller profiler) {
+            protected void apply(Void object, ResourceManager manager, ProfilerFiller profiler) {
                 EnhancedVisuals.MANAGER.clearEverything();
                 EVRenderer.reloadResources = true;
             }
