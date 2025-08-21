@@ -1,3 +1,6 @@
+1.8.23
+Ported to 1.21.8
+
 1.8.17
 Fixed hit damage effect not working
 
