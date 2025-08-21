@@ -30,6 +30,9 @@ public class EVRenderer {
     
     public static void renderShaders(DeltaTracker tracker) {
         float partialTicks = tracker.getGameTimeDeltaPartialTick(false);
+        
+        RenderSystem.resetTextureMatrix();
+        
         var mc = Minecraft.getInstance();
         int screenWidth = mc.getWindow().getWidth();
         int screenHeight = mc.getWindow().getHeight();
@@ -60,8 +63,8 @@ public class EVRenderer {
                     framebufferHeight = mc.getMainRenderTarget().height;
                 }
                 
-                int screenWidth = mc.getWindow().getWidth();
-                int screenHeight = mc.getWindow().getHeight();
+                int screenWidth = mc.getWindow().getGuiScaledWidth();
+                int screenHeight = mc.getWindow().getGuiScaledHeight();
                 
                 renderVisuals(graphics, EnhancedVisuals.MANAGER.visuals(VisualCategory.overlay), screenWidth, screenHeight, partialTicks);
                 renderVisuals(graphics, EnhancedVisuals.MANAGER.visuals(VisualCategory.particle), screenWidth, screenHeight, partialTicks);
