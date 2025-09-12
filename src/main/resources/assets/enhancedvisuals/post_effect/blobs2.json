@@ -5,16 +5,16 @@
     },
     "passes": [
         {
-            "vertex_shader": "minecraft:post/sobel",
-            "fragment_shader": "enhancedvisuals:post/color_convolve",
+            "vertex_shader": "enhancedvisuals:post/blobs",
+            "fragment_shader": "enhancedvisuals:post/blobs2",
             "inputs": [
                 {
-                    "sampler_name": "In",
+                    "sampler_name": "Diffuse",
                     "target": "minecraft:main"
                 }
             ],
             "uniforms": {
-                "ConvolveInfo": [
+                "RadiusConfig": [
                 ]
             },
             "output": "swap"

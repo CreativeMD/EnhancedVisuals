@@ -5,7 +5,9 @@ uniform sampler2D DiffuseSampler;
 in vec2 texCoord;
 in vec2 oneTexel;
 
-uniform float Radius;
+layout(std140) uniform RadiusConfig {
+    float Radius;
+};
 
 out vec4 fragColor;
 

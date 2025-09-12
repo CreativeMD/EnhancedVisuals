@@ -1,8 +1,23 @@
 package team.creative.enhancedvisuals.client.type;
 
+import java.nio.ByteBuffer;
+import java.util.Map;
+
+import org.lwjgl.system.MemoryStack;
+
+import com.mojang.blaze3d.buffers.GpuBuffer;
+import com.mojang.blaze3d.buffers.Std140Builder;
+import com.mojang.blaze3d.buffers.Std140SizeCalculator;
+import com.mojang.blaze3d.systems.RenderSystem;
+
+import net.minecraft.client.renderer.PostPass;
 import team.creative.enhancedvisuals.api.type.VisualTypeBlur;
+import team.creative.enhancedvisuals.mixin.PostChainAccessor;
+import team.creative.enhancedvisuals.mixin.PostPassAccessor;
 
 public class VisualTypeBlurClient extends VisualTypeShaderClient<VisualTypeBlur> {
+    
+    private static final int UNIFORM_SIZE = new Std140SizeCalculator().putFloat().get();
     
     public VisualTypeBlurClient(VisualTypeBlur type) {
         super(type);
@@ -10,12 +25,19 @@ public class VisualTypeBlurClient extends VisualTypeShaderClient<VisualTypeBlur>
     
     @Override
     public void changeProperties(float intensity) {
-        /*for (PostPass pass : ((PostChainAccessor) postChain).getPasses()) {
-            Uniform shaderuniform = pass.getShader().getUniform("Radius");
+        for (PostPass pass : ((PostChainAccessor) postChain).getPasses()) {
+            Map<String, GpuBuffer> uniforms = ((PostPassAccessor) pass).getCustomUniforms();
             
-            if (shaderuniform != null)
-                shaderuniform.set(Math.max(1, (float) Math.floor(intensity)));
-        }*/
+            uniforms.compute("BlurRadiusConfig", (String key, GpuBuffer buffer) -> {
+                if (buffer == null)
+                    buffer = RenderSystem.getDevice().createBuffer(() -> "Blur / BlurRadiusConfig", GpuBuffer.USAGE_COPY_DST | GpuBuffer.USAGE_UNIFORM, UNIFORM_SIZE);
+                try (MemoryStack memoryStack = MemoryStack.stackPush()) {
+                    ByteBuffer byteBuffer = Std140Builder.onStack(memoryStack, UNIFORM_SIZE).putFloat(Math.max(1, (float) Math.floor(intensity))).get();
+                    RenderSystem.getDevice().createCommandEncoder().writeToBuffer(buffer.slice(), byteBuffer);
+                }
+                return buffer;
+            });
+        }
     }
     
 }

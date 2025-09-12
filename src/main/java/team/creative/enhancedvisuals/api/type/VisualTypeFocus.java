@@ -5,7 +5,7 @@ import team.creative.enhancedvisuals.EnhancedVisuals;
 
 public class VisualTypeFocus extends VisualTypeShader {
     
-    public static final ResourceLocation LOCATION = ResourceLocation.tryBuild(EnhancedVisuals.MODID, "shaders/post/blobs2.json");
+    public static final ResourceLocation LOCATION = ResourceLocation.tryBuild(EnhancedVisuals.MODID, "blobs2");
     
     public VisualTypeFocus(String name) {
         super(name, LOCATION);
