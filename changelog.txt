@@ -1,3 +1,6 @@
+1.8.24
+Fixed not being able to modify shader uniforms
+
 1.8.23
 Ported to 1.21.8
 
