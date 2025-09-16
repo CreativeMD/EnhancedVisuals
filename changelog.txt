@@ -1,3 +1,7 @@
+1.8.25
+Fixed crash with carpet mod #2
+Fixed crash during startup
+
 1.8.24
 Fixed crash with carpet mod
 
