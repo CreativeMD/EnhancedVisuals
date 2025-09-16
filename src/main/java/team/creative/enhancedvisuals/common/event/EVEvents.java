@@ -32,9 +32,9 @@ public class EVEvents {
     
     public void explosion(Explosion explosion, List<Entity> affected) {
         ExplosionAccessor e = (ExplosionAccessor) explosion;
-        Vec3 position = new Vec3(e.getX(), e.getY(), e.getZ());
-        ExplosionPacket packet = new ExplosionPacket(position, e.getRadius(), explosion.getBlockInteraction(), e.getSource() != null ? (e.getSource()).getId() : -1, e
-                .getSource() != null ? e.getSource().getClass() : null);
+        Vec3 position = new Vec3(e.eh$getX(), e.eh$getY(), e.eh$getZ());
+        ExplosionPacket packet = new ExplosionPacket(position, e.eh$getRadius(), explosion.getBlockInteraction(), e.eh$getSource() != null ? (e.eh$getSource()).getId() : -1, e
+                .eh$getSource() != null ? e.eh$getSource().getClass() : null);
         for (Entity entity : affected)
             if (entity instanceof ServerPlayer s)
                 EnhancedVisuals.NETWORK.sendToClient(packet, s);
