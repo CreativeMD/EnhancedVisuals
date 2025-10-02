@@ -38,7 +38,7 @@ public abstract class VisualTypeShaderClient<T extends VisualTypeShader> extends
             postChain = mc.getShaderManager().getPostChain(type.location, LevelTargetBundle.MAIN_TARGETS);
         if (postChain != null) {
             changeProperties(visual.getOpacity());
-            postChain.process(mc.getMainRenderTarget(), GraphicsResourceAllocator.UNPOOLED);
+            postChain.process(mc.getMainRenderTarget(), GraphicsResourceAllocator.UNPOOLED); // ((GameRendererExtender) mc.gameRenderer).getResourcePool()
         }
     }
     

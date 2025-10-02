@@ -32,7 +32,7 @@ runs {
         workingDirectory project.file('run')
         systemProperty 'forge.logging.console.level', 'debug'
         
-        //modSource project(":CreativeCore").sourceSets.main
+        modSource project(":CreativeCore").sourceSets.main
         modSource project.sourceSets.main
     }
     
@@ -47,8 +47,6 @@ dependencies {
     implementation "net.neoforged:neoforge:${forge_version}"
     
     implementation project(':CreativeCore')
-    
-    compileOnly "net.fabricmc:fabric-loader:${fabric_version}"
 }
 
 modDependencies = [

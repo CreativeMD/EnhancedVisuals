@@ -22,7 +22,7 @@ public class GameRendererMixin implements GameRendererExtender {
     private CrossFrameResourcePool resourcePool;
     
     @Inject(method = "render(Lnet/minecraft/client/DeltaTracker;Z)V", require = 1, at = @At(value = "INVOKE",
-            target = "Lcom/mojang/blaze3d/resource/CrossFrameResourcePool;endFrame()V"))
+            target = "Lnet/minecraft/client/gui/GuiGraphics;applyCursor(Lcom/mojang/blaze3d/platform/Window;)V"))
     public void renderEnd(DeltaTracker deltaTracker, boolean bl, CallbackInfo info) {
         EVRenderer.renderShaders(deltaTracker);
     }

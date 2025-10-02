@@ -5,7 +5,7 @@
     },
     "passes": [
         {
-            "vertex_shader": "enhancedvisuals:post/blur",
+            "vertex_shader": "minecraft:core/screenquad",
             "fragment_shader": "enhancedvisuals:post/box_blur",
             "inputs": [
                 {
@@ -31,7 +31,7 @@
             }
         },
         {
-            "vertex_shader": "enhancedvisuals:post/blur",
+            "vertex_shader": "minecraft:core/screenquad",
             "fragment_shader": "enhancedvisuals:post/box_blur",
             "inputs": [
                 {
@@ -57,7 +57,7 @@
             }
         },
         {
-            "vertex_shader": "enhancedvisuals:post/blur",
+            "vertex_shader": "minecraft:core/screenquad",
             "fragment_shader": "enhancedvisuals:post/box_blur",
             "inputs": [
                 {
@@ -83,7 +83,7 @@
             }
         },
         {
-            "vertex_shader": "enhancedvisuals:post/blur",
+            "vertex_shader": "minecraft:core/screenquad",
             "fragment_shader": "enhancedvisuals:post/box_blur",
             "inputs": [
                 {
@@ -109,7 +109,7 @@
             }
         },
         {
-            "vertex_shader": "enhancedvisuals:post/blur",
+            "vertex_shader": "minecraft:core/screenquad",
             "fragment_shader": "enhancedvisuals:post/box_blur",
             "inputs": [
                 {
@@ -135,7 +135,7 @@
             }
         },
         {
-            "vertex_shader": "enhancedvisuals:post/blur",
+            "vertex_shader": "minecraft:core/screenquad",
             "fragment_shader": "enhancedvisuals:post/box_blur",
             "inputs": [
                 {

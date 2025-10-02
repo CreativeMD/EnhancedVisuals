@@ -29,7 +29,7 @@ public class EVEvents {
     }
     
     public void impact(Projectile projectile) {
-        if (projectile instanceof ThrownSplashPotion entity && !projectile.level().isClientSide) {
+        if (projectile instanceof ThrownSplashPotion entity && !projectile.level().isClientSide()) {
             AABB axisalignedbb = entity.getBoundingBox().inflate(4.0D, 2.0D, 4.0D);
             List<LivingEntity> list = entity.level().getEntitiesOfClass(LivingEntity.class, axisalignedbb);
             if (!list.isEmpty()) {
@@ -45,7 +45,7 @@ public class EVEvents {
     }
     
     public void damage(Player target, DamageSource source, float damage) {
-        if (target.level().isClientSide)
+        if (target.level().isClientSide())
             return;
         if (EnhancedVisuals.CONFIG.enableDamageDebug)
             target.displayClientMessage(Component.literal(source.getMsgId() + "," + source.getLocalizedDeathMessage(target).getString()), false);

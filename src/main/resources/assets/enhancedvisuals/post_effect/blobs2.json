@@ -5,7 +5,7 @@
     },
     "passes": [
         {
-            "vertex_shader": "enhancedvisuals:post/blobs",
+            "vertex_shader": "minecraft:core/screenquad",
             "fragment_shader": "enhancedvisuals:post/blobs2",
             "inputs": [
                 {
@@ -20,7 +20,7 @@
             "output": "swap"
         },
         {
-            "vertex_shader": "minecraft:post/blit",
+            "vertex_shader": "minecraft:core/screenquad",
             "fragment_shader": "minecraft:post/blit",
             "inputs": [
                 {

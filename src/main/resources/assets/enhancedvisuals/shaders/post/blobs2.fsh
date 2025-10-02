@@ -3,7 +3,11 @@
 uniform sampler2D DiffuseSampler;
 
 in vec2 texCoord;
-in vec2 oneTexel;
+
+layout(std140) uniform SamplerInfo {
+    vec2 OutSize;
+    vec2 InSize;
+};
 
 layout(std140) uniform RadiusConfig {
     float Radius;
@@ -12,6 +16,8 @@ layout(std140) uniform RadiusConfig {
 out vec4 fragColor;
 
 void main(){
+    vec2 oneTexel = 1.0 / InSize;
+    
     vec4 c  = texture(DiffuseSampler, texCoord);
     vec4 maxVal = c;
     for(float u = 0.0; u <= Radius; u += 1.0) {
