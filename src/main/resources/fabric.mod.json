@@ -23,7 +23,7 @@
         "enhancedvisuals.mixins.json"
     ],
     "depends": {
-        "fabricloader": ">=0.17.2",
+        "fabricloader": ">=0.17.3",
         "fabric-api": "*",
         "minecraft": ">=1.21.9",
         "creativecore": ">=2.14.1"
