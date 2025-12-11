@@ -5,7 +5,7 @@ import java.util.Map.Entry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.fml.common.Mod;
 import team.creative.creativecore.CreativeCore;
 import team.creative.creativecore.ICreativeLoader;
@@ -35,7 +35,7 @@ public class EnhancedVisuals implements CommonLoader, ClientLoader {
     public static final String MODID = "enhancedvisuals";
     
     public static final Logger LOGGER = LogManager.getLogger(EnhancedVisuals.MODID);
-    public static final CreativeNetwork NETWORK = new CreativeNetwork(1, LOGGER, ResourceLocation.tryBuild(EnhancedVisuals.MODID, "main"));
+    public static final CreativeNetwork NETWORK = new CreativeNetwork(1, LOGGER, Identifier.tryBuild(EnhancedVisuals.MODID, "main"));
     public static EVEvents EVENTS;
     public static DeathMessages MESSAGES;
     public static EnhancedVisualsConfig CONFIG;
@@ -78,7 +78,7 @@ public class EnhancedVisuals implements CommonLoader, ClientLoader {
         root.registerValue("general", CONFIG = new EnhancedVisualsConfig(), ConfigSynchronization.CLIENT, false);
         root.registerValue("messages", MESSAGES);
         ConfigHolderDynamic handlers = root.registerFolder("handlers", ConfigSynchronization.CLIENT);
-        for (Entry<ResourceLocation, VisualHandler> entry : VisualRegistry.entrySet())
+        for (Entry<Identifier, VisualHandler> entry : VisualRegistry.entrySet())
             handlers.registerValue(entry.getKey().getPath(), entry.getValue());
     }
     

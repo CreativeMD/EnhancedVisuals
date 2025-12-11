@@ -7,7 +7,7 @@ import java.util.Random;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import team.creative.creativecore.common.config.premade.IntMinMax;
 import team.creative.creativecore.common.config.premade.curve.Curve;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
@@ -24,19 +24,19 @@ public class EVManagerServer implements EVManager {
     private final Random random = new Random();
     
     @Override
-    public void playSound(ResourceLocation location) {}
+    public void playSound(Identifier identifier) {}
     
     @Override
-    public void playSound(ResourceLocation location, BlockPos pos) {}
+    public void playSound(Identifier identifier, BlockPos pos) {}
     
     @Override
-    public void playSound(ResourceLocation location, float volume) {}
+    public void playSound(Identifier identifier, float volume) {}
     
     @Override
-    public void playSound(ResourceLocation location, BlockPos pos, float volume) {}
+    public void playSound(Identifier identifier, BlockPos pos, float volume) {}
     
     @Override
-    public void playSoundFadeOut(ResourceLocation location, BlockPos pos, DecimalCurve volume) {}
+    public void playSoundFadeOut(Identifier identifier, BlockPos pos, DecimalCurve volume) {}
     
     @Override
     public Collection<Visual> visuals(VisualCategory category) {
@@ -55,7 +55,7 @@ public class EVManagerServer implements EVManager {
     }
     
     @Override
-    public void playTicking(ResourceLocation location, BlockPos pos, DecimalCurve volume) {}
+    public void playTicking(Identifier identifier, BlockPos pos, DecimalCurve volume) {}
     
     @Override
     public Visual addVisualFadeOut(VisualType vt, VisualHandler handler, IntMinMax time) {

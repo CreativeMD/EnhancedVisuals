@@ -11,7 +11,7 @@ import java.util.Optional;
 import javax.imageio.ImageIO;
 
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import team.creative.creativecore.client.render.gui.CreativeGuiGraphics;
@@ -74,7 +74,7 @@ public class VisualTypeTextureClient<T extends VisualTypeTexture> extends Visual
         return resources.length;
     }
     
-    public ResourceLocation getResource(Visual visual) {
+    public Identifier getResource(Visual visual) {
         if (type.animationSpeed > 0) {
             long time = Math.abs(System.nanoTime() / 3000000 / type.animationSpeed);
             return resources[(int) (time % resources.length)].getResource();

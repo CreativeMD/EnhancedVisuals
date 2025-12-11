@@ -5,11 +5,11 @@ import org.jetbrains.annotations.Nullable;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.windcharge.BreezeWindCharge;
-import net.minecraft.world.entity.projectile.windcharge.WindCharge;
+import net.minecraft.world.entity.projectile.hurtingprojectile.windcharge.BreezeWindCharge;
+import net.minecraft.world.entity.projectile.hurtingprojectile.windcharge.WindCharge;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -32,7 +32,7 @@ import team.creative.enhancedvisuals.client.sound.SoundMuteHandler;
 public class ExplosionHandler extends VisualHandler {
     
     @CreativeConfig
-    public ResourceLocation beepSound = ResourceLocation.tryBuild(EnhancedVisuals.MODID, "ringing");
+    public Identifier beepSound = Identifier.tryBuild(EnhancedVisuals.MODID, "ringing");
     @CreativeConfig
     public VisualType dust = new VisualTypeParticle("dust");
     @CreativeConfig

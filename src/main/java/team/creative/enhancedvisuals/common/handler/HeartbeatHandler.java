@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
@@ -57,12 +57,12 @@ public class HeartbeatHandler extends VisualHandler {
                 
                 addVisualFadeOut(lowhealth, this, new DecimalCurve(0, Math.min(0.7F, intensity) * heartbeatOverlayIntensity, heartbeatOverlayDuration, 0));
                 addVisualFadeOut(blur, this, new DecimalCurve(0, Math.min(0.7F, intensity) * heartbeatBlurIntensity, heartbeatBlurDuration, 0));
-                playSound(ResourceLocation.tryBuild(EnhancedVisuals.MODID, "heartbeatout"), heartbeatVolume);
+                playSound(Identifier.tryBuild(EnhancedVisuals.MODID, "heartbeatout"), heartbeatVolume);
                 
             } else if (this.effectBufferTicks == 5) {
                 float intensity = getIntensity(player);
                 
-                playSound(ResourceLocation.tryBuild(EnhancedVisuals.MODID, "heartbeatin"), heartbeatVolume);
+                playSound(Identifier.tryBuild(EnhancedVisuals.MODID, "heartbeatin"), heartbeatVolume);
                 addVisualFadeOut(blur, this, new DecimalCurve(0, Math.min(0.7F, intensity) * heartbeatBlurIntensity, heartbeatBlurDuration, 0));
             }
         }

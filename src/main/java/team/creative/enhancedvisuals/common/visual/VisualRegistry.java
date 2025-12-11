@@ -5,22 +5,22 @@ import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import team.creative.enhancedvisuals.api.VisualHandler;
 
 public class VisualRegistry {
     
-    private static LinkedHashMap<ResourceLocation, VisualHandler> handlers = new LinkedHashMap<>();
+    private static LinkedHashMap<Identifier, VisualHandler> handlers = new LinkedHashMap<>();
     
-    public static void registerHandler(ResourceLocation location, VisualHandler handler) {
-        handlers.put(location, handler);
+    public static void registerHandler(Identifier identifier, VisualHandler handler) {
+        handlers.put(identifier, handler);
     }
     
     public static Collection<VisualHandler> handlers() {
         return handlers.values();
     }
     
-    public static Set<Entry<ResourceLocation, VisualHandler>> entrySet() {
+    public static Set<Entry<Identifier, VisualHandler>> entrySet() {
         return handlers.entrySet();
     }
     

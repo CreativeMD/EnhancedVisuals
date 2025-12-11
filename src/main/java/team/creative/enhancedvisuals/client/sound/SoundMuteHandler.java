@@ -47,7 +47,7 @@ public class SoundMuteHandler {
             return;
         
         getSounds().forEach((soundinstance, channelHandler) -> {
-            if (soundinstance.getLocation().equals(VisualHandlers.EXPLOSION.beepSound))
+            if (soundinstance.getIdentifier().equals(VisualHandlers.EXPLOSION.beepSound))
                 return;
             float f = ((SoundEngineAccessor) engine).invokeCalculateVolume(soundinstance);
             channelHandler.execute((channel) -> channel.setVolume(f * muteVolume));

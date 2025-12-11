@@ -1,26 +1,26 @@
 package team.creative.enhancedvisuals.client.render;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class TextureCacheAnimation extends TextureCache {
     
-    public final ResourceLocation[] locations;
+    public final Identifier[] identifiers;
     public final int animationSpeed;
     
-    public TextureCacheAnimation(ResourceLocation[] locations, int animationSpeed) {
-        this.locations = locations;
+    public TextureCacheAnimation(Identifier[] identifiers, int animationSpeed) {
+        this.identifiers = identifiers;
         this.animationSpeed = animationSpeed;
     }
     
     @Override
-    public ResourceLocation getFirst() {
-        return locations[0];
+    public Identifier getFirst() {
+        return identifiers[0];
     }
     
     @Override
-    public ResourceLocation getResource() {
+    public Identifier getResource() {
         long time = Math.abs(System.nanoTime() / 3000000 / animationSpeed);
-        return locations[(int) (time % locations.length)];
+        return identifiers[(int) (time % identifiers.length)];
     }
     
 }

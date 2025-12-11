@@ -6,7 +6,7 @@ import java.util.Random;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import team.creative.creativecore.Side;
 import team.creative.creativecore.common.config.api.CreativeConfig;
@@ -47,28 +47,28 @@ public class VisualHandler implements ICreativeConfig, EVManager {
     }
     
     @Override
-    public void playSound(ResourceLocation location) {
-        manager().playSound(location);
+    public void playSound(Identifier identifier) {
+        manager().playSound(identifier);
     }
     
     @Override
-    public void playSound(ResourceLocation location, BlockPos pos) {
-        manager().playSound(location, pos);
+    public void playSound(Identifier identifier, BlockPos pos) {
+        manager().playSound(identifier, pos);
     }
     
     @Override
-    public void playSound(ResourceLocation location, float volume) {
-        manager().playSound(location, volume);
+    public void playSound(Identifier identifier, float volume) {
+        manager().playSound(identifier, volume);
     }
     
     @Override
-    public void playSound(ResourceLocation location, BlockPos pos, float volume) {
-        manager().playSound(location, pos, volume);
+    public void playSound(Identifier identifier, BlockPos pos, float volume) {
+        manager().playSound(identifier, pos, volume);
     }
     
     @Override
-    public void playSoundFadeOut(ResourceLocation location, BlockPos pos, DecimalCurve volume) {
-        manager().playSoundFadeOut(location, pos, volume);
+    public void playSoundFadeOut(Identifier identifier, BlockPos pos, DecimalCurve volume) {
+        manager().playSoundFadeOut(identifier, pos, volume);
     }
     
     @Override
@@ -92,8 +92,8 @@ public class VisualHandler implements ICreativeConfig, EVManager {
     }
     
     @Override
-    public void playTicking(ResourceLocation location, BlockPos pos, DecimalCurve volume) {
-        manager().playTicking(location, pos, volume);
+    public void playTicking(Identifier identifier, BlockPos pos, DecimalCurve volume) {
+        manager().playTicking(identifier, pos, volume);
     }
     
     @Override

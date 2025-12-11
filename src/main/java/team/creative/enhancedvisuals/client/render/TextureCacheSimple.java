@@ -1,23 +1,23 @@
 package team.creative.enhancedvisuals.client.render;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class TextureCacheSimple extends TextureCache {
     
-    public final ResourceLocation location;
+    public final Identifier identifier;
     
-    public TextureCacheSimple(ResourceLocation location) {
-        this.location = location;
+    public TextureCacheSimple(Identifier identifier) {
+        this.identifier = identifier;
     }
     
     @Override
-    public ResourceLocation getResource() {
-        return location;
+    public Identifier getResource() {
+        return identifier;
     }
     
     @Override
-    public ResourceLocation getFirst() {
-        return location;
+    public Identifier getFirst() {
+        return identifier;
     }
     
 }

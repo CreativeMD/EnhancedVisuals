@@ -35,7 +35,7 @@ public abstract class VisualTypeShaderClient<T extends VisualTypeShader> extends
     public void render(GuiGraphics graphics, VisualHandler handler, Visual visual, int screenWidth, int screenHeight, float partialTicks) {
         var mc = Minecraft.getInstance();
         if (postChain == null)
-            postChain = mc.getShaderManager().getPostChain(type.location, LevelTargetBundle.MAIN_TARGETS);
+            postChain = mc.getShaderManager().getPostChain(type.identifier, LevelTargetBundle.MAIN_TARGETS);
         if (postChain != null) {
             changeProperties(visual.getOpacity());
             postChain.process(mc.getMainRenderTarget(), GraphicsResourceAllocator.UNPOOLED); // ((GameRendererExtender) mc.gameRenderer).getResourcePool()

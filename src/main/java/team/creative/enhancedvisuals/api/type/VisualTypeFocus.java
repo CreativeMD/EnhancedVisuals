@@ -1,14 +1,14 @@
 package team.creative.enhancedvisuals.api.type;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import team.creative.enhancedvisuals.EnhancedVisuals;
 
 public class VisualTypeFocus extends VisualTypeShader {
     
-    public static final ResourceLocation LOCATION = ResourceLocation.tryBuild(EnhancedVisuals.MODID, "blobs2");
+    public static final Identifier IDENTIFIER = Identifier.tryBuild(EnhancedVisuals.MODID, "blobs2");
     
     public VisualTypeFocus(String name) {
-        super(name, LOCATION);
+        super(name, IDENTIFIER);
     }
     
 }

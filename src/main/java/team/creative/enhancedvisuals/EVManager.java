@@ -6,7 +6,7 @@ import java.util.Random;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import team.creative.creativecore.common.config.premade.IntMinMax;
 import team.creative.creativecore.common.config.premade.curve.Curve;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
@@ -21,15 +21,15 @@ public interface EVManager {
     
     public Random random();
     
-    public void playSound(ResourceLocation location);
+    public void playSound(Identifier identifier);
     
-    public void playSound(ResourceLocation location, BlockPos pos);
+    public void playSound(Identifier identifier, BlockPos pos);
     
-    public void playSound(ResourceLocation location, float volume);
+    public void playSound(Identifier identifier, float volume);
     
-    public void playSound(ResourceLocation location, BlockPos pos, float volume);
+    public void playSound(Identifier identifier, BlockPos pos, float volume);
     
-    public void playSoundFadeOut(ResourceLocation location, BlockPos pos, DecimalCurve volume);
+    public void playSoundFadeOut(Identifier identifier, BlockPos pos, DecimalCurve volume);
     
     public Collection<Visual> visuals(VisualCategory category);
     
@@ -39,7 +39,7 @@ public interface EVManager {
     
     public boolean remove(Visual visual);
     
-    public void playTicking(ResourceLocation location, BlockPos pos, DecimalCurve volume);
+    public void playTicking(Identifier identifier, BlockPos pos, DecimalCurve volume);
     
     public Visual addVisualFadeOut(VisualType vt, VisualHandler handler, IntMinMax time);
     

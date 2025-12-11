@@ -9,22 +9,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 
 public abstract class TextureCache {
     
-    public abstract ResourceLocation getFirst();
+    public abstract Identifier getFirst();
     
-    public abstract ResourceLocation getResource();
+    public abstract Identifier getResource();
     
     public static TextureCache parse(ResourceManager manager, String domain, String baseLocation) {
-        ResourceLocation location = null;
+        Identifier location = null;
         int i = 0;
         Resource resource = null;
-        List<ResourceLocation> locations = null;
-        while ((resource = manager.getResource(location = ResourceLocation.tryBuild(domain, baseLocation + "-" + i + ".png")).orElse(null)) != null) {
+        List<Identifier> locations = null;
+        while ((resource = manager.getResource(location = Identifier.tryBuild(domain, baseLocation + "-" + i + ".png")).orElse(null)) != null) {
             if (locations == null)
                 locations = new ArrayList<>();
             locations.add(location);
@@ -34,7 +34,7 @@ public abstract class TextureCache {
         if (locations != null) {
             int animationSpeed = 1;
             try {
-                resource = manager.getResource(ResourceLocation.tryBuild(domain, baseLocation + ".ani")).orElse(null);
+                resource = manager.getResource(Identifier.tryBuild(domain, baseLocation + ".ani")).orElse(null);
                 if (resource != null) {
                     try {
                         InputStream input = resource.open();
@@ -48,10 +48,10 @@ public abstract class TextureCache {
                 }
             } catch (IOException e) {}
             
-            return new TextureCacheAnimation(locations.toArray(new ResourceLocation[locations.size()]), animationSpeed);
+            return new TextureCacheAnimation(locations.toArray(new Identifier[locations.size()]), animationSpeed);
         }
         
-        if (manager.getResource(location = ResourceLocation.tryBuild(domain, baseLocation + ".png")).orElse(null) != null)
+        if (manager.getResource(location = Identifier.tryBuild(domain, baseLocation + ".png")).orElse(null) != null)
             return new TextureCacheSimple(location);
         return null;
     }

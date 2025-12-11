@@ -3,7 +3,7 @@ package team.creative.enhancedvisuals.client;
 import java.util.function.Function;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -58,7 +58,7 @@ public class EVClient {
         register(VisualTypeFocus.class, VisualTypeFocusClient::new);
         register(VisualTypeSaturation.class, VisualTypeSaturationClient::new);
         
-        CreativeCore.loader().registerReloadListener(ResourceLocation.tryBuild(EnhancedVisuals.MODID, "resources"), new SimplePreparableReloadListener<Void>() {
+        CreativeCore.loader().registerReloadListener(Identifier.tryBuild(EnhancedVisuals.MODID, "resources"), new SimplePreparableReloadListener<Void>() {
             @Override
             protected Void prepare(ResourceManager manager, ProfilerFiller profiler) {
                 return null;

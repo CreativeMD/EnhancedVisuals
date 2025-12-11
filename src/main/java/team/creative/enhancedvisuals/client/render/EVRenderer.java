@@ -31,8 +31,6 @@ public class EVRenderer {
     public static void renderShaders(DeltaTracker tracker) {
         float partialTicks = tracker.getGameTimeDeltaPartialTick(false);
         
-        RenderSystem.resetTextureMatrix();
-        
         var mc = Minecraft.getInstance();
         int screenWidth = mc.getWindow().getWidth();
         int screenHeight = mc.getWindow().getHeight();

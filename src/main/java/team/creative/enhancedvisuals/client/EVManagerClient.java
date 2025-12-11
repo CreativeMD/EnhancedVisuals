@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import team.creative.creativecore.common.config.premade.IntMinMax;
@@ -88,35 +88,35 @@ public class EVManagerClient implements EVManager {
     }
     
     @Override
-    public void playSound(ResourceLocation location) {
-        playSound(location, null, 1.0F);
+    public void playSound(Identifier identifier) {
+        playSound(identifier, null, 1.0F);
     }
     
     @Override
-    public void playSound(ResourceLocation location, BlockPos pos) {
-        playSound(location, pos, 1.0F);
+    public void playSound(Identifier identifier, BlockPos pos) {
+        playSound(identifier, pos, 1.0F);
     }
     
     @Override
-    public void playSound(ResourceLocation location, float volume) {
-        playSound(location, null, volume);
+    public void playSound(Identifier identifier, float volume) {
+        playSound(identifier, null, volume);
     }
     
     @Override
-    public void playSound(ResourceLocation location, BlockPos pos, float volume) {
+    public void playSound(Identifier identifier, BlockPos pos, float volume) {
         if (!EVClient.shouldRender())
             return;
         if (pos != null)
-            Minecraft.getInstance().getSoundManager().play(new PositionedSound(location, SoundSource.MASTER, volume, 1, pos));
+            Minecraft.getInstance().getSoundManager().play(new PositionedSound(identifier, SoundSource.MASTER, volume, 1, pos));
         else
-            Minecraft.getInstance().getSoundManager().play(new PositionedSound(location, SoundSource.MASTER, volume, 1));
+            Minecraft.getInstance().getSoundManager().play(new PositionedSound(identifier, SoundSource.MASTER, volume, 1));
     }
     
     @Override
-    public void playSoundFadeOut(ResourceLocation location, BlockPos pos, DecimalCurve volume) {
+    public void playSoundFadeOut(Identifier identifier, BlockPos pos, DecimalCurve volume) {
         if (!EVClient.shouldRender())
             return;
-        playTicking(location, pos, volume);
+        playTicking(identifier, pos, volume);
     }
     
     @Override
@@ -155,12 +155,12 @@ public class EVManagerClient implements EVManager {
     }
     
     @Override
-    public void playTicking(ResourceLocation location, BlockPos pos, DecimalCurve volume) {
+    public void playTicking(Identifier identifier, BlockPos pos, DecimalCurve volume) {
         TickedSound sound;
         if (pos != null)
-            sound = new TickedSound(location, SoundSource.MASTER, 1, pos, volume);
+            sound = new TickedSound(identifier, SoundSource.MASTER, 1, pos, volume);
         else
-            sound = new TickedSound(location, SoundSource.MASTER, 1, volume);
+            sound = new TickedSound(identifier, SoundSource.MASTER, 1, volume);
         playing.add(sound);
         Minecraft.getInstance().getSoundManager().play(sound);
     }
