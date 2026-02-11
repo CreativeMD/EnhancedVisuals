@@ -8,6 +8,11 @@
         "CreativeMD",
         "AriaFreeze"
     ],
+    "contact": {
+        "sources": "https://github.com/CreativeMD/EnhancedVisuals",
+        "homepage": "https://modrinth.com/mod/enhancedvisuals",
+        "issues": "https://github.com/CreativeMD/EnhancedVisuals/issues"
+    },
     "license": "LGPL-3.0-only",
     "icon": "enhancedvisuals.png",
     "environment": "*",
