@@ -1,3 +1,6 @@
+1.8.26
+Added contact information to fabric.mod.json
+
 1.8.25
 Fixed crash with carpet mod #2
 Fixed crash during startup
