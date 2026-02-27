@@ -1,3 +1,6 @@
+1.8.27
+Fixed rare crash when sound is muted
+
 1.8.26
 Added contact information to fabric.mod.json
 
