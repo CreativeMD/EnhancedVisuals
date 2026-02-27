@@ -1,5 +1,6 @@
 package team.creative.enhancedvisuals.client.sound;
 
+import java.util.ConcurrentModificationException;
 import java.util.Map;
 
 import net.fabricmc.api.EnvType;
@@ -52,12 +53,14 @@ public class SoundMuteHandler {
         if (!isMuting)
             return;
         
-        getSounds().forEach((soundinstance, channelHandler) -> {
-            if (soundinstance.getLocation().equals(VisualHandlers.EXPLOSION.beepSound))
-                return;
-            float f = ((SoundEngineAccessor) engine).invokeCalculateVolume(soundinstance);
-            channelHandler.execute((channel) -> channel.setVolume(f * muteVolume));
-        });
+        try {
+            getSounds().forEach((soundinstance, channelHandler) -> {
+                if (soundinstance.getLocation().equals(VisualHandlers.EXPLOSION.beepSound))
+                    return;
+                float f = ((SoundEngineAccessor) engine).invokeCalculateVolume(soundinstance);
+                channelHandler.execute((channel) -> channel.setVolume(f * muteVolume));
+            });
+        } catch (ConcurrentModificationException e) {}
     }
     
     public static boolean startMuting(DecimalCurve muteGraph) {
