@@ -2,6 +2,7 @@ package team.creative.enhancedvisuals.common.handler;
 
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.monster.EnderMan;
@@ -16,8 +17,6 @@ import team.creative.enhancedvisuals.api.type.VisualType;
 import team.creative.enhancedvisuals.api.type.VisualTypeOverlay;
 
 public class SlenderHandler extends VisualHandler {
-    
-    private static final AABB INFINITE = new AABB(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
     
     @CreativeConfig
     public double defaultIntensity = 0;
@@ -67,9 +66,10 @@ public class SlenderHandler extends VisualHandler {
                 Entity closest = null;
                 double distance = Double.POSITIVE_INFINITY;
                 double tempDistance = 0;
-                for (Entity mob : player.level().getEntities((Entity) null, INFINITE, x -> x instanceof EnderMan || (mutantEnderman != null && mutantEnderman.isInstance(x)))) {
-                    if (closest == null || distance > (tempDistance = mob.distanceToSqr(player))) {
-                        closest = mob;
+                for (Entity entity : ((ClientLevel) player.level()).entitiesForRendering()) {
+                    if (entity instanceof EnderMan || (mutantEnderman != null && mutantEnderman.isInstance(entity)) && (closest == null || distance > (tempDistance = entity
+                            .distanceToSqr(player)))) {
+                        closest = entity;
                         distance = tempDistance;
                     }
                 }

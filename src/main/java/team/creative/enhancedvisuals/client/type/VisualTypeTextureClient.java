@@ -10,7 +10,7 @@ import java.util.Optional;
 
 import javax.imageio.ImageIO;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -83,7 +83,7 @@ public class VisualTypeTextureClient<T extends VisualTypeTexture> extends Visual
     }
     
     @Override
-    public void render(GuiGraphics graphics, VisualHandler handler, Visual visual, int screenWidth, int screenHeight, float partialTicks) {
+    public void render(GuiGraphicsExtractor graphics, VisualHandler handler, Visual visual, int screenWidth, int screenHeight, float partialTicks) {
         int red = visual.color != null ? visual.color.getRed() : 255;
         int green = visual.color != null ? visual.color.getGreen() : 255;
         int blue = visual.color != null ? visual.color.getBlue() : 255;

@@ -4,7 +4,7 @@ import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.resource.GraphicsResourceAllocator;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.LevelTargetBundle;
 import net.minecraft.client.renderer.PostChain;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -32,7 +32,7 @@ public abstract class VisualTypeShaderClient<T extends VisualTypeShader> extends
     public void resize(RenderTarget buffer) {}
     
     @Override
-    public void render(GuiGraphics graphics, VisualHandler handler, Visual visual, int screenWidth, int screenHeight, float partialTicks) {
+    public void render(GuiGraphicsExtractor graphics, VisualHandler handler, Visual visual, int screenWidth, int screenHeight, float partialTicks) {
         var mc = Minecraft.getInstance();
         if (postChain == null)
             postChain = mc.getShaderManager().getPostChain(type.identifier, LevelTargetBundle.MAIN_TARGETS);

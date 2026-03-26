@@ -6,7 +6,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.DeathScreen;
 import team.creative.creativecore.common.util.mc.LanguageUtils;
 import team.creative.enhancedvisuals.EnhancedVisuals;
@@ -41,7 +41,7 @@ public class EVRenderer {
     }
     
     public static void render(Object object) {
-        GuiGraphics graphics = (GuiGraphics) object;
+        GuiGraphicsExtractor graphics = (GuiGraphicsExtractor) object;
         if (EVClient.shouldRender()) {
             var mc = Minecraft.getInstance();
             
@@ -73,13 +73,13 @@ public class EVRenderer {
                         lastRenderedMessage = LanguageUtils.translate(EnhancedVisuals.MESSAGES.pickRandomDeathMessage());
                     
                     if (lastRenderedMessage != null)
-                        graphics.drawString(mc.font, "\"" + lastRenderedMessage + "\"", mc.screen.width / 2 - mc.font.width(lastRenderedMessage) / 2, 114, 16777215);
+                        graphics.text(mc.font, "\"" + lastRenderedMessage + "\"", mc.screen.width / 2 - mc.font.width(lastRenderedMessage) / 2, 114, 16777215);
                 }
             }
         }
     }
     
-    public static void render(Visual visual, GuiGraphics graphics, int screenWidth, int screenHeight, float partialTicks) {
+    public static void render(Visual visual, GuiGraphicsExtractor graphics, int screenWidth, int screenHeight, float partialTicks) {
         var ct = EVClient.get(visual.type);
         if (visual instanceof Particle p) {
             var stack = graphics.pose();
@@ -92,7 +92,7 @@ public class EVRenderer {
             ct.render(graphics, visual.handler, visual, screenWidth, screenHeight, partialTicks);
     }
     
-    private static void renderVisuals(GuiGraphics graphics, Collection<Visual> visuals, int screenWidth, int screenHeight, float partialTicks) {
+    private static void renderVisuals(GuiGraphicsExtractor graphics, Collection<Visual> visuals, int screenWidth, int screenHeight, float partialTicks) {
         if (visuals == null || visuals.isEmpty())
             return;
         try {
