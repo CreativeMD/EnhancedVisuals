@@ -1,3 +1,7 @@
+1.8.28
+Added raining drops depending on look up and down angle (suggested by Canriii)
+Fixed executing reloader manager off thread
+
 1.8.27
 Fixed rare crash when sound is muted
 
