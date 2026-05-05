@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -55,7 +56,10 @@ public class EnhancedVisuals implements CommonLoader, ClientLoader {
     @Environment(EnvType.CLIENT)
     @OnlyIn(Dist.CLIENT)
     public void onInitializeClient() {
-        CreativeCore.loader().registerClientStarted(EVClient::init);
+        if (CreativeCore.loader().forge())
+            Minecraft.getInstance().execute(EVClient::init);
+        else
+            CreativeCore.loader().registerClientStarted(EVClient::init);
         CreativeCore.loader().registerClientTick(() -> EVENTS.clientTick());
         CreativeCore.loader().registerClientRenderGui(EVRenderer::render);
         CreativeCoreClient.registerClientConfig(MODID);
