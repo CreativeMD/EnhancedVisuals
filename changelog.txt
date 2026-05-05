@@ -1,3 +1,17 @@
+1.8.28
+Added raining drops depending on look up and down angle (suggested by Canriii)
+Fixed executing reloader manager off thread
+Fixed rare crash when sound is muted
+Fixed hit damage effect not working
+Reworked how damage source is send to client
+Fixed spawning blood particles when freezing
+Fixed explosion mute sound effect not working properly
+Fixed desaturation effect still being visible even if the visual type has been disabled
+Fixed crash when using enhancedvisuals server side on fabric
+Fixed crash on server side
+Fixed hit effect not working consistently
+Made DeathMessages translatable
+
 1.8.2
 Fixed rendering issues with other mods
 
