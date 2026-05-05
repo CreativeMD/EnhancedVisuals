@@ -30,6 +30,15 @@ public class RainHandler extends VisualHandler {
     @CreativeConfig
     public IntMinMax amount = new IntMinMax(1, 1);
     
+    @CreativeConfig
+    public boolean amountDependOnAngle = true;
+    
+    @CreativeConfig
+    public double lookDownFactor = 0.1;
+    
+    @CreativeConfig
+    public double lookUpFactor = 2;
+    
     private int timer = 0;
     private int nextDelay = -1;
     private Random rand = new Random();
@@ -39,18 +48,39 @@ public class RainHandler extends VisualHandler {
         if (player != null) {
             BlockPos blockpos = player.blockPosition();
             if (player.level().isRainingAt(blockpos) || player.level().isRainingAt(BlockPos.containing(blockpos.getX(), player.getBoundingBox().maxY, blockpos.getZ()))) {
-                
+                double factor = 1;
+                if (amountDependOnAngle) {
+                    if (player.getXRot() < 0)
+                        factor = 1 + (player.getXRot() / -90) * lookUpFactor;
+                    else
+                        factor = lookDownFactor + 1 - (player.getXRot() / 90);
+                }
                 timer++;
                 if (nextDelay == -1)
-                    nextDelay = delay.next(rand);
+                    updateDelay(factor);
                 if (timer >= nextDelay) {
-                    VisualManager.addParticlesFadeOut(drop, this, amount.next(rand), duration, true);
+                    int count;
+                    if (factor < 1)
+                        if (rand.nextDouble() < factor)
+                            count = amount.next(rand);
+                        else
+                            count = 0;
+                    else
+                        count = (int) (amount.next(rand) * factor);
+                    if (count > 0)
+                        VisualManager.addParticlesFadeOut(drop, this, count, duration, true);
                     timer = 0;
-                    nextDelay = delay.next(rand);
+                    updateDelay(factor);
                 }
             } else
                 timer = 0;
         }
+    }
+    
+    private void updateDelay(double factor) {
+        nextDelay = delay.next(rand);
+        if (factor != 1)
+            nextDelay = (int) (nextDelay / factor);
     }
     
     @Override
