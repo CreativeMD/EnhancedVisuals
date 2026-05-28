@@ -1,3 +1,6 @@
+1.8.29
+Fixed rework heartbeat causing effect to fade instead of getting more instense
+
 1.8.28
 Added raining drops depending on look up and down angle (suggested by Canriii)
 Fixed executing reloader manager off thread
