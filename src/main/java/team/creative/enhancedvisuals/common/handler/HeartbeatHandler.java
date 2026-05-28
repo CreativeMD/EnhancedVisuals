@@ -77,8 +77,8 @@ public class HeartbeatHandler extends VisualHandler {
     
     private float getIntensity(@NotNull Player player) {
         if (useHealthPercentage)
-            return (maxHealthPercentage - (player.getHealth() / player.getMaxHealth()));
-        return player.getHealth() / maxHealth;
+            return (maxHealthPercentage - (player.getHealth() / player.getMaxHealth())) * 2.0F;
+        return ((maxHealth - player.getHealth()) / player.getMaxHealth()) * 2.0F;
     }
     
     private boolean shouldHeartbeatTrigger(@Nullable Player player) {
