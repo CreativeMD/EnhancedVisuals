@@ -9,6 +9,7 @@ import net.minecraft.resources.Identifier;
 import net.neoforged.fml.common.Mod;
 import team.creative.creativecore.CreativeCore;
 import team.creative.creativecore.ICreativeLoader;
+import team.creative.creativecore.Side;
 import team.creative.creativecore.client.ClientLoader;
 import team.creative.creativecore.common.CommonLoader;
 import team.creative.creativecore.common.config.holder.ConfigHolderDynamic;
@@ -46,6 +47,8 @@ public class EnhancedVisuals implements CommonLoader, ClientLoader {
         ICreativeLoader loader = CreativeCore.loader();
         loader.register(this);
         loader.registerClient(this);
+        if (loader.getOverallSide() == Side.CLIENT)
+            EVClient.preInit();
     }
     
     @Override

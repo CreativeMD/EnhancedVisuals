@@ -34,7 +34,7 @@ public class EVRenderer {
         var mc = Minecraft.getInstance();
         int screenWidth = mc.getWindow().getWidth();
         int screenHeight = mc.getWindow().getHeight();
-        var renderTarget = mc.getMainRenderTarget();
+        var renderTarget = mc.gameRenderer.mainRenderTarget();
         
         RenderSystem.getDevice().createCommandEncoder().clearDepthTexture(renderTarget.getDepthTexture(), 1.0);
         renderVisuals(null, EnhancedVisuals.MANAGER.visuals(VisualCategory.shader), screenWidth, screenHeight, partialTicks);
@@ -51,14 +51,14 @@ public class EVRenderer {
                 reloadResources = false;
             }
             
-            if (!(mc.screen instanceof DeathScreen)) {
+            if (!(mc.gui.screen() instanceof DeathScreen)) {
                 float partialTicks = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
-                
-                if (mc.getMainRenderTarget().width != framebufferWidth || mc.getMainRenderTarget().height != framebufferHeight) {
+                var renderTarget = mc.gameRenderer.mainRenderTarget();
+                if (renderTarget.width != framebufferWidth || renderTarget.height != framebufferHeight) {
                     for (VisualType type : VisualType.types())
-                        ((VisualTypeClient) type.clientSideType).resize(mc.getMainRenderTarget());
-                    framebufferWidth = mc.getMainRenderTarget().width;
-                    framebufferHeight = mc.getMainRenderTarget().height;
+                        ((VisualTypeClient) type.clientSideType).resize(renderTarget);
+                    framebufferWidth = renderTarget.width;
+                    framebufferHeight = renderTarget.height;
                 }
                 
                 int screenWidth = mc.getWindow().getGuiScaledWidth();
@@ -73,7 +73,7 @@ public class EVRenderer {
                         lastRenderedMessage = LanguageUtils.translate(EnhancedVisuals.MESSAGES.pickRandomDeathMessage());
                     
                     if (lastRenderedMessage != null)
-                        graphics.text(mc.font, "\"" + lastRenderedMessage + "\"", mc.screen.width / 2 - mc.font.width(lastRenderedMessage) / 2, 114, 16777215);
+                        graphics.text(mc.font, "\"" + lastRenderedMessage + "\"", mc.gui.screen().width / 2 - mc.font.width(lastRenderedMessage) / 2, 114, 16777215);
                 }
             }
         }

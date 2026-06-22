@@ -52,12 +52,7 @@ public class EVClient {
         CLIENT_TYPES.add(clazz, factory);
     }
     
-    public static void init() {
-        register(VisualTypeTexture.class, VisualTypeTextureClient::new);
-        register(VisualTypeBlur.class, VisualTypeBlurClient::new);
-        register(VisualTypeFocus.class, VisualTypeFocusClient::new);
-        register(VisualTypeSaturation.class, VisualTypeSaturationClient::new);
-        
+    public static void preInit() {
         CreativeCore.loader().registerReloadListener(Identifier.tryBuild(EnhancedVisuals.MODID, "resources"), new SimplePreparableReloadListener<Void>() {
             @Override
             protected Void prepare(ResourceManager manager, ProfilerFiller profiler) {
@@ -70,6 +65,13 @@ public class EVClient {
                 EVRenderer.reloadResources = true;
             }
         });
+    }
+    
+    public static void init() {
+        register(VisualTypeTexture.class, VisualTypeTextureClient::new);
+        register(VisualTypeBlur.class, VisualTypeBlurClient::new);
+        register(VisualTypeFocus.class, VisualTypeFocusClient::new);
+        register(VisualTypeSaturation.class, VisualTypeSaturationClient::new);
         
         ResourceManager manager = Minecraft.getInstance().getResourceManager();
         for (VisualType type : VisualType.types())
