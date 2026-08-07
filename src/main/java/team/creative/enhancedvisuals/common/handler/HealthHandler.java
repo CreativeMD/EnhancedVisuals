@@ -34,7 +34,7 @@ public class HealthHandler extends VisualHandler {
         if (amount == particles.size())
             return;
         while (particles.size() < amount)
-            particles.add(VisualManager.addParticle(impact, this, true, DamageHandler.BLOOD_COLOR));
+            particles.add(VisualManager.addParticle(impact, this, true, VisualHandlers.DAMAGE.bloodColor));
         while (particles.size() > amount) {
             VisualManager.remove(particles.remove(particles.size() > 1 ? VisualManager.RANDOM.nextInt(particles.size() - 1) : 0));
         }
