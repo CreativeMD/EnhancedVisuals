@@ -38,8 +38,6 @@ public class DamageHandler extends VisualHandler {
     public static final ArrayList<Item> bluntList = new ArrayList<>();
     public static final ArrayList<Item> pierceList = new ArrayList<>();
     
-    public static final Color BLOOD_COLOR = new Color(0.3F, 0.01F, 0.01F, 0.7F);
-    
     static {
         sharpList.add(Items.IRON_SWORD);
         sharpList.add(Items.WOODEN_SWORD);
@@ -70,6 +68,9 @@ public class DamageHandler extends VisualHandler {
         pierceList.add(Items.GOLDEN_HOE);
         pierceList.add(Items.ARROW);
     }
+    
+    @CreativeConfig
+    public Color bloodColor = new Color(0.3F, 0.01F, 0.01F, 0.7F);
     
     @CreativeConfig
     public VisualType damaged = new VisualTypeOverlay("damaged");
@@ -225,7 +226,7 @@ public class DamageHandler extends VisualHandler {
         float health = player.getHealth() - damage;
         double rate = Math.max(0, healthScaler.valueAt(health));
         
-        addParticlesFadeOut(type, this, Math.min(5000, (int) (damageScale * damage * rate)), new DecimalCurve(0, 1, duration.next(random()), 0), true, BLOOD_COLOR);
+        addParticlesFadeOut(type, this, Math.min(5000, (int) (damageScale * damage * rate)), new DecimalCurve(0, 1, duration.next(random()), 0), true, bloodColor);
     }
     
     private static boolean isSharp(ItemStack item) {
