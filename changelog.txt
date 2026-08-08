@@ -1,3 +1,6 @@
+1.8.30
+Added bloodColor as configuration to damage handler
+
 1.8.29
 Fixed rework heartbeat causing effect to fade instead of getting more instense
 
