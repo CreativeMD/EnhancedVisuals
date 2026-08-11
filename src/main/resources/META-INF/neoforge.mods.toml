@@ -5,7 +5,7 @@ license="LGPL-3.0-only"
 
 [[mods]]
     modId="enhancedvisuals"
-    logoFile="enhancedvisuals.png"
+    iconFile="enhancedvisuals.png"
     version="1.8.30"
     displayName="EnhancedVisuals"
     displayURL="https://modrinth.com/mod/enhancedvisuals"
