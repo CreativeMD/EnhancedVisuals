@@ -7,12 +7,14 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.phys.Vec3;
+import team.creative.creativecore.CreativeCore;
 import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.premade.IntMinMax;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
 import team.creative.creativecore.common.config.premade.curve.IntCurve;
 import team.creative.enhancedvisuals.EnhancedVisuals;
 import team.creative.enhancedvisuals.api.VisualHandler;
+import team.creative.enhancedvisuals.api.event.VisualExplosionEvent;
 import team.creative.enhancedvisuals.api.type.VisualType;
 import team.creative.enhancedvisuals.api.type.VisualTypeBlur;
 import team.creative.enhancedvisuals.api.type.VisualTypeParticle;
@@ -51,6 +53,14 @@ public class ExplosionHandler extends VisualHandler {
         
         float damage = ((int) ((d10 * d10 + d10) / 2.0D * 7.0D * f3 + 1.0D));
         if (damage > 0) {
+            VisualExplosionEvent event = new VisualExplosionEvent(damage);
+            CreativeCore.loader().postForge(event);
+            
+            if (event.isCanceled())
+                return;
+            
+            damage = event.getNewDamage();
+            
             VisualManager.addParticlesFadeOut(dust, this, (int) dustAmount.valueAt(damage), dustDuration, true);
             
             DecimalCurve explosionSoundVolume = new DecimalCurve(0, maxExplosionVolume, explosionSoundTime.valueAt(damage), 0);
@@ -58,7 +68,8 @@ public class ExplosionHandler extends VisualHandler {
             if (SoundMuteHandler.startMuting(explosionSoundMuteVolume))
                 playSoundFadeOut(new ResourceLocation(EnhancedVisuals.MODID, "ringing"), null, explosionSoundVolume);
             
-            VisualManager.addVisualFadeOut(blur, this, new DecimalCurve(0, maxBlur.valueAt(damage), (int) (explosionBlurTime.valueAt(damage)), 0));
+            if (event.isBlurDisabled())
+                VisualManager.addVisualFadeOut(blur, this, new DecimalCurve(0, maxBlur.valueAt(damage), (int) (explosionBlurTime.valueAt(damage)), 0));
         }
     }
 }

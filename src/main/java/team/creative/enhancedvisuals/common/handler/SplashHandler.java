@@ -3,11 +3,13 @@ package team.creative.enhancedvisuals.common.handler;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.entity.player.Player;
+import team.creative.creativecore.CreativeCore;
 import team.creative.creativecore.common.config.api.CreativeConfig;
 import team.creative.creativecore.common.config.premade.DecimalMinMax;
 import team.creative.creativecore.common.config.premade.IntMinMax;
 import team.creative.creativecore.common.config.premade.curve.DecimalCurve;
 import team.creative.enhancedvisuals.api.VisualHandler;
+import team.creative.enhancedvisuals.api.event.SplashEvent;
 import team.creative.enhancedvisuals.api.type.VisualType;
 import team.creative.enhancedvisuals.api.type.VisualTypeBlur;
 import team.creative.enhancedvisuals.client.VisualManager;
@@ -30,8 +32,12 @@ public class SplashHandler extends VisualHandler {
     public void tick(@Nullable Player player) {
         if (player != null) {
             boolean isInWater = EVEvents.areEyesInWater(player);
-            if (isInWater != wasInWater)
-                VisualManager.addVisualFadeOut(blur, this, new DecimalCurve(VisualManager.RANDOM, duration, intensity));
+            if (isInWater != wasInWater) {
+                SplashEvent event = new SplashEvent(player);
+                CreativeCore.loader().postForge(event);
+                if (!event.isCanceled())
+                    VisualManager.addVisualFadeOut(blur, this, new DecimalCurve(VisualManager.RANDOM, duration, intensity));
+            }
             wasInWater = isInWater;
             
         }
