@@ -1,3 +1,7 @@
+1.8.31
+Fixed splash and explosion event never getting called
+Changed logoFile property to iconFile
+
 1.8.30
 Added bloodColor as configuration to damage handler
 
