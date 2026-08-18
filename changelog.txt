@@ -1,3 +1,9 @@
+1.8.33
+Fixed not uploading obfuscated jar
+
+1.8.32
+Fixed not compiling for Java 17
+
 1.8.31
 Fixed splash and explosion event never getting called
 
