@@ -5,7 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
-import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import team.creative.creativecore.CreativeCore;
@@ -67,7 +67,7 @@ public class SlenderHandler extends VisualHandler {
                 double distance = Double.POSITIVE_INFINITY;
                 double tempDistance = 0;
                 for (Entity entity : ((ClientLevel) player.level()).entitiesForRendering()) {
-                    if (entity instanceof EnderMan || (mutantEnderman != null && mutantEnderman.isInstance(entity)) && (closest == null || distance > (tempDistance = entity
+                    if (entity instanceof Enderman || (mutantEnderman != null && mutantEnderman.isInstance(entity)) && (closest == null || distance > (tempDistance = entity
                             .distanceToSqr(player)))) {
                         closest = entity;
                         distance = tempDistance;

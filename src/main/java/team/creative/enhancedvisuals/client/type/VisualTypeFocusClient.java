@@ -5,10 +5,10 @@ import java.util.Map;
 
 import org.lwjgl.system.MemoryStack;
 
-import com.mojang.blaze3d.buffers.GpuBuffer;
 import com.mojang.blaze3d.buffers.Std140Builder;
 import com.mojang.blaze3d.buffers.Std140SizeCalculator;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.renderpearl.api.buffers.GpuBuffer;
 
 import net.minecraft.client.renderer.PostPass;
 import team.creative.enhancedvisuals.api.type.VisualTypeFocus;

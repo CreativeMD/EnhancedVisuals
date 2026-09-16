@@ -1,6 +1,7 @@
-#version 150
+#version 330
+#extension GL_ARB_separate_shader_objects : require
 
-#moj_import <minecraft:globals.glsl>
+#include <minecraft:globals.glsl>
 
 uniform sampler2D InSampler;
 
@@ -18,11 +19,9 @@ layout(std140) uniform BlurRadiusConfig {
     float Radius;
 };
 
+layout(location = 0) in vec2 texCoord;
 
-in vec2 texCoord;
-in vec2 sampleStep;
-
-out vec4 fragColor;
+layout(location = 0) out vec4 fragColor;
 
 // This shader relies on GL_LINEAR sampling to reduce the amount of texture samples in half.
 // Instead of sampling each pixel position with a step of 1 we sample between pixels with a step of 2.
