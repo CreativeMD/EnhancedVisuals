@@ -61,7 +61,12 @@ public class EVRenderer {
                 int screenHeight = mc.getWindow().getGuiScaledHeight();
                 
                 renderVisuals(graphics, EnhancedVisuals.MANAGER.visuals(VisualCategory.overlay), screenWidth, screenHeight, partialTicks);
+                
+                var stack = graphics.pose();
+                stack.pushMatrix();
+                stack.scale(1F / Minecraft.getInstance().getWindow().getGuiScale());
                 renderVisuals(graphics, EnhancedVisuals.MANAGER.visuals(VisualCategory.particle), screenWidth, screenHeight, partialTicks);
+                stack.popMatrix();
                 
             } else {
                 if (EnhancedVisuals.MESSAGES.enabled) {
