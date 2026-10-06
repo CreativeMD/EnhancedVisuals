@@ -10,7 +10,6 @@ import org.joml.Matrix4f;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
-import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
@@ -85,7 +84,9 @@ public class EVRenderer {
                 
                 TextureManager manager = mc.getTextureManager();
                 
-                RenderSystem.clear(256, Minecraft.ON_OSX);
+                Matrix4f projectionMatrix = RenderSystem.getProjectionMatrix();
+                var sorting = RenderSystem.getVertexSorting();
+                
                 Matrix4f matrix4f = new Matrix4f().setOrtho(0.0F, screenWidth, screenHeight, 0.0F, 1000.0F, 21000F);
                 RenderSystem.setProjectionMatrix(matrix4f, VertexSorting.ORTHOGRAPHIC_Z);
                 PoseStack stack = RenderSystem.getModelViewStack();
@@ -121,7 +122,6 @@ public class EVRenderer {
                 
                 mc.getMainRenderTarget().bindWrite(true);
                 
-                RenderSystem.clear(256, Minecraft.ON_OSX);
                 RenderSystem.enableBlend();
                 RenderSystem.disableDepthTest();
                 RenderSystem.depthMask(false);
@@ -137,10 +137,7 @@ public class EVRenderer {
                 
                 graphics.flush();
                 
-                Window window = mc.getWindow();
-                RenderSystem.clear(256, Minecraft.ON_OSX);
-                RenderSystem.setProjectionMatrix(new Matrix4f().setOrtho(0.0F, (float) (window.getWidth() / window.getGuiScale()), (float) (window.getHeight() / window
-                        .getGuiScale()), 0.0F, 1000.0F, 21000F), VertexSorting.ORTHOGRAPHIC_Z);
+                RenderSystem.setProjectionMatrix(projectionMatrix, sorting);
                 stack.popPose();
                 RenderSystem.applyModelViewMatrix();
                 Lighting.setupFor3DItems();
