@@ -1,3 +1,8 @@
+1.8.34
+Fixed not rendering particles properly
+Attempt to fix compatibility issues
+- Removed clearance of depth buffer
+
 1.8.31
 Fixed splash and explosion event never getting called
 Changed logoFile property to iconFile
