@@ -2,8 +2,6 @@ package team.creative.enhancedvisuals.client.render;
 
 import java.util.Collection;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -34,9 +32,7 @@ public class EVRenderer {
         var mc = Minecraft.getInstance();
         int screenWidth = mc.getWindow().getWidth();
         int screenHeight = mc.getWindow().getHeight();
-        var renderTarget = mc.gameRenderer.mainRenderTarget();
         
-        RenderSystem.getDevice().createCommandEncoder().clearDepthTexture(renderTarget.getDepthTexture(), 1.0);
         renderVisuals(null, EnhancedVisuals.MANAGER.visuals(VisualCategory.shader), screenWidth, screenHeight, partialTicks);
     }
     
