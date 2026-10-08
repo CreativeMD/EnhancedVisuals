@@ -1,7 +1,6 @@
 {
     "required": true,
     "package": "team.creative.enhancedvisuals.mixin",
-    "refmap": "enhancedvisuals.mixin.refmap.json",
     "server": [
     ],
     "mixins": [
