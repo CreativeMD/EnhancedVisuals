@@ -203,6 +203,8 @@ public class EVManagerClient implements EVManager {
         if (vt.disabled)
             return;
         var ct = EVClient.get(vt);
+        if (ct.getVariantAmount() == 0)
+            return;
         var mc = Minecraft.getInstance();
         for (int i = 0; i < count; i++) {
             int screenWidth = mc.getWindow().getWidth();
@@ -232,6 +234,9 @@ public class EVManagerClient implements EVManager {
         int screenHeight = mc.getWindow().getHeight();
         
         var ct = EVClient.get(vt);
+        
+        if (ct.getVariantAmount() == 0)
+            return null;
         
         int width = ct.getWidth(screenWidth, screenHeight);
         int height = ct.getHeight(screenWidth, screenHeight);

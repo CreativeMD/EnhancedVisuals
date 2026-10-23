@@ -32,8 +32,13 @@ public class HealthHandler extends VisualHandler {
         int amount = Math.max(0, (int) Math.ceil(particlesPerDamage * damage));
         if (amount == particles.size())
             return;
-        while (particles.size() < amount)
-            particles.add(addParticle(impact, this, true, VisualHandlers.DAMAGE.bloodColor));
+        while (particles.size() < amount) {
+            var particle = addParticle(impact, this, true, VisualHandlers.DAMAGE.bloodColor);
+            if (particle != null)
+                particles.add(particle);
+            else
+                break; // Not yet loaded
+        }
         while (particles.size() > amount) {
             remove(particles.remove(particles.size() > 1 ? random().nextInt(particles.size() - 1) : 0));
         }
