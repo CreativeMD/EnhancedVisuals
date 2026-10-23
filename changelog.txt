@@ -1,3 +1,6 @@
+1.8.35
+Fixed crash when particles are used before textures have been loaded
+
 1.8.34
 Fixed not rendering particles properly
 Attempt to fix compatibility issues

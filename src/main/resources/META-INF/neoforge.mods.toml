@@ -5,12 +5,12 @@ license="LGPL-3.0-only"
 
 [[mods]]
     modId="enhancedvisuals"
-    iconFile="enhancedvisuals.png"
-    version="1.8.34"
+    version="1.8.35"
     displayName="EnhancedVisuals"
     displayURL="https://modrinth.com/mod/enhancedvisuals"
     authors="CreativeMD, Sonicjumper"
     description='''Experience realism and extra video effects for your in-game experience.'''
+    iconFile="enhancedvisuals.png"
 
 [[dependencies.enhancedvisuals]]
     modId="neoforge"
