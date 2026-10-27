@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.6+'
+    id 'fabric-loom' version '1.12+'
     id 'com.modrinth.minotaur' version '2.+'
 }
 
@@ -39,7 +39,3 @@ sourceSets.main.runtimeClasspath += sourceSets.api.output
 modDependencies = [
     creativecore: ">=" + creativecore_version
 ]
-
-loom.mixin {
-    defaultRefmapName = "enhancedvisuals.mixin.refmap.json"
-}
