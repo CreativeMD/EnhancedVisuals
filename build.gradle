@@ -2,7 +2,7 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'com.modrinth.minotaur' version '2.+'
-    id 'net.neoforged.gradle.userdev' version '7.1.+'
+    id 'net.neoforged.moddev' version '2.0.+'
 }
 
 repositories {
@@ -27,25 +27,32 @@ sourceSets.main.runtimeClasspath += sourceSets.api.output
 
 project.evaluationDependsOn(":CreativeCore")
 
-runs {  
-    configureEach {
-        workingDirectory project.file('run')
-        systemProperty 'forge.logging.console.level', 'debug'
-        
-        modSource project(":CreativeCore").sourceSets.main
-        modSource project.sourceSets.main
-    }
+neoForge {
+    version = "${forge_version}"
+    validateAccessTransformers = true
     
-    client {
+    //addModdingDependenciesTo(sourceSets.api)
+
+    runs {
+        client {
+            client()
+        }
+        server {
+            server()
+        }
     }
-    
-    server {
+
+    mods {
+        EnhancedVisuals {
+            sourceSet sourceSets.main
+        }
+        CreativeCore {
+            sourceSet project(':CreativeCore').sourceSets.main
+        }
     }
 }
 
 dependencies {
-    implementation "net.neoforged:neoforge:${forge_version}"
-    
     implementation project(':CreativeCore')
 }
 
