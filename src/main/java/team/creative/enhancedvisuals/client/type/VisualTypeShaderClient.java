@@ -1,7 +1,6 @@
 package team.creative.enhancedvisuals.client.type;
 
 import com.mojang.blaze3d.pipeline.RenderTarget;
-import com.mojang.blaze3d.resource.GraphicsResourceAllocator;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -11,6 +10,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import team.creative.enhancedvisuals.api.Visual;
 import team.creative.enhancedvisuals.api.VisualHandler;
 import team.creative.enhancedvisuals.api.type.VisualTypeShader;
+import team.creative.enhancedvisuals.client.mc.GameRendererExtender;
 
 public abstract class VisualTypeShaderClient<T extends VisualTypeShader> extends VisualTypeClient<T> {
     
@@ -38,7 +38,7 @@ public abstract class VisualTypeShaderClient<T extends VisualTypeShader> extends
             postChain = mc.getShaderManager().getPostChain(type.identifier, LevelTargetBundle.MAIN_TARGETS);
         if (postChain != null) {
             changeProperties(visual.getOpacity());
-            postChain.process(mc.gameRenderer.mainRenderTarget(), GraphicsResourceAllocator.UNPOOLED); // ((GameRendererExtender) mc.gameRenderer).getResourcePool()
+            postChain.process(mc.gameRenderer.mainRenderTarget(), ((GameRendererExtender) mc.gameRenderer).getResourcePool());
         }
     }
     
