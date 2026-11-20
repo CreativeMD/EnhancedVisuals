@@ -1,3 +1,6 @@
+1.8.36
+Made use of vanilla resource pool when rendering shader (possible performance improvement)
+
 1.8.35
 Fixed crash when particles are used before textures have been loaded
 
