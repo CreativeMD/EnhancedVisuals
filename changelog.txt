@@ -1,3 +1,6 @@
+1.8.35
+Added support for Legendary Survival Overhaul
+
 1.8.34
 Attempt to fix compatibility issues
 - Removed clearance of depth buffer
